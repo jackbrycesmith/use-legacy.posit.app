@@ -1,6 +1,8 @@
 ## Posit.app
 
-posit.app is a service where you can create online proposals (sales/business). It has the following technical feature highlights:
+posit.app is an online service where you can create proposals. 
 
-- 🏦 💳 Stripe Connect integration; bank transfers (selected regions 🇬🇧 🇦🇺), card payments
+It has the following technical feature highlights:
+
+- 🏦 💳 Stripe Connect integration; card payments, or bank transfers 🇬🇧 🇦🇺
 - 🔑 🔐 E2E encryption for proposal content (optional feature)
