@@ -19,7 +19,8 @@
         "laravel/tinker": "^2.0",
         "league/flysystem-aws-s3-v3": "^1.0",
         "league/flysystem-cached-adapter": "^1.0",
-        "lorisleiva/laravel-actions": "^1.1"
+        "lorisleiva/laravel-actions": "^1.1",
+        "tightenco/ziggy": "^0.9.4"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",
