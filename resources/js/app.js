@@ -6,10 +6,12 @@ import PortalVue from 'portal-vue'
 import Fragment from 'vue-fragment'
 import VueMeta from 'vue-meta'
 import Vue from 'vue'
+import Vuex from 'vuex'
 
 Vue.use(InertiaApp)
 Vue.use(PortalVue)
 Vue.use(VueMeta)
+Vue.use(Vuex)
 Vue.use(Fragment.Plugin)
 Vue.component('FocusTrap', FocusTrap)
 Vue.prototype.$route = (...args) => route(...args).url()
