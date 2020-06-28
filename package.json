@@ -10,12 +10,17 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@ethersproject/hdnode": "^5.0.1",
+        "@ethersproject/signing-key": "^5.0.1",
+        "@ethersproject/wallet": "^5.0.1",
         "@inertiajs/inertia": "^0.1.9",
         "@inertiajs/inertia-vue": "^0.1.4",
         "@tailwindcss/ui": "^0.3.0",
         "@tailwindui/vue": "0.1.0-alpha.2",
         "axios": "^0.19",
         "cross-env": "^7.0",
+        "del": "^5.1.0",
+        "eciesjs": "^0.3.6",
         "focus-trap": "^5.1.0",
         "focus-trap-vue": "0.0.6",
         "laravel-mix": "^5.0.4",
@@ -28,6 +33,7 @@
         "vue-meta": "^2.4.0",
         "vue-template-compiler": "^2.6.11",
         "vuex": "^3.4.0",
-        "webpack-livereload-plugin": "^1.2.0"
+        "webpack-livereload-plugin": "^1.2.0",
+        "worker-loader": "^2.0.0"
     }
 }
