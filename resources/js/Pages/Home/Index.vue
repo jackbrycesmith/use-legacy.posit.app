@@ -1,29 +1,38 @@
 <template>
   <fragment>
-    <button @click="isBaseSlideOverVisible = !isBaseSlideOverVisible">toggle slide over</button>
+    <button @click="toggleProposalSlideOver">toggle slide over</button>
 
     <!-- TODO move to something app level, portal -->
 
-    <BaseSlideOver ref="baseSlideOver" :is-visible.sync="isBaseSlideOverVisible" :is-rounded="true" />
+    <ProposalSlideOver ref="proposalSlideOver" />
     <FirstWelcomeModal ref="firstWelcomeModal"/>
   </fragment>
 </template>
 
 <script>
-import BaseSlideOver from '@/SlideOvers/BaseSlideOver'
+import ProposalSlideOver from '@/SlideOvers/ProposalSlideOver'
 import FirstWelcomeModal from '@/Modals/FirstWelcomeModal'
 
 export default {
-  components: { BaseSlideOver, FirstWelcomeModal },
+  components: { ProposalSlideOver, FirstWelcomeModal },
   data () {
     return {
-      isBaseSlideOverVisible: true
+
     }
   },
   mounted () {
+    // TODO maybe do component dynamic import loads inside created () or something so we can do stuff when its loaded
     // setTimeout(() => {
     //   this.$refs.firstWelcomeModal.show()
-    // }, 1000)
+    // }, 2000)
+  },
+  methods: {
+    toggleProposalSlideOver () {
+      const proposalSlideOver = this.$refs.proposalSlideOver
+      if (!proposalSlideOver) { return }
+
+      proposalSlideOver.isVisible ? proposalSlideOver.hide() : proposalSlideOver.show()
+    }
   }
 }
 </script>
