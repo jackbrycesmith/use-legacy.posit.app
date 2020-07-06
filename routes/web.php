@@ -25,3 +25,5 @@ Route::domain("share.{$domain}")->group(function () {
 Route::get('/', function () {
     return Inertia::render('Home/Index');
 });
+
+Auth::routes();

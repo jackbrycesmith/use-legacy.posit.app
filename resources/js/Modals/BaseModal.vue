@@ -135,9 +135,9 @@ export default {
       return this.defaultHandleMainActionButtonHit
     },
     handleEscapeKeyHit () {
-      // if (typeof this.onMainActionButtonHit === 'function') {
-      //   return this.onMainActionButtonHit.bind(this)
-      // }
+      if (typeof this.onEscapeKeyHit === 'function') {
+        return this.onEscapeKeyHit.bind(this)
+      }
 
       return this.defaultEscapeKeyHit
     },

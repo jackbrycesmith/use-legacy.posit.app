@@ -7,6 +7,8 @@ import Fragment from 'vue-fragment'
 import VueMeta from 'vue-meta'
 import Vue from 'vue'
 import store from '@/store'
+import axios from 'axios'
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 Vue.use(InertiaApp)
 Vue.use(PortalVue)
@@ -14,6 +16,7 @@ Vue.use(VueMeta)
 Vue.use(Fragment.Plugin)
 Vue.component('FocusTrap', FocusTrap)
 Vue.prototype.$route = (...args) => route(...args).url()
+Vue.prototype.$http = axios.create()
 
 const isDev = process.env.NODE_ENV !== "production"
 Vue.config.performance = isDev

@@ -23,12 +23,14 @@
 
     <ProposalSlideOver ref="proposalSlideOver" />
     <FirstWelcomeModal ref="firstWelcomeModal"/>
+    <LoginModal ref="loginModal"/>
   </fragment>
 </template>
 
 <script>
 import ProposalSlideOver from '@/SlideOvers/ProposalSlideOver'
 import FirstWelcomeModal from '@/Modals/FirstWelcomeModal'
+import LoginModal from '@/Modals/LoginModal'
 import { Editor, EditorContent } from 'tiptap'
 import {
   Blockquote,
@@ -50,7 +52,7 @@ import {
 } from 'tiptap-extensions'
 
 export default {
-  components: { ProposalSlideOver, FirstWelcomeModal, EditorContent },
+  components: { ProposalSlideOver, FirstWelcomeModal, LoginModal, EditorContent },
   data () {
     return {
       keepInBounds: true,
@@ -107,6 +109,13 @@ export default {
       // this.$refs.firstWelcomeModal.show()
       this.$refs.proposalSlideOver.show()
     }, 1200)
+
+    console.log(this.$page.user)
+
+    setTimeout(() => {
+      // this.$refs.firstWelcomeModal.show()
+      // this.$refs.loginModal.show()
+    }, 2000)
 
   },
   methods: {
