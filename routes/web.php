@@ -14,6 +14,14 @@ use Inertia\Inertia;
 |
 */
 
+$domain = parse_url(config('app.url'), PHP_URL_HOST);
+
+Route::domain("share.{$domain}")->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Share/Index');
+    });
+});
+
 Route::get('/', function () {
     return Inertia::render('Home/Index');
 });
