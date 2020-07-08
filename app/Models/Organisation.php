@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Casts\StrLimitCast;
 use Illuminate\Database\Eloquent\Model;
 
 class Organisation extends Model
@@ -19,6 +20,7 @@ class Organisation extends Model
      * @var array
      */
     protected $casts = [
+        'name' => StrLimitCast::class,
         'json' => 'array',
     ];
 
