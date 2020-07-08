@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use App\Models\Casts\StrLimitCast;
+use App\Models\Concerns\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Organisation extends Model
 {
+    use HasUuid;
+
     /**
      * The attributes that aren't mass assignable.
      *
