@@ -15,8 +15,9 @@ class CreateOrganisationMemberTable extends Migration
     {
         Schema::create('organisation_member', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // TODO maybe make this nullable, and store 'contacts/recipients' here too
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // TODO maybe make this nullable, and store 'contacts/recipients' here too... dont think
             $table->foreignId('organisation_id')->constrained()->onDelete('cascade');
+            $table->unique(['user_id', 'organisation_id']);
             $table->timestamps();
         });
     }

@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 it('limits string field length', function () {
 
     $modelClass = new class extends Model {
-
         protected $casts = [
             'name' => StrLimitCast::class,
         ];

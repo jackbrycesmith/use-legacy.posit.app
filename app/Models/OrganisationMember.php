@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Staudenmeir\EloquentHasManyDeep\HasTableAlias;
 
 class OrganisationMember extends Pivot
 {
+    use HasTableAlias;
+
     /**
      * Indicates if the IDs are auto-incrementing.
      *
@@ -37,5 +40,13 @@ class OrganisationMember extends Pivot
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the proposals
+     */
+    public function proposals()
+    {
+        return $this->belongsToMany(Proposal::class, 'proposal_user')->withTimestamps();
     }
 }

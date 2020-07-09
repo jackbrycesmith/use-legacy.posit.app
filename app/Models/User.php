@@ -47,15 +47,19 @@ class User extends Authenticatable
         return $this->belongsToMany(Organisation::class, 'organisation_member')->withTimestamps();
     }
 
+    public function organisationMembers()
+    {
+        return $this->hasMany(OrganisationMember::class);
+    }
+
     /**
-     * Get the proposals that this user has access to across all organisations
+     * Get the proposals the user can access across all organisations
      */
     public function proposals()
     {
-        // TODO this is wrong
-        return $this->hasManyDeep(Proposal::class, [
-            OrganisationMember::class,
-            ProposalUser::class
-        ]);
+        return $this->hasManyDeepFromRelations($this->organisationMembers(), (new OrganisationMember)->proposals());
     }
+
+    // TODO a separate proposals thing if you happen to be a user on the receiving end?
+    // Because then it potentially makes it more interesting as a platform; i.e. you download the app/or whatever to store your encrypted keys; might as well create an account at that point. Alhtough a different onboarding process would be needed, until you become a 'full blown member'
 }
