@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class ProposalUser extends Pivot
@@ -26,24 +27,30 @@ class ProposalUser extends Pivot
 
     /**
      * Get the proposal
+     *
+     * @return BelongsTo The belongs to relation.
      */
-    public function proposal()
+    public function proposal(): BelongsTo
     {
         return $this->belongsTo(Proposal::class);
     }
 
     /**
      * Get the organisation member
+     *
+     * @return BelongsTo The belongs to relation.
      */
-    public function organisationMember()
+    public function organisationMember(): BelongsTo
     {
         return $this->belongsTo(OrganisationMember::class);
     }
 
     /**
-     * Get the OrganisationContact
+     * Get the organisation contact
+     *
+     * @return BelongsTo The belongs to relation.
      */
-    public function organisationContact()
+    public function organisationContact(): BelongsTo
     {
         return $this->belongsTo(OrganisationContact::class);
     }

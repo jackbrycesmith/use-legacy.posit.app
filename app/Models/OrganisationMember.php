@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use Staudenmeir\EloquentHasManyDeep\HasTableAlias;
 
 class OrganisationMember extends Pivot
 {
-    use HasTableAlias;
-
     /**
      * Indicates if the IDs are auto-incrementing.
      *
@@ -27,26 +26,37 @@ class OrganisationMember extends Pivot
     ];
 
     /**
-     * Get the related organisation
+     * Get the organisation
+     *
+     * @return BelongsTo The belongs to relation.
      */
-    public function organisation()
+    public function organisation(): BelongsTo
     {
         return $this->belongsTo(Organisation::class);
     }
 
     /**
-     * Get the related user
+     * Get the user
+     *
+     * @return BelongsTo The belongs to relation.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
      * Get the proposals
+     *
+     * @return BelongsToMany The belongs to many relation.
      */
-    public function proposals()
+    public function proposals(): BelongsToMany
     {
-        return $this->belongsToMany(Proposal::class, 'proposal_user')->withTimestamps();
+        return $this->belongsToMany(
+            Proposal::class,
+            'proposal_user',
+            'organisation_member_id',
+            'proposal_id'
+        );
     }
 }

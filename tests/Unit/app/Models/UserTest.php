@@ -28,13 +28,20 @@ test('user can get all accessible proposals across organisations they are member
     $org = $user->organisations()->create(['name' => 'org']);
     $inaccessibleProposal = $org->proposals()->create(); // i.e. Not a 'ProposalUser'
 
-    $proposal = $org->proposals()->create();
+    $proposal1 = $org->proposals()->create();
+    $proposal2 = $org->proposals()->create();
     $orgMemberId = OrganisationMember::first()->id;
-    ProposalUser::create(['proposal_id' => $proposal->id, 'organisation_member_id' => $orgMemberId]);
+    ProposalUser::create(['proposal_id' => $proposal1->id, 'organisation_member_id' => $orgMemberId]);
+    ProposalUser::create(['proposal_id' => $proposal2->id, 'organisation_member_id' => $orgMemberId]);
 
-    assertEquals(1, $user->proposals()->count());
+    assertEquals(2, $user->proposals()->count());
     assertInstanceOf(Collection::class, $user->proposals);
     assertInstanceOf(Proposal::class, $user->proposals->first());
-    assertEquals($proposal->id, $user->proposals->first()->id);
-})->only();
+
+    // Double check that they are the correct proposals
+    $proposalIds = $user->proposals->pluck('id')->toArray();
+    assertNotContains($inaccessibleProposal->id, $proposalIds);
+    assertContains($proposal1->id, $proposalIds);
+    assertContains($proposal2->id, $proposalIds);
+});
 
