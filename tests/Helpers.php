@@ -2,6 +2,10 @@
 
 namespace Tests;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Testing\TestResponse;
+
 /**
  * A basic assert example.
  */
@@ -32,4 +36,35 @@ function dumpTable($tables, array $data = [])
     }
 
     die(1);
+}
+
+/**
+ * Check inertia component response & existence
+ *
+ * @param \Illuminate\Testing\TestResponse $response The response
+ * @param string $component The expected inertia page component
+ */
+function assertInertiaComponent(TestResponse $response, string $component, ?string $componentFileEnding = '.vue')
+{
+    $inertiaData = $response->getOriginalContent()->getData();
+    $inertiaComponentResponse = Arr::get($inertiaData, 'page.component');
+    assertEquals($component, $inertiaComponentResponse, "Inertia response component: {$inertiaComponentResponse}] does not match provided: {$component}");
+
+    if (is_null($componentFileEnding)) return;
+    $componentFilePath = resource_path() . '/js/Pages/' . Str::of($component)->replace('\\', '/') . $componentFileEnding;
+    assertFileExists($componentFilePath, "Inertia component file is missing");
+}
+
+/**
+ * Check inertia props response equality
+ *
+ * @param \Illuminate\Testing\TestResponse $response The response
+ * @param array $propsToCheck The properties to check
+ */
+function assertInertiaProps(TestResponse $response, array $propsToCheck = [])
+{
+    $inertiaData = $response->getOriginalContent()->getData();
+    $inertiaPropsResponse = Arr::get($inertiaData, 'page.props');
+
+
 }
