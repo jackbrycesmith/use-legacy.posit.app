@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
@@ -39,6 +40,16 @@ function dumpTable($tables, array $data = [])
 }
 
 /**
+ * Set the currently logged in user for the application.
+ *
+ * @return TestCase
+ */
+function actingAs(Authenticatable $user, string $driver = null)
+{
+    return test()->actingAs($user, $driver);
+}
+
+/**
  * Check inertia component response & existence
  *
  * @param \Illuminate\Testing\TestResponse $response The response
@@ -66,5 +77,5 @@ function assertInertiaProps(TestResponse $response, array $propsToCheck = [])
     $inertiaData = $response->getOriginalContent()->getData();
     $inertiaPropsResponse = Arr::get($inertiaData, 'page.props');
 
-
+    // TODO
 }
