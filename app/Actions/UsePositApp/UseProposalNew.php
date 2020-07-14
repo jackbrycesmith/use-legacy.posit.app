@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Proposal;
+namespace App\Actions\UsePositApp;
 
 use App\Actions\Organisation\CreateDraftProposal;
 use App\Models\Proposal;
@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
-class NewProposal extends Action
+class UseProposalNew extends Action
 {
     public static function routes(Router $router)
     {
         // Would be nice to specify the domain route here...
-        $router->middleware(['web'])->get('proposals/new', static::class)->name('use.proposal.new');
+        $router->domain(use_posit_domain())->middleware(['web'])->get('/proposal/new', static::class)->name('use.proposal.new');
     }
 
     /**
@@ -69,7 +69,7 @@ class NewProposal extends Action
 
         if (is_null($proposal)) {
             // Let them try out the editor without being logged in
-            return Inertia::render('Use/ProposalNewTryout');
+            return Inertia::render('Use/ProposalNew');
         }
 
         return Redirect::route('use.proposal.view', ['proposal' => $proposal->uuid]);

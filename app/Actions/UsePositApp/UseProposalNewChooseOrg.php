@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Proposal;
+namespace App\Actions\UsePositApp;
 
 use App\Http\Resources\OrganisationResource;
 use Illuminate\Database\Eloquent\Collection;
@@ -8,12 +8,11 @@ use Illuminate\Routing\Router;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
-class NewProposalChooseOrg extends Action
+class UseProposalNewChooseOrg extends Action
 {
     public static function routes(Router $router)
     {
-        // Would be nice to specify the domain route here...
-        $router->middleware(['web', 'auth'])->get('proposals/new/choose-org', static::class)->name('use.proposal.new.choose-org');
+        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->get('/proposal/new/choose-org', static::class)->name('use.proposal.new.choose-org');
     }
 
     /**
@@ -48,7 +47,7 @@ class NewProposalChooseOrg extends Action
 
     public function response(Collection $organisations)
     {
-        return Inertia::render('Proposals/New/ChooseOrg', [
+        return Inertia::render('Use/ProposalNewChooseOrg', [
             'orgs' => OrganisationResource::collection($organisations)
         ]);
     }

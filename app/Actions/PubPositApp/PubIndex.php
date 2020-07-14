@@ -1,12 +1,18 @@
 <?php
 
-namespace App\Actions\Proposal\Pub;
+namespace App\Actions\PubPositApp;
 
+use Illuminate\Routing\Router;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
-class GetPubProposalIndex extends Action
+class PubIndex extends Action
 {
+    public static function routes(Router $router)
+    {
+        $router->domain(pub_posit_domain())->middleware(['web'])->get('/', static::class)->name('pub.index');
+    }
+
     /**
      * Determine if the user is authorized to make this action.
      *

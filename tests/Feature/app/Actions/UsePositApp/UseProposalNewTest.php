@@ -7,9 +7,9 @@ use function Tests\assertInertiaComponent;
 
 it('shows new ProposalNewTryout page if not logged in', function () {
     $proposalCountBefore = Proposal::count();
-    $response = $this->get('/proposals/new');
+    $response = $this->get(route('use.proposal.new'));
     $response->assertStatus(200);
-    assertInertiaComponent($response, 'Use/ProposalNewTryout');
+    assertInertiaComponent($response, 'Use/ProposalNew');
     assertEquals($proposalCountBefore, Proposal::count()); // Double checking it doesn't increase
 });
 
@@ -18,7 +18,7 @@ it('creates proposal if user is member of one org, then redirects to view propos
     $org = $user->organisations()->create(['name' => 'org']); // TODO? make organisation creation automatic for personal?
 
     assertEquals(0, $org->proposals()->count());
-    $response = actingAs($user)->get('/proposals/new');
+    $response = actingAs($user)->get(route('use.proposal.new'));
     assertEquals(1, $org->proposals()->count());
 
     $proposal = $org->proposals->first();
@@ -31,7 +31,7 @@ it('redirects to choose organisation page, if user is a member of multiple orgs'
     $org1 = $user->organisations()->create(['name' => 'org1']);
     $org2 = $user->organisations()->create(['name' => 'org2']);
 
-    $response = actingAs($user)->get('/proposals/new');
+    $response = actingAs($user)->get(route('use.proposal.new'));
     $response->assertRedirect(route('use.proposal.new.choose-org'));
     assertEquals($proposalCountBefore, Proposal::count());
 });

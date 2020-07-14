@@ -9,7 +9,7 @@
         <div class="bg-white overflow-hidden shadow rounded-lg mt-5">
           <div class="px-4 py-5 sm:p-6">
             <!-- Content goes here -->
-            <editor-content :editor="editor"/>
+            <editor-content :editor="editor" class="prose"/>
           </div>
         </div>
 

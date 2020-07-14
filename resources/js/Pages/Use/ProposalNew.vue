@@ -57,6 +57,7 @@ export default {
     return {
       keepInBounds: true,
       editor: new Editor({
+        injectCSS: false,
         extensions: [
           new Blockquote(),
           new BulletList(),

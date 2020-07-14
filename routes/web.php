@@ -1,6 +1,5 @@
 <?php
 
-use App\Actions\Proposal\Pub\GetPubProposalIndex;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -15,14 +14,12 @@ use Inertia\Inertia;
 |
 */
 
-$domain = parse_url(config('app.url'), PHP_URL_HOST);
+Route::domain(pub_posit_domain())->group(function () {
 
-Route::domain("pub.{$domain}")->group(function () {
-    Route::get('/', '\\'.GetPubProposalIndex::class);
 });
 
-Route::get('/', function () {
-    return Inertia::render('Use/Index');
+Route::domain(use_posit_domain())->group(function () {
+
 });
 
 Auth::routes();
