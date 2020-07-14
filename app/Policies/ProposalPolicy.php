@@ -2,9 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Proposal;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class ProposalPolicy
 {
@@ -32,10 +33,10 @@ class ProposalPolicy
     {
         // TODO Would be nice to not load models? check hasmanydeep package
         if (! $proposal->users->contains($user)) {
-            Response::deny('You do not have permission to view this proposal.');
+            return Response::deny('You do not have permission to view this proposal.');
         }
 
-        Response::allow();
+        return Response::allow();
     }
 
     /**

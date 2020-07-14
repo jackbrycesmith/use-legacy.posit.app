@@ -10,10 +10,10 @@ use Illuminate\Database\Eloquent\Collection;
 test('user can create organisation', function () {
     $user = factory(User::class)->create();
 
-    assertEquals(0, $user->organisations()->count());
+    $orgCountBefore = $user->organisations()->count();
     $org = $user->organisations()->create(['name' => 'org']);
     assertInstanceOf(Organisation::class, $org);
-    assertEquals(1, $user->organisations()->count());
+    assertEquals($orgCountBefore + 1, $user->organisations()->count());
 
     // Check pivot timestamps
     $orgMember = OrganisationMember::where('user_id', $user->id)->first();

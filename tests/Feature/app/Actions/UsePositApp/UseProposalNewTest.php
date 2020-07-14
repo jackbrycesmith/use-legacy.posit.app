@@ -15,7 +15,7 @@ it('shows new ProposalNewTryout page if not logged in', function () {
 
 it('creates proposal if user is member of one org, then redirects to view proposal details page', function () {
     $user = factory(User::class)->create();
-    $org = $user->organisations()->create(['name' => 'org']); // TODO? make organisation creation automatic for personal?
+    $org = $user->organisations->first();
 
     assertEquals(0, $org->proposals()->count());
     $response = actingAs($user)->get(route('use.proposal.new'));

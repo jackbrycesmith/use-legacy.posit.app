@@ -14,6 +14,8 @@ use Lorisleiva\Actions\Action;
 
 class CreateDraftProposal extends Action
 {
+    protected $getAttributesFromConstructor = true;
+
     public static function routes(Router $router)
     {
         // $router->middleware(['web', 'auth'])->get('author/{author}/articles', static::class);

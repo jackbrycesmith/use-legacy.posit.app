@@ -2,6 +2,7 @@
 
 namespace App\Actions\UsePositApp;
 
+use App\Http\Resources\ProposalResource;
 use Illuminate\Routing\Router;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
@@ -40,6 +41,12 @@ class UseIndex extends Action
      */
     public function handle()
     {
-        return Inertia::render('Use/Index');
+        $proposals = optional($this->user(), function ($user) {
+            return ProposalResource::collection($user->proposals);
+        });
+
+        return Inertia::render('Use/Index', [
+            'proposals' => $proposals ?? []
+        ]);
     }
 }
