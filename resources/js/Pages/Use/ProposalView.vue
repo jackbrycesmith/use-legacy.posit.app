@@ -9,7 +9,7 @@
         <div class="bg-white overflow-hidden shadow rounded-lg mt-5">
           <div class="px-4 py-5 sm:p-6">
             <!-- Content goes here -->
-            <editor-content :editor="editor" class="prose"/>
+            <editor-content :editor="editor"/>
           </div>
         </div>
 
@@ -60,6 +60,11 @@ export default {
     return {
       keepInBounds: true,
       editor: new Editor({
+        editorProps: {
+          attributes: {
+            class: 'prose'
+          }
+        },
         extensions: [
           new Blockquote(),
           new BulletList(),
