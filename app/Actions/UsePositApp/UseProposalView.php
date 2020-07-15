@@ -44,7 +44,7 @@ class UseProposalView extends Action
     public function handle()
     {
         // TODO load contents, recipients other things.
-        return $this->proposal->loadMissing(['organisation', 'users']);
+        return $this->proposal->loadMissing(['organisation', 'users', 'proposalContent']);
     }
 
     public function response(Proposal $proposal)

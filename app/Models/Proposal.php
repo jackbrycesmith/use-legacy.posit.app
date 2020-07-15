@@ -6,6 +6,7 @@ use App\Models\Concerns\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
@@ -59,6 +60,27 @@ class Proposal extends Model
     public function proposalUsers(): HasMany
     {
         return $this->hasMany(ProposalUser::class);
+    }
+
+    /**
+     * Get all the proposal contents
+     *
+     * @return HasMany The has many relation.
+     */
+    public function proposalContents(): HasMany
+    {
+        return $this->hasMany(ProposalContent::class);
+    }
+
+    /**
+     * Get the proposal content
+     *
+     * @return HasOne The has one relation.
+     */
+    public function proposalContent(): HasOne
+    {
+        // TODO this will need to be removed/refactored...
+        return $this->hasOne(ProposalContent::class);
     }
 
     /**

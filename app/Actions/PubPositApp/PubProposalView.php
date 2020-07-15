@@ -42,7 +42,9 @@ class PubProposalView extends Action
      */
     public function handle(Proposal $proposal)
     {
-        return Inertia::render('Pub/ViewProposal', [
+        $proposal->loadMissing(['proposalContent']);
+
+        return Inertia::render('Pub/ProposalView', [
             'proposal' => new ProposalResource($proposal)
         ]);
     }
