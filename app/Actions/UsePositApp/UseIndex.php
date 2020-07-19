@@ -2,6 +2,7 @@
 
 namespace App\Actions\UsePositApp;
 
+use App\Http\Resources\OrganisationResource;
 use App\Http\Resources\ProposalResource;
 use Illuminate\Routing\Router;
 use Inertia\Inertia;
@@ -45,8 +46,13 @@ class UseIndex extends Action
             return ProposalResource::collection($user->proposals);
         });
 
+        $orgs = optional($this->user(), function ($user) {
+            return OrganisationResource::collection($user->organisations);
+        });
+
         return Inertia::render('Use/Index', [
-            'proposals' => $proposals ?? []
+            'proposals' => $proposals ?? [],
+            'orgs' => $orgs ?? [],
         ]);
     }
 }

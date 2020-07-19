@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\StripeAccount;
 use App\Models\User;
 
 it('can get users', function () {
@@ -17,4 +18,14 @@ it('can get users', function () {
     $orgUser2 = $org2->users->first();
     assertInstanceOf(User::class, $orgUser2);
     assertEquals($user2->id, $orgUser2->id);
+});
+
+it('has a stripe account', function () {
+    $user = factory(User::class)->create();
+    $org = $user->organisations()->create(['name' => 'org']);
+
+    $stripeAccount = factory(StripeAccount::class)->create(['owner_id' => $org->id]);
+
+    assertEquals(1, $org->stripeAccounts()->count());
+    assertEquals($stripeAccount->id, $org->stripeAccount->id);
 });

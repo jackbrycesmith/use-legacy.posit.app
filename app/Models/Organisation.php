@@ -4,11 +4,16 @@ namespace App\Models;
 
 use App\Models\Casts\StrLimitCast;
 use App\Models\Concerns\HasUuid;
+use App\Models\StripeAccount;
+use CloudCreativity\LaravelStripe\Connect\OwnsStripeAccounts;
+use CloudCreativity\LaravelStripe\Contracts\Connect\AccountOwnerInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Organisation extends Model
+class Organisation extends Model implements AccountOwnerInterface
 {
-    use HasUuid;
+    use HasUuid, OwnsStripeAccounts;
 
     /**
      * The attributes that aren't mass assignable.
@@ -49,6 +54,34 @@ class Organisation extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'organisation_member')->withTimestamps();
+    }
+
+    /**
+     * All stripe accounts
+     *
+     * @return HasMany The has many relationship.
+     */
+    public function stripeAccounts(): HasMany
+    {
+        return $this->hasMany(
+            StripeAccount::class,
+            'owner_id',
+            $this->getStripeIdentifierName()
+        );
+    }
+
+    /**
+     * The most recent stripe account
+     *
+     * @return HasOne The has one relationship.
+     */
+    public function stripeAccount(): HasOne
+    {
+        return $this->hasOne(
+            StripeAccount::class,
+            'owner_id',
+            $this->getStripeIdentifierName()
+        )->latest();
     }
 
     // /**

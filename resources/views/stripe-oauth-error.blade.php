@@ -18,10 +18,7 @@
     @routes
 </head>
 <body class="font-sans antialiased">
-@inertia
-
-@if(config('app.env') == 'local')
-    <script src="http://localhost:35729/livereload.js"></script>
-@endif
+{{-- TODO remove --}}
+Stripe oauth error
 </body>
 </html>

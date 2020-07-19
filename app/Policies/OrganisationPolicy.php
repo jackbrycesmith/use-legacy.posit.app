@@ -22,11 +22,11 @@ class OrganisationPolicy
     {
         // The user must be a member of the given organisation
         if (! $user->organisations()->where('id', $organisation->id)->exists()) {
-            Response::deny('You do not belong to the provided organisation.');
+            return Response::deny('You do not belong to the provided organisation.');
         }
 
         // TODO other proposal creation restrictions...
-        Response::allow();
+        return Response::allow();
     }
 
     /**
@@ -49,7 +49,13 @@ class OrganisationPolicy
      */
     public function view(User $user, Organisation $organisation)
     {
-        //
+        // The user must be a member of the given organisation
+        if (! $user->organisations()->where('organisation_id', $organisation->id)->exists()) {
+            return Response::deny('You do not belong to the provided organisation.');
+        }
+
+        // TODO other proposal creation restrictions...
+        return Response::allow();
     }
 
     /**

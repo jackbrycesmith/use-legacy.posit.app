@@ -22,6 +22,7 @@ class OrganisationResource extends JsonResource
             'meta' => $this->meta,
             'users' => UserResource::collection($this->whenLoaded('users')),
             'created_at' => $this->created_at,
+            'stripe_connected' => $this->stripeAccount()->exists()
         ];
     }
 }
