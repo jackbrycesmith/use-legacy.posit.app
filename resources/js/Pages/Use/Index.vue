@@ -6,17 +6,20 @@
       </inertia-link>
     </span>
 
+    <OrganisationList :orgs="orgs.data" class="mt-10"/>
     <ProposalList :proposals="proposals.data" class="mt-10"/>
   </div>
 </template>
 
 <script>
 import ProposalList from '@/Lists/ProposalList'
+import OrganisationList from '@/Lists/OrganisationList'
 
 export default {
-  components: { ProposalList },
+  components: { OrganisationList, ProposalList },
   props: {
-    proposals: { type: Object, default: () => {} }
+    proposals: { type: Object, default: () => {} },
+    orgs: { type: Object, default: () => {} }
   },
   data () {
     return {

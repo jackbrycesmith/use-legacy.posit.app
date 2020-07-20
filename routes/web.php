@@ -24,7 +24,5 @@ Route::domain(use_posit_domain())->group(function () {
 });
 
 Stripe::webhook('/stripe/webhooks/connect', 'connect');
-// TODO do custom oauth controller so I can get the correct organisation...
-Stripe::oauth('/stripe/connect/authorize'); // when testing... ->middleware('auth');
 
 Auth::routes();
