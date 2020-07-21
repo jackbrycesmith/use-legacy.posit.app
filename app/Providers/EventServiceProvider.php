@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Actions\Integrations\Stripe\HandleStripeConnectFetchedUserCredentials;
+use CloudCreativity\LaravelStripe\Events\FetchedUserCredentials;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -29,6 +31,7 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        Event::listen(FetchedUserCredentials::class, HandleStripeConnectFetchedUserCredentials::class);
+
     }
 }
