@@ -58,10 +58,11 @@ class StripeAccount extends LaravelStripeAccount
     {
         $accountId = data_get($stripeAccount, 'id');
 
-        if ($this->id !== $accountId) {
+        if (!is_null($this->id) && $this->id !== $accountId) {
             throw new \InvalidArgumentException("Stripe account id update mismatch: current: {$this->id}, update: {$accountId}");
         }
 
+        $this->id = data_get($stripeAccount, 'id');
         $this->type = data_get($stripeAccount, 'type');
         $this->payouts_enabled = (bool) data_get($stripeAccount, 'payouts_enabled');
         $this->email = data_get($stripeAccount, 'email');
@@ -95,5 +96,24 @@ class StripeAccount extends LaravelStripeAccount
         });
 
         return $this;
+    }
+
+    /**
+     * Creates a new account via stripe api & saves to db.
+     *
+     * @param integer|null $ownerId The owner identifier (e.g. organisation id)
+     * @param string $type The stripe account type
+     * @param array $params Any stripe api account creation parameters
+     *
+     * @return StripeAccount The created stripe account.
+     */
+    public static function createFromStripeApi(?int $ownerId = null, string $type = 'standard', array $params = []): StripeAccount
+    {
+        $stripeApiAccount = app('stripe')->account()->accounts()->create($type, $params);
+        $stripeAccount = (new StripeAccount)->fillFrom($stripeApiAccount);
+        $stripeAccount->owner_id = $ownerId;
+        $stripeAccount->save();
+
+        return $stripeAccount;
     }
 }

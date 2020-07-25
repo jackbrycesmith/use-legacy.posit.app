@@ -4,6 +4,7 @@ use App\Models\Organisation;
 use App\Models\StripeAccount;
 use App\Models\User;
 use CloudCreativity\LaravelStripe\Facades\Stripe;
+use function Pest\Faker\faker;
 use Stripe\Account;
 
 test('it has an organisation', function () {
@@ -42,4 +43,19 @@ test('it can updateFromStripeApi', function () {
     $stripeAccount->updateFromStripeApi($shouldUpdate = false);
 
     Stripe::assertInvoked(\Stripe\Account::class, 'retrieve');
+});
+
+test('it can createFromStripeApi', function () {
+    $user = factory(User::class)->create();
+    $org = $user->organisations()->create(['name' => 'org']);
+
+    Stripe::fake(
+        $expected = new \Stripe\Account(faker()->unique()->lexify('acct_????????????????'))
+    );
+
+    $stripeAccount = StripeAccount::createFromStripeApi($org->id);
+
+    Stripe::assertInvoked(\Stripe\Account::class, 'create');
+
+    assertEquals($stripeAccount->id, $org->stripeAccount->id);
 });
