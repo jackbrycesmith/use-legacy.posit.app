@@ -5,6 +5,7 @@ namespace App\Actions\UsePositApp\Submit;
 use App\Models\Organisation;
 use Illuminate\Routing\Router;
 use Lorisleiva\Actions\Action;
+use Stripe\Exception\OAuth\InvalidClientException;
 
 class DisconnectStripeAccount extends Action
 {
@@ -41,7 +42,13 @@ class DisconnectStripeAccount extends Action
      */
     public function handle(Organisation $org)
     {
-        $org->stripeAccount->stripe()->deauthorize();
+        try {
+            $org->stripeAccount->stripe()->deauthorize();
+        } catch (InvalidClientException $exception) {
+            // Somethings gone wrong here? Trying to disconnect from an account that i longer have access to
+            // So will soft delete...
+            $org->stripeAccount->delete();
+        }
 
         return true;
     }
