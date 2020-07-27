@@ -9,7 +9,7 @@ use Lorisleiva\Actions\Action;
 
 class UpdateStripeAccountDetails extends Action implements ShouldQueue
 {
-    protected $getAttributesFromConstructor = true;
+    protected $getAttributesFromConstructor = ['account'];
 
     /**
      * Execute the action and return a result.

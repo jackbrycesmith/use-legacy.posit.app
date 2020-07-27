@@ -16,9 +16,7 @@ class HandleStripeConnectFetchedUserCredentials extends Action
     public function handle()
     {
         if ($this->account instanceof StripeAccount) {
-            UpdateStripeAccountDetails::dispatch([
-                'account' => $this->account
-            ]);
+            UpdateStripeAccountDetails::dispatch($this->account);
         }
     }
 }
