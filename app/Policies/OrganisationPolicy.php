@@ -20,8 +20,7 @@ class OrganisationPolicy
      */
     public function createDraftProposal(User $user, Organisation $organisation)
     {
-        // The user must be a member of the given organisation
-        if (! $user->organisations()->where('id', $organisation->id)->exists()) {
+        if (! $user->isMemberOfOrganisation($organisation)) {
             return Response::deny('You do not belong to the provided organisation.');
         }
 
@@ -49,12 +48,11 @@ class OrganisationPolicy
      */
     public function view(User $user, Organisation $organisation)
     {
-        // The user must be a member of the given organisation
-        if (! $user->organisations()->where('organisation_id', $organisation->id)->exists()) {
+        if (! $user->isMemberOfOrganisation($organisation)) {
             return Response::deny('You do not belong to the provided organisation.');
         }
 
-        // TODO other proposal creation restrictions...
+        // TODO other view restrictions...
         return Response::allow();
     }
 
@@ -78,7 +76,58 @@ class OrganisationPolicy
      */
     public function update(User $user, Organisation $organisation)
     {
-        //
+        if (! $user->isMemberOfOrganisation($organisation)) {
+            return Response::deny('You do not belong to the provided organisation.');
+        }
+
+        // TODO other update restrictions...
+        return Response::allow();
+    }
+
+    /**
+     * Determine whether the user can start the oauth connect process with stripe.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Organisation  $organisation
+     * @return mixed
+     */
+    public function startStripeConnectOauth(User $user, Organisation $organisation)
+    {
+        if (! $user->isMemberOfOrganisation($organisation)) {
+            return Response::deny('You do not belong to the provided organisation.');
+        }
+
+        if (! is_null($organisation->stripeAccount)) {
+            return Response::deny('Stripe account already connected for this org.');
+        }
+
+        return Response::allow();
+    }
+
+    /**
+     * Determine whether the user can disconnect the organsiation stripe account.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Organisation  $organisation
+     * @return mixed
+     */
+    public function disconnectStripeAccount(User $user, Organisation $organisation)
+    {
+        if (! $user->isMemberOfOrganisation($organisation)) {
+            return Response::deny('You do not belong to the provided organisation.');
+        }
+
+        $stripeAccount = $organisation->stripeAccount;
+        if (is_null($stripeAccount)) {
+            return Response::deny('Stripe account not connected.');
+        }
+
+        if (! is_null($stripeAccount->deleted_at)) {
+            return Response::deny('Stripe account not connected.');
+        }
+
+        // TODO other update restrictions...
+        return Response::allow();
     }
 
     /**

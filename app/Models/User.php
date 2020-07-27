@@ -73,6 +73,18 @@ class User extends Authenticatable
         );
     }
 
+    /**
+     * Determines whether the specified user is member of given organisation.
+     *
+     * @param Organisation $organisation The organisation
+     *
+     * @return boolean True if the specified organisation is member of organisation, False otherwise.
+     */
+    public function isMemberOfOrganisation(Organisation $organisation): bool
+    {
+        return $this->organisations()->where('organisation_id', $organisation->id)->exists();
+    }
+
     // TODO a separate proposals thing if you happen to be a user on the receiving end?
     // Because then it potentially makes it more interesting as a platform; i.e. you download the app/or whatever to store your encrypted keys; might as well create an account at that point. Alhtough a different onboarding process would be needed, until you become a 'full blown member'
 }

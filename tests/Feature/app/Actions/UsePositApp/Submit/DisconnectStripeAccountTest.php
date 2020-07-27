@@ -38,7 +38,7 @@ test('user can disconnect stripe account if member of the org', function () {
     $org = $user->organisations()->create(['name' => 'org']);
 
     $stripeAccount = factory(StripeAccount::class)->create(['owner_id' => $org->id]);
-.
+
     Event::fake();
     Stripe::fake($expected = new StripeObject());
 

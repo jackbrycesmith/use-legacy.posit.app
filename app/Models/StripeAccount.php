@@ -72,26 +72,32 @@ class StripeAccount extends LaravelStripeAccount
         $this->charges_enabled = (bool) data_get($stripeAccount, 'charges_enabled');
 
         $this->settings = optional(data_get($stripeAccount, 'settings'), function ($stripeObj) {
+            if (is_array($stripeObj)) return $stripeObj;
             return $stripeObj->toArray();
         });
 
         $this->requirements = optional(data_get($stripeAccount, 'requirements'), function ($stripeObj) {
+            if (is_array($stripeObj)) return $stripeObj;
             return $stripeObj->toArray();
         });
 
         $this->business_profile = optional(data_get($stripeAccount, 'business_profile'), function ($stripeObj) {
+            if (is_array($stripeObj)) return $stripeObj;
             return $stripeObj->toArray();
         });
 
         $this->capabilities = optional(data_get($stripeAccount, 'capabilities'), function ($stripeObj) {
+            if (is_array($stripeObj)) return $stripeObj;
             return $stripeObj->toArray();
         });
 
         $this->metadata = optional(data_get($stripeAccount, 'metadata'), function ($stripeObj) {
+            if (is_array($stripeObj)) return $stripeObj;
             return $stripeObj->toArray();
         });
 
         $this->individual = optional(data_get($stripeAccount, 'individual'), function ($stripeObj) {
+            if (is_array($stripeObj)) return $stripeObj;
             return $stripeObj->toArray();
         });
 

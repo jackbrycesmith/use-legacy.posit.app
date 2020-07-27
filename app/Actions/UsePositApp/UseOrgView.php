@@ -42,7 +42,7 @@ class UseOrgView extends Action
      */
     public function handle(Organisation $org)
     {
-        $org->loadMissing(['users']);
+        $org->loadMissing(['users', 'stripeAccount']);
 
         return Inertia::render('Use/OrgView', [
             'org' => new OrganisationResource($org)
