@@ -8,13 +8,14 @@ import VueMeta from 'vue-meta'
 import Vue from 'vue'
 import store from '@/store'
 import axios from 'axios'
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+import FormInput from '@/Components/form-input'
 
 Vue.use(InertiaApp)
 Vue.use(PortalVue)
 Vue.use(VueMeta)
 Vue.use(Fragment.Plugin)
 Vue.component('FocusTrap', FocusTrap)
+Vue.component('form-input', FormInput) // TODO remove this auth scaffolding thing.
 Vue.prototype.$route = (...args) => route(...args).url()
 Vue.prototype.$http = axios.create()
 
