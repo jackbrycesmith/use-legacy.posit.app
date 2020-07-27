@@ -18,9 +18,7 @@ class CreateDraftProposal extends Action
 
     public static function routes(Router $router)
     {
-        // $router->middleware(['web', 'auth'])->get('author/{author}/articles', static::class);
-        // TODO middleware?
-        $router->post('orgs/{organisation:uuid}/proposals', static::class)->name('org.create-draft-proposal');
+        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->post('orgs/{organisation:uuid}/proposals', static::class)->name('org.create-draft-proposal');
     }
 
     /**
