@@ -65,6 +65,7 @@ class StripeAccount extends LaravelStripeAccount
         $this->id = data_get($stripeAccount, 'id');
         $this->type = data_get($stripeAccount, 'type');
         $this->payouts_enabled = (bool) data_get($stripeAccount, 'payouts_enabled');
+        $this->business_type = data_get($stripeAccount, 'business_type');
         $this->email = data_get($stripeAccount, 'email');
         $this->country = data_get($stripeAccount, 'country');
         $this->default_currency = data_get($stripeAccount, 'default_currency');

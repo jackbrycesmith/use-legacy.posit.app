@@ -9,11 +9,13 @@
     <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide mt-10">{{ orgName }}</h2>
     <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide mt-2">{{ orgMemberCount }} members</h2>
 
-    <StripeConnectSetup
-      :stripe-account="stripeAccount"
-      :org-uuid="orgUuid"
-      class="mt-10"
-      @disconnected="handleStripeAccountDisconnected"/>
+    <div class="w-full max-w-3xl mx-auto">
+      <StripeConnectSetup
+        :stripe-account="stripeAccount"
+        :org-uuid="orgUuid"
+        class="mt-10"
+        @disconnected="handleStripeAccountDisconnected"/>
+    </div>
 
     <!-- <ProposalList :proposals="proposals.data" class="mt-10"/> -->
   </div>
