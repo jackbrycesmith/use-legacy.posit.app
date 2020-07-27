@@ -12,8 +12,7 @@ class UseOrgStripeConnectOauthStart extends Action
 {
     public static function routes(Router $router)
     {
-        // TODO: auth check etc
-        $router->middleware(['web', 'auth'])->get('/org/{org:uuid}/stripe-connect-oauth-start', static::class)->name('use.org.stripe-connect-oauth-start');
+        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->get('/org/{org:uuid}/stripe-connect-oauth-start', static::class)->name('use.org.stripe-connect-oauth-start');
     }
 
     /**
@@ -21,9 +20,9 @@ class UseOrgStripeConnectOauthStart extends Action
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(Organisation $org)
     {
-        return true;
+        return $this->can('startStripeConnectOauth', $org);
     }
 
     /**
@@ -43,11 +42,12 @@ class UseOrgStripeConnectOauthStart extends Action
      */
     public function handle(Organisation $org)
     {
+        // TODO specify exact oauth redirectUri & ensure its a configured value in the stripe dashboard
         if (Request::inertia()) {
             return response('', 409)
-                ->header('X-Inertia-Location', Stripe::authorizeUrl()->readWrite()->toString());
+                ->header('X-Inertia-Location', Stripe::authorizeUrl()->login()->readWrite()->toString());
         }
 
-        return Stripe::authorizeUrl()->readWrite()->redirect();
+        return Stripe::authorizeUrl()->login()->readWrite()->redirect();
     }
 }
