@@ -42,10 +42,11 @@ class PubProposalView extends Action
      */
     public function handle(Proposal $proposal)
     {
-        $proposal->loadMissing(['proposalContent']);
+        $proposal->loadMissing(['proposalContent', 'stripeCheckoutSession']);
 
         return Inertia::render('Pub/ProposalView', [
-            'proposal' => new ProposalResource($proposal)
+            'proposal' => new ProposalResource($proposal),
+            'stripe_pub_key' => config('services.stripe.key')
         ]);
     }
 }

@@ -12,13 +12,23 @@
           </div>
         </div>
 
+        <div class="text-center mt-5">
+          <span class="inline-flex rounded-md shadow-sm">
+            <button @click="handlePaymentClick" :disabled="stripe === null" type="button" class="inline-flex items-center px-6 py-3 border border-gray-300 text-base leading-6 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+              Payment
+            </button>
+          </span>
+        </div>
+
       </div>
     </div>
   </fragment>
 </template>
 
 <script>
+import { loadStripe } from '@stripe/stripe-js'
 import { Editor, EditorContent } from 'tiptap'
+
 import {
   Blockquote,
   BulletList,
@@ -41,10 +51,12 @@ import {
 export default {
   components: { EditorContent },
   props: {
-    proposal: { type: Object }
+    proposal: { type: Object },
+    stripe_pub_key: {}
   },
   data () {
     return {
+      stripe: null,
       keepInBounds: true,
       editor: new Editor({
         editorProps: {
@@ -82,5 +94,26 @@ export default {
       }
     }
   },
+  mounted () {
+    setTimeout(async () => {
+      let stripe = await loadStripe(this.stripe_pub_key, {
+        stripeAccount: this.proposal.data.stripe_account_id
+      })
+      this.stripe = stripe
+      // (async function(thing =) {
+      // })()
+      console.log(this.proposal, this.stripe_pub_key)
+    }, 1000)
+  },
+  methods: {
+    handlePaymentClick () {
+      this.stripe.redirectToCheckout({
+        // Make the id field from the Checkout Session creation API response
+        // available to this file, so you can provide it as argument here
+        // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+        sessionId: this.proposal.data.stripe_checkout_session_id
+      })
+    }
+  }
 }
 </script>
