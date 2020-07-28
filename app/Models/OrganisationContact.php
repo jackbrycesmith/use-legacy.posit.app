@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class OrganisationContact extends Model
 {
@@ -26,10 +28,22 @@ class OrganisationContact extends Model
 
     /**
      * Get the organisation that this contact belongs to
+     *
+     * @return BelongsTo The belongs to relationship.
      */
-    public function organisation()
+    public function organisation(): BelongsTo
     {
         return $this->belongsTo(Organisation::class);
+    }
+
+    /**
+     * Get the stripe customer.
+     *
+     * @return MorphOne The morph one relationship.
+     */
+    public function stripeCustomer(): MorphOne
+    {
+        return $this->morphOne(StripeCustomer::class, 'model');
     }
 
 }

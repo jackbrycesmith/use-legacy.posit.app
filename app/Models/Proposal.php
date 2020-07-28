@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasStripeCheckoutSession;
 use App\Models\Concerns\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +13,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Proposal extends Model
 {
-    use HasUuid, HasRelationships;
+    use HasUuid, HasRelationships, HasStripeCheckoutSession;
 
     /**
      * The attributes that should be casted to native types.
@@ -81,6 +82,21 @@ class Proposal extends Model
     {
         // TODO this will need to be removed/refactored...
         return $this->hasOne(ProposalContent::class);
+    }
+
+    /**
+     * Get the stripe account for this proposal from the organisation.
+     * TODO: this may be unnecessary; especially if i have to checks on the
+     * org before publishing.
+     *
+     * @return HasOneDeep The has one deep relation.
+     */
+    public function stripeAccount(): HasOneDeep
+    {
+        return $this->hasOneDeepFromRelations(
+            $this->organisation(),
+            (new Organisation)->stripeAccount()
+        );
     }
 
     /**
