@@ -30,7 +30,7 @@
         "portal-vue": "^2.1.7",
         "postcss-import": "^12.0.1",
         "postcss-preset-env": "^6.7.0",
-        "tailwindcss": "^1.5.2",
+        "tailwindcss": "^1.6.0",
         "tiptap": "^1.29.1",
         "tiptap-extensions": "^1.31.1",
         "verbal-expressions": "^1.0.2",
