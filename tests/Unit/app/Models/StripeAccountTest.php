@@ -59,3 +59,15 @@ test('it can createFromStripeApi', function () {
 
     assertEquals($stripeAccount->id, $org->stripeAccount->id);
 });
+
+test('it can makeStripeCheckoutSession', function () {
+    $stripeAccount = factory(StripeAccount::class)->create();
+
+    Stripe::fake(
+        $expected = new \Stripe\Checkout\Session()
+    );
+
+    $stripeAccount->makeStripeCheckoutSession([]);
+
+    Stripe::assertInvoked(\Stripe\Checkout\Session::class, 'create');
+});

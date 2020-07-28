@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CloudCreativity\LaravelStripe\Models\StripeAccount as LaravelStripeAccount;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Stripe\Account;
 use Stripe\StripeObject;
 
@@ -25,6 +26,16 @@ class StripeAccount extends LaravelStripeAccount
         'deleted_at',
         'created'
     ];
+
+    /**
+     * Get the stored stripe customers of this account.
+     *
+     * @return HasMany The has many relationship.
+     */
+    public function stripeCustomers(): HasMany
+    {
+        return $this->hasMany(StripeCustomer::class, 'stripe_account_id');
+    }
 
     /**
      * Fetch account from Stripe API & save to model
@@ -122,5 +133,20 @@ class StripeAccount extends LaravelStripeAccount
         $stripeAccount->save();
 
         return $stripeAccount;
+    }
+
+    /**
+     * Makes a stripe checkout session from their api.
+     *
+     * @param array $params The parameters
+     *
+     * @return \Stripe\Checkout\Session the api response
+     */
+    public function makeStripeCheckoutSession(array $params): \Stripe\Checkout\Session
+    {
+         $checkoutSessionResponse = $this->stripe()->checkoutSessions()->create($params);
+
+         // TODO better?
+         return $checkoutSessionResponse;
     }
 }
