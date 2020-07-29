@@ -33,7 +33,7 @@
 
             <div :class="roundedClass" class="h-full divide-y divide-gray-200 flex flex-col bg-white shadow-xl">
               <div :class="roundedClass" class="flex-1 h-0 overflow-y-auto">
-                <slot name="header">
+                <slot name="header" v-bind="{ handleCloseButtonHit }">
                   <header class="space-y-1 py-6 px-4 bg-indigo-700 sm:px-6">
                     <div class="flex items-center justify-between space-x-3">
                       <h2 v-html="headerTitle" class="text-lg leading-7 font-medium text-white"/>
