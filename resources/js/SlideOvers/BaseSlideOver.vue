@@ -30,6 +30,7 @@
           leave-to-class="translate-x-full">
 
           <div v-show="isVisible" :class="paddingClass" class="relative w-screen max-w-md">
+            <slot name="extra-close-button-handling" v-bind="{ handleCloseButtonHit }"/>
 
             <div :class="roundedClass" class="h-full divide-y divide-gray-200 flex flex-col bg-white shadow-xl">
               <div :class="roundedClass" class="flex-1 h-0 overflow-y-auto">
