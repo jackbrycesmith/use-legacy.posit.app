@@ -11,8 +11,7 @@
       <button
         v-show="!isVisible"
         @click="handleExtraCloseButtonHit"
-        class="absolute bottom-0 top-0 right-0 bg-white inline-block h-20 my-auto rounded-l-full w-7"
-        style="box-shadow: -5px 3px 10px -2px rgba(0, 0, 0, 0.1), -5px 10px 10px -5px rgba(0, 0, 0, 0.04);">
+        class="absolute bottom-0 top-0 right-0 bg-white inline-block h-20 my-auto rounded-l-full w-7 shadow">
         <svg class="h-5 w-5 ml-1 text-orange-400 animate-pulse" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M15 19l-7-7 7-7"></path></svg>
       </button>
     </transition>
@@ -126,6 +125,7 @@
       </template>
 
       <template #extra-close-button-handling="{ handleCloseButtonHit }">
+        <!-- TODO fix shadow -->
         <button
           @click="handleExtraCloseButtonHit"
           class="absolute bottom-0 top-0 -ml-13 bg-white inline-block h-20 my-auto rounded-l-full w-7"
