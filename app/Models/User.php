@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Casts\StrLimitCast;
 use App\Models\Concerns\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
@@ -38,8 +40,21 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
+        'name' => StrLimitCast::class,
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Sets the password attribute.
+     *
+     * @param string $password The password
+     *
+     * @return void
+     */
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = Hash::needsRehash($password) ? Hash::make($password) : $password;
+    }
 
     /**
      * Get the organisations this user has access to

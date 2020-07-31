@@ -4,9 +4,25 @@ namespace App\Observers;
 
 use App\Actions\User\CreatePersonalOrg;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class UserObserver
 {
+
+    /**
+     * Handle the user "creating" event.
+     *
+     * @param \App\Models\User $user The user
+     *
+     * @return void
+     */
+    public function creating(User $user)
+    {
+        if (Str::of($user->name)->trim()->isEmpty()) {
+            $user->name = strstr($user->email, '@', true);
+        }
+    }
+
     /**
      * Handle the user "created" event.
      *
