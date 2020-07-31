@@ -37,16 +37,20 @@ export default {
     }
   },
   methods: {
-    defaultHandleFormSubmit () {
+    async defaultHandleFormSubmit () {
       if (this.isSubmitting) {
         return
       }
       this.isSubmitting = true
 
       if (this.requestType === 'inertia') {
-        this.$inertia[this.requestMethod](
+        await this.$inertia[this.requestMethod](
           this.requestUrl, this.retrieveFormPayload()
         )
+        this.isSubmitting = false
+
+        // TODO if we get here it suggests inertia request failed (otherwise we'd be directed elsewhere)
+        // ... so maybe allow a prop with a callback to handle when a request finished...
       }
 
       // TODO idea; something like pass the url, type, and some kind of transformer to get the payload data
