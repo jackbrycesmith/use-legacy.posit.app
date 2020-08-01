@@ -4,25 +4,9 @@ namespace App\Observers;
 
 use App\Actions\User\CreatePersonalOrg;
 use App\Models\User;
-use Illuminate\Support\Str;
 
 class UserObserver
 {
-
-    /**
-     * Handle the user "creating" event.
-     *
-     * @param \App\Models\User $user The user
-     *
-     * @return void
-     */
-    public function creating(User $user)
-    {
-        if (Str::of($user->name)->trim()->isEmpty()) {
-            $user->name = strstr($user->email, '@', true);
-        }
-    }
-
     /**
      * Handle the user "created" event.
      *
@@ -32,8 +16,7 @@ class UserObserver
      */
     public function created(User $user)
     {
-        // TODO optimisation; Do I really need to create an org everytime a new user is created?
-        // I could just do it in the background if they create a new proposal & don't have one yet...
+        // TODO perhaps move this to after they've confirmed their email
         CreatePersonalOrg::run($user);
     }
 

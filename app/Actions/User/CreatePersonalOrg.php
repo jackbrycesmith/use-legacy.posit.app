@@ -37,6 +37,6 @@ class CreatePersonalOrg extends Action
     public function handle(User $user)
     {
         // TODO put in transaction, try catch report error?
-        $user->organisations()->create(['name' => $user->email]);
+        $user->organisations()->create(['name' => strstr($user->email, '@', true)]);
     }
 }
