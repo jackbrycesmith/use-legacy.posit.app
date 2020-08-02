@@ -34,6 +34,7 @@
         "tailwindcss": "^1.6.0",
         "tiptap": "^1.29.1",
         "tiptap-extensions": "^1.31.1",
+        "v-click-outside": "^3.0.1",
         "verbal-expressions": "^1.0.2",
         "vue": "^2.6.11",
         "vue-fragment": "^1.5.1",
