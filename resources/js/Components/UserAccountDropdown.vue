@@ -2,7 +2,7 @@
   <div class="relative">
     <div>
       <button ref="menuTriggerButton" @click="handleAvatarClick" class="max-w-xs flex items-center text-sm rounded-full focus:outline-none focus:bg-orange-100 lg:p-2 lg:rounded-md lg:hover:bg-orange-100" aria-label="User menu" aria-haspopup="true">
-        <div class="h-8 w-8 rounded-full bg-orange-200 text-gray-900 flex items-center justify-center">
+        <div class="h-8 w-8 rounded-full bg-orange-200 text-gray-900 font-semibold flex items-center justify-center">
           {{ userAvatarInitial }}
         </div>
         <p class="hidden ml-3 text-cool-gray-700 text-sm leading-5 font-medium lg:block">
@@ -35,7 +35,7 @@
         v-if="isOpen"
         class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
         <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-          <a href="#" class="block px-4 py-2 text-sm text-cool-gray-700 hover:bg-cool-gray-100 transition ease-in-out duration-150" role="menuitem">User Settings</a>
+          <inertia-link @click="handleDropdownItemClick" :href="$route('use.user.settings')" class="block px-4 py-2 text-sm text-cool-gray-700 hover:bg-cool-gray-100 transition ease-in-out duration-150" role="menuitem">User Settings</inertia-link>
           <a href="#" class="block px-4 py-2 text-sm text-cool-gray-700 hover:bg-cool-gray-100 transition ease-in-out duration-150" role="menuitem">Logout</a>
         </div>
       </div>
@@ -71,6 +71,9 @@ export default {
   methods: {
     handleAvatarClick () {
       this.isOpen = !this.isOpen
+    },
+    handleDropdownItemClick () {
+      this.isOpen = false
     },
     onClickOutside (event) {
       if (this.isOpen) {
