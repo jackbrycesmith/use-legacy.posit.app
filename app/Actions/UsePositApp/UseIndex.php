@@ -12,7 +12,7 @@ class UseIndex extends Action
 {
     public static function routes(Router $router)
     {
-        $router->domain(use_posit_domain())->middleware(['web'])->get('/', static::class)->name('use.index');
+        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->get('/', static::class)->name('use.index');
     }
 
     /**

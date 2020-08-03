@@ -20,8 +20,8 @@
   </div>
 
 </template>
+
 <script>
-import app from '@/layouts/app'
 import NewLoginForm from '@/Forms/NewLoginForm'
 
 export default {
