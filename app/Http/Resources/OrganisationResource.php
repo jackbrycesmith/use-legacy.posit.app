@@ -21,6 +21,7 @@ class OrganisationResource extends JsonResource
             'name' => $this->name,
             'meta' => $this->meta,
             'users' => UserResource::collection($this->whenLoaded('users')),
+            'proposals' => ProposalResource::collection($this->whenLoaded('proposals')),
             'stripeAccount' => new StripeAccountResource($this->whenLoaded('stripeAccount')),
             'created_at' => $this->created_at,
         ];

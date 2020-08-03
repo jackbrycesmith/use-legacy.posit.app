@@ -42,17 +42,24 @@ class UseIndex extends Action
      */
     public function handle()
     {
-        $proposals = optional($this->user(), function ($user) {
-            return ProposalResource::collection($user->proposals);
-        });
+        // $proposals = optional($this->user(), function ($user) {
+        //     return ProposalResource::collection($user->proposals);
+        // });
 
-        $orgs = optional($this->user(), function ($user) {
-            return OrganisationResource::collection($user->organisations);
+        $org = optional($this->user(), function ($user) {
+            $firstOrg = $user->organisations->first();
+
+            if (is_null($firstOrg)) {
+                return null;
+            }
+
+            $firstOrg->loadMissing(['proposals']);
+
+            return new OrganisationResource($firstOrg);
         });
 
         return Inertia::render('Use/Index', [
-            'proposals' => $proposals ?? [],
-            'orgs' => $orgs ?? [],
+            'org' => $org,
         ]);
     }
 }
