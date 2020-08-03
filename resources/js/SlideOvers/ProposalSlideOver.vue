@@ -8,12 +8,17 @@
       leave-active-class="ease-in-out duration-75"
       leave-class="opacity-100"
       leave-to-class="opacity-0">
-      <button
+      <div
         v-show="!isVisible"
-        @click="handleExtraCloseButtonHit"
-        class="absolute bottom-0 top-0 right-0 bg-white inline-block h-20 my-auto rounded-l-full w-7 shadow">
-        <svg class="h-5 w-5 ml-1 text-orange-400 animate-pulse" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M15 19l-7-7 7-7"></path></svg>
-      </button>
+        class="absolute h-full right-0 top-0">
+        <div class="fixed h-screen">
+          <button
+            @click="handleExtraCloseButtonHit"
+            class="absolute bottom-0 top-0 right-0 bg-white inline-block h-20 my-auto rounded-l-full w-7 shadow">
+            <svg class="h-5 w-5 ml-1 text-orange-400 animate-pulse" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M15 19l-7-7 7-7"></path></svg>
+          </button>
+        </div>
+      </div>
     </transition>
 
     <BaseSlideOver
