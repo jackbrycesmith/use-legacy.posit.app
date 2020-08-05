@@ -6,12 +6,11 @@
       <div class="max-w-3xl mx-auto">
         <!-- Content goes here -->
 
-        <div class="bg-white overflow-hidden shadow rounded-lg mt-5">
-          <div class="px-4 py-5 sm:p-6">
-            <!-- Content goes here -->
-            <editor-content :editor="editor"/>
-          </div>
-        </div>
+        <editor-content
+          :editor="editor"
+          @handleControlHitUp="handleControlHitUp"
+          @handleControlHitDown="handleControlHitDown"
+        />
 
       </div>
     </div>
@@ -45,6 +44,8 @@ import {
   Underline,
   History,
 } from 'tiptap-extensions'
+import PositBlockNode from '@/PositEditor/Nodes/PositBlockNode'
+import PositLayoutDocOne from '@/PositEditor/Nodes/PositLayoutDocOne'
 
 export default {
   components: { ProposalSlideOver, FirstWelcomeModal, LoginModal, EditorContent },
@@ -57,10 +58,12 @@ export default {
       editor: new Editor({
         editorProps: {
           attributes: {
-            class: 'prose'
-          }
+            class: 'outline-none space-y-2/12'
+            }
         },
         extensions: [
+          new PositLayoutDocOne(),
+          new PositBlockNode(),
           new Blockquote(),
           new BulletList(),
           new CodeBlock(),
@@ -78,6 +81,13 @@ export default {
           new Underline(),
           new History(),
         ],
+        onInit: this.onEditorInit,
+        onTransaction: this.onEditorTransaction,
+        onUpdate: this.onEditorUpdate,
+        onFocus: this.onEditorFocus,
+        onBlur: this.onEditorBlur,
+        onPaste: this.onEditorPaste,
+        onDrop: this.onEditorDrop,
       })
     }
   },
@@ -105,11 +115,55 @@ export default {
     proposal: {
       immediate: true,
       handler (value) {
-        this.editor.setContent(value.data?.content?.content)
+        this.editor.setContent(
+          `
+            <div data-posit-type="posit_block">
+              Test content 1...
+            </div>
+
+            <div data-posit-type="posit_block">
+              Test content 2...
+            </div>
+
+            <div data-posit-type="posit_block">
+              Test content 3...
+            </div>
+          `
+          // value.data?.content?.content
+        )
       }
     }
   },
   methods: {
+    onEditorInit ({ state, view }) {
+      console.log('onEditorInit')
+      console.log(state)
+      console.log(view)
+    },
+    onEditorUpdate ({ state, getHTML, getJSON, transaction }) {
+      console.log('onEditorUpdate')
+      console.log(state, transaction)
+      console.log(getHTML(), getJSON())
+    },
+    onEditorFocus ({ event,  state, view }) {
+      console.log('onEditorFocus')
+      console.log(event, state, view)
+    },
+    onEditorBlur ({ event,  state, view }) {
+      console.log('onEditorBlur')
+      console.log(event, state, view)
+    },
+    onEditorPaste () {
+      console.log(`New content was added from the user's clipboard!`)
+    },
+    onEditorDrop (view, event, slice, moved) {
+      console.log(`onEditorDrop`)
+      console.log(view, event, slice, moved)
+    },
+    onEditorTransaction (params) {
+      console.log(`onEditorTransaction`)
+      console.log(params)
+    },
     async handleUpdatePressed () {
       // TODO this is not production ready
       const response = this.$http.put(
@@ -117,10 +171,63 @@ export default {
         this.editor.getJSON()
       )
       console.log(response)
-    }
+    },
+    handleControlHitUp ({ node, view, startPos }) {
+      console.log(`handleControlHitUp`, node, view, startPos)
+      const pos = startPos
+      const { nodeBefore } = view.state.doc.resolve(pos)
+
+      if (!nodeBefore) {
+        console.log('no node before...')
+        return
+      }
+
+      // Do prosemirror transaction to move node up!
+      const newPosition = pos - nodeBefore.nodeSize;
+      const from = pos
+      const to = pos + node.nodeSize
+      console.log('newPosition: ', newPosition)
+      console.log('from: ', from)
+      console.log('to: ', to)
+
+      const transactionMoveNodeUp = view.state.tr
+        .replace(from, to)
+        .insert(newPosition, node)
+
+      view.dispatch(transactionMoveNodeUp)
+    },
+    handleControlHitDown ({ node, view, startPos }) {
+      console.log(`handleControlHitDown`, node, view, startPos)
+      const pos = startPos
+      const { nodeAfter } = view.state.doc.resolve(pos)
+
+      if (!nodeAfter) {
+        console.log('no node after...')
+        return
+      }
+      // Do prosemirror transaction to move node up!
+      const newPosition = pos + nodeAfter.nodeSize;
+
+      if (newPosition === view.docView.posAtEnd) {
+        console.log('looks like already at end...')
+        return
+      }
+
+      const from = pos
+      const to = pos + node.nodeSize
+      console.log('newPosition: ', newPosition)
+      console.log('from: ', from)
+      console.log('to: ', to)
+
+      const transactionMoveNodeDown = view.state.tr
+        .replace(from, to)
+        .insert(newPosition, node)
+
+      view.dispatch(transactionMoveNodeDown)
+    },
   },
   beforeDestroy() {
     this.editor.destroy()
-  }
+  },
 }
 </script>
