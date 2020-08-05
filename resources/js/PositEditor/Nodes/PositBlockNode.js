@@ -19,7 +19,7 @@ export default class PositBlockNode extends Node {
         },
       },
       group: 'block',
-      content: 'paragraph+',
+      content: 'block*',
       selectable: false,
       draggable: false,
       toDOM: () => ['div', { 'data-posit-type': this.name }, 0],

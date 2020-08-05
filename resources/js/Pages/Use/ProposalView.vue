@@ -1,19 +1,18 @@
 <template>
   <fragment>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> -->
       <!-- We've used 3xl here, but feel free to try other max-widths based on your needs -->
-      <div class="max-w-3xl mx-auto">
+      <!-- <div class="max-w-3xl mx-auto"> -->
         <!-- Content goes here -->
+      <!-- </div> -->
+    <!-- </div> -->
 
-        <editor-content
-          :editor="editor"
-          @handleControlHitUp="handleControlHitUp"
-          @handleControlHitDown="handleControlHitDown"
-        />
-
-      </div>
-    </div>
+    <editor-content
+      :editor="editor"
+      @handleControlHitUp="handleControlHitUp"
+      @handleControlHitDown="handleControlHitDown"
+    />
 
     <ProposalSlideOver ref="proposalSlideOver" @updatePressed="handleUpdatePressed"/>
     <FirstWelcomeModal ref="firstWelcomeModal"/>
@@ -30,6 +29,7 @@ import {
   Blockquote,
   BulletList,
   CodeBlock,
+  Image,
   HardBreak,
   Heading,
   ListItem,
@@ -52,14 +52,21 @@ export default {
   props: {
     proposal: { type: Object }
   },
+  metaInfo () {
+    return {
+      htmlAttrs: {
+        class: ['h-full', this.htmlBgColorClass]
+      }
+    }
+  },
   data () {
     return {
       keepInBounds: true,
       editor: new Editor({
         editorProps: {
           attributes: {
-            class: 'outline-none space-y-2/12'
-            }
+            class: 'h-screen outline-none space-y-2/12'
+          }
         },
         extensions: [
           new PositLayoutDocOne(),
@@ -74,6 +81,7 @@ export default {
           new TodoItem(),
           new TodoList(),
           new Link(),
+          new Image(),
           new Bold(),
           new Code(),
           new Italic(),
@@ -94,6 +102,9 @@ export default {
   computed: {
     proposalUuid () {
       return this.proposal.data.uuid
+    },
+    htmlBgColorClass () {
+      return 'bg-gray-50'
     }
   },
   mounted () {
@@ -116,20 +127,20 @@ export default {
       immediate: true,
       handler (value) {
         this.editor.setContent(
-          `
-            <div data-posit-type="posit_block">
-              Test content 1...
-            </div>
+          // `
+          //   <div data-posit-type="posit_block">
+          //     Test content 1...
+          //   </div>
 
-            <div data-posit-type="posit_block">
-              Test content 2...
-            </div>
+          //   <div data-posit-type="posit_block">
+          //     Test content 2...
+          //   </div>
 
-            <div data-posit-type="posit_block">
-              Test content 3...
-            </div>
-          `
-          // value.data?.content?.content
+          //   <div data-posit-type="posit_block">
+          //     Test content 3...
+          //   </div>
+          // `
+          value.data?.content?.content
         )
       }
     }
@@ -194,36 +205,46 @@ export default {
         .replace(from, to)
         .insert(newPosition, node)
 
+      console.log(transactionMoveNodeUp)
+
       view.dispatch(transactionMoveNodeUp)
     },
     handleControlHitDown ({ node, view, startPos }) {
-      console.log(`handleControlHitDown`, node, view, startPos)
-      const pos = startPos
-      const { nodeAfter } = view.state.doc.resolve(pos)
+      // TODO this whole thing is broken and I dont know why...
+      // console.log(`handleControlHitDown`, node, view, startPos)
+      // const pos = startPos
 
-      if (!nodeAfter) {
-        console.log('no node after...')
-        return
-      }
-      // Do prosemirror transaction to move node up!
-      const newPosition = pos + nodeAfter.nodeSize;
+      // const resolve = view.state.doc.resolve(pos)
+      // console.log('resolve: ', resolve)
 
-      if (newPosition === view.docView.posAtEnd) {
-        console.log('looks like already at end...')
-        return
-      }
+      // // console.log(resolve.)
 
-      const from = pos
-      const to = pos + node.nodeSize
-      console.log('newPosition: ', newPosition)
-      console.log('from: ', from)
-      console.log('to: ', to)
+      // if (!resolve.nodeAfter) {
+      //   console.log('no node after...')
+      //   return
+      // }
+      // // Do prosemirror transaction to move node up!
+      // console.log('nodeAfter node size: ', resolve.nodeAfter.nodeSize)
+      // const newPosition = pos + resolve.nodeAfter.nodeSize;
 
-      const transactionMoveNodeDown = view.state.tr
-        .replace(from, to)
-        .insert(newPosition, node)
+      // if (newPosition === view.docView.posAtEnd) {
+      //   console.log('looks like already at end...')
+      //   return
+      // }
 
-      view.dispatch(transactionMoveNodeDown)
+      // const from = pos
+      // const to = pos + node.nodeSize
+      // console.log('newPosition: ', newPosition)
+      // console.log('from: ', from)
+      // console.log('to: ', to)
+
+      // const transactionMoveNodeDown = view.state.tr
+      //   .insert(newPosition, node)
+      //   .replace(from, to)
+
+      // console.log(transactionMoveNodeDown)
+
+      // view.dispatch(transactionMoveNodeDown)
     },
   },
   beforeDestroy() {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <slot name="controls"/>
-    <div :contenteditable="false" class="bg-white overflow-hidden shadow rounded-lg">
+    <div :contenteditable="view.editable.toString()" class="bg-white overflow-hidden shadow rounded-lg mx-auto" style="max-width: 70ch;">
       <div :contenteditable="view.editable.toString()" class="px-4 py-5 sm:p-6 focus:outline-none">
         <slot name="content"/>
       </div>

@@ -1,5 +1,10 @@
 <template>
-  <component :is="positComponent" :node="node" :view="view" class="relative">
+  <component
+    :is="positComponent"
+    :node="node"
+    :view="view"
+    :class="blockClass"
+    class="relative posit-block">
     <!-- Would be nice for this to be the slot for a dynamic component based on the type.., but not sure if it will work... -->
     <template #controls>
       <button @click="handleControlHitUp" :contenteditable="false" class="absolute top-0 -mt-13" style="left: 50%; right: 50%;">
@@ -12,7 +17,7 @@
     </template>
 
     <template #content>
-      <div ref="content" :contenteditable="view.editable.toString()"/>
+      <div ref="content" class="prose" :contenteditable="view.editable.toString()"/>
     </template>
   </component>
 </template>
@@ -36,6 +41,11 @@ export default {
     positComponent () {
       return PositCardPanel
     },
+    blockClass () {
+      return 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+    },
+
+
     // type: {
     //   get() {
     //     return this.node.attrs.positType
