@@ -12,6 +12,8 @@
       :editor="editor"
       @handleControlHitUp="handleControlHitUp"
       @handleControlHitDown="handleControlHitDown"
+      @handleAddBlockAbove="handleAddBlockAbove"
+      @handleAddBlockBelow="handleAddBlockBelow"
     />
 
     <ProposalSlideOver ref="proposalSlideOver" @updatePressed="handleUpdatePressed"/>
@@ -43,6 +45,8 @@ import {
   Strike,
   Underline,
   History,
+  Focus,
+  // HorizontalRule,
 } from 'tiptap-extensions'
 import PositBlockNode from '@/PositEditor/Nodes/PositBlockNode'
 import PositLayoutDocOne from '@/PositEditor/Nodes/PositLayoutDocOne'
@@ -78,6 +82,7 @@ export default {
           new Heading({ levels: [1, 2, 3] }),
           new ListItem(),
           new OrderedList(),
+          // new HorizontalRule(),
           new TodoItem(),
           new TodoList(),
           new Link(),
@@ -88,6 +93,10 @@ export default {
           new Strike(),
           new Underline(),
           new History(),
+          new Focus({
+            className: 'has-focus',
+            nested: false,
+          })
         ],
         onInit: this.onEditorInit,
         onTransaction: this.onEditorTransaction,
@@ -245,6 +254,16 @@ export default {
       // console.log(transactionMoveNodeDown)
 
       // view.dispatch(transactionMoveNodeDown)
+    },
+    handleAddBlockAbove ({ node, view, startPos }) {
+      console.log('handleAddBlockAbove')
+      const transaction = view.state.tr.insert(startPos, this.editor.schema.node("posit_block", null, [this.editor.schema.node("paragraph")]))
+      view.dispatch(transaction)
+    },
+    handleAddBlockBelow ({ node, view, startPos }) {
+      console.log('handleAddBlockBelow: ', node, view, startPos)
+      const transaction = view.state.tr.insert(startPos + node.nodeSize, this.editor.schema.node("posit_block", null, [this.editor.schema.node("paragraph")]))
+      view.dispatch(transaction)
     },
   },
   beforeDestroy() {

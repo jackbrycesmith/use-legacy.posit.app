@@ -1,10 +1,12 @@
 <template>
   <component
+    ref="positblock"
     :is="positComponent"
     :node="node"
     :view="view"
     :class="blockClass"
-    class="relative posit-block">
+    class="relative posit-block"
+    @focus="handlePositBlockFocus">
     <!-- Would be nice for this to be the slot for a dynamic component based on the type.., but not sure if it will work... -->
     <template #controls>
       <button @click="handleControlHitUp" :contenteditable="false" class="absolute top-0 -mt-13" style="left: 50%; right: 50%;">
@@ -14,6 +16,17 @@
       <button @click="handleControlHitDown" :contenteditable="false" class="absolute bottom-0 -mb-13" style="left: 50%; right: 50%;">
         ⬇️
       </button>
+
+
+      <!-- TODO template v-if="hasFocus" but it doesnt emit the event -->
+      <button @click="handleAddBlockAbove" :contenteditable="false" class="absolute top-0 -mb-13 bg-white" style="left: 50%; right: 50%;">
+        ➕
+      </button>
+
+      <button @click="handleAddBlockBelow" :contenteditable="false" class="absolute bottom-0 -mb-2 bg-white" style="left: 50%; right: 50%;">
+        ➕
+      </button>
+
     </template>
 
     <template #content>
@@ -36,7 +49,7 @@ export default {
   // `editor` is a reference to the TipTap editor instance
   // `getPos` is a function to retrieve the start position of the node
   // `decorations` is an array of decorations around the node
-  props: ['node', 'updateAttrs', 'view', 'getPos'],
+  props: ['node', 'updateAttrs', 'view', 'getPos', 'selected', 'decorations'],
   computed: {
     positComponent () {
       return PositCardPanel
@@ -44,8 +57,6 @@ export default {
     blockClass () {
       return 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
     },
-
-
     // type: {
     //   get() {
     //     return this.node.attrs.positType
@@ -57,6 +68,11 @@ export default {
     //     })
     //   },
     // },
+  },
+  data () {
+    return {
+      hasFocus: false
+    }
   },
   methods: {
     handleControlHitUp () {
@@ -73,14 +89,69 @@ export default {
         startPos: this.getPos()
       })
     },
+    handlePositBlockFocus () {
+      console.log('handlePositBlockFocus')
+    },
+    focusChanged (event) {
+      if (! (event.target === this.$refs.positblock)) {
+        console.log('el is not component...')
+        return
+      }
+      console.log('vue component focus change: ', event)
+
+      // do something with the element.
+    },
+    handleDecorationsChanged (decorations) {
+      // Combined with the focus plugin, we're detecting whether the this component has foucs...
+      if (decorations.length === 0) {
+        // next tick maybe?
+        this.hasFocus = false
+        return
+      }
+
+      for (let decoration of decorations) {
+        const focusClass = decoration?.type?.attrs?.class
+        if (focusClass == 'has-focus') {
+          this.hasFocus = true
+          break
+        }
+      }
+    },
+    handleAddBlockAbove () {
+      this.$parent.$emit('handleAddBlockAbove', {
+        node: this.node,
+        view: this.view,
+        startPos: this.getPos()
+      })
+    },
+    handleAddBlockBelow () {
+      this.$parent.$emit('handleAddBlockBelow', {
+        node: this.node,
+        view: this.view,
+        startPos: this.getPos()
+      })
+    }
   },
   watch: {
-    // type: {
-    //   immediate: true,
-    //   handler (value) {
-    //     console.log('PositBlock type: ', type)
-    //   }
-    // }
+    selected: {
+      immediate: true,
+      handler (value) {
+        console.log('posit block selected: ', value)
+      }
+    },
+    hasFocus: {
+      immediate: true,
+      handler (value) {
+        console.log('hasFocus: ', value)
+      }
+    },
+    decorations: {
+      immediate: true,
+      deep: true,
+      handler (value) {
+        this.handleDecorationsChanged(value)
+      }
+    },
   }
 }
 </script>
