@@ -224,42 +224,17 @@ export default {
       console.log(`handleControlHitDown`, node, view, startPos)
       const pos = startPos
 
-      const resolve = view.state.doc.resolve(pos)
-      console.log('resolve: ', resolve)
+      const childAfter = view.state.doc.childAfter(startPos + node.nodeSize)
+      console.log('childAfter: ', childAfter)
 
-      if (resolve.doc.lastChild.eq(node)) {
+      if (childAfter.node == null) {
         console.log('cannot move down because its the last one/no node after...')
         return
       }
 
-
-      const child = view.state.doc.maybeChild(startPos + node.nodeSize + 3)
-      console.log(child)
-
-      // TODO move this out into separate util function... (also not ideal to loop through all descendants for perf, but nodeAfter returns then same...)
-      let getNextNode = false
-      let nextNode = null
-      view.state.doc.descendants((descNode, descPos, parent) => {
-        if (nextNode !== null) {
-          return false // return early...
-        }
-
-        if (getNextNode && nextNode == null) {
-          nextNode = descNode
-        }
-
-        if (descNode.eq(node)) {
-          getNextNode = true
-        }
-
-        return false
-      })
-
-      console.log('nextNode: ', nextNode)
-
       const transactionMoveNodeDown = view.state.tr
         .replace(pos, pos + node.nodeSize)
-        .insert(pos + nextNode.nodeSize, node)
+        .insert(pos + childAfter.node.nodeSize, node)
 
       view.dispatch(transactionMoveNodeDown)
     },
