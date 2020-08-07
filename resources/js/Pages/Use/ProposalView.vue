@@ -221,40 +221,47 @@ export default {
     },
     handleControlHitDown ({ node, view, startPos }) {
       // TODO this whole thing is broken and I dont know why...
-      // console.log(`handleControlHitDown`, node, view, startPos)
-      // const pos = startPos
+      console.log(`handleControlHitDown`, node, view, startPos)
+      const pos = startPos
 
-      // const resolve = view.state.doc.resolve(pos)
-      // console.log('resolve: ', resolve)
+      const resolve = view.state.doc.resolve(pos)
+      console.log('resolve: ', resolve)
 
-      // // console.log(resolve.)
+      if (resolve.doc.lastChild.eq(node)) {
+        console.log('cannot move down because its the last one/no node after...')
+        return
+      }
 
-      // if (!resolve.nodeAfter) {
-      //   console.log('no node after...')
-      //   return
-      // }
-      // // Do prosemirror transaction to move node up!
-      // console.log('nodeAfter node size: ', resolve.nodeAfter.nodeSize)
-      // const newPosition = pos + resolve.nodeAfter.nodeSize;
 
-      // if (newPosition === view.docView.posAtEnd) {
-      //   console.log('looks like already at end...')
-      //   return
-      // }
+      const child = view.state.doc.maybeChild(startPos + node.nodeSize + 3)
+      console.log(child)
 
-      // const from = pos
-      // const to = pos + node.nodeSize
-      // console.log('newPosition: ', newPosition)
-      // console.log('from: ', from)
-      // console.log('to: ', to)
+      // TODO move this out into separate util function... (also not ideal to loop through all descendants for perf, but nodeAfter returns then same...)
+      let getNextNode = false
+      let nextNode = null
+      view.state.doc.descendants((descNode, descPos, parent) => {
+        if (nextNode !== null) {
+          return false // return early...
+        }
 
-      // const transactionMoveNodeDown = view.state.tr
-      //   .insert(newPosition, node)
-      //   .replace(from, to)
+        if (getNextNode && nextNode == null) {
+          nextNode = descNode
+        }
 
-      // console.log(transactionMoveNodeDown)
+        if (descNode.eq(node)) {
+          getNextNode = true
+        }
 
-      // view.dispatch(transactionMoveNodeDown)
+        return false
+      })
+
+      console.log('nextNode: ', nextNode)
+
+      const transactionMoveNodeDown = view.state.tr
+        .replace(pos, pos + node.nodeSize)
+        .insert(pos + nextNode.nodeSize, node)
+
+      view.dispatch(transactionMoveNodeDown)
     },
     handleAddBlockAbove ({ node, view, startPos }) {
       console.log('handleAddBlockAbove')
