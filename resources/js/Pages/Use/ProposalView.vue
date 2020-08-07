@@ -14,6 +14,7 @@
       @handleControlHitDown="handleControlHitDown"
       @handleAddBlockAbove="handleAddBlockAbove"
       @handleAddBlockBelow="handleAddBlockBelow"
+      @handleDeleteBlock="handleDeleteBlock"
     />
 
     <ProposalSlideOver ref="proposalSlideOver" @updatePressed="handleUpdatePressed"/>
@@ -265,6 +266,11 @@ export default {
       const transaction = view.state.tr.insert(startPos + node.nodeSize, this.editor.schema.node("posit_block", null, [this.editor.schema.node("paragraph")]))
       view.dispatch(transaction)
     },
+    handleDeleteBlock ({ node, view, startPos }) {
+      console.log('handleDeleteBlock: ', node, view, startPos)
+      const transaction = view.state.tr.replace(startPos, startPos + node.nodeSize)
+      view.dispatch(transaction)
+    }
   },
   beforeDestroy() {
     this.editor.destroy()
