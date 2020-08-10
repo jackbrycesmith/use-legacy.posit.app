@@ -13,6 +13,10 @@ export default class Organisation extends Model {
     return this.name?.charAt(0)?.toUpperCase()
   }
 
+  get route_settings () {
+    return route('use.org.settings', { org: this.uuid }).url()
+  }
+
   getRelationships() {
     return {
       users: User,
