@@ -3,7 +3,17 @@
     <ProposalOpeningSection
       class="mb-36"
       :proposal.sync="proposal__"
+      @edit-title-done="handleEditTitleDone"
     />
+
+      <div
+        class="absolute h-full left-0 top-0">
+        <div class="fixed h-screen">
+          <ProposalBackHome
+            class="absolute top-5 left-5"
+          />
+        </div>
+      </div>
 
     <editor-content
       :editor="editor"
@@ -53,9 +63,10 @@ import {
 import PositBlockNode from '@/PositEditor/Nodes/PositBlockNode'
 import PositLayoutDocOne from '@/PositEditor/Nodes/PositLayoutDocOne'
 import Proposal from '@/models/Proposal'
+import ProposalBackHome from '@/Components/ProposalBackHome'
 
 export default {
-  components: { ProposalSlideOver, FirstWelcomeModal, LoginModal, EditorContent, EditorFloatingMenu, ProposalOpeningSection },
+  components: { ProposalSlideOver, FirstWelcomeModal, LoginModal, EditorContent, EditorFloatingMenu, ProposalOpeningSection, ProposalBackHome },
   props: {
     proposal: { type: Object }
   },
@@ -256,6 +267,9 @@ export default {
       console.log('handleDeleteBlock: ', node, view, startPos)
       const transaction = view.state.tr.replace(startPos, startPos + node.nodeSize)
       view.dispatch(transaction)
+    },
+    handleEditTitleDone (value) {
+
     }
   },
   beforeDestroy() {
