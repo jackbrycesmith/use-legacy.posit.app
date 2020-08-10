@@ -29,7 +29,7 @@
       <template #header="{ handleCloseButtonHit }">
         <header class="space-y-1 py-6 px-4 bg-orange-300 sm:px-6">
           <div class="flex items-center justify-between space-x-3">
-            <h2 class="text-lg leading-7 font-medium text-orange-800">Create your Proposal</h2>
+            <h2 class="text-lg leading-7 font-medium text-orange-800 truncate">{{ proposal.name }}</h2>
             <div class="h-7 flex items-center">
               <button @click="handleCloseButtonHit" aria-label="Close panel" class="text-orange-50 hover:text-white transition ease-in-out duration-150">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -162,6 +162,9 @@ const encryptWorker = new EncryptWorker()
 
 export default {
   components: { BaseSlideOver },
+  props: {
+    proposal: { type: Object }
+  },
   data: () => ({
     isVisible: false
   }),

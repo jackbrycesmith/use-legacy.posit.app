@@ -1,12 +1,9 @@
 <template>
   <fragment>
-
-    <!-- <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> -->
-      <!-- We've used 3xl here, but feel free to try other max-widths based on your needs -->
-      <!-- <div class="max-w-3xl mx-auto"> -->
-        <!-- Content goes here -->
-      <!-- </div> -->
-    <!-- </div> -->
+    <ProposalOpeningSection
+      class="mb-36"
+      :proposal.sync="proposal__"
+    />
 
     <editor-content
       :editor="editor"
@@ -17,7 +14,10 @@
       @handleDeleteBlock="handleDeleteBlock"
     />
 
-    <ProposalSlideOver ref="proposalSlideOver" @updatePressed="handleUpdatePressed"/>
+    <ProposalSlideOver
+      ref="proposalSlideOver"
+      :proposal="proposal__"
+      @updatePressed="handleUpdatePressed"/>
     <FirstWelcomeModal ref="firstWelcomeModal"/>
     <LoginModal ref="loginModal"/>
   </fragment>
@@ -26,8 +26,9 @@
 <script>
 import ProposalSlideOver from '@/SlideOvers/ProposalSlideOver'
 import FirstWelcomeModal from '@/Modals/FirstWelcomeModal'
+import ProposalOpeningSection from '@/Components/ProposalOpeningSection'
 import LoginModal from '@/Modals/LoginModal'
-import { Editor, EditorContent } from 'tiptap'
+import { Editor, EditorContent, EditorFloatingMenu } from 'tiptap'
 import {
   Blockquote,
   BulletList,
@@ -51,9 +52,10 @@ import {
 } from 'tiptap-extensions'
 import PositBlockNode from '@/PositEditor/Nodes/PositBlockNode'
 import PositLayoutDocOne from '@/PositEditor/Nodes/PositLayoutDocOne'
+import Proposal from '@/models/Proposal'
 
 export default {
-  components: { ProposalSlideOver, FirstWelcomeModal, LoginModal, EditorContent },
+  components: { ProposalSlideOver, FirstWelcomeModal, LoginModal, EditorContent, EditorFloatingMenu, ProposalOpeningSection },
   props: {
     proposal: { type: Object }
   },
@@ -66,6 +68,7 @@ export default {
   },
   data () {
     return {
+      proposal__: Proposal.make(),
       keepInBounds: true,
       editor: new Editor({
         editorProps: {
@@ -136,6 +139,7 @@ export default {
     proposal: {
       immediate: true,
       handler (value) {
+        this.proposal__ = Proposal.make(value)
         this.editor.setContent(
           // `
           //   <div data-posit-type="posit_block">
@@ -150,7 +154,7 @@ export default {
           //     Test content 3...
           //   </div>
           // `
-          value.data?.content?.content
+          this.proposal__.content?.content
         )
       }
     }

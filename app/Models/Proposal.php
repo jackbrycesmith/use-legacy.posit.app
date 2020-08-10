@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Casts\StrLimitCast;
 use App\Models\Concerns\HasStripeCheckoutSession;
 use App\Models\Concerns\HasUuid;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Proposal extends Model
@@ -16,21 +18,31 @@ class Proposal extends Model
     use HasUuid, HasRelationships, HasStripeCheckoutSession;
 
     /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'organisation_id' => 'integer',
-        'meta' => 'array',
-    ];
-
-    /**
      * The attributes that aren't mass assignable.
      *
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'name' => StrLimitCast::class,
+        'organisation_id' => 'integer',
+        'meta' => 'array',
+    ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'name' => 'Proposal',
+    ];
 
     /**
      * Get the organisation that this proposal is created under

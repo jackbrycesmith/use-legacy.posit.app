@@ -18,6 +18,7 @@ class ProposalResource extends JsonResource
         return [
             'id' => $this->id,
             'uuid' => $this->uuid,
+            'name' => $this->name,
             'meta' => $this->meta,
             'content' => new ProposalContentResource($this->whenLoaded('proposalContent')),
             'org' => new OrganisationResource($this->whenLoaded('organisation')),
