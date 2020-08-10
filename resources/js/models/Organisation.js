@@ -17,6 +17,10 @@ export default class Organisation extends Model {
     return route('use.org.settings', { org: this.uuid }).url()
   }
 
+  get route_members () {
+    return route('use.org.members', { org: this.uuid }).url()
+  }
+
   getRelationships() {
     return {
       users: User,
