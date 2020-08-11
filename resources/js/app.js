@@ -11,6 +11,10 @@ import axios from 'axios'
 import FormInput from '@/Components/form-input'
 import vClickOutside from 'v-click-outside'
 
+// Plugins.
+import registerPlugins from '@/plugins'
+registerPlugins(Vue)
+
 Vue.use(InertiaApp)
 Vue.use(PortalVue)
 Vue.use(VueMeta)
