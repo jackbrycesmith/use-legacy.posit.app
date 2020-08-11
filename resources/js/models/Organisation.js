@@ -2,6 +2,7 @@ import Model from './Model'
 import User from './User'
 import Proposal from './Proposal'
 import StripeAccount from './StripeAccount'
+import OrganisationContact from './OrganisationContact'
 import Http from '@/services/Http'
 
 export default class Organisation extends Model {
@@ -21,11 +22,16 @@ export default class Organisation extends Model {
     return route('use.org.members', { org: this.uuid }).url()
   }
 
+  get route_contacts () {
+    return route('use.org.contacts', { org: this.uuid }).url()
+  }
+
   getRelationships() {
     return {
       users: User,
       proposals: Proposal,
-      stripeAccount: StripeAccount
+      stripeAccount: StripeAccount,
+      contacts: OrganisationContact
     }
   }
 }
