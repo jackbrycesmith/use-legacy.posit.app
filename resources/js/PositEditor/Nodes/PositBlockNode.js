@@ -17,6 +17,9 @@ export default class PositBlockNode extends Node {
         title: {
           default: null,
         },
+        expanded: {
+          default: true
+        }
       },
       group: 'block',
       content: 'block*',
@@ -27,6 +30,7 @@ export default class PositBlockNode extends Node {
         tag: `[data-posit-type="${this.name}"]`,
         getAttrs: dom => ({
           positTitle: dom.getAttribute('posit-title'),
+          expanded: dom.getAttribute('data-expanded'),
         }),
       }],
     }

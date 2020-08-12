@@ -1,16 +1,30 @@
 <template>
   <div>
     <slot name="controls"/>
-    <div :contenteditable="view.editable.toString()" class="bg-white overflow-hidden shadow rounded-lg mx-auto" style="max-width: 70ch;">
-      <div :contenteditable="view.editable.toString()" class="px-4 py-5 sm:p-6 focus:outline-none">
-        <slot name="content"/>
+    <div :contenteditable="isExpanded && view.editable.toString()" class="bg-white overflow-hidden shadow rounded-lg mx-auto" style="max-width: 70ch;">
+      <div :contenteditable="isExpanded && view.editable.toString()" class="px-4 py-5 sm:p-6 focus:outline-none relative" style="min-height: 100px;">
+
+        <transition-expand>
+          <div v-show="isExpanded">
+            <slot name="content" v-bind="{ isExpanded }"/>
+          </div>
+        </transition-expand>
+
+        <!-- TODO figure out why this is taking up some vertical space... -->
+        <div class="absolute left-0 right-0 px-4">
+          <slot v-if="!isExpanded" name="collapsed-content" v-bind="{ isExpanded }" />
+        </div>
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import TransitionExpand from '@/Components/TransitionExpand'
+
 export default {
+  components: { TransitionExpand },
   // there are some props available
   // `node` is a Prosemirror Node Object
   // `updateAttrs` is a function to update attributes defined in `schema`
@@ -20,7 +34,18 @@ export default {
   // `editor` is a reference to the TipTap editor instance
   // `getPos` is a function to retrieve the start position of the node
   // `decorations` is an array of decorations around the node
-  props: ['node', 'updateAttrs', 'view'],
+  props: ['node', 'updateAttrs', 'view', 'expanded'],
+  computed: {
+    isExpanded () { return this.expanded }
+  },
   // Could probably pass these down...
+  watch: {
+    expanded: {
+      immediate: true,
+      handler (value) {
+
+      }
+    }
+  }
 }
 </script>

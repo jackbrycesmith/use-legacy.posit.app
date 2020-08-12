@@ -5,6 +5,7 @@
     :node="node"
     :view="view"
     :class="blockClass"
+    :expanded="expanded"
     class="relative posit-block"
     @focus="handlePositBlockFocus">
     <!-- Would be nice for this to be the slot for a dynamic component based on the type.., but not sure if it will work... -->
@@ -27,14 +28,27 @@
         ❌
       </button>
 
+      <button @click="handleToggleExpand" :contenteditable="false" class="absolute top-0 -mb-13 bg-white" style="right: 45%;">
+        🔁
+      </button>
+
       <button @click="handleAddBlockBelow" :contenteditable="false" class="absolute bottom-0 -mb-2 bg-white" style="left: 50%; right: 50%;">
         ➕
       </button>
 
     </template>
 
-    <template #content>
-      <div ref="content" class="prose" :contenteditable="view.editable.toString()"/>
+    <template #collapsed-content="{ isExpanded }">
+      <div>
+        <h2 v-show="!isExpanded" class="text-2xl font-bold text-center truncate" style="white-space: nowrap;" :contenteditable="false">{{ blockTitle }}</h2>
+      </div>
+    </template>
+
+    <template #content="{ isExpanded }">
+      <div
+        ref="content"
+        class="prose"
+        :contenteditable="view.editable.toString()"/>
     </template>
   </component>
 </template>
@@ -61,17 +75,23 @@ export default {
     blockClass () {
       return 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
     },
-    // type: {
-    //   get() {
-    //     return this.node.attrs.positType
-    //   },
-    //   set(type) {
-    //     // we cannot update `type` itself because `this.node.attrs` is immutable
-    //     this.updateAttrs({
-    //       positType,
-    //     })
-    //   },
-    // },
+    blockTitle () {
+      if (this.node.firstChild?.type?.name === 'heading') {
+        return this.node.firstChild.textContent
+      }
+
+      return this.node.textContent
+    },
+    expanded: {
+      get() {
+        return this.node.attrs.expanded
+      },
+      set(expanded) {
+        this.updateAttrs({
+          expanded,
+        })
+      },
+    },
   },
   data () {
     return {
@@ -79,6 +99,10 @@ export default {
     }
   },
   methods: {
+    collapsedBlockHeaderContent () {
+      console.log(this.node)
+      return 'this.$refs.content?.innerText'
+    },
     handleControlHitUp () {
       this.$parent.$emit('handleControlHitUp', {
         node: this.node,
@@ -142,6 +166,9 @@ export default {
         startPos: this.getPos()
       })
     },
+    handleToggleExpand () {
+      this.expanded = !this.expanded
+    }
   },
   watch: {
     selected: {
