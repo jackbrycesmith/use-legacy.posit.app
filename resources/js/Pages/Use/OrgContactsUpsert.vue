@@ -54,22 +54,16 @@
       <div class="lg:min-w-0 lg:flex-1">
         <div class="pl-4 pr-6 pt-4 pb-4 border-b border-t border-gray-200 sm:pl-6 lg:pl-8 xl:pl-6 xl:pt-6 xl:border-t-0">
           <div class="flex items-center">
-            <h1 class="flex-1 text-3xl leading-7 font-bold">Contacts</h1>
-            <span class="inline-flex rounded-md shadow-sm">
-              <inertia-link :href="org__.route_contacts_add" class="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-6 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-                <svg viewBox="0 0 20 20" fill="currentColor" class="-ml-0.5 mr-2 h-4 w-4"><path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path></svg>
-                Add<span class="hidden sm:inline">&nbsp;Contact</span>
+            <h1 class="flex-1 text-3xl leading-7 font-bold">
+              <inertia-link :href="org__.route_contacts">
+                Contacts
               </inertia-link>
-            </span>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 inline"><path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+
+              <span class="font-normal">Add</span>
+            </h1>
           </div>
         </div>
-
-        <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 mt-5 mx-5">
-          <OrgContactListItem
-            v-for="orgContact in orgContacts"
-            :key="orgContact.id"
-            :org-contact="orgContact" />
-        </ul>
 
 
 <!--         <ul class="relative z-0 divide-y divide-gray-200 border-b border-gray-200">
