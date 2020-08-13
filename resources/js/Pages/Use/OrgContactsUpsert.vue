@@ -60,19 +60,18 @@
               </inertia-link>
               <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 inline"><path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
 
-              <span class="font-normal">Add</span>
+              <span class="font-normal">{{ isAdd ? 'Add' : 'Edit' }}</span>
             </h1>
           </div>
         </div>
 
-
-<!--         <ul class="relative z-0 divide-y divide-gray-200 border-b border-gray-200">
-          <ProposalDashboardListItem
-            v-for="proposal in org__.proposals"
-            :key="proposal.id"
-            :proposal="proposal"
+        <div>
+          <OrgContactUpsertForm
+            :org="org__"
+            :contact="contact__"
           />
-        </ul> -->
+        </div>
+
       </div>
     </div>
 
@@ -82,31 +81,44 @@
 <script>
 import Dashboard from '@/layouts/Dashboard'
 import Organisation from '@/models/Organisation'
+import OrganisationContact from '@/models/OrganisationContact'
 import OrgNavigation from '@/Components/OrgNavigation'
 import OrgDropdown from '@/Components/OrgDropdown'
 import OrgContactListItem from '@/Lists/OrgContactListItem'
+import OrgContactUpsertForm from '@/Forms/OrgContactUpsertForm'
+import { isNil } from 'lodash-es'
 
 export default {
-  components: { OrgDropdown, OrgNavigation, OrgContactListItem },
+  components: { OrgDropdown, OrgNavigation, OrgContactUpsertForm, OrgContactListItem },
   props: {
-    org: { type: Object }
+    org: { type: Object },
+    contact: { type: Object }
   },
   layout: Dashboard,
   data () {
     return {
-      org__: Organisation.make()
+      org__: Organisation.make(),
+      contact__: null,
     }
   },
   computed: {
-    orgContacts () {
-      return this.org__.contacts ?? []
-    }
+    isAdd () {
+      return isNil(this.contact)
+    },
   },
   watch: {
     org: {
       immediate: true,
       handler (value) {
         this.org__ = Organisation.make(value)
+      }
+    },
+    contact: {
+      immediate: true,
+      handler (value) {
+        if (value) {
+          this.contact__ = OrganisationContact.make(value)
+        }
       }
     }
   },

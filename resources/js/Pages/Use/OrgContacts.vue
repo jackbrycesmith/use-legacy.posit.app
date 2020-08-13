@@ -68,6 +68,7 @@
           <OrgContactListItem
             v-for="orgContact in orgContacts"
             :key="orgContact.id"
+            :org-uuid="org__.uuid"
             :org-contact="orgContact" />
         </ul>
 

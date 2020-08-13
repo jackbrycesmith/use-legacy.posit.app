@@ -30,6 +30,10 @@ export default class Organisation extends Model {
     return route('use.org.contacts.add', { org: this.uuid }).url()
   }
 
+  get route_contacts_add_submit () {
+    return route('use.org.contacts.add-submit', { org: this.uuid }).url()
+  }
+
   get route_activity_logs () {
     return route('use.org.activity-logs', { org: this.uuid }).url()
   }

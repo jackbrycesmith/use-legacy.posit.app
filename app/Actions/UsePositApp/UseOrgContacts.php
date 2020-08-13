@@ -42,7 +42,7 @@ class UseOrgContacts extends Action
      */
     public function handle(Organisation $org)
     {
-        $org->loadMissing(['organisationContacts']);
+        $org->loadMissing(['contacts']);
 
         return Inertia::render('Use/OrgContacts', [
             'org' => new OrganisationResource($org)

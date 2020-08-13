@@ -2,17 +2,20 @@
 
 namespace App\Actions\UsePositApp;
 
+use App\Http\Resources\OrgContactResource;
 use App\Http\Resources\OrganisationResource;
 use App\Models\Organisation;
+use App\Models\OrganisationContact;
 use Illuminate\Routing\Router;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
-class UseOrgContactsAdd extends Action
+class UseOrgContactsUpsert extends Action
 {
     public static function routes(Router $router)
     {
         $router->domain(use_posit_domain())->middleware(['web', 'auth'])->get('/org/{org:uuid}/contacts/add', static::class)->name('use.org.contacts.add');
+        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->get('/org/{org:uuid}/contacts/{contact}/edit', static::class)->name('use.org.contacts.edit');
     }
 
     /**
@@ -30,10 +33,11 @@ class UseOrgContactsAdd extends Action
      *
      * @return mixed
      */
-    public function handle(Organisation $org)
+    public function handle(Organisation $org, ?OrganisationContact $contact = null)
     {
         return Inertia::render('Use/OrgContactsUpsert', [
-            'org' => new OrganisationResource($org)
+            'org' => new OrganisationResource($org),
+            'contact' => is_null($contact) ? null : new OrgContactResource($contact),
         ]);
     }
 }

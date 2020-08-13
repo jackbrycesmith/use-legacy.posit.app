@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Arr;
 
 class OrgContactResource extends JsonResource
 {
@@ -16,7 +17,7 @@ class OrgContactResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'meta' => $this->meta,
+            'name' => Arr::get($this->meta, 'name'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
