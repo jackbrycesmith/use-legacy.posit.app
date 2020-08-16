@@ -73,9 +73,7 @@ export default {
   backface-visibility: hidden;
   perspective: 1000px;
 }
-</style>
 
-<style>
 .expand-enter-active,
 .expand-leave-active {
   transition: height 0.4s ease-in-out;
