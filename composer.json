@@ -22,9 +22,11 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "league/flysystem-cached-adapter": "^1.0",
         "lorisleiva/laravel-actions": "^1.1",
+        "spatie/laravel-model-status": "^1.10",
         "spatie/regex": "^1.4",
         "staudenmeir/belongs-to-through": "^2.5",
         "staudenmeir/eloquent-has-many-deep": "^1.12",
+        "staudenmeir/eloquent-json-relations": "^1.4",
         "tightenco/ziggy": "^0.9.4"
     },
     "require-dev": {
@@ -69,6 +71,13 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "repositories": [
+        {
+            "type": "path",
+            "url": "../laravel-stripe-connect",
+            "options": {
+                "symlink": true
+            }
+        },
         {
             "type": "composer",
             "url": "https://jbs.repo.repman.io"
