@@ -1,6 +1,6 @@
 <template>
   <fragment>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div v-if="!is_draft" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- We've used 3xl here, but feel free to try other max-widths based on your needs -->
       <div class="max-w-3xl mx-auto">
         <!-- Content goes here -->
@@ -20,6 +20,19 @@
           </span>
         </div>
 
+      </div>
+    </div>
+
+    <!-- TODO this is naive, should really put in own component -->
+    <div v-else class="h-screen flex justify-center items-center">
+      <div>
+        <img class="h-24 m-auto mb-3" src="/posit-icon.png"/>
+        <h3 class="text-2xl leading-6 font-medium text-gray-900 text-center">
+          Proposal in draft...
+        </h3>
+        <p class="mt-3 text-sm leading-5 text-gray-500 text-center">
+          Please ask the creator to publish.
+        </p>
       </div>
     </div>
   </fragment>
@@ -52,6 +65,7 @@ export default {
   components: { EditorContent },
   props: {
     proposal: { type: Object },
+    is_draft: { type: Boolean, default: false },
     stripe_pub_key: {}
   },
   data () {

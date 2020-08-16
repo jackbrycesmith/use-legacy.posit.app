@@ -42,6 +42,12 @@ class PubProposalView extends Action
      */
     public function handle(Proposal $proposal)
     {
+        if ($proposal->status === Proposal::STATUS_DRAFT) {
+            return Inertia::render('Pub/ProposalView', [
+                'is_draft' => true
+            ]);
+        }
+
         $proposal->loadMissing(['proposalContent', 'stripeCheckoutSession']);
 
         return Inertia::render('Pub/ProposalView', [
