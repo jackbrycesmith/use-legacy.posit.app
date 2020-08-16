@@ -24,9 +24,14 @@
       @handleDeleteBlock="handleDeleteBlock"
     />
 
+    <ProposalClosingSection
+      class="mt-36"
+      :proposal="proposal__"
+    />
+
     <ProposalSlideOver
       ref="proposalSlideOver"
-      :proposal="proposal__"
+      :proposal.sync="proposal__"
       @updatePressed="handleUpdatePressed"/>
     <FirstWelcomeModal ref="firstWelcomeModal"/>
     <LoginModal ref="loginModal"/>
@@ -37,6 +42,7 @@
 import ProposalSlideOver from '@/SlideOvers/ProposalSlideOver'
 import FirstWelcomeModal from '@/Modals/FirstWelcomeModal'
 import ProposalOpeningSection from '@/Components/ProposalOpeningSection'
+import ProposalClosingSection from '@/Components/ProposalClosingSection'
 import LoginModal from '@/Modals/LoginModal'
 import { Editor, EditorContent, EditorFloatingMenu } from 'tiptap'
 import {
@@ -66,7 +72,7 @@ import Proposal from '@/models/Proposal'
 import ProposalBackHome from '@/Components/ProposalBackHome'
 
 export default {
-  components: { ProposalSlideOver, FirstWelcomeModal, LoginModal, EditorContent, EditorFloatingMenu, ProposalOpeningSection, ProposalBackHome },
+  components: { ProposalSlideOver, FirstWelcomeModal, LoginModal, EditorContent, EditorFloatingMenu, ProposalOpeningSection, ProposalClosingSection, ProposalBackHome },
   props: {
     proposal: { type: Object }
   },
@@ -84,7 +90,7 @@ export default {
       editor: new Editor({
         editorProps: {
           attributes: {
-            class: 'h-screen outline-none space-y-2/12'
+            class: 'outline-none space-y-2/12'
           }
         },
         extensions: [
