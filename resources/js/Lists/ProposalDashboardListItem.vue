@@ -1,6 +1,6 @@
 <template>
   <li class="relative pl-4 pr-6 py-5 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6">
-    <inertia-link :href="proposalViewRoute" class="flex items-center justify-between space-x-4">
+    <inertia-link :href="proposal.route_proposal_view" class="flex items-center justify-between space-x-4">
       <!-- Repo name and link -->
       <div class="min-w-0 space-y-3">
         <div class="flex items-center space-x-3">
@@ -12,7 +12,7 @@
             <h2 class="text-sm font-medium leading-5">
               <span>
                 <span class="absolute inset-0"></span>
-                {{ proposalUuid }}
+                {{ proposal.name }} — {{ proposal.uuid }}
               </span>
             </h2>
           </span>
@@ -35,6 +35,12 @@
       <!-- Proposal meta info -->
       <div class="hidden sm:flex flex-col flex-shrink-0 items-end space-y-3">
         <p class="flex items-center space-x-4">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium leading-4 bg-indigo-100 text-indigo-800">
+            <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-indigo-400" fill="currentColor" viewBox="0 0 8 8">
+              <circle cx="4" cy="4" r="3" />
+            </svg>
+            {{ proposal.status_name | titleCase }}
+          </span>
 <!--                   <a href="#" class="relative text-sm leading-5 text-gray-500 hover:text-gray-900 font-medium">
             Visit site
           </a>
@@ -60,14 +66,6 @@
 export default {
   props: {
     proposal: { type: Object }
-  },
-  computed: {
-    proposalUuid () {
-      return this.proposal.uuid
-    },
-    proposalViewRoute () {
-      return route('use.proposal.view', { proposal: this.proposalUuid ?? '' })
-    }
   },
   data () {
     return {

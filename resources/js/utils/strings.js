@@ -1,4 +1,4 @@
-import { words, take } from 'lodash-es'
+import { words, take, upperFirst, toLower } from 'lodash-es'
 
 export const initials = (value, maxInitials = 2) => {
   const wordValues = take(words(value), maxInitials)
@@ -7,4 +7,8 @@ export const initials = (value, maxInitials = 2) => {
     initialValues += word.charAt(0)
   })
   return initialValues.toUpperCase()
+}
+
+export const titleCase = (value) => {
+  return upperFirst(toLower(value))
 }
