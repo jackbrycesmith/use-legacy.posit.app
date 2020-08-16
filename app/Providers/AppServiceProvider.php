@@ -14,6 +14,7 @@ use App\Models\StripeCustomer;
 use App\Models\StripeEvent;
 use App\Models\StripePaymentIntent;
 use App\Models\User;
+use App\Observers\ProposalObserver;
 use App\Observers\UserObserver;
 use CloudCreativity\LaravelStripe\Facades\Stripe;
 use CloudCreativity\LaravelStripe\LaravelStripe;
@@ -41,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Proposal::observe(ProposalObserver::class);
         User::observe(UserObserver::class);
 
         $this->setRelationMorphMap();

@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\ModelStatus\HasStatuses;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Proposal extends Model
 {
-    use HasUuid, HasRelationships, HasStripeCheckoutSession;
+    use HasUuid, HasRelationships, HasStatuses, HasStripeCheckoutSession;
 
     /**
      * The attributes that aren't mass assignable.
@@ -43,6 +44,29 @@ class Proposal extends Model
     protected $attributes = [
         'name' => 'Proposal',
     ];
+
+    const STATUS_DRAFT = 'proposal_draft';
+    const STATUS_PUBLISHED = 'proposal_published';
+    const STATUS_ACCEPTED = 'proposal_accepted';
+    const STATUS_EXPIRED = 'proposal_expired';
+    const STATUS_VOID = 'proposal_void';
+    const ALLOWED_STATUSES = [
+        self::STATUS_DRAFT, self::STATUS_PUBLISHED, self::STATUS_ACCEPTED, self::STATUS_EXPIRED, self::STATUS_VOID
+    ];
+
+    /**
+     * Determines if valid status.
+     *
+     * @param string $name The name
+     * @param null|string $reason The reason
+     *
+     * @return boolean True if valid status, False otherwise.
+     */
+    public function isValidStatus(string $name, ?string $reason = null): bool
+    {
+        // TODO potentially more checks; e.g. if its gone past a particular status, it cannot go back to previous
+        return in_array($name, self::ALLOWED_STATUSES);
+    }
 
     /**
      * Get the organisation that this proposal is created under
