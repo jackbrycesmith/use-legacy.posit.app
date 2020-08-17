@@ -24,6 +24,7 @@ class ProposalResource extends JsonResource
             'content' => new ProposalContentResource($this->whenLoaded('proposalContent')),
             'org' => new OrganisationResource($this->whenLoaded('organisation')),
             'users' => UserResource::collection($this->whenLoaded('users')),
+            'recipient' => new OrgContactResource($this->whenLoaded('recipient')),
             'stripe_checkout_session_id' => $this->whenLoaded('stripeCheckoutSession', function () {
                 return $this->stripeCheckoutSession->id;
             }),

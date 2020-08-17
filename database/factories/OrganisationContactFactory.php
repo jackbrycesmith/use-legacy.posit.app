@@ -7,6 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(OrganisationContact::class, function (Faker $faker) {
     return [
-        //
+        'meta' => [
+            'name' => $faker->name
+        ]
     ];
 });

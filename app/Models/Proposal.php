@@ -7,6 +7,7 @@ use App\Models\Concerns\HasStripeCheckoutSession;
 use App\Models\Concerns\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\ModelStatus\HasStatuses;
@@ -81,12 +82,24 @@ class Proposal extends Model
     /**
      * Recipients (organisation contacts)
      *
-     * @return <type> ( description_of_the_return_value )
+     * @return BelongsToMany The belongs to many relation.
      */
-    public function recipients()
+    public function recipients(): BelongsToMany
     {
-        // TODO
         return $this->belongsToMany(OrganisationContact::class, 'proposal_user')->withTimestamps();
+    }
+
+    /**
+     * Get the recipient
+     *
+     * @return HasOneDeep The has one deep relation.
+     */
+    public function recipient(): HasOneDeep
+    {
+        return $this->hasOneDeepFromRelations(
+            $this->proposalUsers(),
+            (new ProposalUser)->organisationContact()
+        )->latest();
     }
 
     /**
