@@ -3,7 +3,8 @@ import Http from '@/services/Http'
 import User from './User'
 import ProposalContent from './ProposalContent'
 import Organisation from './Organisation'
-import { get, head } from 'lodash-es'
+import OrganisationContact from './OrganisationContact'
+import { get, head, isNil } from 'lodash-es'
 
 export default class Proposal extends Model {
 
@@ -33,14 +34,23 @@ export default class Proposal extends Model {
     return route('use.proposal.view', { proposal: this.uuid }).url()
   }
 
+  get has_recipient () {
+    return !isNil(this.recipient)
+  }
+
   get recipient_options () {
     return get(this.org, 'contacts', [])
+  }
+
+  get recipient_name () {
+    return get(this.recipient, 'name')
   }
 
   getRelationships() {
     return {
       users: User,
       org: Organisation,
+      recipient: OrganisationContact,
       content: ProposalContent,
     }
   }

@@ -9,7 +9,11 @@
         title="Add proposal recipient"
         aria-label="Add proposal recipient" aria-haspopup="true" :aria-expanded="isOpen"
         @click="handleSelectButtonClick">
-        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <span v-if="proposal.has_recipient" :title="proposal.recipient_name" class="text-orange-400">
+          {{ proposal.recipient_name | initials }}
+        </span>
+
+        <svg v-else class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
         </svg>
       </button>
@@ -95,7 +99,8 @@
 <script>
 export default {
   props: {
-    options: { type: Array, default: () => [] }
+    options: { type: Array, default: () => [] },
+    proposal: { type: Object }
   },
   data () {
     return {
@@ -112,7 +117,7 @@ export default {
   },
   computed: {
     shouldAnimateBounce () {
-      return !this.isOpen // TODO take into account if a recipient has already been selected...
+      return !this.isOpen && !this.proposal.has_recipient
     }
   },
   methods: {

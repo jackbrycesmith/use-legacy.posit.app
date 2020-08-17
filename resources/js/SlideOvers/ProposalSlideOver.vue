@@ -80,6 +80,7 @@
 
               <div class="flex space-x-2 justify-center">
                 <ProposalRecipientSelector
+                  :proposal.sync="proposal"
                   :options="proposal.recipient_options"
                 />
 
