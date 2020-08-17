@@ -12,7 +12,6 @@ module.exports = {
       },
     },
   },
-  variants: {},
   purge: {
     content: [
       './app/**/*.php',
@@ -31,6 +30,7 @@ module.exports = {
     },
   },
   plugins: [
+    require('@tailwindcss/typography'),
     require('@tailwindcss/ui'),
   ]
 }
