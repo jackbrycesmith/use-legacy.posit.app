@@ -50,14 +50,39 @@
                 ref="existingContactsList"
                 role="listbox"
                 tabindex="-1"
-                class="h-48">
+                class="h-48 outline-none overflow-y-scroll">
 
                 <li
-                  tabindex="0"
-                  class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="option"
-                >
-                  Recipient Name
+                  v-for="(option, o) in options"
+                  :key="option.id"
+                  :tabindex="o"
+                  role="option"
+                  class="relative block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
+
+                  <div class="flex items-center space-x-3">
+
+                    <div class="flex justify-center items-center bg-yellow-300 flex-shrink-0 h-7 w-7 rounded-full text-xs">
+                      {{ option.name | initials }}
+                    </div>
+                    <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
+                    <span class="font-normal block truncate">
+                      {{ option.name }}
+                    </span>
+                  </div>
+
+                  <!--
+                    Checkmark, only display for selected option.
+
+                    Highlighted: "text-white", Not Highlighted: "text-indigo-600"
+                  -->
+                  <span class="absolute inset-y-0 right-0 flex items-center pr-4">
+                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                  </span>
+
                 </li>
+
               </ul>
             </div>
           </div>
@@ -69,6 +94,9 @@
 
 <script>
 export default {
+  props: {
+    options: { type: Array, default: () => [] }
+  },
   data () {
     return {
       isOpen: false,

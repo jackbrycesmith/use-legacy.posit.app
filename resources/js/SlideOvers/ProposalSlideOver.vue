@@ -14,7 +14,7 @@
         <div class="fixed h-screen">
           <button
             @click="handleExtraCloseButtonHit"
-            class="absolute bottom-0 top-0 right-0 bg-white inline-block h-20 my-auto rounded-l-full w-7 shadow">
+            class="absolute bottom-0 top-0 right-0 bg-white inline-block h-20 my-auto rounded-l-full w-7 shadow focus:outline-none focus:shadow-xl">
             <svg class="h-5 w-5 ml-1 text-orange-400 animate-pulse" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M15 19l-7-7 7-7"></path></svg>
           </button>
         </div>
@@ -31,7 +31,7 @@
           <div class="flex items-center justify-between space-x-3">
             <h2 class="text-lg leading-7 font-medium text-orange-800 truncate">{{ proposal.name }}</h2>
             <div class="h-7 flex items-center">
-              <button @click="handleCloseButtonHit" aria-label="Close panel" class="text-orange-50 hover:text-white transition ease-in-out duration-150">
+              <button @click="handleCloseButtonHit" aria-label="Close panel" class="text-orange-50 hover:text-orange-600 focus:outline-none focus:text-orange-600 transition ease-in-out duration-150">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
@@ -54,11 +54,9 @@
               </div>
 
               <div class="flex space-x-2 justify-center">
-                <span>
-                    <div class="inline-flex justify-center items-center h-10 w-10 bg-white text-orange-400 rounded-full shadow-md">
-                      <!-- YOU -->
-                      <!-- TODO -->
-                      Y
+                <span :title="proposal.creator_name">
+                    <div class="inline-flex justify-center items-center h-10 w-10 bg-white text-orange-400 rounded-full shadow-md select-none">
+                      {{ proposal.creator_name | initials }}
                     </div>
                 </span>
               </div>
@@ -81,7 +79,9 @@
               </div>
 
               <div class="flex space-x-2 justify-center">
-                <ProposalRecipientSelector />
+                <ProposalRecipientSelector
+                  :options="proposal.recipient_options"
+                />
 
               </div>
             </div>
@@ -128,7 +128,7 @@
         <!-- TODO fix shadow -->
         <button
           @click="handleExtraCloseButtonHit"
-          class="absolute bottom-0 top-0 -ml-13 bg-white inline-block h-20 my-auto rounded-l-full w-7"
+          class="absolute bottom-0 top-0 -ml-13 bg-white inline-block h-20 my-auto rounded-l-full w-7 focus:outline-none"
           style="margin-left: -1.65rem; box-shadow: -5px 3px 10px -2px rgba(0, 0, 0, 0.1), -5px 10px 10px -5px rgba(0, 0, 0, 0.04);">
           <svg class="h-5 w-5 ml-1 text-orange-400" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7"></path></svg>
         </button>
