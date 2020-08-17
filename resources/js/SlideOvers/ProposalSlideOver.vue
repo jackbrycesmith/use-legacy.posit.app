@@ -27,7 +27,7 @@
     >
 
       <template #header="{ handleCloseButtonHit }">
-        <header class="space-y-1 py-6 px-4 bg-orange-300 sm:px-6">
+        <header class="space-y-1 py-6 px-4 relative bg-orange-300 sm:px-6">
           <div class="flex items-center justify-between space-x-3">
             <h2 class="text-lg leading-7 font-medium text-orange-800 truncate">{{ proposal.name }}</h2>
             <div class="h-7 flex items-center">
@@ -39,9 +39,45 @@
             </div>
           </div>
           <div>
-            <p class="text-sm leading-5 text-orange-800 text-opacity-75">
-              Get started below by filling in key details, choosing your template & managing access. Publish when ready!
+            <p class="flex items-center justify-center">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium leading-4 bg-indigo-100 text-indigo-800 mt-3">
+                <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-indigo-400" fill="currentColor" viewBox="0 0 8 8">
+                  <circle cx="4" cy="4" r="3" />
+                </svg>
+                {{ proposal.status_name | titleCase }}
+              </span>
             </p>
+          </div>
+
+          <!-- Creator / Recipient overlap -->
+          <div class="absolute h-15 left-0 right-0 flex items-center justify-around" style="bottom: -1.875rem;">
+
+            <!-- Creator -->
+            <div>
+              <div class="flex space-x-2 justify-center">
+                <span>
+                    <div class="inline-flex justify-center items-center h-10 w-10 bg-white text-orange-400 rounded-full shadow-md">
+                      <!-- YOU -->
+                      <!-- TODO -->
+                      Y
+                    </div>
+                </span>
+              </div>
+            </div>
+
+            <!-- Recipient -->
+            <div>
+              <div class="flex space-x-2 justify-center">
+                <span>
+                    <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md text-gray-400 hover:text-gray-500 transition ease-in-out duration-150 animate-bounce" title="Add proposal recipient" aria-label="Add proposal recipient">
+                      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                </span>
+              </div>
+            </div>
+
           </div>
         </header>
       </template>
@@ -52,55 +88,6 @@
             <!-- Section -->
             <div class="space-y-6 pt-6 pb-5">
 
-              <!-- Organisation Create/Read Access -->
-              <div class="space-y-2">
-                <h3 class="text-md font-medium leading-5 text-gray-900 mb-4">
-                  Control who has access...
-                </h3>
-
-                <div class="sm:grid sm:grid-cols-2">
-
-                  <!-- Team/Org member access -->
-                  <div class="flex flex-col border-b border-gray-50 sm:border-0 sm:border-r sm:pr-2">
-                    <h4 class="text-sm font-medium leading-5 text-gray-900 mb-1.5 text-center">
-                      Team Members
-                    </h4>
-
-                    <div>
-                      <div class="flex space-x-2 justify-center">
-                        <span>
-                            <div class="inline-flex justify-center items-center h-8 w-8 bg-gray-50 text-orange-400 rounded-full">
-                              <!-- YOU -->
-                              <!-- TODO -->
-                              Y
-                            </div>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Recipients -->
-                  <div class="flex flex-col border-t border-gray-50 sm:border-0 sm:border-l sm:pl-2">
-                    <h4 class="text-sm font-medium leading-5 text-gray-900 mb-1.5 text-center">
-                      Recipients
-                    </h4>
-
-                    <div>
-                      <div class="flex space-x-2 justify-center">
-                        <span>
-                            <div class="inline-flex justify-center items-center h-8 w-8 bg-gray-50 text-orange-400 rounded-full">
-                              <!-- YOU -->
-                              <!-- TODO -->
-                              Y
-                            </div>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
 
             </div>
 
@@ -108,9 +95,9 @@
             <div class="space-y-4 pt-4 pb-6">
               <!-- Next Actions -->
               <div class="space-y-2">
-                <h3 class="text-md font-medium leading-5 text-gray-900">
+<!--                 <h3 class="text-md font-medium leading-5 text-gray-900">
                   Define next steps/actions...
-                </h3>
+                </h3> -->
 
 
               </div>
