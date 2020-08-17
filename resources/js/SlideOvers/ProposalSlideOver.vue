@@ -81,13 +81,8 @@
               </div>
 
               <div class="flex space-x-2 justify-center">
-                <span>
-                    <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md text-gray-400 hover:text-gray-500 transition ease-in-out duration-150 animate-bounce" title="Add proposal recipient" aria-label="Add proposal recipient">
-                      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                      </svg>
-                    </button>
-                </span>
+                <ProposalRecipientSelector />
+
               </div>
             </div>
 
@@ -145,9 +140,10 @@
 
 <script>
 import BaseSlideOver from '@/SlideOvers/BaseSlideOver'
+import ProposalRecipientSelector from '@/Components/ProposalRecipientSelector'
 
 export default {
-  components: { BaseSlideOver },
+  components: { BaseSlideOver, ProposalRecipientSelector },
   props: {
     proposal: { type: Object }
   },
