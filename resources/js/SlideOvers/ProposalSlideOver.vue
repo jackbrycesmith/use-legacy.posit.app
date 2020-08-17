@@ -40,13 +40,19 @@
           </div>
 
           <!-- height increase -->
-          <div class="h-5" />
+          <div class="h-10" />
 
           <!-- Creator / Recipient overlap -->
           <div class="absolute h-15 left-0 right-0 flex items-center justify-evenly" style="bottom: -1.875rem;">
 
             <!-- Creator -->
-            <div>
+            <div class="relative">
+
+              <!-- Creator Hint -->
+              <div class="absolute w-full flex items-center justify-center text-xs tracking-wider uppercase text-orange-50 font-semibold -mt-8">
+                Creator
+              </div>
+
               <div class="flex space-x-2 justify-center">
                 <span>
                     <div class="inline-flex justify-center items-center h-10 w-10 bg-white text-orange-400 rounded-full shadow-md">
@@ -67,7 +73,13 @@
             </span>
 
             <!-- Recipient -->
-            <div>
+            <div class="relative">
+
+              <!-- Recipient Hint -->
+              <div class="absolute w-full flex items-center justify-center text-xs tracking-wider uppercase text-orange-50 font-semibold -mt-8">
+                Recipient
+              </div>
+
               <div class="flex space-x-2 justify-center">
                 <span>
                     <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md text-gray-400 hover:text-gray-500 transition ease-in-out duration-150 animate-bounce" title="Add proposal recipient" aria-label="Add proposal recipient">
