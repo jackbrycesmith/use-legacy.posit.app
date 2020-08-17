@@ -38,19 +38,12 @@
               </button>
             </div>
           </div>
-          <div>
-            <p class="flex items-center justify-center">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium leading-4 bg-indigo-100 text-indigo-800 mt-3">
-                <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-indigo-400" fill="currentColor" viewBox="0 0 8 8">
-                  <circle cx="4" cy="4" r="3" />
-                </svg>
-                {{ proposal.status_name | titleCase }}
-              </span>
-            </p>
-          </div>
+
+          <!-- height increase -->
+          <div class="h-5" />
 
           <!-- Creator / Recipient overlap -->
-          <div class="absolute h-15 left-0 right-0 flex items-center justify-around" style="bottom: -1.875rem;">
+          <div class="absolute h-15 left-0 right-0 flex items-center justify-evenly" style="bottom: -1.875rem;">
 
             <!-- Creator -->
             <div>
@@ -64,6 +57,14 @@
                 </span>
               </div>
             </div>
+
+            <!-- Status -->
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium leading-4 bg-white text-indigo-800 shadow-md">
+              <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-indigo-400" fill="currentColor" viewBox="0 0 8 8">
+                <circle cx="4" cy="4" r="3" />
+              </svg>
+              {{ proposal.status_name | titleCase }}
+            </span>
 
             <!-- Recipient -->
             <div>
