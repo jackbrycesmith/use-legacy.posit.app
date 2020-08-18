@@ -44,8 +44,15 @@
                     placeholder="John Doe">
                 </div>
                 <button
-                  class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-200 shadow-inner text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-inner focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
-                  <svg viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 text-gray-400"><path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path></svg>
+                  class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-200 shadow-inner text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-inner focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
+                  :class="{ 'cursor-not-allowed': !canAddNewRecipient }"
+                  :disabled="!canAddNewRecipient"
+                  @click="handleAddNewRecipient">
+                  <svg v-if="!isAdding" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 text-gray-400"><path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path></svg>
+                  <svg v-else class="animate-spin h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
                   <span class="ml-2">Add</span>
                 </button>
               </div>
@@ -100,7 +107,7 @@
 </template>
 
 <script>
-import { filter, set } from 'lodash-es'
+import { filter, set, trim } from 'lodash-es'
 
 export default {
   props: {
@@ -112,6 +119,7 @@ export default {
   data () {
     return {
       isOpen: false,
+      isAdding: false,
       input: '',
       vcoConfig: {
         handler: this.onClickOutside,
@@ -124,6 +132,10 @@ export default {
     }
   },
   computed: {
+    canAddNewRecipient () {
+      const hasInput = trim(this.input).length > 0
+      return hasInput && !this.isAdding
+    },
     shouldAnimateBounce () {
       return this.canBounce && !this.isOpen && !this.proposal.has_recipient
     },
@@ -161,6 +173,17 @@ export default {
         this.proposal.updateRecipient()
       }
       this.$refs.triggerButton?.focus()
+    },
+    async handleAddNewRecipient () {
+      try {
+        this.isAdding = true
+        const contact = await this.proposal.addRecipient({ name: this.input })
+        this.isAdding = false
+        this.isOpen = false
+        this.$refs.triggerButton?.focus()
+      } catch (e) {
+        this.isAdding = false
+      }
     }
   },
   watch: {

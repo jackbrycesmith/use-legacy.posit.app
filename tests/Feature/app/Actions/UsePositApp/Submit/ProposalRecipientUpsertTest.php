@@ -55,7 +55,7 @@ test('user can add proposal recipient', function () {
         ['name' => 'Recipient Name']
     );
 
-    $response->assertStatus(204);
+    $response->assertStatus(201);
     assertEquals(1, $proposal->recipients()->count());
 });
 
@@ -120,7 +120,7 @@ test('user can update the proposal recipient', function () {
         route('use.proposal.recipients.update', ['proposal' => $proposal, 'recipient' => $contact->id])
     );
 
-    $response->assertStatus(204);
+    $response->assertStatus(200);
     assertEquals(1, $proposal->recipients()->count());
     assertEquals($contact->id, $proposal->recipient->id);
 });

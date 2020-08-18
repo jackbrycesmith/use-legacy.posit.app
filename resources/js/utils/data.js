@@ -1,4 +1,5 @@
 import { isArray, isObject } from './is'
+import { each, find, indexOf, isFunction } from 'lodash-es'
 
 /**
  * Gets the payload data; i.e. retrieve contents of 'data' key.
@@ -23,4 +24,36 @@ export function getPayloadData (payload, key = 'data') {
   }
 
   return payload
+}
+
+/**
+ * Appends an or update data.
+ *
+ * @param {Array} data The data
+ * @param {Array} sourceData The source data
+ * @param {Function} [transformer=null] The transformer
+ * @return {Array} { description_of_the_return_value }
+ */
+export function appendOrUpdateData (data, sourceData, key = 'id', transformer = null) {
+  if (data.constructor !== Array) { data = [data] }
+
+  const canTransform = isFunction(transformer)
+
+  each(data, dataItem => {
+    if (canTransform) {
+      dataItem = transformer(dataItem)
+    }
+
+    var item = find(sourceData, { [key]: dataItem[key] })
+
+    if (item) {
+      // If contains item, update item
+      Vue.set(sourceData, indexOf(sourceData, item), dataItem)
+    } else {
+      // Add to list
+      sourceData.push(dataItem)
+    }
+  })
+
+  return sourceData
 }

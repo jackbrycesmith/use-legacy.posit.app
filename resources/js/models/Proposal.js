@@ -4,7 +4,8 @@ import User from './User'
 import ProposalContent from './ProposalContent'
 import Organisation from './Organisation'
 import OrganisationContact from './OrganisationContact'
-import { get, head, isNil } from 'lodash-es'
+import { appendOrUpdateData } from '@/utils/data'
+import { get, set, head, isNil } from 'lodash-es'
 
 export default class Proposal extends Model {
 
@@ -51,6 +52,18 @@ export default class Proposal extends Model {
     if (isNil(contactId)) return
 
     await Http.put(route('use.proposal.recipients.update', { proposal: this.uuid, recipient: contactId }))
+  }
+
+  async addRecipient (payload) {
+    const response = await Http.post(
+      route('use.proposal.recipients.add-submit', { proposal: this.uuid }),
+      payload
+    )
+
+    const contact = OrganisationContact.make(response)
+    set(this, 'recipient', contact)
+    set(this.org, 'contacts', appendOrUpdateData(contact, this.recipient_options))
+    return contact
   }
 
   getRelationships() {

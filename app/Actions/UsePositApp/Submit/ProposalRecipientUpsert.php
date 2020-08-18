@@ -2,6 +2,7 @@
 
 namespace App\Actions\UsePositApp\Submit;
 
+use App\Http\Resources\OrgContactResource;
 use App\Models\OrganisationContact;
 use App\Models\Proposal;
 use Illuminate\Routing\Router;
@@ -60,10 +61,12 @@ class ProposalRecipientUpsert extends Action
         }
 
         $proposal->recipients()->sync([$recipient->id]);
+
+        return $recipient;
     }
 
-    public function response()
+    public function response(OrganisationContact $recipient)
     {
-        return response()->noContent();
+        return new OrgContactResource($recipient);
     }
 }
