@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\OrganisationContact;
 use App\Models\Proposal;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -63,6 +64,32 @@ class ProposalPolicy
         // TODO whether a ProposalUser has read/write abilities
         if (! $proposal->users->contains($user)) {
             return Response::deny('You do not have permission to view this proposal.');
+        }
+
+        return Response::allow();
+    }
+
+    /**
+     * Determine whether the user can upsert a recipient on the model.
+     *
+     * @param \App\Models\User $user The user
+     * @param \App\Models\Proposal $proposal The proposal
+     * @param \App\Models\OrganisationContac $contact The contact
+     *
+     * @return mixed
+     */
+    public function upsertRecipient(User $user, Proposal $proposal, ?OrganisationContact $contact)
+    {
+        // TODO Would be nice to not load models? check hasmanydeep package
+        // TODO whether a ProposalUser has read/write abilities
+        if (! $proposal->users->contains($user)) {
+            return Response::deny('You do not have permission to view this proposal.');
+        }
+
+        if (! is_null($contact)) {
+            if ($contact->organisation_id !== $proposal->organisation_id) {
+                return Response::deny('Contact does not belong to the proposal organisation.');
+            }
         }
 
         return Response::allow();
