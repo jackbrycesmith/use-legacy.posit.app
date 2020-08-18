@@ -39,6 +39,7 @@
                 <div class="relative flex-grow focus-within:z-10">
                   <input
                     ref="input"
+                    v-model="input"
                     class="form-input border-gray-200 shadow-inner block w-full rounded-none rounded-l-md transition ease-in-out duration-150 sm:text-sm sm:leading-5 focus:shadow-inner"
                     placeholder="John Doe">
                 </div>
@@ -57,7 +58,7 @@
                 class="h-48 outline-none overflow-y-scroll">
 
                 <li
-                  v-for="(option, o) in options"
+                  v-for="(option, o) in filteredOptions"
                   :key="option.id"
                   :tabindex="o"
                   role="option"
@@ -97,14 +98,18 @@
 </template>
 
 <script>
+import { filter } from 'lodash-es'
+
 export default {
   props: {
     options: { type: Array, default: () => [] },
-    proposal: { type: Object }
+    proposal: { type: Object },
+    filterSearchValue: { type: String, default: 'name' },
   },
   data () {
     return {
       isOpen: false,
+      input: '',
       vcoConfig: {
         handler: this.onClickOutside,
         middleware: this.determineWhetherClickOutside,
@@ -118,6 +123,13 @@ export default {
   computed: {
     shouldAnimateBounce () {
       return !this.isOpen && !this.proposal.has_recipient
+    },
+    filteredOptions () {
+      const query = this.input
+
+      return filter(this.options, (option) => {
+        return option[this.filterSearchValue].toLowerCase().indexOf(query.toLowerCase()) > -1
+      })
     }
   },
   methods: {
@@ -129,9 +141,6 @@ export default {
         this.isOpen = false
       }
     },
-    handleAddButtonBlur (event) {
-      // this.$refs.existingContactsList?.firstElementChild?.focus()
-    }
   },
   watch: {
     isOpen: {
@@ -140,6 +149,8 @@ export default {
           this.$nextTick(() => {
             this.$refs.input?.focus()
           })
+        } else {
+          this.input = ''
         }
       }
     }
