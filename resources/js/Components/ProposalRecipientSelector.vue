@@ -61,8 +61,10 @@
                   v-for="(option, o) in filteredOptions"
                   :key="option.id"
                   :tabindex="o"
+                  :aria-selected="isSelected(option)"
                   role="option"
-                  class="relative block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
+                  class="relative block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                  @click="selectOption(option)">
 
                   <div class="flex items-center space-x-3">
 
@@ -80,7 +82,7 @@
 
                     Highlighted: "text-white", Not Highlighted: "text-indigo-600"
                   -->
-                  <span class="absolute inset-y-0 right-0 flex items-center pr-4">
+                  <span v-if="isSelected(option)" class="absolute inset-y-0 right-0 flex items-center pr-4">
                     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                       <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                     </svg>
@@ -98,13 +100,14 @@
 </template>
 
 <script>
-import { filter } from 'lodash-es'
+import { filter, set } from 'lodash-es'
 
 export default {
   props: {
     options: { type: Array, default: () => [] },
     proposal: { type: Object },
     filterSearchValue: { type: String, default: 'name' },
+    canBounce: { type: Boolean, default: true }
   },
   data () {
     return {
@@ -122,7 +125,7 @@ export default {
   },
   computed: {
     shouldAnimateBounce () {
-      return !this.isOpen && !this.proposal.has_recipient
+      return this.canBounce && !this.isOpen && !this.proposal.has_recipient
     },
     filteredOptions () {
       const query = this.input
@@ -130,9 +133,15 @@ export default {
       return filter(this.options, (option) => {
         return option[this.filterSearchValue].toLowerCase().indexOf(query.toLowerCase()) > -1
       })
+    },
+    selectedOptionId () {
+      return this.proposal?.recipient?.id
     }
   },
   methods: {
+    isSelected (option) {
+      return this.selectedOptionId === option.id
+    },
     handleSelectButtonClick () {
       this.isOpen = !this.isOpen
     },
@@ -141,6 +150,12 @@ export default {
         this.isOpen = false
       }
     },
+    selectOption (option) {
+      const updatedProposal = set(this.proposal, 'recipient', option)
+      this.$emit('update:proposal', updatedProposal)
+      this.isOpen = false
+      this.$refs.triggerButton?.focus()
+    }
   },
   watch: {
     isOpen: {

@@ -7,11 +7,27 @@
       :model.sync="title"
       @edit-done="handleEditTitleDone" />
 
+    <div class="mt-10 flex items-center">
+      <span>Created for</span>
+
+      <ProposalRecipientSelector
+        :can-bounce="false"
+        :proposal.sync="proposal"
+        :options="proposal.recipient_options"
+        class="mx-2"
+      />
+
+      <span>by {{ proposal.creator_name }}</span>
+
+
+    </div>
+
   </div>
 </template>
 
 <script>
 import ContentEditable from '@/Components/ContentEditable'
+import ProposalRecipientSelector from '@/Components/ProposalRecipientSelector'
 import Proposal from '@/models/Proposal'
 
 export default {
@@ -19,7 +35,7 @@ export default {
     proposal: { type: Object }
   },
   components: {
-    ContentEditable
+    ContentEditable, ProposalRecipientSelector
   },
   data () {
     return {
