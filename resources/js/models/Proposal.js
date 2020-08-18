@@ -46,6 +46,13 @@ export default class Proposal extends Model {
     return get(this.recipient, 'name')
   }
 
+  async updateRecipient () {
+    const contactId = this.recipient?.id
+    if (isNil(contactId)) return
+
+    await Http.put(route('use.proposal.recipients.update', { proposal: this.uuid, recipient: contactId }))
+  }
+
   getRelationships() {
     return {
       users: User,
