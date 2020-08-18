@@ -21,9 +21,9 @@ class OrgContactUpsert extends Action
      *
      * @return bool
      */
-    public function authorize(Organisation $org)
+    public function authorize(Organisation $org, ?OrganisationContact $contact = null)
     {
-        return $this->can('update', $org);
+        return $this->can('upsertContact', [$org, $contact]);
     }
 
     /**

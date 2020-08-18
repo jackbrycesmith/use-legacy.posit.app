@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Organisation;
+use App\Models\OrganisationContact;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
@@ -81,6 +82,30 @@ class OrganisationPolicy
         }
 
         // TODO other update restrictions...
+        return Response::allow();
+    }
+
+    /**
+     * Determine whether the user can upsert a contact on the model.
+     *
+     * @param \App\Models\User $user
+     * @param \App\Organisation $organisation
+     * @param \App\Models\OrganisationContac $contact
+     *
+     * @return mixed
+     */
+    public function upsertContact(User $user, Organisation $organisation, ?OrganisationContact $contact)
+    {
+        if (! $user->isMemberOfOrganisation($organisation)) {
+            return Response::deny('You do not belong to the provided organisation.');
+        }
+
+        if (! is_null($contact)) {
+            if ($contact->organisation_id !== $organisation->id) {
+                return Response::deny('Contact does not belong to provided organisation.');
+            }
+        }
+
         return Response::allow();
     }
 
