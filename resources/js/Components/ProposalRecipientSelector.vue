@@ -62,7 +62,9 @@
                 ref="existingContactsList"
                 role="listbox"
                 tabindex="-1"
-                class="h-48 outline-none overflow-y-scroll">
+                class="h-48 outline-none overflow-y-scroll"
+                @keydown.enter="selectOptionEnterPressed"
+                >
 
                 <li
                   v-for="(option, o) in filteredOptions"
@@ -71,7 +73,8 @@
                   :aria-selected="isSelected(option)"
                   role="option"
                   class="relative block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                  @click="selectOption(option)">
+                  @click="selectOption(option)"
+                  @focus="handleOptionFocus(option)">
 
                   <div class="flex items-center space-x-3">
 
@@ -120,6 +123,7 @@ export default {
     return {
       isOpen: false,
       isAdding: false,
+      focusedOption: null,
       input: '',
       vcoConfig: {
         handler: this.onClickOutside,
@@ -148,7 +152,7 @@ export default {
     },
     selectedOptionId () {
       return this.proposal?.recipient?.id
-    }
+    },
   },
   methods: {
     isSelected (option) {
@@ -161,6 +165,15 @@ export default {
       if (this.isOpen) {
         this.isOpen = false
       }
+    },
+    selectOptionEnterPressed (e) {
+      e.preventDefault()
+      if (this.isOpen && this.focusedOption) {
+        this.selectOption(this.focusedOption)
+      }
+    },
+    handleOptionFocus (option) {
+      this.focusedOption = option
     },
     selectOption (option) {
       // TODO probably shouldn't be mutating this directly, but seems to be working fine
@@ -195,6 +208,7 @@ export default {
           })
         } else {
           this.input = ''
+          this.focusedOption = null
         }
       }
     }
