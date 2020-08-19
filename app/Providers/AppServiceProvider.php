@@ -14,6 +14,7 @@ use App\Models\StripeCustomer;
 use App\Models\StripeEvent;
 use App\Models\StripePaymentIntent;
 use App\Models\User;
+use App\Observers\OrganisationContactObserver;
 use App\Observers\ProposalObserver;
 use App\Observers\UserObserver;
 use CloudCreativity\LaravelStripe\Facades\Stripe;
@@ -42,9 +43,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Proposal::observe(ProposalObserver::class);
-        User::observe(UserObserver::class);
-
+        $this->setModelObservers();
         $this->setRelationMorphMap();
 
         // \URL::forceScheme('https');
@@ -75,6 +74,20 @@ class AppServiceProvider extends ServiceProvider
             'stripe_payment_intent' => StripePaymentIntent::class,
             'user' => User::class,
         ]);
+
+        return $this;
+    }
+
+    /**
+     * Sets the event observers for models.
+     *
+     * @return self ( description_of_the_return_value )
+     */
+    protected function setModelObservers()
+    {
+        Proposal::observe(ProposalObserver::class);
+        User::observe(UserObserver::class);
+        OrganisationContact::observe(OrganisationContactObserver::class);
 
         return $this;
     }

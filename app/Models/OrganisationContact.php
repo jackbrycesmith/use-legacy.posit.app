@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Casts\EncryptCast;
 use App\Models\Concerns\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Str;
 
 class OrganisationContact extends Model
 {
@@ -27,6 +29,7 @@ class OrganisationContact extends Model
         'user_id' => 'integer',
         'organisation_id' => 'integer',
         'meta' => 'array',
+        'access_code' => EncryptCast::class.':0'
     ];
 
     /**
@@ -49,4 +52,14 @@ class OrganisationContact extends Model
         return $this->morphOne(StripeCustomer::class, 'model');
     }
 
+    /**
+     * Creates an access code.
+     *
+     * @return string
+     */
+    public static function createAccessCode(): string
+    {
+        $length = config('posit-settings.org_contact.access_code_length', 16);
+        return Str::random($length);
+    }
 }

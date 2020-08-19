@@ -19,6 +19,7 @@ class CreateOrganisationContactsTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null'); // TODO they might become a user?
             $table->foreignId('organisation_id')->constrained()->onDelete('cascade');
             $table->json('meta'); // TODO separate fields for name, emails, something to store their public encryption keys?
+            $table->text('access_code'); // e.g. to access proposals they're allowed to access
             $table->timestamps();
         });
     }
