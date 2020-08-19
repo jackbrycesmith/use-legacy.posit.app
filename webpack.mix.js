@@ -57,7 +57,7 @@ mix.options({
     },
   },
   plugins: [
-    new LiveReloadPlugin()
+    // new LiveReloadPlugin()
   ]
     // plugins: [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)],
 })
