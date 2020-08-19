@@ -19,7 +19,7 @@ it('encrypts string field with serialisation by default', function () {
     assertEquals($plaintext, decrypt($encryptCastValue));
 
     assertNotEquals($plaintext, decrypt($encryptCastValue, false));
-})->only();
+});
 
 it('can encrypt string field without serialisation', function () {
     $modelClass = new class extends Model {
@@ -38,4 +38,4 @@ it('can encrypt string field without serialisation', function () {
 
     $this->expectException(\Exception::class);
     decrypt($encryptCastValue);
-})->only();
+});
