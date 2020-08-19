@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Casts\EncryptCast;
 use App\Models\Concerns\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,7 +28,6 @@ class OrganisationContact extends Model
         'user_id' => 'integer',
         'organisation_id' => 'integer',
         'meta' => 'array',
-        'access_code' => EncryptCast::class.':0'
     ];
 
     /**

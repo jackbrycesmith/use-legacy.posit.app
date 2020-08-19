@@ -14,7 +14,9 @@ class OrganisationContactObserver
      */
     public function creating(OrganisationContact $organisationContact)
     {
-        $organisationContact->access_code = OrganisationContact::createAccessCode();
+        if (is_null($organisationContact->access_code)) {
+            $organisationContact->access_code = OrganisationContact::createAccessCode();
+        }
     }
 
     /**
