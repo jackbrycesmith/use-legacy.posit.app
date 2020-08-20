@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Http;
+
+use App\Models\Organisation;
+use App\Models\OrganisationContact;
+use App\Models\Proposal;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\Cookie;
+
+class PublicProposalAccessCookie
+{
+    /**
+     * Create a new proposal access cookie.
+     *
+     * @param \App\Models\OrganisationContact $contact The contact
+     *
+     * @return \Symfony\Component\HttpFoundation\Cookie
+     */
+    public static function create(OrganisationContact $contact)
+    {
+        $expiresAt = Carbon::now()->addDays(
+            config('posit-settings.public_proposal_access_cookie_expiry_days')
+        );
+
+        $cookieName = self::cookieName($contact->organisation);
+
+        return new Cookie($cookieName, base64_encode(json_encode([
+            'contact' => encrypt($contact->uuid, false),
+            'expires_at' => $expiresAt->getTimestamp(),
+            'mac' => hash_hmac('SHA256', $expiresAt->getTimestamp(), $contact->access_code),
+        ])), $expiresAt);
+    }
+
+    /**
+     * Determine if the given proposal access cookie is valid.
+     *
+     * @param \App\Models\Proposal $proposal The proposal
+     * @param string $cookie
+     *
+     * @return bool
+     */
+    public static function isValid(Proposal $proposal, string $cookie)
+    {
+        $payload = json_decode(base64_decode($cookie), true);
+        if (! is_array($payload)) return false;
+
+        // Check for organisation_contact uuid in cookie
+        $cookieContactValue = Arr::get($payload, 'contact');
+        if (is_null($cookieContactValue)) return false;
+        $contactUuid = decrypt($cookieContactValue, false);
+        if (! Uuid::isValid($contactUuid)) return false;
+
+        // Check this organisation contact exists in the proposal org
+        $contact = OrganisationContact::where([
+            'organisation_id' => $proposal->organisation_id,
+            'uuid' => $contactUuid
+        ])->first();
+        if (is_null($contact)) return false;
+
+        // Check that it is a proposal recipient...
+        $isProposalRecipient = $proposal->recipients()
+            ->where('organisation_contact_id', $contact->id)
+            ->exists();
+        if (! $isProposalRecipient) return false;
+
+        return is_numeric($payload['expires_at'] ?? null) &&
+            isset($payload['mac']) &&
+            hash_equals(hash_hmac('SHA256', $payload['expires_at'], $contact->access_code), $payload['mac']) &&
+            (int) $payload['expires_at'] >= Carbon::now()->getTimestamp();
+    }
+
+    /**
+     * Returns the name for the organisation access cookie
+     *
+     * @param \App\Models\Organisation $org The organization
+     *
+     * @return string
+     */
+    public static function cookieName(Organisation $org): string
+    {
+        return "org_{$org->uuid}";
+    }
+
+}
