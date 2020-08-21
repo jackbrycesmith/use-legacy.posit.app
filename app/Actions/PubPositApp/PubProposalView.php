@@ -12,7 +12,10 @@ class PubProposalView extends Action
 {
     public static function routes(Router $router)
     {
-        $router->domain(pub_posit_domain())->middleware(['web'])->get('/proposal/{proposal:uuid}', static::class)->name('pub.proposal.view');
+        $router->domain(pub_posit_domain())
+            ->middleware(['web', 'public.proposal.access'])
+            ->get('/proposal/{proposal:uuid}', static::class)
+            ->name('pub.proposal.view');
     }
 
     /**
@@ -42,15 +45,12 @@ class PubProposalView extends Action
      */
     public function handle(Proposal $proposal)
     {
-        if ($proposal->status === Proposal::STATUS_DRAFT) {
-            return Inertia::render('Pub/ProposalView', [
-                'is_draft' => true
-            ]);
-        }
+        // TODO restricted/limited proposal attributes based on status...
 
         $proposal->loadMissing(['proposalContent', 'stripeCheckoutSession']);
 
         return Inertia::render('Pub/ProposalView', [
+            'status' => $proposal->status,
             'proposal' => new ProposalResource($proposal),
             'stripe_pub_key' => config('services.stripe.key')
         ]);

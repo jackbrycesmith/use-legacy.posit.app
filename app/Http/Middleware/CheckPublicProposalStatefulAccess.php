@@ -6,7 +6,6 @@ use App\Http\PublicProposalAccessCookie;
 use App\Models\Proposal;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Redirect;
 
 class CheckPublicProposalStatefulAccess

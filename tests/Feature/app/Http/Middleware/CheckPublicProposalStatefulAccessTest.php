@@ -18,7 +18,7 @@ test('if no proposal resolved, then 404 response', function () {
 
     $response = $this->get("/test-proposal-access/abc");
     $response->assertStatus(404);
-})->only();
+});
 
 test('skip access check if proposal in status', function ($status) {
     $org = factory(Organisation::class)->create();
@@ -33,8 +33,7 @@ test('skip access check if proposal in status', function ($status) {
     $response = $this->get("/test-proposal-access/{$proposal->uuid}");
     $response->assertStatus(200);
 })
-->with(Proposal::PUBLIC_ACCESS_AUTH_BYPASS_STATUSES)
-->only();
+->with(Proposal::PUBLIC_ACCESS_AUTH_BYPASS_STATUSES);
 
 test('if no valid proposal access cookie, redirect to public proposal auth page', function ($status) {
     $org = factory(Organisation::class)->create();
@@ -49,8 +48,7 @@ test('if no valid proposal access cookie, redirect to public proposal auth page'
     $response = $this->get("/test-proposal-access/{$proposal->uuid}");
     $response->assertRedirect(route('pub.proposal.view.auth', $proposal));
 })
-->with(Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES)
-->only();
+->with(Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES);
 
 test('cannot access if authed for organisation, but not a recipient of the requested proposal', function ($status) {
     $org = factory(Organisation::class)->create();
@@ -75,8 +73,7 @@ test('cannot access if authed for organisation, but not a recipient of the reque
     $response = $this->get("/test-proposal-access/{$proposal->uuid}");
     $response->assertRedirect(route('pub.proposal.view.auth', $proposal));
 })
-->with(Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES)
-->only();
+->with(Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES);
 
 test('if valid proposal access cookie, can continue request', function ($status) {
     $org = factory(Organisation::class)->create();
@@ -102,5 +99,4 @@ test('if valid proposal access cookie, can continue request', function ($status)
     $response = $this->get("/test-proposal-access/{$proposal->uuid}");
     $response->assertStatus(200);
 })
-->with(Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES)
-->only();
+->with(Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES);
