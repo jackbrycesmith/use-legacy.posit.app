@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Casts\StrLimitCast;
 use App\Models\Concerns\HasStripeCheckoutSession;
 use App\Models\Concerns\HasUuid;
+use App\Models\OrganisationContact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -168,5 +169,19 @@ class Proposal extends Model
             (new ProposalUser)->organisationMember(),
             (new OrganisationMember)->user()
         );
+    }
+
+    /**
+     * Retrieve the organisation contact recipient for the given access code.
+     *
+     * @param string $accessCode The access code
+     *
+     * @return OrganisationContact|null
+     */
+    public function recipientForAccessCode(string $accessCode): ?OrganisationContact
+    {
+        return $this->recipients()->where(function ($query) use ($accessCode) {
+            $query->where('access_code', $accessCode);
+        })->first();
     }
 }

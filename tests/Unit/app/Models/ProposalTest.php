@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Organisation;
 use App\Models\OrganisationContact;
 use App\Models\OrganisationMember;
+use App\Models\Proposal;
 use App\Models\ProposalUser;
 use App\Models\User;
 
@@ -51,3 +53,25 @@ test('proposal has a recipient', function () {
     ]);
 });
 
+test('proposal cannot get recipient for wrong given access code', function () {
+    $org = factory(Organisation::class)->create();
+    $proposal = factory(Proposal::class)->create(['organisation_id' => $org->id]);
+    $contact = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
+    $contact2 = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
+    $proposal->recipients()->sync([$contact->id, $contact2->id]);
+
+    $recipient = $proposal->recipientForAccessCode('wrong');
+    assertNull($recipient);
+});
+
+test('proposal can get recipient for given access code', function () {
+    $org = factory(Organisation::class)->create();
+    $proposal = factory(Proposal::class)->create(['organisation_id' => $org->id]);
+    $contact = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
+    $contact2 = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
+    $proposal->recipients()->sync([$contact->id, $contact2->id]);
+
+    $recipient = $proposal->recipientForAccessCode($contact->access_code);
+    assertInstanceOf(OrganisationContact::class, $recipient);
+    assertEquals($contact->id, $recipient->id);
+});
