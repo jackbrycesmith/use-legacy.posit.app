@@ -77,6 +77,11 @@ class Proposal extends Model
         return in_array($name, self::ALLOWED_STATUSES);
     }
 
+    public function requiresLiteResource(): bool
+    {
+        return in_array($this->status, self::PUBLIC_ACCESS_AUTH_BYPASS_STATUSES);
+    }
+
     /**
      * Get the organisation that this proposal is created under
      *

@@ -2,6 +2,7 @@
 
 namespace App\Actions\PubPositApp;
 
+use App\Http\Resources\ProposalLiteResource;
 use App\Http\Resources\ProposalResource;
 use App\Models\Proposal;
 use Illuminate\Routing\Router;
@@ -45,13 +46,15 @@ class PubProposalView extends Action
      */
     public function handle(Proposal $proposal)
     {
-        // TODO restricted/limited proposal attributes based on status...
-
-        $proposal->loadMissing(['proposalContent', 'stripeCheckoutSession']);
+        if ($proposal->requiresLiteResource()) {
+            $proposalResource = new ProposalLiteResource($proposal);
+        } else {
+            $proposal->loadMissing(['proposalContent', 'stripeCheckoutSession']);
+            $proposalResource = new ProposalResource($proposal);
+        }
 
         return Inertia::render('Pub/ProposalView', [
-            'status' => $proposal->status,
-            'proposal' => new ProposalResource($proposal),
+            'proposal' => $proposalResource,
             'stripe_pub_key' => config('services.stripe.key')
         ]);
     }
