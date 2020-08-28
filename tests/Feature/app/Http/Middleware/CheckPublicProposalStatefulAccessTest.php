@@ -6,6 +6,7 @@ use App\Models\Organisation;
 use App\Models\OrganisationContact;
 use App\Models\Proposal;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 test('if no proposal resolved, then 404 response', function () {
     $org = factory(Organisation::class)->create();
@@ -16,7 +17,7 @@ test('if no proposal resolved, then 404 response', function () {
     })
     ->middleware(CheckPublicProposalStatefulAccess::class);
 
-    $response = $this->get("/test-proposal-access/abc");
+    $response = $this->get("/test-proposal-access/" . Str::uuid());
     $response->assertStatus(404);
 });
 

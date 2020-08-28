@@ -93,6 +93,21 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'postgres-test' => [
+            'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => 5432,//env('DB_PORT', '5432'),
+            'database' => 'posit-app-test',// env('DB_DATABASE', 'forge'),
+            'username' => 'jack',// env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),

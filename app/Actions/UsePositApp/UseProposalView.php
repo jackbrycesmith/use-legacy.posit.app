@@ -4,6 +4,7 @@ namespace App\Actions\UsePositApp;
 
 use App\Http\Resources\ProposalResource;
 use App\Models\Proposal;
+use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
@@ -12,8 +13,11 @@ class UseProposalView extends Action
 {
     public static function routes(Router $router)
     {
-        // Would be nice to specify the domain route here...
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->get('/proposal/{proposal:uuid}', static::class)->name('use.proposal.view');
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth'])
+            ->get('/proposal/{proposal:uuid}', static::class)
+            ->where('proposal', Constant::PATTERN_UUID)
+            ->name('use.proposal.view');
     }
 
     /**

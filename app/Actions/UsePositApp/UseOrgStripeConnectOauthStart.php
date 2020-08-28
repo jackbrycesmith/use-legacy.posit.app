@@ -3,6 +3,7 @@
 namespace App\Actions\UsePositApp;
 
 use App\Models\Organisation;
+use App\Utils\Constant;
 use CloudCreativity\LaravelStripe\Facades\Stripe;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Request;
@@ -12,7 +13,11 @@ class UseOrgStripeConnectOauthStart extends Action
 {
     public static function routes(Router $router)
     {
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->get('/org/{org:uuid}/stripe-connect-oauth-start', static::class)->name('use.org.stripe-connect-oauth-start');
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth'])
+            ->get('/org/{org:uuid}/stripe-connect-oauth-start', static::class)
+            ->where('org', Constant::PATTERN_UUID)
+            ->name('use.org.stripe-connect-oauth-start');
     }
 
     /**

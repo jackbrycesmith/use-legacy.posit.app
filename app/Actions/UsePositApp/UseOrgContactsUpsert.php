@@ -6,6 +6,7 @@ use App\Http\Resources\OrgContactResource;
 use App\Http\Resources\OrganisationResource;
 use App\Models\Organisation;
 use App\Models\OrganisationContact;
+use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
@@ -14,8 +15,17 @@ class UseOrgContactsUpsert extends Action
 {
     public static function routes(Router $router)
     {
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->get('/org/{org:uuid}/contacts/add', static::class)->name('use.org.contacts.add');
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->get('/org/{org:uuid}/contacts/{contact}/edit', static::class)->name('use.org.contacts.edit');
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth'])
+            ->get('/org/{org:uuid}/contacts/add', static::class)
+            ->where('org', Constant::PATTERN_UUID)
+            ->name('use.org.contacts.add');
+
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth'])
+            ->get('/org/{org:uuid}/contacts/{contact}/edit', static::class)
+            ->where('org', Constant::PATTERN_UUID)
+            ->name('use.org.contacts.edit');
     }
 
     /**

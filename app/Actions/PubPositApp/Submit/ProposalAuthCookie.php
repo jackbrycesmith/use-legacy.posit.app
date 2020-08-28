@@ -4,6 +4,7 @@ namespace App\Actions\PubPositApp\Submit;
 
 use App\Http\PublicProposalAccessCookie;
 use App\Models\Proposal;
+use App\Utils\Constant;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Validation\ValidationException;
@@ -14,8 +15,9 @@ class ProposalAuthCookie extends Action
     public static function routes(Router $router)
     {
         $router->domain(pub_posit_domain())
-            ->post('/proposal/{proposal:uuid}/auth', static::class)
             ->middleware(['web'])
+            ->post('/proposal/{proposal:uuid}/auth', static::class)
+            ->where('proposal', Constant::PATTERN_UUID)
             ->name('pub.proposal.submit.proposal-auth-cookie');
     }
 

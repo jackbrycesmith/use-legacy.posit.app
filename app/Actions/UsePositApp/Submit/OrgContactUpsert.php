@@ -4,6 +4,7 @@ namespace App\Actions\UsePositApp\Submit;
 
 use App\Models\Organisation;
 use App\Models\OrganisationContact;
+use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Redirect;
 use Lorisleiva\Actions\Action;
@@ -12,8 +13,17 @@ class OrgContactUpsert extends Action
 {
     public static function routes(Router $router)
     {
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->post('/org/{org:uuid}/contacts/add', static::class)->name('use.org.contacts.add-submit');
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->put('/org/{org:uuid}/contacts/{contact}', static::class)->name('use.org.contacts.update');
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth'])
+            ->post('/org/{org:uuid}/contacts/add', static::class)
+            ->where('org', Constant::PATTERN_UUID)
+            ->name('use.org.contacts.add-submit');
+
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth'])
+            ->put('/org/{org:uuid}/contacts/{contact}', static::class)
+            ->where('org', Constant::PATTERN_UUID)
+            ->name('use.org.contacts.update');
     }
 
     /**

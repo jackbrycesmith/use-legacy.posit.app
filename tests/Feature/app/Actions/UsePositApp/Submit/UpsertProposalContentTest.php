@@ -4,9 +4,19 @@ use App\Actions\Organisation\CreateDraftProposal;
 use App\Models\User;
 use function Tests\actingAs;
 
-test('updating proposal content requires login', function () {
+test('updating proposal content requires proposal exist', function () {
     $response = $this->put(route('use.submit.upsert-proposal-content', ['proposal' => 'blah']));
+    $response->assertStatus(404);
+});
 
+test('updating proposal content requires login', function () {
+    $user = factory(User::class)->create();
+
+    $proposal = (new CreateDraftProposal)->actingAs($user)->run([
+        'organisation' => $user->organisations->first()
+    ]);
+
+    $response = $this->put(route('use.submit.upsert-proposal-content', ['proposal' => $proposal]));
     $response->assertRedirect(route('login'));
 });
 

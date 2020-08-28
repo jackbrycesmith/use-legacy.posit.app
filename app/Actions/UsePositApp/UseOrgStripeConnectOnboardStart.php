@@ -4,6 +4,7 @@ namespace App\Actions\UsePositApp;
 
 use App\Models\Organisation;
 use App\Models\StripeAccount;
+use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Request;
 use Lorisleiva\Actions\Action;
@@ -12,7 +13,11 @@ class UseOrgStripeConnectOnboardStart extends Action
 {
     public static function routes(Router $router)
     {
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->get('/org/{org:uuid}/stripe-connect-onboard-start', static::class)->name('use.org.stripe-connect-onboard-start');
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth'])
+            ->get('/org/{org:uuid}/stripe-connect-onboard-start', static::class)
+            ->where('org', Constant::PATTERN_UUID)
+            ->name('use.org.stripe-connect-onboard-start');
     }
 
     /**

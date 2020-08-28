@@ -9,8 +9,16 @@ use Stripe\OAuth;
 use Stripe\StripeObject;
 use function Tests\actingAs;
 
-test('disconnect org stripe account requires login', function () {
+test('disconnect org stripe account, org must exist', function () {
     $response = $this->put(route('use.submit.disconnect-stripe-account', ['org' => 'blah']));
+    $response->assertStatus(404);
+});
+
+test('disconnect org stripe account requires login', function () {
+    $user = factory(User::class)->create();
+    $org = $user->organisations()->create(['name' => 'org']);
+
+    $response = $this->put(route('use.submit.disconnect-stripe-account', ['org' => $org]));
 
     $response->assertRedirect(route('login'));
 });

@@ -7,9 +7,18 @@ use App\Models\User;
 use function Tests\actingAs;
 
 // Adding Proposal...
+test('adding proposal recipient, proposal must exist', function () {
+    $response = $this->post(route('use.proposal.recipients.add-submit', ['proposal' => 'blah']));
+    $response->assertStatus(404);
+});
 
 test('adding proposal recipient requires login', function () {
-    $response = $this->post(route('use.proposal.recipients.add-submit', ['proposal' => 'blah']));
+    $user = factory(User::class)->create();
+    $proposal = (new CreateDraftProposal)->actingAs($user)->run([
+        'organisation' => $user->organisations->first()
+    ]);
+
+    $response = $this->post(route('use.proposal.recipients.add-submit', ['proposal' => $proposal]));
 
     $response->assertRedirect(route('login'));
 });
@@ -61,8 +70,23 @@ test('user can add proposal recipient', function () {
 
 // Updating proposal...
 
-test('updating proposal recipient requires login', function () {
+test('updating proposal recipient, proposal & recipient must exist', function () {
     $response = $this->put(route('use.proposal.recipients.update', ['proposal' => 'blah', 'recipient' => 'blah']));
+
+    $response->assertStatus(404);
+});
+
+test('updating proposal recipient requires login', function () {
+    $user = factory(User::class)->create();
+    $org = $user->organisations->first();
+    $contact = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
+    $proposal = (new CreateDraftProposal)->actingAs($user)->run([
+        'organisation' => $org
+    ]);
+
+    $response = $this->put(route('use.proposal.recipients.update', [
+        'proposal' => $proposal, 'recipient' => $contact
+    ]));
 
     $response->assertRedirect(route('login'));
 });

@@ -3,6 +3,7 @@
 namespace App\Actions\UsePositApp\Submit;
 
 use App\Models\Organisation;
+use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Lorisleiva\Actions\Action;
 use Stripe\Exception\OAuth\InvalidClientException;
@@ -11,7 +12,11 @@ class DisconnectStripeAccount extends Action
 {
     public static function routes(Router $router)
     {
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->put('/org/{org:uuid}/stripe-disconnect', static::class)->name('use.submit.disconnect-stripe-account');
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth'])
+            ->put('/org/{org:uuid}/stripe-disconnect', static::class)
+            ->where('org', Constant::PATTERN_UUID)
+            ->name('use.submit.disconnect-stripe-account');
     }
 
     /**

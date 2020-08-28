@@ -6,6 +6,7 @@ use App\Models\Organisation;
 use App\Models\OrganisationMember;
 use App\Models\Proposal;
 use App\Models\ProposalUser;
+use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -18,7 +19,11 @@ class CreateDraftProposal extends Action
 
     public static function routes(Router $router)
     {
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->post('orgs/{organisation:uuid}/proposals', static::class)->name('org.create-draft-proposal');
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth'])
+            ->post('orgs/{organisation:uuid}/proposals', static::class)
+            ->where('organisation', Constant::PATTERN_UUID)
+            ->name('org.create-draft-proposal');
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Actions\UsePositApp\Submit;
 
 use App\Models\Proposal;
+use App\Utils\Constant;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Lorisleiva\Actions\Action;
@@ -11,7 +12,11 @@ class UpsertProposalContent extends Action
 {
     public static function routes(Router $router)
     {
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->put('/proposal/{proposal:uuid}/upsert-content', static::class)->name('use.submit.upsert-proposal-content');
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth'])
+            ->put('/proposal/{proposal:uuid}/upsert-content', static::class)
+            ->where('proposal', Constant::PATTERN_UUID)
+            ->name('use.submit.upsert-proposal-content');
     }
 
     /**

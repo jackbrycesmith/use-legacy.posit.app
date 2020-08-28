@@ -5,6 +5,7 @@ namespace App\Actions\UsePositApp\Submit;
 use App\Http\Resources\OrgContactResource;
 use App\Models\OrganisationContact;
 use App\Models\Proposal;
+use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Request;
 use Lorisleiva\Actions\Action;
@@ -13,8 +14,17 @@ class ProposalRecipientUpsert extends Action
 {
     public static function routes(Router $router)
     {
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->post('/proposal/{proposal:uuid}/recipients/add', static::class)->name('use.proposal.recipients.add-submit');
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->put('/proposal/{proposal:uuid}/recipients/{recipient}', static::class)->name('use.proposal.recipients.update');
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth'])
+            ->post('/proposal/{proposal:uuid}/recipients/add', static::class)
+            ->where('proposal', Constant::PATTERN_UUID)
+            ->name('use.proposal.recipients.add-submit');
+
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth'])
+            ->put('/proposal/{proposal:uuid}/recipients/{recipient}', static::class)
+            ->where('proposal', Constant::PATTERN_UUID)
+            ->name('use.proposal.recipients.update');
     }
 
     /**

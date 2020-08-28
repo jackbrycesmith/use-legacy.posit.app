@@ -4,6 +4,7 @@ namespace App\Actions\PubPositApp;
 
 use App\Http\Resources\ProposalLiteResource;
 use App\Models\Proposal;
+use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
@@ -15,6 +16,7 @@ class PubProposalViewAuth extends Action
         $router->domain(pub_posit_domain())
             ->middleware(['web'])
             ->get('/proposal/{proposal:uuid}/auth', static::class)
+            ->where('proposal', Constant::PATTERN_UUID)
             ->name('pub.proposal.view.auth');
     }
 
