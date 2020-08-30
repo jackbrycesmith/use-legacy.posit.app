@@ -22,6 +22,8 @@ class Proposal extends Model implements HasMedia
 {
     use HasUuid, HasRelationships, HasStatuses, HasStripeCheckoutSession, InteractsWithMedia;
 
+    const INTRO_VIDEO_COLLECTION = 'intro_video';
+
     /**
      * The attributes that aren't mass assignable.
      *

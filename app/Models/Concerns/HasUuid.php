@@ -12,7 +12,9 @@ trait HasUuid
     public static function bootHasUuid()
     {
         static::creating(function (Model $model) {
-            $model->uuid = static::$fakeUuid ?? (string) Str::uuid();
+            if (empty($model->uuid)) {
+                $model->uuid = static::$fakeUuid ?? (string) Str::uuid();
+            }
         });
     }
 
