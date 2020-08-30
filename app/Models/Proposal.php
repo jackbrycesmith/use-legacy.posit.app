@@ -11,14 +11,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\ModelStatus\HasStatuses;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
-class Proposal extends Model
+class Proposal extends Model implements HasMedia
 {
-    use HasUuid, HasRelationships, HasStatuses, HasStripeCheckoutSession;
+    use HasUuid, HasRelationships, HasStatuses, HasStripeCheckoutSession, InteractsWithMedia;
 
     /**
      * The attributes that aren't mass assignable.
