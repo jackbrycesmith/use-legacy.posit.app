@@ -58,7 +58,6 @@ import { snapshotCache } from '@/plugins/SharedElementPlugin'
 import { illusory } from 'illusory'
 import IconVideoMessage from '@/Components/IconVideoMessage'
 import BaseModal from '@/Modals/BaseModal'
-import Flipping from 'flipping'
 
 export default {
   components: {
@@ -68,9 +67,7 @@ export default {
     proposal: { type: Object }
   },
   data () {
-    return {
-      flipping: null,
-    }
+    return {}
   },
   computed: {
     isExpanded: {
@@ -91,14 +88,9 @@ export default {
   },
   methods: {
     handleExpand () {
-      // snapshotCache(true)
-      // this.flipping.read()
-      // this.$refs.modal.isVisible__ = true
       this.$refs.baseVideoRecord.sendEvent('EXPAND')
-      // this.flipping.flip()
     },
     handleExpandedClick () {
-      // snapshotCache(true)
       this.$refs.baseVideoRecord.sendEvent('COLLAPSE')
     },
     async handleExpandAnimation () {
