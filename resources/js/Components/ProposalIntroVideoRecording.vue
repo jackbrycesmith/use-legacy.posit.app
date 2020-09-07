@@ -94,30 +94,17 @@ export default {
       this.$refs.baseVideoRecord.sendEvent('COLLAPSE')
     },
     async handleExpandAnimation () {
-      console.log('handleExpandAnimation')
-      console.log(this.$refs.collapsedCircle, this.$refs.expandedCircle)
-      console.log(this.$refs.baseVideoRecord.currentState.matches('collapsed'))
-      // this.$refs.modal.isVisible__ = true
-      // await new Promise(resolve => setTimeout(resolve, 400))
       await this.$nextTick(async () => {
         await this.$nextTick()
-        console.log(this.$refs.collapsedCircle, this.$refs.expandedCircle)
-        let { finished, cancel } = illusory(this.$refs.collapsedCircle, this.$refs.expandedCircle)
+        let { finished, cancel } = illusory(this.$refs.collapsedCircle, this.$refs.expandedCircle.$el)
 
         await finished
       })
-      // await this.$nextTick()
     },
     async handleCollapseAnimation () {
-      console.log('handleCollapseAnimation')
-      // console.log(this.$refs.collapsedCircle, this.$refs.expandedCircle)
-      // this.$refs.modal.isVisible__ = false
-      console.log(this.$refs.baseVideoRecord.currentState.matches('expanded'))
       await this.$nextTick(async () => {
-        console.log(this.$refs.baseVideoRecord.currentState.matches('collapsing'))
         await this.$nextTick()
-        console.log(this.$refs.collapsedCircle, this.$refs.expandedCircle)
-        let { finished, cancel } = illusory(this.$refs.expandedCircle, this.$refs.collapsedCircle)
+        let { finished, cancel } = illusory(this.$refs.expandedCircle.$el, this.$refs.collapsedCircle)
 
         await finished
       })
