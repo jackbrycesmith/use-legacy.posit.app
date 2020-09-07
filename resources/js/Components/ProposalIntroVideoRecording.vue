@@ -3,7 +3,7 @@
     ref="baseVideoRecord"
     :expand-animation="handleExpandAnimation"
     :collapse-animation="handleCollapseAnimation">
-    <template #template="{ currentState, context, sendEvent }">
+    <template #template="{ currentState, context, sendEvent, currentStateDebugString }">
 
       <!-- Collapsed state... -->
       <div
@@ -12,7 +12,11 @@
         class="bg-white h-32 w-32 rounded-full flex items-center justify-center hover:bg-gray-50 cursor-pointer absolute bottom-0 left-auto right-auto -mb-16 shadow-md"
         @click="handleExpand">
 
-        <IconVideoMessage class="h-8 w-8 text-red-400" />
+        <!-- Example empty icon for new video... -->
+        <IconVideoMessage v-if="currentState.matches('collapsed.empty')" class="h-8 w-8 text-red-400" />
+
+        <!-- Example play button for existing video... -->
+        <svg v-if="currentState.matches('collapsed.existing')" class="h-8 w-8 text-red-400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img"  width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512" style="transform: rotate(360deg);"><path d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm83.8 211.9l-137.2 83c-2.9 1.8-6.7-.4-6.7-3.9V173c0-3.5 3.7-5.7 6.7-3.9l137.2 83c2.9 1.7 2.9 6.1 0 7.8z" fill="currentColor"></path></svg>
       </div>
 
       <!-- Expanded state... -->
@@ -28,20 +32,10 @@
           modal-root-class="fixed bottom-0 inset-x-0 px-4 pb-4 inset-0 flex items-center justify-center"
         >
           <template #alternative-modal>
-            <div
+
+            <ProposalIntroVideoExpanded
               v-if="currentState.matches('expanded') || currentState.matches('expanding') || currentState.matches('collapsing')"
-              ref="expandedCircle"
-              class="relative bg-white h-72 w-72 sm:h-96 sm:w-96 rounded-full flex items-center justify-center hover:bg-gray-50 cursor-pointer shadow-md">
-
-              <!-- <IconVideoMessage class="h-8 w-8 text-red-400" /> -->
-<!--               <video
-                ref="video"
-                playsinline
-                class="video-js vjs-default-skin w-full h-full rounded-full"
-                style="object-fit: cover; border-radius: 9999px;"
-                ></video> -->
-
-            </div>
+              ref="expandedCircle"/>
           </template>
         </BaseModal>
 
@@ -58,10 +52,11 @@ import { snapshotCache } from '@/plugins/SharedElementPlugin'
 import { illusory } from 'illusory'
 import IconVideoMessage from '@/Components/IconVideoMessage'
 import BaseModal from '@/Modals/BaseModal'
+import ProposalIntroVideoExpanded from '@/Components/ProposalIntroVideoExpanded'
 
 export default {
   components: {
-    BaseVideoRecord, IconVideoMessage, BaseModal
+    BaseVideoRecord, IconVideoMessage, ProposalIntroVideoExpanded, BaseModal
   },
   props: {
     proposal: { type: Object }
