@@ -35,6 +35,9 @@
       @updatePressed="handleUpdatePressed"/>
     <FirstWelcomeModal ref="firstWelcomeModal"/>
     <LoginModal ref="loginModal"/>
+
+    <portal-target name="proposal-view-portal">
+    </portal-target>
   </fragment>
 </template>
 
