@@ -1,4 +1,4 @@
-import { Machine } from 'xstate'
+import { Machine, assign } from 'xstate'
 
 export const videoRecordMachine = Machine({
   id: 'videoRecord',
@@ -15,6 +15,16 @@ export const videoRecordMachine = Machine({
       initial: 'entering',
       on: {
         EXPAND: 'expanding',
+        UPDATE_HAS_VIDEO: {
+          target: ['.entering'],
+          internal: true,
+          actions: ['updateHasVideo'],
+          // actions: assign({
+          //   hasVideo: (context) => {
+          //     return !context.hasVideo
+          //   }
+          // })
+        },
       },
       states: {
         entering: {
@@ -63,13 +73,20 @@ export const videoRecordMachine = Machine({
       initial: 'entering',
       on: {
         COLLAPSE: 'collapsing',
+        UPDATE_HAS_VIDEO: {
+          target: ['.entering'],
+          internal: true,
+          actions: ['updateHasVideo'],
+          // actions: assign({
+          //   hasVideo: (context) => {
+          //     return !context.hasVideo
+          //   }
+          // })
+        },
       },
       states: {
         entering: {
           always: [
-            {
-              target: 'empty', cond: 'isExpandedEmpty'
-            },
             {
               target: 'playback', cond: 'isExpandedPlayback'
             },
@@ -83,11 +100,6 @@ export const videoRecordMachine = Machine({
               target: 'uploadingFailed', cond: 'isExpandedUploadingFailed'
             },
           ]
-        },
-        empty: {
-          on: {
-            RECORD: 'recording'
-          }
         },
         playback: {
           on: {
@@ -121,6 +133,24 @@ export const videoRecordMachine = Machine({
   on: {
     // EXPAND: '.expanding',
     // COLLAPSE: '.collapsing'
+    // TOGGLE_HAS_VIDEO: {
+    //   target: ['collapsed'],
+    //   internal: true,
+    //   actions: assign({
+    //     hasVideo: (context) => {
+    //       return !context.hasVideo
+    //     }
+    //   })
+    // },
+    // TOGGLE_HAS_VIDEO: {
+    //   target: ['expanded'],
+    //   internal: true,
+    //   actions: assign({
+    //     hasVideo: (context) => {
+    //       return !context.hasVideo
+    //     }
+    //   })
+    // }
   }
 }, {
   guards: {
@@ -128,7 +158,7 @@ export const videoRecordMachine = Machine({
     isCollapsedExisting: ctx => ctx.hasVideo && !ctx.isUploading,
     isCollapsedUploading: ctx => ctx.isUploading,
     isCollapsedUploadingFailed: ctx => ctx.uploadFailed,
-    isExpandedEmpty: ctx => !ctx.hasVideo,
+    isExpandedRecording: ctx => !ctx.hasVideo,
     isExpandedPlayback: ctx => ctx.hasVideo && !ctx.isUploading && !ctx.isRecording,
     isExpandedUploading: ctx => ctx.isUploading,
     isExpandedUploadingFailed: ctx => !ctx.isUploading && ctx.uploadFailed,

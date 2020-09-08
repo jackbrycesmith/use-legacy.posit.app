@@ -34,8 +34,13 @@
           <template #alternative-modal>
 
             <ProposalIntroVideoExpanded
+              ref="expandedCircle"
               v-if="currentState.matches('expanded') || currentState.matches('expanding') || currentState.matches('collapsing')"
-              ref="expandedCircle"/>
+              :current-state="currentState"
+              :current-state-string="currentStateDebugString"
+              :proposal="proposal"
+              @from-playback-record-again="handleFromPlaybackRecordAgain"
+              />
           </template>
         </BaseModal>
 
@@ -78,8 +83,17 @@ export default {
       }
     }
   },
-  mounted () {
-
+  watch: {
+    'proposal.has_intro_video': {
+      immediate: true,
+      async handler (value) {
+        await this.$nextTick()
+        this.$refs.baseVideoRecord.sendEvent({
+          type: 'UPDATE_HAS_VIDEO',
+          payload: value
+        })
+      }
+    }
   },
   methods: {
     handleExpand () {
@@ -87,6 +101,9 @@ export default {
     },
     handleExpandedClick () {
       this.$refs.baseVideoRecord.sendEvent('COLLAPSE')
+    },
+    handleFromPlaybackRecordAgain () {
+      this.$refs.baseVideoRecord.sendEvent('RECORD')
     },
     async handleExpandAnimation () {
       await this.$nextTick(async () => {

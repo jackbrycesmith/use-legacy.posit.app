@@ -1,13 +1,13 @@
 <template>
   <fragment>
-    <slot name="template" v-bind="{ currentState, context, sendEvent }">
+    <slot name="template" v-bind="{ currentState, context, sendEvent, currentStateDebugString }">
 
     </slot>
   </fragment>
 </template>
 
 <script>
-import { interpret } from 'xstate'
+import { interpret, assign } from 'xstate'
 import { videoRecordMachine } from '@/Components/BaseVideoRecord'
 
 export default {
@@ -36,6 +36,11 @@ export default {
       services: {
         'expandAnimation': this.expandAnimation,
         'collapseAnimation': this.collapseAnimation
+      },
+      actions: {
+        updateHasVideo: assign((context, event) => {
+          context.hasVideo = !!event.payload
+        }),
       }
     })
 
@@ -43,6 +48,11 @@ export default {
       machineService: interpret(machine, { devTools: true }),
       currentState: machine.initialState,
       context: machine.context
+    }
+  },
+  computed: {
+    currentStateDebugString () {
+      return this.currentState.toStrings().join(' ')
     }
   },
   methods: {
