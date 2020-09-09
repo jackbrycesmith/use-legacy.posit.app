@@ -108,7 +108,8 @@ export const videoRecordMachine = Machine({
         },
         recording: {
           on: {
-            RECORDED: 'recordedConfirmUpload'
+            RECORDED: 'recordedConfirmUpload',
+            RECORDING_CANCEL: 'playback',
           }
         },
         recordedConfirmUpload: {

@@ -3,13 +3,18 @@
     class="relative bg-white h-72 w-72 sm:h-96 sm:w-96 rounded-full flex items-center justify-center hover:bg-gray-50 cursor-pointer shadow-md">
 
     <!-- TODO playback -->
-    <template v-if="currentState.matches('expanded.playback')">
-      <video
-        ref="video"
-        playsinline
-        class="video-js vjs-default-skin w-full h-full rounded-full"
+    <template v-if="currentState.matches('expanded.playback')" class="relative w-full h-full">
+      <VideoJs
+        v-if="currentState.matches('expanded.playback')"
+        key="abc"
+        ref="videoPlayback"
+        class="w-full h-full"
         style="object-fit: cover; border-radius: 9999px;"
-        ></video>
+        classes="w-full h-full"
+        styles="object-fit: cover; border-radius: 9999px;"
+        :options="videoJsPlaybackOptions"
+        :ready="handleVideoPlaybackReady"
+        />
 
       <span class="inline-flex rounded-md shadow-sm absolute top-0 left-auto right-auto -mt-12">
         <button @click="$emit('from-playback-record-again')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
@@ -22,13 +27,27 @@
     </template>
 
     <!-- TODO recording -->
-    <template v-if="currentState.matches('expanded.recording')">
-      <video
+    <template v-if="currentState.matches('expanded.recording')" class="relative w-full h-full">
+      <VideoJs
+        v-if="currentState.matches('expanded.recording')"
         ref="videoRecord"
-        playsinline
-        class="video-js vjs-default-skin w-full h-full rounded-full"
+        key="def"
+        class="w-full h-full"
+        classes="w-full h-full"
         style="object-fit: cover; border-radius: 9999px;"
-        ></video>
+        styles="object-fit: cover; border-radius: 9999px;"
+        :options="videoJsRecordOptions"
+        :ready="handleVideoRecordReady"
+      />
+
+      <span v-if="currentState.context.hasVideo" class="inline-flex rounded-md shadow-sm absolute top-0 left-auto right-auto -mt-12">
+        <button @click="$emit('cancel-from-recording')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+          <svg class="-ml-1 mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+          Previous recording
+        </button>
+      </span>
     </template>
 
     <!-- TODO recordedConfirmUpload -->
@@ -38,14 +57,13 @@
 </template>
 
 <script>
+import VideoJs from '@/Components/VideoJs'
 import 'video.js/dist/video-js.css'
 import 'videojs-record/dist/css/videojs.record.css'
 import 'webrtc-adapter'
-import videojs from 'video.js'
-import RecordRTC from 'recordrtc'
-import Record from 'videojs-record/dist/videojs.record.js'
 
 export default {
+  components: { VideoJs },
   props: {
     proposal: { type: Object },
     currentState: { type: Object },
@@ -53,41 +71,11 @@ export default {
   },
   data () {
     return {
-      player: null,
-
     }
   },
-  watch: {
-    'currentStateString': {
-      immediate: true,
-      deep: true,
-      handler (value) {
-        console.log(`currentStateString changed: ${value}`)
-      }
-    },
-    'currentState': {
-      immediate: true,
-      // deep: true,
-      handler (value) {
-        if (this.currentState.matches('expanded.playback')) {
-          this.handleExpandedPlayback()
-        }
-
-        if (this.currentState.matches('expanded.recording')) {
-          this.handleExpandedRecording()
-        }
-      }
-    }
-  },
-  beforeDestroy () {
-    this.player?.dispose()
-  },
-  methods: {
-    async handleExpandedPlayback () {
-      // TODO setup videojs for playback existing...
-      // this.player?.dispose()
-      await this.$nextTick()
-      const videoJsPlaybackOptions = {
+  computed: {
+    videoJsPlaybackOptions () {
+      return {
           controls: true,
           autoplay: false,
           fluid: false,
@@ -106,25 +94,9 @@ export default {
           },
           plugins: {}
       }
-
-      this.player = videojs(this.$refs.video, videoJsPlaybackOptions, () => {
-        // print version information at startup
-        var msg = 'Using video.js ' + videojs.VERSION;
-        videojs.log(msg);
-      });
-
-      // Load existing video
-      if (this.proposal.has_intro_video) {
-        this.player.src(this.proposal.intro_video.video_js_src_data)
-        this.player.play()
-      }
-
     },
-    async handleExpandedRecording () {
-      // TODO setup videojs for playback existing...
-      this.player?.dispose()
-      await this.$nextTick()
-      const videoJsPlaybackOptions = {
+    videoJsRecordOptions () {
+      return {
           controls: true,
           autoplay: false,
           fluid: false,
@@ -159,54 +131,91 @@ export default {
               }
           }
       }
+    }
+  },
+  watch: {
+    'currentStateString': {
+      immediate: true,
+      deep: true,
+      handler (value) {
+        console.log(`currentStateString changed: ${value}`)
+      }
+    },
+    'currentState': {
+      immediate: true,
+      // deep: true,
+      handler (value) {
+        // if (this.currentState.matches('expanded.playback')) {
+        //   this.handleExpandedPlayback()
+        // }
 
-      this.player = videojs(this.$refs.videoRecord, videoJsPlaybackOptions, () => {
-        // print version information at startup
-        var msg = 'Using video.js ' + videojs.VERSION +
-            ' with videojs-record ' + videojs.getPluginVersion('record') +
-            ' and recordrtc ' + RecordRTC.version;
-        videojs.log(msg);
-      });
+        // if (this.currentState.matches('expanded.recording')) {
+        //   this.handleExpandedRecording()
+        // }
+      }
+    }
+  },
+  methods: {
+    async handleVideoPlaybackReady () {
+      await this.$nextTick()
+      // Load existing video
+      if (this.proposal.has_intro_video) {
+        this.$refs.videoPlayback.player.src(this.proposal.intro_video.video_js_src_data)
+        this.$refs.videoPlayback.player.play()
+      }
+    },
+    async handleVideoRecordReady () {
 
-      // device is ready
-      this.player.on('deviceReady', () => {
-        console.log('device is ready!');
-        // enumerate devices once
-        this.player.record().enumerateDevices()
-      })
+    },
+    async handleExpandedRecording () {
 
-      // enumarate is ready
-      this.player.on('enumerateReady', () => {
-        console.log('enumerateReady is ready!')
-        const devices = player.record().devices
-        console.log('enumerateReady devices: ', devices)
-      })
+      // this.playerRecord = videojs(this.$refs.videoRecord, videoJsPlaybackOptions, () => {
+      //   // print version information at startup
+      //   var msg = 'Using video.js ' + videojs.VERSION +
+      //       ' with videojs-record ' + videojs.getPluginVersion('record') +
+      //       ' and recordrtc ' + RecordRTC.version;
+      //   videojs.log(msg);
+      // });
 
-      this.player.on('enumerateError', function() {
-        console.warn('enumerate error: ', this.player.enumerateErrorCode)
-      })
+      // // device is ready
+      // this.playerRecord.on('deviceReady', () => {
+      //   console.log('device is ready!');
+      //   // enumerate devices once
+      //   this.playerRecord.record().enumerateDevices()
+      // })
 
-      // user clicked the record button and started recording
-      this.player.on('startRecord', () => {
-        console.log('started recording!');
-      })
+      // // enumarate is ready
+      // this.playerRecord.on('enumerateReady', () => {
+      //   console.log('enumerateReady is ready!')
+      //   const devices = this.playerRecord.record().devices
+      //   console.log('enumerateReady devices: ', devices)
+      // })
 
-      // user completed recording and stream is available
-      this.player.on('finishRecord', () => {
-      // the blob object contains the recorded data that
-      // can be downloaded by the user, stored on server etc.
-        console.log('finished recording: ', this.player.recordedData);
-        this.handleVideoUpload(this.player.recordedData)
-      })
+      // this.playerRecord.on('enumerateError', function() {
+      //   console.warn('enumerate error: ', this.playerRecord.enumerateErrorCode)
+      // })
 
-      // error handling
-      this.player.on('error', (element, error) => {
-        console.warn(error);
-      })
+      // // user clicked the record button and started recording
+      // this.playerRecord.on('startRecord', () => {
+      //   console.log('started recording!');
+      // })
 
-      this.player.on('deviceError', () => {
-        console.error('device error:', this.player.deviceErrorCode);
-      })
+      // // user completed recording and stream is available
+      // this.playerRecord.on('finishRecord', () => {
+      // // the blob object contains the recorded data that
+      // // can be downloaded by the user, stored on server etc.
+      //   console.log('finished recording: ', this.playerRecord.recordedData);
+      //   // this.handleVideoUpload(this.playerRecord.recordedData)
+      // })
+
+      // // error handling
+      // this.playerRecord.on('error', (element, error) => {
+      //   console.warn(error);
+      // })
+
+      // this.playerRecord.on('deviceError', () => {
+      //   console.error('device error:', this.playerRecord.deviceErrorCode);
+      // })
     }
   }
 }

@@ -40,6 +40,7 @@
               :current-state-string="currentStateDebugString"
               :proposal="proposal"
               @from-playback-record-again="handleFromPlaybackRecordAgain"
+              @cancel-from-recording="handleCancelFromRecording"
               />
           </template>
         </BaseModal>
@@ -104,6 +105,9 @@ export default {
     },
     handleFromPlaybackRecordAgain () {
       this.$refs.baseVideoRecord.sendEvent('RECORD')
+    },
+    handleCancelFromRecording () {
+      this.$refs.baseVideoRecord.sendEvent('RECORDING_CANCEL')
     },
     async handleExpandAnimation () {
       await this.$nextTick(async () => {
