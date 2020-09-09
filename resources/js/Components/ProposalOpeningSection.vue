@@ -33,14 +33,14 @@ import ContentEditable from '@/Components/ContentEditable'
 import ProposalRecipientSelector from '@/Components/ProposalRecipientSelector'
 import ProposalIntroVideoRecording from '@/Components/ProposalIntroVideoRecording'
 import Proposal from '@/models/Proposal'
-import VideoIntro from '@/Components/VideoIntro'
+// import VideoIntro from '@/Components/VideoIntro'
 
 export default {
   props: {
     proposal: { type: Object }
   },
   components: {
-    ContentEditable, ProposalRecipientSelector, ProposalIntroVideoRecording, VideoIntro
+    ContentEditable, ProposalRecipientSelector, ProposalIntroVideoRecording
   },
   data () {
     return {

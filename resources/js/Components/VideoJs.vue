@@ -3,19 +3,38 @@
     <video
       ref="video"
       playsinline
+      class="video-js vjs-default-skin"
       :class="classes"
-      :styles="styles">
+      :style="styles">
     </video>
   </div>
 </template>
 
 <script>
+window.VIDEOJS_NO_BASE_THEME = true
+window.VIDEOJS_NO_DYNAMIC_STYLE = true
 import 'video.js/dist/video-js.css'
-import 'videojs-record/dist/css/videojs.record.css'
-import 'webrtc-adapter'
+// import '@videojs/themes/dist/city/index.css';
 import videojs from 'video.js'
-import RecordRTC from 'recordrtc'
-import Record from 'videojs-record/dist/videojs.record.js'
+// import 'videojs-record/dist/css/videojs.record.css'
+// import 'webrtc-adapter'
+// import RecordRTC from 'recordrtc'
+// import Record from 'videojs-record/dist/videojs.record.js'
+
+const RECORD_PLUGIN_EVENTS = [
+  'deviceReady',
+  'enumerateReady',
+  'enumerateError',
+  'startRecord',
+  'finishRecord',
+  'deviceError',
+]
+
+const DEFAULT_EVENTS = [
+  'play',
+  'pause',
+  'error'
+]
 
 export default {
   props: {
@@ -23,7 +42,9 @@ export default {
     styles: { type: String, default: '' },
     options: { type: Object, default: () => {} },
     ready: { type: Function, default: () => {} },
-
+    events: { type: Array, default: () => [...DEFAULT_EVENTS] },
+    debug: { type: Boolean, default: false },
+    loadRecordPlugin: { type: Boolean, default: false },
     onDeviceReady: { type: Function },
     onEnumerateReady: { type: Function },
     onEnumerateError: { type: Function },
@@ -37,8 +58,35 @@ export default {
       player: null
     }
   },
-  mounted () {
-    this.player = videojs(this.$refs.video, this.options, this.ready)
+  async mounted () {
+    if (this.loadRecordPlugin) {
+      console.log('will import...')
+      await import('videojs-record/dist/css/videojs.record.css')
+      await import('recordrtc')
+      await import('videojs-record/dist/videojs.record.js')
+      await import('webrtc-adapter')
+    }
+    this.initPlayer()
+  },
+  methods: {
+    initPlayer () {
+      this.player = videojs(this.$refs.video, this.options, () => {
+        if (this.debug) {
+          const message = `Using video.js ${videojs.VERSION}`
+          videojs.log(message)
+        }
+
+        this.setupVideoEventListeners()
+        this.$emit('ready', this.player)
+      })
+    },
+    setupVideoEventListeners() {
+      this.events.forEach(event => {
+        this.player.on(event, () => {
+          this.$emit(event, this.player)
+        })
+      })
+    }
   },
   destroyed () {
     console.log('destroyed video js')
@@ -49,3 +97,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.vjs-control-bar {
+  margin-bottom: -2.5rem !important;
+}
+</style>

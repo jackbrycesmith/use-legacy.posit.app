@@ -41,6 +41,7 @@
               :proposal="proposal"
               @from-playback-record-again="handleFromPlaybackRecordAgain"
               @cancel-from-recording="handleCancelFromRecording"
+              @handleVideoRecordFinish="handleVideoRecordFinish"
               />
           </template>
         </BaseModal>
@@ -108,6 +109,12 @@ export default {
     },
     handleCancelFromRecording () {
       this.$refs.baseVideoRecord.sendEvent('RECORDING_CANCEL')
+    },
+    handleVideoRecordFinish (player) {
+      this.$refs.baseVideoRecord.sendEvent({
+        type: 'RECORDED',
+        payload: player.recordedData
+      })
     },
     async handleExpandAnimation () {
       await this.$nextTick(async () => {

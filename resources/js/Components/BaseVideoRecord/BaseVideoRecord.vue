@@ -41,6 +41,9 @@ export default {
         updateHasVideo: assign((context, event) => {
           context.hasVideo = !!event.payload
         }),
+        updateRecordedFile: assign((context, event) => {
+          context.recordedFile = event.payload
+        }),
       }
     })
 

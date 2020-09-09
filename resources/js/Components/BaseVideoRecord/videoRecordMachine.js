@@ -7,6 +7,7 @@ export const videoRecordMachine = Machine({
     isUploading: false,
     isRecording: false,
     uploadFailed: false,
+    recordedFile: null
   },
   initial: 'collapsed',
   states: {
@@ -108,7 +109,11 @@ export const videoRecordMachine = Machine({
         },
         recording: {
           on: {
-            RECORDED: 'recordedConfirmUpload',
+            RECORDED: {
+              internal: true,
+              target: 'recordedConfirmUpload',
+              actions: ['updateRecordedFile']
+            },
             RECORDING_CANCEL: 'playback',
           }
         },
