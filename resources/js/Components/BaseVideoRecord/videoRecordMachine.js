@@ -66,7 +66,6 @@ export const videoRecordMachine = Machine({
 
         },
         uploadingFailed: {
-
         }
       }
     },
@@ -131,22 +130,18 @@ export const videoRecordMachine = Machine({
         },
         recordedConfirmUpload: {
           on: {
-            CONFIRM: {
+            CONFIRM_UPLOAD: {
               internal: true,
               target: 'uploading',
               actions: [
-                assign({
-                  isUploading: (context, event) => true
-                }),
+                'setUploadingContext',
                 'uploadVideo'
               ]
             },
             RECORD_AGAIN: {
               internal: true,
               target: 'recording',
-              actions: assign({
-                recordedFile: (context, event) => null
-              })
+              actions: ['setRecordAgainContext']
             }
           }
         },
@@ -164,7 +159,19 @@ export const videoRecordMachine = Machine({
         },
         uploadingFailed: {
           on: {
-            RETRY_UPLOAD: 'uploading'
+            CONFIRM_UPLOAD: {
+              internal: true,
+              target: 'uploading',
+              actions: [
+                'setUploadingContext',
+                'uploadVideo'
+              ]
+            },
+            RECORD_AGAIN: {
+              internal: true,
+              target: 'recording',
+              actions: ['setRecordAgainContext']
+            }
           }
         }
       }

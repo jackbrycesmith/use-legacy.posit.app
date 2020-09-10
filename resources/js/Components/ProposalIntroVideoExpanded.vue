@@ -55,10 +55,10 @@
 
     <!-- TODO recordedConfirmUpload || uploading || uploadingFailed -->
     <template
-      v-if="currentState.matches('expanded.recordedConfirmUpload') || currentState.matches('expanded.uploading')"
+      v-if="currentState.matches('expanded.recordedConfirmUpload') || currentState.matches('expanded.uploading') || currentState.matches('expanded.uploadingFailed')"
       class="relative w-full h-full">
       <VideoJs
-        v-if="currentState.matches('expanded.recordedConfirmUpload') || currentState.matches('expanded.uploading')"
+        v-if="currentState.matches('expanded.recordedConfirmUpload') || currentState.matches('expanded.uploading') || currentState.matches('expanded.uploadingFailed')"
         ref="videoRecordConfirm"
         key="ghi"
         class="w-full h-full"
@@ -70,13 +70,20 @@
         @ready="handleVideoConfirmUploadReady"
       />
 
-      <template v-if="currentState.matches('expanded.recordedConfirmUpload')">
+      <template v-if="currentState.matches('expanded.recordedConfirmUpload') || currentState.matches('expanded.uploadingFailed')">
         <span class="inline-flex rounded-md shadow-sm absolute top-0 left-0 -mt-12">
           <button @click="$emit('from-confirm-record-again')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
             <IconHeroiconsSmallX class="-ml-1 mr-2 h-5 w-5" />
             Retake
           </button>
         </span>
+
+        <template v-if="currentState.matches('expanded.uploadingFailed')">
+          <!-- TODO better to show that the upload failed -->
+          <span class="absolute top-0 left-auto right-auto -mt-16 font-2xl text-white text-xl font-semibold text-center">
+           &#x1f622; <br>Upload Failed
+          </span>
+        </template>
 
         <span class="inline-flex rounded-md shadow-sm absolute top-0 right-0 -mt-12">
           <button @click="$emit('recording-confirmed')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">

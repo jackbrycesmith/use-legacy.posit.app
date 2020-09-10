@@ -129,7 +129,7 @@ export default {
       this.$refs.baseVideoRecord.sendEvent('RECORDING_CANCEL')
     },
     handleRecordingConfirmed () {
-      this.$refs.baseVideoRecord.sendEvent('CONFIRM')
+      this.$refs.baseVideoRecord.sendEvent('CONFIRM_UPLOAD')
     },
     handleVideoRecordFinish (player) {
       this.$refs.baseVideoRecord.sendEvent({

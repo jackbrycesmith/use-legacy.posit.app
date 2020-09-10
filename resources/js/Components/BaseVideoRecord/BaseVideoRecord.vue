@@ -41,8 +41,16 @@ export default {
         'collapseAnimation': this.collapseAnimation,
       },
       actions: {
+        setUploadingContext: assign((context, event) => {
+          console.log('setUploadingContext')
+          context.isUploading = true
+          context.uploadFailed = false
+        }),
         setUploadCompletedContext: assign((context, event) => {
           context.isUploading = false
+        }),
+        setRecordAgainContext: assign((context, event) => {
+          context.recordedFile = null
         }),
         setUploadFailedContext: assign((context, event) => {
           context.isUploading = false
