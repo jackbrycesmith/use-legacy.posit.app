@@ -42,6 +42,7 @@
               @from-playback-record-again="handleFromPlaybackRecordAgain"
               @cancel-from-recording="handleCancelFromRecording"
               @handleVideoRecordFinish="handleVideoRecordFinish"
+              @from-confirm-record-again="handleFromConfirmRecordAgain"
               />
           </template>
         </BaseModal>
@@ -106,6 +107,9 @@ export default {
     },
     handleFromPlaybackRecordAgain () {
       this.$refs.baseVideoRecord.sendEvent('RECORD')
+    },
+    handleFromConfirmRecordAgain () {
+      this.$refs.baseVideoRecord.sendEvent('RECORD_AGAIN')
     },
     handleCancelFromRecording () {
       this.$refs.baseVideoRecord.sendEvent('RECORDING_CANCEL')

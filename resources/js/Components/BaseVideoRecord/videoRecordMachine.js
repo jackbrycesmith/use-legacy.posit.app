@@ -119,7 +119,14 @@ export const videoRecordMachine = Machine({
         },
         recordedConfirmUpload: {
           on: {
-            CONFIRM: 'uploading'
+            CONFIRM: 'uploading',
+            RECORD_AGAIN: {
+              internal: true,
+              target: 'recording',
+              actions: assign({
+                recordedFile: (context, event) => null
+              })
+            }
           }
         },
         uploading: {
