@@ -43,7 +43,7 @@
         @finishRecord="handleVideoRecordFinish"
       />
 
-      <span v-if="currentState.context.hasVideo" class="inline-flex rounded-md shadow-sm absolute top-0 left-auto right-auto -mt-12">
+      <span v-if="currentState.context.hasVideo" class="inline-flex rounded-md shadow-sm absolute top-0 left-0 -mt-12">
         <button @click="$emit('cancel-from-recording')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
           <svg class="-ml-1 mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -53,10 +53,12 @@
       </span>
     </template>
 
-    <!-- TODO recordedConfirmUpload -->
-    <template v-if="currentState.matches('expanded.recordedConfirmUpload')" class="relative w-full h-full">
+    <!-- TODO recordedConfirmUpload || uploading || uploadingFailed -->
+    <template
+      v-if="currentState.matches('expanded.recordedConfirmUpload') || currentState.matches('expanded.uploading')"
+      class="relative w-full h-full">
       <VideoJs
-        v-if="currentState.matches('expanded.recordedConfirmUpload')"
+        v-if="currentState.matches('expanded.recordedConfirmUpload') || currentState.matches('expanded.uploading')"
         ref="videoRecordConfirm"
         key="ghi"
         class="w-full h-full"
@@ -68,23 +70,27 @@
         @ready="handleVideoConfirmUploadReady"
       />
 
-      <span class="inline-flex rounded-md shadow-sm absolute top-0 left-0 -mt-12">
-        <button @click="$emit('from-confirm-record-again')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-          <svg class="-ml-1 mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-          </svg>
-          Record again
-        </button>
-      </span>
+      <template v-if="currentState.matches('expanded.recordedConfirmUpload')">
+        <span class="inline-flex rounded-md shadow-sm absolute top-0 left-0 -mt-12">
+          <button @click="$emit('from-confirm-record-again')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+            <IconHeroiconsSmallX class="-ml-1 mr-2 h-5 w-5" />
+            Retake
+          </button>
+        </span>
 
-      <span class="inline-flex rounded-md shadow-sm absolute top-0 right-0 -mt-12">
-        <button @click="$emit('recording-confirmed')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-          <svg class="-ml-1 mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-          </svg>
-          I'm happy with this intro
-        </button>
-      </span>
+        <span class="inline-flex rounded-md shadow-sm absolute top-0 right-0 -mt-12">
+          <button @click="$emit('recording-confirmed')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+            Use
+            <IconHeroiconsSmallCheck class="ml-2 -mr-1 h-5 w-5" />
+          </button>
+        </span>
+      </template>
+
+      <template v-if="currentState.matches('expanded.uploading')">
+        <span class="absolute top-0 left-auto right-auto -mt-12 font-2xl text-white text-3xl font-semibold text-center">
+          Uploading&hellip;
+        </span>
+      </template>
     </template>
 
 
@@ -93,12 +99,14 @@
 
 <script>
 import VideoJs from '@/Components/VideoJs'
+import IconHeroiconsSmallCheck from '@/Icons/IconHeroiconsSmallCheck'
+import IconHeroiconsSmallX from '@/Icons/IconHeroiconsSmallX'
 // import 'video.js/dist/video-js.css'
 // import 'videojs-record/dist/css/videojs.record.css'
 // import 'webrtc-adapter'
 
 export default {
-  components: { VideoJs },
+  components: { VideoJs, IconHeroiconsSmallCheck, IconHeroiconsSmallX },
   props: {
     proposal: { type: Object },
     currentState: { type: Object },

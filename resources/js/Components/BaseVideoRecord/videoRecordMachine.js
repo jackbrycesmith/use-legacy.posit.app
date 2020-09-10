@@ -5,7 +5,7 @@ export const videoRecordMachine = Machine({
   context: {
     hasVideo: false,
     isUploading: false,
-    isRecording: false,
+    isProcessing: false, // i.e. just after upload
     uploadFailed: false,
     recordedFile: null
   },
@@ -119,7 +119,13 @@ export const videoRecordMachine = Machine({
         },
         recordedConfirmUpload: {
           on: {
-            CONFIRM: 'uploading',
+            CONFIRM: {
+              internal: true,
+              target: 'uploading',
+              actions: assign({
+                isUploading: (context, event) => true
+              })
+            },
             RECORD_AGAIN: {
               internal: true,
               target: 'recording',
@@ -167,13 +173,13 @@ export const videoRecordMachine = Machine({
   }
 }, {
   guards: {
-    isCollapsedEmpty: ctx => !ctx.hasVideo,
+    isCollapsedEmpty: ctx => !ctx.hasVideo && !!!ctx.recordedFile,
     isCollapsedExisting: ctx => ctx.hasVideo && !ctx.isUploading,
     isCollapsedUploading: ctx => ctx.isUploading,
     isCollapsedUploadingFailed: ctx => ctx.uploadFailed,
-    isExpandedRecording: ctx => !ctx.hasVideo,
-    isExpandedPlayback: ctx => ctx.hasVideo && !ctx.isUploading && !ctx.isRecording,
-    isExpandedUploading: ctx => ctx.isUploading,
-    isExpandedUploadingFailed: ctx => !ctx.isUploading && ctx.uploadFailed,
+    isExpandedRecording: ctx => !ctx.hasVideo && !ctx.isUploading && !ctx.uploadFailed,
+    isExpandedPlayback: ctx => ctx.hasVideo && !ctx.isUploading && !ctx.uploadFailed,
+    isExpandedUploading: ctx => ctx.isUploading && !ctx.uploadFailed,
+    isExpandedUploadingFailed: ctx => ctx.uploadFailed,
   }
 })

@@ -43,6 +43,7 @@
               @cancel-from-recording="handleCancelFromRecording"
               @handleVideoRecordFinish="handleVideoRecordFinish"
               @from-confirm-record-again="handleFromConfirmRecordAgain"
+              @recording-confirmed="handleRecordingConfirmed"
               />
           </template>
         </BaseModal>
@@ -113,6 +114,9 @@ export default {
     },
     handleCancelFromRecording () {
       this.$refs.baseVideoRecord.sendEvent('RECORDING_CANCEL')
+    },
+    handleRecordingConfirmed () {
+      this.$refs.baseVideoRecord.sendEvent('CONFIRM')
     },
     handleVideoRecordFinish (player) {
       this.$refs.baseVideoRecord.sendEvent({
