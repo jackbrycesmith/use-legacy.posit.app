@@ -2,7 +2,8 @@
   <BaseVideoRecord
     ref="baseVideoRecord"
     :expand-animation="handleExpandAnimation"
-    :collapse-animation="handleCollapseAnimation">
+    :collapse-animation="handleCollapseAnimation"
+    :upload-video="handleUploadVideo">
     <template #template="{ currentState, context, sendEvent, currentStateDebugString }">
 
       <!-- Collapsed state... -->
@@ -17,6 +18,15 @@
 
         <!-- Example play button for existing video... -->
         <svg v-if="currentState.matches('collapsed.existing')" class="h-8 w-8 text-red-400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img"  width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512" style="transform: rotate(360deg);"><path d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm83.8 211.9l-137.2 83c-2.9 1.8-6.7-.4-6.7-3.9V173c0-3.5 3.7-5.7 6.7-3.9l137.2 83c2.9 1.7 2.9 6.1 0 7.8z" fill="currentColor"></path></svg>
+
+        <IconHeroiconsSpinner
+          v-if="currentState.matches('collapsed.uploading')"
+          class="h-8 w-8 text-red-400" />
+
+        <IconHeroiconsMediumCog
+          v-if="currentState.matches('collapsed.processing')"
+          class="h-8 w-8 text-red-400 animate-spin" />
+
       </div>
 
       <!-- Expanded state... -->
@@ -60,12 +70,15 @@ import { BaseVideoRecord } from '@/Components/BaseVideoRecord'
 import { snapshotCache } from '@/plugins/SharedElementPlugin'
 import { illusory } from 'illusory'
 import IconVideoMessage from '@/Components/IconVideoMessage'
+import IconHeroiconsMediumCog from '@/Icons/IconHeroiconsMediumCog'
+import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
 import BaseModal from '@/Modals/BaseModal'
 import ProposalIntroVideoExpanded from '@/Components/ProposalIntroVideoExpanded'
+import S3Upload from '@/models/S3Upload'
 
 export default {
   components: {
-    BaseVideoRecord, IconVideoMessage, ProposalIntroVideoExpanded, BaseModal
+    BaseVideoRecord, IconVideoMessage, IconHeroiconsMediumCog, IconHeroiconsSpinner, ProposalIntroVideoExpanded, BaseModal
   },
   props: {
     proposal: { type: Object }
@@ -140,6 +153,19 @@ export default {
         await finished
       })
     },
+    async handleUploadVideo (videoFileBlob) {
+      const s3Upload = S3Upload.make({ file: videoFileBlob })
+
+      const s3UploadResponse = await s3Upload.store({
+        progress: (onProgress) => {
+          console.log(`on video upload progress: ${onProgress}`)
+        }
+      })
+
+      const proposalVideoUpsertResponse = await this.proposal.videoIntroUpsert(s3UploadResponse.uuid)
+
+      console.log('🎬: ', proposalVideoUpsertResponse)
+    }
   }
 }
 </script>

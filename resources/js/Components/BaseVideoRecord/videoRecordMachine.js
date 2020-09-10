@@ -51,6 +51,18 @@ export const videoRecordMachine = Machine({
 
         },
         uploading: {
+          on: {
+            UPLOAD_SUCCESS: {
+              target: 'processing',
+              actions: ['setUploadCompletedContext']
+            },
+            UPLOAD_FAILED: {
+              target: 'uploadingFailed',
+              actions: ['setUploadFailedContext']
+            },
+          }
+        },
+        processing: {
 
         },
         uploadingFailed: {
@@ -122,9 +134,12 @@ export const videoRecordMachine = Machine({
             CONFIRM: {
               internal: true,
               target: 'uploading',
-              actions: assign({
-                isUploading: (context, event) => true
-              })
+              actions: [
+                assign({
+                  isUploading: (context, event) => true
+                }),
+                'uploadVideo'
+              ]
             },
             RECORD_AGAIN: {
               internal: true,
@@ -137,8 +152,14 @@ export const videoRecordMachine = Machine({
         },
         uploading: {
           on: {
-            UPLOAD_SUCCESS: 'playback',
-            UPLOAD_FAILED: 'uploadingFailed'
+            UPLOAD_SUCCESS: {
+              target: 'playback',
+              actions: ['setUploadCompletedContext']
+            },
+            UPLOAD_FAILED: {
+              target: 'uploadingFailed',
+              actions: ['setUploadFailedContext']
+            }
           }
         },
         uploadingFailed: {
@@ -150,6 +171,13 @@ export const videoRecordMachine = Machine({
     },
   },
   on: {
+    // Upload state fallback e.g. if happened when collapsing/expanding, then the entering guards should put it in the correct state...
+    UPLOAD_SUCCESS: {
+      actions: ['setUploadCompletedContext']
+    },
+    UPLOAD_FAILED: {
+      actions: ['setUploadFailedContext']
+    },
     // EXPAND: '.expanding',
     // COLLAPSE: '.collapsing'
     // TOGGLE_HAS_VIDEO: {

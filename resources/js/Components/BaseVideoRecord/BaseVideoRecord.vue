@@ -14,6 +14,9 @@ export default {
   props: {
     expandAnimation: { type: Function, default: async () => {} },
     collapseAnimation: { type: Function, default: async () => {} },
+    uploadVideo: { type: Function, default: async (videoFileBlob) => {
+      console.log('uploadVideo asfsdfds sd.fsdf')
+    }},
 
     // Xstate Guards
     isCollapsedEmpty: { type: Function, default: (context, event) => { return true } },
@@ -35,15 +38,34 @@ export default {
     const machine = videoRecordMachine.withConfig({
       services: {
         'expandAnimation': this.expandAnimation,
-        'collapseAnimation': this.collapseAnimation
+        'collapseAnimation': this.collapseAnimation,
       },
       actions: {
+        setUploadCompletedContext: assign((context, event) => {
+          context.isUploading = false
+        }),
+        setUploadFailedContext: assign((context, event) => {
+          context.isUploading = false
+          context.uploadFailed = true
+        }),
         updateHasVideo: assign((context, event) => {
           context.hasVideo = !!event.payload
         }),
         updateRecordedFile: assign((context, event) => {
           context.recordedFile = event.payload
         }),
+        uploadVideo: assign(async (context, event) => {
+          console.log('uploadVideo DO')
+
+          try {
+            await this.uploadVideo(context.recordedFile)
+            this.sendEvent('UPLOAD_SUCCESS')
+            console.log('uploadVideo finish....')
+          } catch (e) {
+            this.sendEvent('UPLOAD_FAILED')
+            console.log('upload failed....')
+          }
+        })
       }
     })
 

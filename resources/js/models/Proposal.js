@@ -4,6 +4,7 @@ import User from './User'
 import ProposalContent from './ProposalContent'
 import Organisation from './Organisation'
 import OrganisationContact from './OrganisationContact'
+import Video from './Video'
 import { appendOrUpdateData } from '@/utils/data'
 import { get, set, head, isNil } from 'lodash-es'
 
@@ -47,6 +48,10 @@ export default class Proposal extends Model {
     return get(this.recipient, 'name')
   }
 
+  get has_intro_video () {
+    return !isNil(this.intro_video)
+  }
+
   async updateRecipient () {
     const contactId = this.recipient?.id
     if (isNil(contactId)) return
@@ -66,12 +71,24 @@ export default class Proposal extends Model {
     return contact
   }
 
+  async videoIntroUpsert (uploadedUuid) {
+    const response = await Http.post(
+      route('use.proposal.video-intro', { proposal: this.uuid }),
+      {
+        uuid: uploadedUuid
+      }
+    )
+
+    return response
+  }
+
   getRelationships() {
     return {
       users: User,
       org: Organisation,
       recipient: OrganisationContact,
       content: ProposalContent,
+      intro_video: Video,
     }
   }
 }
