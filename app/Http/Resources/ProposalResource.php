@@ -31,6 +31,7 @@ class ProposalResource extends JsonResource
             'stripe_account_id' => $this->whenLoaded('stripeCheckoutSession', function () {
                 return $this->stripeCheckoutSession->stripe_account_id;
             }),
+            'intro_video' => new VideoResource($this->whenLoaded('video')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

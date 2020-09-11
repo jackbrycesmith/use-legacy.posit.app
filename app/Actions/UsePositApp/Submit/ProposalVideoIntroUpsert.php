@@ -2,9 +2,10 @@
 
 namespace App\Actions\UsePositApp\Submit;
 
-use App\Http\Resources\MediaResource;
-use App\Models\Media;
+use App\Http\Resources\VideoResource;
+use App\Jobs\ConvertVideoForDownloading;
 use App\Models\Proposal;
+use App\Models\Video;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
@@ -57,22 +58,28 @@ class ProposalVideoIntroUpsert extends Action
 
         $this->ensureTempFileExists($tmpFilename);
 
-        // TODO validate this file before moving? e.g. video type & e.g. size limits; some validation is handled via media library e.g. max file limits...
-        $media = $proposal
-           ->addMediaFromDisk($tmpFilename, 's3')
-           ->storingConversionsOnDisk('s3')
-           ->toMediaCollection(Proposal::INTRO_VIDEO_COLLECTION, 's3');
+        // TODO validate this file before moving? e.g. video type & e.g. size limits
+        // TODO delete any previous video.
 
-        return $media;
+        $video = $proposal->video()->create([
+            'tmp_path' => $tmpFilename,
+            'tmp_size' => Storage::disk('s3-local')->exists($tmpFilename),
+            'tmp_disk' => 's3-local',
+        ]);
+
+        // TODO dispatch conversion jobs
+        ConvertVideoForDownloading::dispatch($video);
+
+        return $video;
     }
 
-    public function response(Media $media)
+    public function response(Video $video)
     {
-        return new MediaResource($media);
+        return new VideoResource($video);
     }
 
     /**
-     * Determines if ensure temporary file exists.
+     * Determines if temporary file exists.
      *
      * @param string $filename The filename
      *
@@ -80,7 +87,7 @@ class ProposalVideoIntroUpsert extends Action
      */
     protected function ensureTempFileExists(string $filename)
     {
-        if (! Storage::disk('s3')->exists($filename)) {
+        if (! Storage::disk('s3-local')->exists($filename)) {
             throw ValidationException::withMessages([
                 'uuid' => ['Temp file does not exist.'],
             ]);

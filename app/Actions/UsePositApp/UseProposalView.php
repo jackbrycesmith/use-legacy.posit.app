@@ -49,7 +49,7 @@ class UseProposalView extends Action
     {
         // TODO load contents, recipients other things.
         return $this->proposal->loadMissing([
-            'organisation', 'organisation.contacts', 'users', 'proposalContent', 'recipient'
+            'organisation', 'organisation.contacts', 'users', 'proposalContent', 'recipient', 'video'
         ]);
     }
 

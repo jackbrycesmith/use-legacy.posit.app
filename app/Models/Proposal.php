@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\Casts\StrLimitCast;
 use App\Models\Concerns\HasStripeCheckoutSession;
 use App\Models\Concerns\HasUuid;
+use App\Models\Concerns\HasVideo;
+use App\Models\Media;
 use App\Models\OrganisationContact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,9 +22,37 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Proposal extends Model implements HasMedia
 {
-    use HasUuid, HasRelationships, HasStatuses, HasStripeCheckoutSession, InteractsWithMedia;
+    use HasUuid, HasRelationships, HasVideo, HasStatuses, HasStripeCheckoutSession, InteractsWithMedia;
 
     const INTRO_VIDEO_COLLECTION = 'intro_video';
+    const VIDEO_UPLOAD_MIME_TYPES = [
+        'video/mp4',
+        'video/webm',
+        'video/mpeg',
+        'video/quicktime',
+        'video/x-matroska', // .mkv
+        'video/x-msvideo', // .avi
+    ];
+
+    public function registerMediaCollections(): void
+    {
+        // $this->addMediaCollection(self::INTRO_VIDEO_COLLECTION)
+        //     // ->acceptsFile(function (File $file) {
+        //     //     return $file->mimeType === 'image/jpeg';
+        //     // })
+        //     ->acceptsMimeTypes(self::VIDEO_UPLOAD_MIME_TYPES)
+        //     ->singleFile()
+        //     ->useDisk('s3')
+        //     ->registerMediaConversions(function (Media $media) {
+
+        //         $this->addMediaConversion('thumb')
+        //             ->withoutManipulations()
+        //         // $this
+        //         //     ->addMediaConversion('thumb')
+        //         //     ->width(100)
+        //         //     ->height(100);
+        //     });
+    }
 
     /**
      * The attributes that aren't mass assignable.
