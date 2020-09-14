@@ -11,7 +11,7 @@
       leave-class="opacity-100"
       leave-to-class="opacity-0">
 
-      <div class="flex flex-col justify-evenly items-center h-full w-full rounded-full select-none" v-if="currentState.matches('expanded.empty')" style="transition-delay: .4s">
+      <div class="absolute inset-auto flex flex-col justify-evenly items-center h-full w-full rounded-full select-none" v-if="currentState.matches('expanded.empty')" style="transition-delay: .4s">
 
         <h3 class="xs:text-lg text-xl font-medium text-center">
           <PositLogoWords class="h-8 w-36 m-auto" />
