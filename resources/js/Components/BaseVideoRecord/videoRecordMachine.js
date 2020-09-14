@@ -100,6 +100,9 @@ export const videoRecordMachine = Machine({
         entering: {
           always: [
             {
+              target: 'empty', cond: 'isExpandedEmpty'
+            },
+            {
               target: 'playback', cond: 'isExpandedPlayback'
             },
             {
@@ -112,6 +115,11 @@ export const videoRecordMachine = Machine({
               target: 'uploadingFailed', cond: 'isExpandedUploadingFailed'
             },
           ]
+        },
+        empty: {
+          on: {
+            RECORD: 'recording'
+          }
         },
         playback: {
           on: {
@@ -185,6 +193,7 @@ export const videoRecordMachine = Machine({
     UPLOAD_FAILED: {
       actions: ['setUploadFailedContext']
     },
+
     // EXPAND: '.expanding',
     // COLLAPSE: '.collapsing'
     // TOGGLE_HAS_VIDEO: {
@@ -212,6 +221,7 @@ export const videoRecordMachine = Machine({
     isCollapsedExisting: ctx => ctx.hasVideo && !ctx.isUploading,
     isCollapsedUploading: ctx => ctx.isUploading,
     isCollapsedUploadingFailed: ctx => ctx.uploadFailed,
+    isExpandedEmpty: ctx => !ctx.hasVideo && !!!ctx.recordedFile,
     isExpandedRecording: ctx => !ctx.hasVideo && !ctx.isUploading && !ctx.uploadFailed,
     isExpandedPlayback: ctx => ctx.hasVideo && !ctx.isUploading && !ctx.uploadFailed,
     isExpandedUploading: ctx => ctx.isUploading && !ctx.uploadFailed,

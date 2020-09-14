@@ -21,6 +21,7 @@
           <div class="relative w-full h-full rounded-full flex items-center justify-center">
             <!-- Poster... -->
             <img
+              v-if="proposal.has_intro_video && proposal.intro_video.has_poster"
               :src="proposal.intro_video.poster_url"
               style="width: 96%; height: 96%;"
               class="absolute inset-auto rounded-full"/>
@@ -71,6 +72,8 @@
               @handleVideoRecordFinish="handleVideoRecordFinish"
               @from-confirm-record-again="handleFromConfirmRecordAgain"
               @recording-confirmed="handleRecordingConfirmed"
+              @exit-from-webkit-safari="handleExitFromWebkitSafari"
+              @from-empty-start-record="handleFromEmptyStartRecord"
               />
           </template>
         </BaseModal>
@@ -147,6 +150,12 @@ export default {
     },
     handleRecordingConfirmed () {
       this.$refs.baseVideoRecord.sendEvent('CONFIRM_UPLOAD')
+    },
+    handleExitFromWebkitSafari () {
+      this.$refs.baseVideoRecord.sendEvent('COLLAPSE')
+    },
+    handleFromEmptyStartRecord () {
+      this.$refs.baseVideoRecord.sendEvent('RECORD')
     },
     handleVideoRecordFinish (player) {
       this.$refs.baseVideoRecord.sendEvent({

@@ -46,13 +46,6 @@ export default {
     events: { type: Array, default: () => [...DEFAULT_EVENTS] },
     debug: { type: Boolean, default: false },
     loadRecordPlugin: { type: Boolean, default: false },
-    onDeviceReady: { type: Function },
-    onEnumerateReady: { type: Function },
-    onEnumerateError: { type: Function },
-    onStartRecord: { type: Function },
-    onFinishRecord: { type: Function },
-    onError: { type: Function },
-    onDeviceError: { type: Function },
   },
   data () {
     return {

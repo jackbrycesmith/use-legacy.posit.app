@@ -1,5 +1,4 @@
-import { isArray, isObject } from './is'
-import { each, find, indexOf, isFunction } from 'lodash-es'
+import { each, find, indexOf, isFunction, isArray, isObject } from 'lodash-es'
 
 /**
  * Gets the payload data; i.e. retrieve contents of 'data' key.
@@ -19,6 +18,7 @@ export function getPayloadData (payload, key = 'data') {
     return payload[key]
   }
 
+  // This must come after isArray check, because isObject will return true for arrays
   if (payload[key] && isObject(payload[key])) {
     return payload[key]
   }

@@ -1,6 +1,49 @@
 <template>
   <div
-    class="relative bg-white h-72 w-72 sm:h-96 sm:w-96 rounded-full flex items-center justify-center hover:bg-gray-50 cursor-pointer shadow-md">
+    class="relative bg-white h-72 w-72 sm:h-96 sm:w-96 rounded-full flex items-center justify-center shadow-md hover:bg-gray-50">
+
+    <!-- Empty/First time -->
+    <transition
+      enter-active-class="ease-out duration-1000"
+      enter-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="ease-in duration-1000"
+      leave-class="opacity-100"
+      leave-to-class="opacity-0">
+
+      <div class="flex flex-col justify-evenly items-center h-full w-full rounded-full select-none" v-if="currentState.matches('expanded.empty')" style="transition-delay: .4s">
+
+        <h3 class="xs:text-lg text-xl font-medium text-center">
+          <PositLogoWords class="h-8 w-36 m-auto" />
+          <span class="text-orange-400">Record your intro video</span>
+        </h3>
+
+        <span v-if="!isErrorCannotRecord" class="xs:text-4xl text-5xl inline-block animate-wave">👋</span>
+
+        <transition
+          enter-active-class="ease-out duration-1000"
+          enter-class="opacity-0"
+          enter-to-class="opacity-100"
+          leave-active-class="ease-in duration-1000"
+          leave-class="opacity-100"
+          leave-to-class="opacity-0">
+          <span v-if="isErrorCannotRecord" v-html="cannotRecordVideoErrorMessage" class="text-sm text-gray-500 px-8 text-center"/>
+        </transition>
+
+        <span v-if="!isErrorCannotRecord" class="inline-flex rounded-md shadow-sm">
+          <button @click="handleStartNowFromEmpty" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-orange-400 hover:bg-orange-300 focus:outline-none focus:border-orange-500 focus:shadow-outline-orange active:bg-orange-500 transition duration-150 ease-in-out">
+            Start Now »
+          </button>
+        </span>
+
+        <span v-if="isErrorCannotRecord" class="inline-flex rounded-md shadow-sm">
+          <button @click="$emit('exit-from-webkit-safari')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-orange-400 hover:bg-orange-300 focus:outline-none focus:border-orange-500 focus:shadow-outline-orange active:bg-orange-500 transition duration-150 ease-in-out">
+            Okay
+          </button>
+        </span>
+
+      </div>
+    </transition>
 
     <!-- TODO playback -->
     <template v-if="currentState.matches('expanded.playback')" class="relative w-full h-full">
@@ -38,7 +81,8 @@
         styles="object-fit: cover; border-radius: 9999px; height: 100%; width: 100%;"
         :options="videoJsRecordOptions"
         :load-record-plugin="true"
-        :events="['finishRecord']"
+        :events="['deviceReady', 'enumerateReady', 'enumerateError', 'startRecord', 'finishRecord', 'deviceError']"
+        @deviceError="handleVideoRecordDeviceError"
         @ready="handleVideoRecordReady"
         @finishRecord="handleVideoRecordFinish"
       />
@@ -108,12 +152,14 @@
 import VideoJs from '@/Components/VideoJs'
 import IconHeroiconsSmallCheck from '@/Icons/IconHeroiconsSmallCheck'
 import IconHeroiconsSmallX from '@/Icons/IconHeroiconsSmallX'
+import PositLogoWords from '@/Components/PositLogoWords'
+import { isWebkitSafari } from '@/utils/is'
 // import 'video.js/dist/video-js.css'
 // import 'videojs-record/dist/css/videojs.record.css'
 // import 'webrtc-adapter'
 
 export default {
-  components: { VideoJs, IconHeroiconsSmallCheck, IconHeroiconsSmallX },
+  components: { VideoJs, IconHeroiconsSmallCheck, IconHeroiconsSmallX, PositLogoWords },
   props: {
     proposal: { type: Object },
     currentState: { type: Object },
@@ -121,9 +167,30 @@ export default {
   },
   data () {
     return {
+      isWebkitSafari: false,
+      isCameraMicrophonePermissionDenied: false
     }
   },
   computed: {
+    isErrorCannotRecord () {
+      return this.isWebkitSafari || this.isCameraMicrophonePermissionDenied
+    },
+    cannotRecordVideoErrorMessage () {
+      if (this.isWebkitSafari) {
+        return `
+          The recording feature is <span class="underline">currently unavailable on iOS & Safari</span> due to browser restrictions.
+            <br><br>
+            Please use another browser/device if possible whilst we look for workarounds.
+        `
+      }
+
+      if (this.isCameraMicrophonePermissionDenied) {
+        return `
+          Camera/mic permission has been denied.<br><br>
+          Please enable access & try again.
+        `
+      }
+    },
     videoJsPlaybackOptions () {
       return {
           controls: true,
@@ -207,6 +274,26 @@ export default {
     }
   },
   methods: {
+    async handleStartNowFromEmpty () {
+      if (isWebkitSafari()) {
+        // TODO fire some analytics event to track errors e.g. if iOS/Safari
+        this.isWebkitSafari = true
+        return
+      }
+
+      try {
+        // TODO should probs move this out to utils & also check microphone too
+        const result = await navigator.permissions.query({ name: 'camera' })
+
+        if (result.state === 'denied') {
+          this.isCameraMicrophonePermissionDenied = true
+          return
+        }
+      } catch (e) {
+      }
+
+      this.$emit('from-empty-start-record')
+    },
     async handleVideoPlaybackReady (player) {
       await this.$nextTick()
 
@@ -245,8 +332,11 @@ export default {
       console.log('handleVideoRecordFinish...')
       this.$emit('handleVideoRecordFinish', player)
     },
-    async handleVideoRecordReady () {
-
+    async handleVideoRecordReady (player) {
+      player.record().getDevice()
+    },
+    handleVideoRecordDeviceError (player) {
+      console.log('handleVideoRecordDeviceError: ', player.deviceErrorCode)
     },
     async handleExpandedRecording () {
 

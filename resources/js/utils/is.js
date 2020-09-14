@@ -1,7 +1,11 @@
-export function isArray(value) {
-  return Array.isArray(value)
-}
+import { isNil } from 'lodash-es'
 
-export function isObject(value) {
-  return value instanceof Object && value.constructor === Object
+/**
+ * Determines if browser is currently webkit/safari engine.
+ *
+ * @return {boolean} True if webkit safari, False otherwise.
+ * @see as of Sept 2020 (keep an eye on this), Safari is the only one which doesn't support: https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API
+ */
+export function isWebkitSafari() {
+  return isNil(navigator.permissions)
 }
