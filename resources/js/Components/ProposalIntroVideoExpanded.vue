@@ -221,6 +221,12 @@ export default {
 
       // Load existing video
       if (this.proposal.has_intro_video) {
+        if (this.proposal.intro_video.has_poster) {
+          player.poster(this.proposal.intro_video.poster_url)
+        } else {
+          player.poster('') // Reset
+        }
+
         player.src(this.proposal.intro_video.video_js_src_data)
         player.play()
       }

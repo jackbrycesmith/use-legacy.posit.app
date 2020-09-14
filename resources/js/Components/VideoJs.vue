@@ -39,6 +39,7 @@ const DEFAULT_EVENTS = [
 export default {
   props: {
     classes: { type: String, default: 'video-js vjs-default-skin' },
+    playerClass: { type: String, default: 'vjs-posit' },
     styles: { type: String, default: '' },
     options: { type: Object, default: () => {} },
     ready: { type: Function, default: () => {} },
@@ -79,6 +80,8 @@ export default {
         this.setupVideoEventListeners()
         this.$emit('ready', this.player)
       })
+
+      this.player.addClass(this.playerClass)
     },
     setupVideoEventListeners() {
       this.events.forEach(event => {
@@ -101,5 +104,11 @@ export default {
 <style>
 .vjs-control-bar {
   margin-bottom: -2.5rem !important;
+}
+
+.vjs-posit .vjs-poster {
+  background-size: cover;
+  background-color: unset;
+  position: unset;
 }
 </style>
