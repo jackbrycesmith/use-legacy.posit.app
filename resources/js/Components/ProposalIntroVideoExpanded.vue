@@ -69,6 +69,33 @@
       </span>
     </template>
 
+    <!-- Record Error -->
+    <transition
+      enter-active-class="ease-out duration-1000"
+      enter-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="ease-in duration-1000"
+      leave-class="opacity-100"
+      leave-to-class="opacity-0">
+
+      <div class="absolute inset-auto flex flex-col justify-evenly items-center h-full w-full rounded-full select-none" v-if="currentState.matches('expanded.recordError')" style="transition-delay: .2s">
+
+        <h3 class="xs:text-lg text-xl font-medium text-center">
+          <PositLogoWords class="h-8 w-36 m-auto" />
+          <span class="text-orange-400">Record your intro video</span>
+        </h3>
+
+        <span v-html="cameraPermissionDeniedMessage" class="text-sm text-gray-500 px-8 text-center"/>
+
+        <span class="inline-flex rounded-md shadow-sm">
+          <button @click="$emit('exit-from-record-error')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-orange-400 hover:bg-orange-300 focus:outline-none focus:border-orange-500 focus:shadow-outline-orange active:bg-orange-500 transition duration-150 ease-in-out">
+            Okay
+          </button>
+        </span>
+
+      </div>
+    </transition>
+
     <!-- TODO recording -->
     <template v-if="currentState.matches('expanded.recording')" class="relative w-full h-full">
       <VideoJs
@@ -185,11 +212,14 @@ export default {
       }
 
       if (this.isCameraMicrophonePermissionDenied) {
-        return `
+        return this.cameraPermissionDeniedMessage
+      }
+    },
+    cameraPermissionDeniedMessage () {
+      return `
           Camera/mic permission has been denied.<br><br>
           Please enable access & try again.
         `
-      }
     },
     videoJsPlaybackOptions () {
       return {
@@ -336,7 +366,8 @@ export default {
       player.record().getDevice()
     },
     handleVideoRecordDeviceError (player) {
-      console.log('handleVideoRecordDeviceError: ', player.deviceErrorCode)
+      // console.log('handleVideoRecordDeviceError: ', player.deviceErrorCode)
+      this.$emit('handle-video-record-device-error')
     },
     async handleExpandedRecording () {
 

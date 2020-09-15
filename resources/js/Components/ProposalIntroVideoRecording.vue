@@ -73,7 +73,9 @@
               @from-confirm-record-again="handleFromConfirmRecordAgain"
               @recording-confirmed="handleRecordingConfirmed"
               @exit-from-webkit-safari="handleExitFromWebkitSafari"
+              @exit-from-record-error="handleExitFromRecordError"
               @from-empty-start-record="handleFromEmptyStartRecord"
+              @handle-video-record-device-error="handleVideoRecordDeviceError"
               />
           </template>
         </BaseModal>
@@ -154,8 +156,14 @@ export default {
     handleExitFromWebkitSafari () {
       this.$refs.baseVideoRecord.sendEvent('COLLAPSE')
     },
+    handleExitFromRecordError () {
+      this.$refs.baseVideoRecord.sendEvent('COLLAPSE')
+    },
     handleFromEmptyStartRecord () {
       this.$refs.baseVideoRecord.sendEvent('RECORD')
+    },
+    handleVideoRecordDeviceError () {
+      this.$refs.baseVideoRecord.sendEvent('RECORDING_ERROR')
     },
     handleVideoRecordFinish (player) {
       this.$refs.baseVideoRecord.sendEvent({

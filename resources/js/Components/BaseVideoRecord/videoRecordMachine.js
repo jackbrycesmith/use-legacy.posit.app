@@ -134,7 +134,11 @@ export const videoRecordMachine = Machine({
               actions: ['updateRecordedFile']
             },
             RECORDING_CANCEL: 'playback',
+            RECORDING_ERROR: 'recordError'
           }
+        },
+        recordError: {
+
         },
         recordedConfirmUpload: {
           on: {
