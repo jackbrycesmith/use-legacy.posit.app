@@ -2,7 +2,9 @@
 
 namespace App\Jobs;
 
+use App\Events\ProposalIntroVideoUpdated;
 use App\Jobs\ConvertVideoForStreaming;
+use App\Models\Proposal;
 use App\Models\Video;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Format\Video\X264;
@@ -96,6 +98,18 @@ class ConvertVideoForDownloading implements ShouldQueue
             'downloadable_at' => now(),
         ]);
 
+        $this->broadcastConvertedVideoToUser();
+
         ConvertVideoForStreaming::dispatch($this->video);
+    }
+
+    /**
+     * Broadcasts a converted video to user.
+     */
+    protected function broadcastConvertedVideoToUser()
+    {
+        if (is_a($this->video->model, Proposal::class)) {
+            event(new ProposalIntroVideoUpdated($this->video->model, $this->video));
+        }
     }
 }

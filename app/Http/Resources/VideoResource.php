@@ -18,7 +18,9 @@ class VideoResource extends JsonResource
             'uuid' => $this->uuid,
             'mime_type' => $this->mime_type,
             'size' => $this->size,
-            'url' => $this->url, // TODO
+            'poster_url' => $this->poster_url,
+            'url' => $this->url,
+            'seconds' => $this->seconds,
             'hls_url' => null, // TODO
             'downloadable_at' => $this->downloadable_at,
             'streamable_at' => $this->streamable_at,
