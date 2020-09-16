@@ -352,7 +352,6 @@ export default {
       //   console.log('on pause...')
       // })
 
-      console.log('handleVideoPlaybackReady: ', this.proposal.intro_video)
       // Load existing video
       if (this.proposal.has_intro_video) {
         if (this.proposal.intro_video.has_poster) {
@@ -361,7 +360,6 @@ export default {
           player.poster('') // Reset
         }
 
-        console.log('setting src...: ', this.proposal.intro_video.video_js_src_data)
         player.src(this.proposal.intro_video.video_js_src_data)
         player.play()
       }
