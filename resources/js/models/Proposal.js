@@ -52,6 +52,10 @@ export default class Proposal extends Model {
     return !isNil(this.intro_video)
   }
 
+  get is_intro_video_processing () {
+    return this.has_intro_video && this.intro_video.is_processing
+  }
+
   async updateRecipient () {
     const contactId = this.recipient?.id
     if (isNil(contactId)) return

@@ -23,7 +23,7 @@
     <!--  -->
     <!-- <VideoIntro :proposal="proposal" /> -->
 
-    <ProposalIntroVideoRecording :proposal="proposal" />
+    <ProposalIntroVideoRecording :proposal.sync="proposal" />
 
   </div>
 </template>

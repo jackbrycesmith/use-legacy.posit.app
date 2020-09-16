@@ -26,12 +26,25 @@ export const videoRecordMachine = Machine({
           //   }
           // })
         },
+        PROCESSING: {
+          target: ['.entering'],
+          internal: true,
+          actions: ['setIsProcessingContext'],
+        },
+        PROCESSING_COMPLETED: {
+          target: ['.entering'],
+          internal: true,
+          actions: ['setIsNotProcessingContext'],
+        }
       },
       states: {
         entering: {
           always: [
             {
               target: 'empty', cond: 'isCollapsedEmpty'
+            },
+            {
+              target: 'processing', cond: 'isCollapsedProcessing'
             },
             {
               target: 'existing', cond: 'isCollapsedExisting'
@@ -54,7 +67,7 @@ export const videoRecordMachine = Machine({
           on: {
             UPLOAD_SUCCESS: {
               target: 'processing',
-              actions: ['setUploadCompletedContext']
+              actions: ['setUploadCompletedContext', 'setIsProcessingContext']
             },
             UPLOAD_FAILED: {
               target: 'uploadingFailed',
@@ -63,7 +76,12 @@ export const videoRecordMachine = Machine({
           }
         },
         processing: {
-
+          on: {
+            PROCESSING_COMPLETED: {
+              target: 'existing',
+              actions: ['setIsNotProcessingContext']
+            },
+          }
         },
         uploadingFailed: {
         }
@@ -95,12 +113,25 @@ export const videoRecordMachine = Machine({
           //   }
           // })
         },
+        PROCESSING_COMPLETED: {
+          target: ['.entering'],
+          internal: true,
+          actions: ['setIsNotProcessingContext'],
+        },
+        PROCESSING: {
+          target: ['.entering'],
+          internal: true,
+          actions: ['setIsProcessingContext'],
+        },
       },
       states: {
         entering: {
           always: [
             {
               target: 'empty', cond: 'isExpandedEmpty'
+            },
+            {
+              target: 'processing', cond: 'isExpandedProcessing'
             },
             {
               target: 'playback', cond: 'isExpandedPlayback'
@@ -124,6 +155,15 @@ export const videoRecordMachine = Machine({
         playback: {
           on: {
             RECORD: 'recording'
+          }
+        },
+        processing: {
+          on: {
+            RECORD: {
+              internal: true,
+              target: 'recording',
+              actions: ['setIsNotProcessingContext']
+            }
           }
         },
         recording: {
@@ -160,8 +200,8 @@ export const videoRecordMachine = Machine({
         uploading: {
           on: {
             UPLOAD_SUCCESS: {
-              target: 'playback',
-              actions: ['setUploadCompletedContext']
+              target: 'processing',
+              actions: ['setUploadCompletedContext', 'setIsProcessingContext']
             },
             UPLOAD_FAILED: {
               target: 'uploadingFailed',
@@ -198,6 +238,22 @@ export const videoRecordMachine = Machine({
       actions: ['setUploadFailedContext']
     },
 
+    PROCESSING: {
+      actions: ['setIsProcessingContext'],
+    },
+
+    PROCESSING_COMPLETED: {
+      actions: ['setIsNotProcessingContext']
+    },
+
+    INITIALLY_IS_PROCESSING: {
+      actions: ['setIsProcessingContext']
+    },
+
+    INITIALLY_IS_NOT_PROCESSING: {
+      actions: ['setIsNotProcessingContext']
+    },
+
     // EXPAND: '.expanding',
     // COLLAPSE: '.collapsing'
     // TOGGLE_HAS_VIDEO: {
@@ -221,10 +277,12 @@ export const videoRecordMachine = Machine({
   }
 }, {
   guards: {
+    isCollapsedProcessing: ctx => ctx.isProcessing,
     isCollapsedEmpty: ctx => !ctx.hasVideo && !!!ctx.recordedFile,
     isCollapsedExisting: ctx => ctx.hasVideo && !ctx.isUploading,
     isCollapsedUploading: ctx => ctx.isUploading,
     isCollapsedUploadingFailed: ctx => ctx.uploadFailed,
+    isExpandedProcessing: ctx => ctx.isProcessing,
     isExpandedEmpty: ctx => !ctx.hasVideo && !!!ctx.recordedFile,
     isExpandedRecording: ctx => !ctx.hasVideo && !ctx.isUploading && !ctx.uploadFailed,
     isExpandedPlayback: ctx => ctx.hasVideo && !ctx.isUploading && !ctx.uploadFailed,

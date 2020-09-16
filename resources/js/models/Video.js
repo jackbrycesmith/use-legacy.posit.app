@@ -11,6 +11,14 @@ export default class Video extends Model {
     return !isNil(this.poster_url)
   }
 
+  get has_converted_video () {
+    return !isNil(this.url)
+  }
+
+  get is_processing () {
+    return !this.hasPoster && !this.has_converted_video
+  }
+
   get video_js_src_data () {
     return {
       src: this.url,

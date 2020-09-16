@@ -36,7 +36,6 @@
           </div>
         </template>
 
-
         <IconHeroiconsSpinner
           v-if="currentState.matches('collapsed.uploading')"
           class="h-8 w-8 text-red-400" />
@@ -95,8 +94,10 @@ import IconVideoMessage from '@/Components/IconVideoMessage'
 import IconHeroiconsMediumCog from '@/Icons/IconHeroiconsMediumCog'
 import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
 import BaseModal from '@/Modals/BaseModal'
+import Realtime from '@/services/Realtime'
 import ProposalIntroVideoExpanded from '@/Components/ProposalIntroVideoExpanded'
 import S3Upload from '@/models/S3Upload'
+import { get, set } from 'lodash-es'
 
 export default {
   components: {
@@ -132,7 +133,28 @@ export default {
           payload: value
         })
       }
+    },
+    'proposal.is_intro_video_processing': {
+      // immediate: true,
+      async handler (value) {
+        await this.$nextTick()
+        if (value) {
+          this.$refs.baseVideoRecord.sendEvent('INITIALLY_IS_PROCESSING')
+        } else {
+          this.$refs.baseVideoRecord.sendEvent('INITIALLY_IS_NOT_PROCESSING')
+        }
+      }
     }
+  },
+  mounted () {
+    const channel = `proposal.${this.proposal.uuid}.intro_video`
+    Realtime.subscribe(channel, {
+      'ProposalIntroVideoUpdated': this.handleRealtimeProposalIntroVideoUpdated
+    })
+
+    this.$once('hook:destroyed', () => {
+      Realtime.unsubscribe(channel)
+    })
   },
   methods: {
     handleExpand () {
@@ -198,7 +220,18 @@ export default {
 
       const proposalVideoUpsertResponse = await this.proposal.videoIntroUpsert(s3UploadResponse.uuid)
 
-      console.log('🎬: ', proposalVideoUpsertResponse)
+      const introVideo = get(proposalVideoUpsertResponse, 'data')
+      if (!introVideo) return
+      this.proposal.fill({ intro_video: introVideo })
+      this.$emit('update:proposal', this.proposal)
+    },
+    handleRealtimeProposalIntroVideoUpdated (event) {
+      console.log('handleRealtimeProposalIntroVideoUpdated: ', event)
+      const introVideo = get(event, 'intro_video')
+      if (!introVideo) return
+      this.proposal.fill({ intro_video: introVideo })
+      this.$emit('update:proposal', this.proposal)
+      this.$refs.baseVideoRecord.sendEvent('PROCESSING_COMPLETED')
     }
   }
 }

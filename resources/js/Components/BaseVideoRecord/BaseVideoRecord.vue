@@ -49,6 +49,7 @@ export default {
         setUploadCompletedContext: assign((context, event) => {
           context.isUploading = false
         }),
+
         setRecordAgainContext: assign((context, event) => {
           context.recordedFile = null
         }),
@@ -73,7 +74,13 @@ export default {
             this.sendEvent('UPLOAD_FAILED')
             console.log('upload failed....')
           }
-        })
+        }),
+        setIsProcessingContext: assign((context, event) => {
+          context.isProcessing = true
+        }),
+        setIsNotProcessingContext: assign((context, event) => {
+          context.isProcessing = false
+        }),
       }
     })
 

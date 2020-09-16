@@ -100,7 +100,6 @@
     <template v-if="currentState.matches('expanded.recording')" class="relative w-full h-full">
       <VideoJs
         v-if="currentState.matches('expanded.recording')"
-        ref="videoRecord"
         key="def"
         class="w-full h-full"
         classes="w-full h-full"
@@ -124,12 +123,12 @@
       </span>
     </template>
 
-    <!-- TODO recordedConfirmUpload || uploading || uploadingFailed -->
+    <!-- START recordedConfirmUpload || uploading || uploadingFailed -->
     <template
-      v-if="currentState.matches('expanded.recordedConfirmUpload') || currentState.matches('expanded.uploading') || currentState.matches('expanded.uploadingFailed')"
+      v-if="currentState.matches('expanded.recordedConfirmUpload') || currentState.matches('expanded.uploading') || currentState.matches('expanded.uploadingFailed') || currentState.matches('expanded.processing')"
       class="relative w-full h-full">
       <VideoJs
-        v-if="currentState.matches('expanded.recordedConfirmUpload') || currentState.matches('expanded.uploading') || currentState.matches('expanded.uploadingFailed')"
+        v-if="currentState.matches('expanded.recordedConfirmUpload') || currentState.matches('expanded.uploading') || currentState.matches('expanded.uploadingFailed') || currentState.matches('expanded.processing')"
         ref="videoRecordConfirm"
         key="ghi"
         class="w-full h-full"
@@ -141,36 +140,61 @@
         @ready="handleVideoConfirmUploadReady"
       />
 
+      <!-- Confirm/Retake video buttons -->
       <template v-if="currentState.matches('expanded.recordedConfirmUpload') || currentState.matches('expanded.uploadingFailed')">
         <span class="inline-flex rounded-md shadow-sm absolute top-0 left-0 -mt-12">
           <button @click="$emit('from-confirm-record-again')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-            <IconHeroiconsSmallX class="-ml-1 mr-2 h-5 w-5" />
+            <IconHeroiconsSmallX class="-ml-1 mr-2 h-5 w-5 text-red-400" />
             Retake
           </button>
         </span>
 
-        <template v-if="currentState.matches('expanded.uploadingFailed')">
-          <!-- TODO better to show that the upload failed -->
-          <span class="absolute top-0 left-auto right-auto -mt-16 font-2xl text-white text-xl font-semibold text-center">
-           &#x1f622; <br>Upload Failed
-          </span>
-        </template>
-
         <span class="inline-flex rounded-md shadow-sm absolute top-0 right-0 -mt-12">
           <button @click="$emit('recording-confirmed')" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
             Use
-            <IconHeroiconsSmallCheck class="ml-2 -mr-1 h-5 w-5" />
+            <IconHeroiconsSmallCheck class="ml-2 -mr-1 h-5 w-5 text-green-400" />
           </button>
         </span>
       </template>
 
+      <!-- Uploading visual context -->
       <template v-if="currentState.matches('expanded.uploading')">
-        <span class="absolute top-0 left-auto right-auto -mt-12 font-2xl text-white text-3xl font-semibold text-center">
+        <IconHeroiconsSpinner
+          class="h-16 w-16 text-red-400 absolute inset-auto" />
+
+        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium leading-5 bg-yellow-100 text-yellow-800 absolute top-0 left-auto right-auto -mt-12">
+          <svg class="-ml-1 mr-1.5 h-2 w-2 text-indigo-400" fill="currentColor" viewBox="0 0 8 8">
+            <circle cx="4" cy="4" r="3" />
+          </svg>
           Uploading&hellip;
         </span>
       </template>
-    </template>
 
+      <!-- Uploading failed visual context -->
+      <template v-if="currentState.matches('expanded.uploadingFailed')">
+        <!-- TODO better to show that the upload failed -->
+        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium leading-5 bg-yellow-100 text-yellow-800 absolute top-0 left-auto right-auto -mt-12">
+          <svg class="-ml-1 mr-1.5 h-2 w-2 text-indigo-400" fill="currentColor" viewBox="0 0 8 8">
+            <circle cx="4" cy="4" r="3" />
+          </svg>
+          Upload Failed
+        </span>
+      </template>
+
+      <!-- Processing visual context -->
+      <template v-if="currentState.matches('expanded.processing')">
+        <IconHeroiconsMediumCog
+          class="h-16 w-16 text-red-400 animate-spin absolute inset-auto" />
+
+        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium leading-5 bg-yellow-100 text-yellow-800 absolute top-0 left-auto right-auto -mt-12">
+          <svg class="-ml-1 mr-1.5 h-2 w-2 text-indigo-400" fill="currentColor" viewBox="0 0 8 8">
+            <circle cx="4" cy="4" r="3" />
+          </svg>
+          Processing&hellip;
+        </span>
+      </template>
+    </template>
+    <!-- END recordedConfirmUpload || uploading || uploadingFailed -->
 
   </div>
 </template>
@@ -180,13 +204,13 @@ import VideoJs from '@/Components/VideoJs'
 import IconHeroiconsSmallCheck from '@/Icons/IconHeroiconsSmallCheck'
 import IconHeroiconsSmallX from '@/Icons/IconHeroiconsSmallX'
 import PositLogoWords from '@/Components/PositLogoWords'
+import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
+import IconHeroiconsMediumCog from '@/Icons/IconHeroiconsMediumCog'
 import { isWebkitSafari } from '@/utils/is'
-// import 'video.js/dist/video-js.css'
-// import 'videojs-record/dist/css/videojs.record.css'
-// import 'webrtc-adapter'
+import { isNil } from 'lodash-es'
 
 export default {
-  components: { VideoJs, IconHeroiconsSmallCheck, IconHeroiconsSmallX, PositLogoWords },
+  components: { VideoJs, IconHeroiconsSmallCheck, IconHeroiconsSmallX, IconHeroiconsSpinner, IconHeroiconsMediumCog, PositLogoWords },
   props: {
     proposal: { type: Object },
     currentState: { type: Object },
@@ -293,13 +317,7 @@ export default {
       immediate: true,
       // deep: true,
       handler (value) {
-        // if (this.currentState.matches('expanded.playback')) {
-        //   this.handleExpandedPlayback()
-        // }
 
-        // if (this.currentState.matches('expanded.recording')) {
-        //   this.handleExpandedRecording()
-        // }
       }
     }
   },
@@ -319,23 +337,22 @@ export default {
           this.isCameraMicrophonePermissionDenied = true
           return
         }
-      } catch (e) {
-      }
+      } catch (e) {}
 
       this.$emit('from-empty-start-record')
     },
     async handleVideoPlaybackReady (player) {
       await this.$nextTick()
 
-      player.on('play', () => {
-        console.log('on play...')
-      })
+      // player.on('play', () => {
+      //   console.log('on play...')
+      // })
 
-      player.on('pause', () => {
-        console.log('on pause...')
-      })
-      console.log('player... ', player)
+      // player.on('pause', () => {
+      //   console.log('on pause...')
+      // })
 
+      console.log('handleVideoPlaybackReady: ', this.proposal.intro_video)
       // Load existing video
       if (this.proposal.has_intro_video) {
         if (this.proposal.intro_video.has_poster) {
@@ -344,81 +361,30 @@ export default {
           player.poster('') // Reset
         }
 
+        console.log('setting src...: ', this.proposal.intro_video.video_js_src_data)
         player.src(this.proposal.intro_video.video_js_src_data)
         player.play()
       }
     },
     async handleVideoConfirmUploadReady (player) {
       await this.$nextTick()
+      if (isNil(this.currentState.context.recordedFile)) return
 
       const recordedSrc = URL.createObjectURL(this.currentState.context.recordedFile)
-      console.log(recordedSrc)
 
       // For some reason safari(expiremental) still borks this; see https://github.com/collab-project/videojs-record/issues/479
       player.src({ src: recordedSrc, type: this.currentState.context.recordedFile.type })
       player.play()
     },
     handleVideoRecordFinish (player) {
-      console.log('handleVideoRecordFinish...')
       this.$emit('handleVideoRecordFinish', player)
     },
-    async handleVideoRecordReady (player) {
+    handleVideoRecordReady (player) {
       player.record().getDevice()
     },
     handleVideoRecordDeviceError (player) {
-      // console.log('handleVideoRecordDeviceError: ', player.deviceErrorCode)
       this.$emit('handle-video-record-device-error')
     },
-    async handleExpandedRecording () {
-
-      // this.playerRecord = videojs(this.$refs.videoRecord, videoJsPlaybackOptions, () => {
-      //   // print version information at startup
-      //   var msg = 'Using video.js ' + videojs.VERSION +
-      //       ' with videojs-record ' + videojs.getPluginVersion('record') +
-      //       ' and recordrtc ' + RecordRTC.version;
-      //   videojs.log(msg);
-      // });
-
-      // // device is ready
-      // this.playerRecord.on('deviceReady', () => {
-      //   console.log('device is ready!');
-      //   // enumerate devices once
-      //   this.playerRecord.record().enumerateDevices()
-      // })
-
-      // // enumarate is ready
-      // this.playerRecord.on('enumerateReady', () => {
-      //   console.log('enumerateReady is ready!')
-      //   const devices = this.playerRecord.record().devices
-      //   console.log('enumerateReady devices: ', devices)
-      // })
-
-      // this.playerRecord.on('enumerateError', function() {
-      //   console.warn('enumerate error: ', this.playerRecord.enumerateErrorCode)
-      // })
-
-      // // user clicked the record button and started recording
-      // this.playerRecord.on('startRecord', () => {
-      //   console.log('started recording!');
-      // })
-
-      // // user completed recording and stream is available
-      // this.playerRecord.on('finishRecord', () => {
-      // // the blob object contains the recorded data that
-      // // can be downloaded by the user, stored on server etc.
-      //   console.log('finished recording: ', this.playerRecord.recordedData);
-      //   // this.handleVideoUpload(this.playerRecord.recordedData)
-      // })
-
-      // // error handling
-      // this.playerRecord.on('error', (element, error) => {
-      //   console.warn(error);
-      // })
-
-      // this.playerRecord.on('deviceError', () => {
-      //   console.error('device error:', this.playerRecord.deviceErrorCode);
-      // })
-    }
   }
 }
 </script>
