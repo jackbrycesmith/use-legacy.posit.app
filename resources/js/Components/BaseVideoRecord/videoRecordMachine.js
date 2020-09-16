@@ -1,11 +1,11 @@
-import { Machine, assign } from 'xstate'
+import { Machine } from 'xstate'
 
 export const videoRecordMachine = Machine({
   id: 'videoRecord',
   context: {
     hasVideo: false,
     isUploading: false,
-    isProcessing: false, // i.e. just after upload
+    isProcessing: false,
     uploadFailed: false,
     recordedFile: null
   },
@@ -20,11 +20,6 @@ export const videoRecordMachine = Machine({
           target: ['.entering'],
           internal: true,
           actions: ['updateHasVideo'],
-          // actions: assign({
-          //   hasVideo: (context) => {
-          //     return !context.hasVideo
-          //   }
-          // })
         },
         PROCESSING: {
           target: ['.entering'],
@@ -107,11 +102,6 @@ export const videoRecordMachine = Machine({
           target: ['.entering'],
           internal: true,
           actions: ['updateHasVideo'],
-          // actions: assign({
-          //   hasVideo: (context) => {
-          //     return !context.hasVideo
-          //   }
-          // })
         },
         PROCESSING_COMPLETED: {
           target: ['.entering'],
@@ -230,7 +220,6 @@ export const videoRecordMachine = Machine({
     },
   },
   on: {
-    // Upload state fallback e.g. if happened when collapsing/expanding, then the entering guards should put it in the correct state...
     UPLOAD_SUCCESS: {
       actions: ['setUploadCompletedContext']
     },
@@ -253,27 +242,6 @@ export const videoRecordMachine = Machine({
     INITIALLY_IS_NOT_PROCESSING: {
       actions: ['setIsNotProcessingContext']
     },
-
-    // EXPAND: '.expanding',
-    // COLLAPSE: '.collapsing'
-    // TOGGLE_HAS_VIDEO: {
-    //   target: ['collapsed'],
-    //   internal: true,
-    //   actions: assign({
-    //     hasVideo: (context) => {
-    //       return !context.hasVideo
-    //     }
-    //   })
-    // },
-    // TOGGLE_HAS_VIDEO: {
-    //   target: ['expanded'],
-    //   internal: true,
-    //   actions: assign({
-    //     hasVideo: (context) => {
-    //       return !context.hasVideo
-    //     }
-    //   })
-    // }
   }
 }, {
   guards: {
