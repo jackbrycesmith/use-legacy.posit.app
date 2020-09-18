@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\PublicProposalAccessCookie;
-use App\Models\Organisation;
-use App\Models\OrganisationContact;
 use App\Models\Proposal;
+use App\Models\Team;
+use App\Models\TeamContact;
 
 it('requires valid proposal to be in url', function () {
     $response = $this->postJson(
@@ -15,18 +15,18 @@ it('requires valid proposal to be in url', function () {
 });
 
 it('requires valid input to proceed', function () {
-    $org = factory(Organisation::class)->create();
-    $proposal = factory(Proposal::class)->create(['organisation_id' => $org->id]);
+    $team = Team::factory()->create();
+    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
 
     $response = $this->postJson(route('pub.proposal.submit.proposal-auth-cookie', $proposal));
     $response->assertStatus(422);
 });
 
 it('requires valid recipient access code', function () {
-    $org = factory(Organisation::class)->create();
-    $proposal = factory(Proposal::class)->create(['organisation_id' => $org->id]);
-    $contact = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
-    $contact1 = factory(OrganisationContact::class)->create(['organisation_id' => $org->id, 'access_code' => 'sdf']);
+    $team = Team::factory()->create();
+    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
+    $contact = TeamContact::factory()->create(['team_id' => $team->id]);
+    $contact1 = TeamContact::factory()->create(['team_id' => $team->id, 'access_code' => 'sdf']);
     $proposal->recipients()->sync([$contact->id]);
 
     $response = $this->postJson(
@@ -38,10 +38,10 @@ it('requires valid recipient access code', function () {
 });
 
 it('redirects to proposal view on valid recipient access code', function () {
-    $org = factory(Organisation::class)->create();
-    $proposal = factory(Proposal::class)->create(['organisation_id' => $org->id]);
-    $contact = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
-    $contact1 = factory(OrganisationContact::class)->create(['organisation_id' => $org->id, 'access_code' => 'sdf']);
+    $team = Team::factory()->create();
+    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
+    $contact = TeamContact::factory()->create(['team_id' => $team->id]);
+    $contact1 = TeamContact::factory()->create(['team_id' => $team->id, 'access_code' => 'sdf']);
     $proposal->recipients()->sync([$contact->id]);
 
     $response = $this->postJson(
@@ -50,5 +50,5 @@ it('redirects to proposal view on valid recipient access code', function () {
     );
 
     $response->assertRedirect(route('pub.proposal.view', $proposal));
-    $response->assertCookie(PublicProposalAccessCookie::cookieName($org));
+    $response->assertCookie(PublicProposalAccessCookie::cookieName($team));
 });

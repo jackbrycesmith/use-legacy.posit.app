@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Organisation;
 use App\Models\Proposal;
+use App\Models\Team;
 
 it('cannot find public proposal page', function () {
     $response = $this->get(route('pub.proposal.view', 'blah'));
@@ -9,8 +9,8 @@ it('cannot find public proposal page', function () {
 });
 
 it('requires auth cookie if public proposal is in state', function ($status) {
-    $org = factory(Organisation::class)->create();
-    $proposal = factory(Proposal::class)->create(['organisation_id' => $org->id]);
+    $team = Team::factory()->create();
+    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
     $proposal->setStatus($status);
     $proposal->refresh();
 
@@ -19,8 +19,8 @@ it('requires auth cookie if public proposal is in state', function ($status) {
 })->with(Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES);
 
 it('allows access public proposal in reduced/limited state; ', function ($status) {
-    $org = factory(Organisation::class)->create();
-    $proposal = factory(Proposal::class)->create(['organisation_id' => $org->id]);
+    $team = Team::factory()->create();
+    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
     $proposal->setStatus($status);
     $proposal->refresh();
 
