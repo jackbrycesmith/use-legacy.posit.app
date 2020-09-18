@@ -44,7 +44,7 @@ return [
     */
     'connect' => [
         'model' => \App\Models\StripeAccount::class,
-        'owner' => \App\Models\Organisation::class,
+        'owner' => \App\Models\Team::class,
         'queue' => env('STRIPE_CONNECT_QUEUE'),
         'queue_connection' => env('STRIPE_CONNECT_QUEUE_CONNECTION'),
         'views' => [

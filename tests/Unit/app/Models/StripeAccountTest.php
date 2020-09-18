@@ -1,24 +1,21 @@
 <?php
 
-use App\Models\Organisation;
 use App\Models\StripeAccount;
-use App\Models\User;
+use App\Models\Team;
 use CloudCreativity\LaravelStripe\Facades\Stripe;
-use function Pest\Faker\faker;
 use Stripe\Account;
+use function Pest\Faker\faker;
 
-test('it has an organisation', function () {
-    $user = factory(User::class)->create();
-    $org = $user->organisations()->create(['name' => 'org']);
+test('stripe account is owned by a team', function () {
+    $team = Team::factory()->create();
+    $stripeAccount = StripeAccount::factory()->create(['owner_id' => $team->id]);
 
-    $stripeAccount = factory(StripeAccount::class)->create(['owner_id' => $org->id]);
-
-    assertInstanceOf(Organisation::class, $stripeAccount->owner);
-    assertEquals($org->id, $stripeAccount->owner->id);
+    assertInstanceOf(Team::class, $stripeAccount->owner);
+    assertEquals($team->id, $stripeAccount->owner->id);
 });
 
 test('it cannot fill attributes from stripe account object if account id mismatch', function () {
-    $stripeAccount = factory(StripeAccount::class)->create();
+    $stripeAccount = StripeAccount::factory()->create();
 
     $this->expectException(InvalidArgumentException::class);
 
@@ -26,7 +23,7 @@ test('it cannot fill attributes from stripe account object if account id mismatc
 });
 
 test('it can fill attributes from stripe account object', function () {
-    $stripeAccount = factory(StripeAccount::class)->create();
+    $stripeAccount = StripeAccount::factory()->create();
 
     $stripeAccountFromApi = new Account($stripeAccount->id);
     assertInstanceOf(StripeAccount::class, $stripeAccount->fillFrom($stripeAccountFromApi));
@@ -34,7 +31,7 @@ test('it can fill attributes from stripe account object', function () {
 });
 
 test('it can updateFromStripeApi', function () {
-    $stripeAccount = factory(StripeAccount::class)->create();
+    $stripeAccount = StripeAccount::factory()->create();
 
     Stripe::fake(
         $expected = new \Stripe\Account()
@@ -46,22 +43,21 @@ test('it can updateFromStripeApi', function () {
 });
 
 test('it can createFromStripeApi', function () {
-    $user = factory(User::class)->create();
-    $org = $user->organisations()->create(['name' => 'org']);
+    $team = Team::factory()->create();
 
     Stripe::fake(
         $expected = new \Stripe\Account(faker()->unique()->lexify('acct_????????????????'))
     );
 
-    $stripeAccount = StripeAccount::createFromStripeApi($org->id);
+    $stripeAccount = StripeAccount::createFromStripeApi($team->id);
 
     Stripe::assertInvoked(\Stripe\Account::class, 'create');
 
-    assertEquals($stripeAccount->id, $org->stripeAccount->id);
+    assertEquals($stripeAccount->id, $team->stripeAccount->id);
 });
 
 test('it can makeStripeCheckoutSession', function () {
-    $stripeAccount = factory(StripeAccount::class)->create();
+    $stripeAccount = StripeAccount::factory()->create();
 
     Stripe::fake(
         $expected = new \Stripe\Checkout\Session()
