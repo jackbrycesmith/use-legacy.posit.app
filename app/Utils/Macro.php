@@ -1,9 +1,7 @@
 <?php
 
-use App\Models\Organisation;
+use App\Models\Team;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 use Spatie\Regex\Regex;
 
@@ -21,7 +19,7 @@ Request::macro('stripeConnectOauthOrg', function () {
     $orgUuid = Regex::match('/[^.]+$/', $stripeConnectOauthReturnState)->result();
     if (! Uuid::isValid($orgUuid)) return null;
 
-    return Organisation::where('uuid', $orgUuid)->first();
+    return Team::where('uuid', $orgUuid)->first();
 });
 
 Request::macro('stripeConnectOauthStateSessionToken', function () {

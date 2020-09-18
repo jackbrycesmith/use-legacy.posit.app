@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Organisation;
+use App\Models\Team;
 use Illuminate\Http\Request;
 
 test('macro Request::isStripeConnectOauthStart returns false', function ($urlPath) {
@@ -20,17 +20,17 @@ test('macro Request::isStripeConnectOauthStart returns true', function ($urlPath
     '/org/some-uuid/stripe-connect-oauth-start',
 ]);
 
-test('macro Request::stripeConnectOauthOrg returns organisation', function () {
-    $org = factory(Organisation::class)->create();
+test('macro Request::stripeConnectOauthOrg returns team', function () {
+    $org = Team::factory()->create();
 
     $stateQuery = "sessiontoken.{$org->uuid}";
     $request = Request::create('/', 'GET', ['state' => $stateQuery]);
 
-    assertInstanceOf(Organisation::class, $request->stripeConnectOauthOrg());
+    assertInstanceOf(Team::class, $request->stripeConnectOauthOrg());
 });
 
-test('macro Request::stripeConnectOauthOrg returns null organisation', function ($stateQuery) {
-    $org = factory(Organisation::class)->create();
+test('macro Request::stripeConnectOauthOrg returns null team', function ($stateQuery) {
+    $org = Team::factory()->create();
     $request = Request::create('/', 'GET', ['state' => $stateQuery]);
 
     assertNull($request->stripeConnectOauthOrg());
