@@ -2,9 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Organisation;
-use App\Models\OrganisationContact;
-use App\Models\OrganisationMember;
 use App\Models\Proposal;
 use App\Models\ProposalContent;
 use App\Models\ProposalUser;
@@ -13,15 +10,15 @@ use App\Models\StripeCheckoutSession;
 use App\Models\StripeCustomer;
 use App\Models\StripeEvent;
 use App\Models\StripePaymentIntent;
+use App\Models\TeamContact;
+use App\Models\TeamMember;
 use App\Models\User;
-use App\Observers\OrganisationContactObserver;
 use App\Observers\ProposalObserver;
+use App\Observers\TeamContactObserver;
 use App\Observers\UserObserver;
-use CloudCreativity\LaravelStripe\Facades\Stripe;
 use CloudCreativity\LaravelStripe\LaravelStripe;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -61,9 +58,8 @@ class AppServiceProvider extends ServiceProvider
     protected function setRelationMorphMap()
     {
         Relation::morphMap([
-            'organisation' => Organisation::class,
-            'organisation_contact' => OrganisationContact::class,
-            'organisation_member' => OrganisationMember::class,
+            'team_contact' => TeamContact::class,
+            'team_member' => TeamMember::class,
             'proposal' => Proposal::class,
             'proposal_content' => ProposalContent::class,
             'proposal_user' => ProposalUser::class,
@@ -87,7 +83,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Proposal::observe(ProposalObserver::class);
         User::observe(UserObserver::class);
-        OrganisationContact::observe(OrganisationContactObserver::class);
+        TeamContact::observe(TeamContactObserver::class);
 
         return $this;
     }
