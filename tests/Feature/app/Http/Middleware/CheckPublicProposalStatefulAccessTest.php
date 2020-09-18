@@ -2,15 +2,15 @@
 
 use App\Http\Middleware\CheckPublicProposalStatefulAccess;
 use App\Http\PublicProposalAccessCookie;
-use App\Models\Organisation;
-use App\Models\OrganisationContact;
 use App\Models\Proposal;
+use App\Models\Team;
+use App\Models\TeamContact;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 test('if no proposal resolved, then 404 response', function () {
-    $org = factory(Organisation::class)->create();
-    $proposal = factory(Proposal::class)->create(['organisation_id' => $org->id]);
+    $team = Team::factory()->create();
+    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
 
     Route::get('/test-proposal-access/{proposal:uuid}', function (Proposal $proposal) {
         return 'Hello World';
@@ -22,8 +22,8 @@ test('if no proposal resolved, then 404 response', function () {
 });
 
 test('skip access check if proposal in status', function ($status) {
-    $org = factory(Organisation::class)->create();
-    $proposal = factory(Proposal::class)->create(['organisation_id' => $org->id]);
+    $team = Team::factory()->create();
+    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
     $proposal->setStatus($status);
 
     Route::get('/test-proposal-access/{proposal:uuid}', function (Proposal $proposal) {
@@ -37,8 +37,8 @@ test('skip access check if proposal in status', function ($status) {
 ->with(Proposal::PUBLIC_ACCESS_AUTH_BYPASS_STATUSES);
 
 test('if no valid proposal access cookie, redirect to public proposal auth page', function ($status) {
-    $org = factory(Organisation::class)->create();
-    $proposal = factory(Proposal::class)->create(['organisation_id' => $org->id]);
+    $team = Team::factory()->create();
+    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
     $proposal->setStatus($status);
 
     Route::get('/test-proposal-access/{proposal:uuid}', function (Proposal $proposal) {
@@ -51,13 +51,13 @@ test('if no valid proposal access cookie, redirect to public proposal auth page'
 })
 ->with(Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES);
 
-test('cannot access if authed for organisation, but not a recipient of the requested proposal', function ($status) {
-    $org = factory(Organisation::class)->create();
-    $proposal = factory(Proposal::class)->create(['organisation_id' => $org->id]);
+test('cannot access if authed for team, but not a recipient of the requested proposal', function ($status) {
+    $team = Team::factory()->create();
+    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
     $proposal->setStatus($status);
     $proposal->refresh();
 
-    $contact = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
+    $contact = TeamContact::factory()->create(['team_id' => $team->id]);
 
     Route::get('/test-proposal-access/{proposal:uuid}', function (Proposal $proposal) {
         return 'Hello World';
@@ -65,7 +65,7 @@ test('cannot access if authed for organisation, but not a recipient of the reque
     ->middleware(CheckPublicProposalStatefulAccess::class);
 
     $cookie = PublicProposalAccessCookie::create($contact);
-    $cookieName = PublicProposalAccessCookie::cookieName($org);
+    $cookieName = PublicProposalAccessCookie::cookieName($team);
 
     $response = $this->withUnencryptedCookies([
         $cookieName => $cookie->getValue(),
@@ -77,12 +77,12 @@ test('cannot access if authed for organisation, but not a recipient of the reque
 ->with(Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES);
 
 test('if valid proposal access cookie, can continue request', function ($status) {
-    $org = factory(Organisation::class)->create();
-    $proposal = factory(Proposal::class)->create(['organisation_id' => $org->id]);
+    $team = Team::factory()->create();
+    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
     $proposal->setStatus($status);
     $proposal->refresh();
 
-    $contact = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
+    $contact = TeamContact::factory()->create(['team_id' => $team->id]);
     $proposal->recipients()->sync([$contact->id]);
 
     Route::get('/test-proposal-access/{proposal:uuid}', function (Proposal $proposal) {
@@ -91,7 +91,7 @@ test('if valid proposal access cookie, can continue request', function ($status)
     ->middleware(CheckPublicProposalStatefulAccess::class);
 
     $cookie = PublicProposalAccessCookie::create($contact);
-    $cookieName = PublicProposalAccessCookie::cookieName($org);
+    $cookieName = PublicProposalAccessCookie::cookieName($team);
 
     $response = $this->withUnencryptedCookies([
         $cookieName => $cookie->getValue(),

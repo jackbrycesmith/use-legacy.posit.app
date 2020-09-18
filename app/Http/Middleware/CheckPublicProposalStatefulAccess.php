@@ -67,7 +67,7 @@ class CheckPublicProposalStatefulAccess
     protected function hasValidAccessCookie(Request $request, Proposal $proposal): bool
     {
         $cookie = $request->cookie(PublicProposalAccessCookie::cookieName(
-            $proposal->organisation
+            $proposal->team
         ));
         if (is_null($cookie)) return false;
 

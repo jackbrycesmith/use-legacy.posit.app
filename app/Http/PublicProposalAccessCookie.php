@@ -2,9 +2,9 @@
 
 namespace App\Http;
 
-use App\Models\Organisation;
-use App\Models\OrganisationContact;
 use App\Models\Proposal;
+use App\Models\Team;
+use App\Models\TeamContact;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Ramsey\Uuid\Uuid;
@@ -15,17 +15,17 @@ class PublicProposalAccessCookie
     /**
      * Create a new proposal access cookie.
      *
-     * @param \App\Models\OrganisationContact $contact The contact
+     * @param \App\Models\TeamContact $contact The contact
      *
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
-    public static function create(OrganisationContact $contact)
+    public static function create(TeamContact $contact)
     {
         $expiresAt = Carbon::now()->addDays(
             config('posit-settings.public_proposal_access_cookie_expiry_days')
         );
 
-        $cookieName = self::cookieName($contact->organisation);
+        $cookieName = self::cookieName($contact->team);
 
         return new Cookie($cookieName, base64_encode(json_encode([
             'contact' => encrypt($contact->uuid, false),
@@ -54,15 +54,15 @@ class PublicProposalAccessCookie
         if (! Uuid::isValid($contactUuid)) return false;
 
         // Check this organisation contact exists in the proposal org
-        $contact = OrganisationContact::where([
-            'organisation_id' => $proposal->organisation_id,
+        $contact = TeamContact::where([
+            'team_id' => $proposal->team_id,
             'uuid' => $contactUuid
         ])->first();
         if (is_null($contact)) return false;
 
         // Check that it is a proposal recipient...
         $isProposalRecipient = $proposal->recipients()
-            ->where('organisation_contact_id', $contact->id)
+            ->where('team_contact_id', $contact->id)
             ->exists();
         if (! $isProposalRecipient) return false;
 
@@ -73,15 +73,15 @@ class PublicProposalAccessCookie
     }
 
     /**
-     * Returns the name for the organisation access cookie
+     * Returns the name for the team access cookie
      *
-     * @param \App\Models\Organisation $org The organization
+     * @param \App\Models\Team $team The team
      *
      * @return string
      */
-    public static function cookieName(Organisation $org): string
+    public static function cookieName(Team $team): string
     {
-        return "org_{$org->uuid}";
+        return "team_{$team->uuid}";
     }
 
 }

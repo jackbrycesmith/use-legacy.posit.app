@@ -9,4 +9,4 @@ test('it sets team contact access code on creation', function () {
 
     assertNotNull($contact->access_code);
     assertEquals(config('posit-settings.org_contact_access_code_length', 16), strlen($contact->access_code));
-})->only();
+});
