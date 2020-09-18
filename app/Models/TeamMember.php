@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Laravel\Jetstream\Membership as JetstreamMembership;
 
-class OrganisationMember extends Pivot
+class TeamMember extends JetstreamMembership
 {
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -22,17 +22,17 @@ class OrganisationMember extends Pivot
      */
     protected $casts = [
         'user_id' => 'integer',
-        'organisation_id' => 'integer',
+        'team_id' => 'integer',
     ];
 
     /**
-     * Get the organisation
+     * Get the team
      *
      * @return BelongsTo The belongs to relation.
      */
-    public function organisation(): BelongsTo
+    public function team(): BelongsTo
     {
-        return $this->belongsTo(Organisation::class);
+        return $this->belongsTo(Team::class);
     }
 
     /**
@@ -55,7 +55,7 @@ class OrganisationMember extends Pivot
         return $this->belongsToMany(
             Proposal::class,
             'proposal_user',
-            'organisation_member_id',
+            'team_user_id',
             'proposal_id'
         );
     }

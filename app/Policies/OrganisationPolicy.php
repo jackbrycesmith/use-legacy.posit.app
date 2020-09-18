@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Organisation;
-use App\Models\OrganisationContact;
+use App\Models\TeamContact;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
@@ -94,7 +94,7 @@ class OrganisationPolicy
      *
      * @return mixed
      */
-    public function upsertContact(User $user, Organisation $organisation, ?OrganisationContact $contact)
+    public function upsertContact(User $user, Organisation $organisation, ?TeamContact $contact)
     {
         if (! $user->isMemberOfOrganisation($organisation)) {
             return Response::deny('You do not belong to the provided organisation.');

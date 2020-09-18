@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasUuid;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Str;
 
-class OrganisationContact extends Model
+class TeamContact extends Model
 {
+    use HasFactory;
     use HasUuid;
 
     /**
@@ -26,7 +28,7 @@ class OrganisationContact extends Model
      */
     protected $casts = [
         'user_id' => 'integer',
-        'organisation_id' => 'integer',
+        'team_id' => 'integer',
         'meta' => 'array',
     ];
 
@@ -35,9 +37,9 @@ class OrganisationContact extends Model
      *
      * @return BelongsTo The belongs to relationship.
      */
-    public function organisation(): BelongsTo
+    public function team(): BelongsTo
     {
-        return $this->belongsTo(Organisation::class);
+        return $this->belongsTo(Team::class);
     }
 
     /**

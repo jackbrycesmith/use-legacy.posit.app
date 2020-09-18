@@ -7,7 +7,8 @@ use App\Models\Concerns\HasStripeCheckoutSession;
 use App\Models\Concerns\HasUuid;
 use App\Models\Concerns\HasVideo;
 use App\Models\Media;
-use App\Models\OrganisationContact;
+use App\Models\TeamContact;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,7 +23,13 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Proposal extends Model implements HasMedia
 {
-    use HasUuid, HasRelationships, HasVideo, HasStatuses, HasStripeCheckoutSession, InteractsWithMedia;
+    use HasFactory;
+    use HasUuid;
+    use HasRelationships;
+    use HasVideo;
+    use HasStatuses;
+    use HasStripeCheckoutSession;
+    use InteractsWithMedia;
 
     const INTRO_VIDEO_COLLECTION = 'intro_video';
     const VIDEO_UPLOAD_MIME_TYPES = [
@@ -117,35 +124,36 @@ class Proposal extends Model implements HasMedia
     }
 
     /**
-     * Get the organisation that this proposal is created under
+     * Get the team that this proposal is created under
      *
      * @return BelongsTo The belongs to relation.
      */
-    public function organisation(): BelongsTo
+    public function team(): BelongsTo
     {
-        return $this->belongsTo(Organisation::class);
+        return $this->belongsTo(Team::class);
     }
 
     /**
-     * Recipients (organisation contacts)
+     * Recipients (team contacts)
      *
      * @return BelongsToMany The belongs to many relation.
      */
     public function recipients(): BelongsToMany
     {
-        return $this->belongsToMany(OrganisationContact::class, 'proposal_user')->withTimestamps();
+        return $this->belongsToMany(TeamContact::class, 'proposal_recipient')->withTimestamps();
     }
 
     /**
      * Get the recipient
+     * // TODO think this is unnecessary complicated
      *
      * @return HasOneDeep The has one deep relation.
      */
     public function recipient(): HasOneDeep
     {
         return $this->hasOneDeepFromRelations(
-            $this->proposalUsers(),
-            (new ProposalUser)->organisationContact()
+            $this->proposalRecipients(),
+            (new ProposalRecipient)->teamContact()
         )->latest();
     }
 
@@ -157,6 +165,16 @@ class Proposal extends Model implements HasMedia
     public function proposalUsers(): HasMany
     {
         return $this->hasMany(ProposalUser::class);
+    }
+
+    /**
+     * Get the proposal recipients
+     *
+     * @return HasMany The has many relation.
+     */
+    public function proposalRecipients(): HasMany
+    {
+        return $this->hasMany(ProposalRecipient::class);
     }
 
     /**
@@ -190,8 +208,8 @@ class Proposal extends Model implements HasMedia
     public function stripeAccount(): HasOneDeep
     {
         return $this->hasOneDeepFromRelations(
-            $this->organisation(),
-            (new Organisation)->stripeAccount()
+            $this->team(),
+            (new Team)->stripeAccount()
         );
     }
 
@@ -205,8 +223,8 @@ class Proposal extends Model implements HasMedia
     {
         return $this->hasManyDeepFromRelations(
             $this->proposalUsers(),
-            (new ProposalUser)->organisationMember(),
-            (new OrganisationMember)->user()
+            (new ProposalUser)->teamMember(),
+            (new TeamMember)->user()
         );
     }
 
@@ -215,9 +233,9 @@ class Proposal extends Model implements HasMedia
      *
      * @param string $accessCode The access code
      *
-     * @return OrganisationContact|null
+     * @return TeamContact|null
      */
-    public function recipientForAccessCode(string $accessCode): ?OrganisationContact
+    public function recipientForAccessCode(string $accessCode): ?TeamContact
     {
         return $this->recipients()->where(function ($query) use ($accessCode) {
             $query->where('access_code', $accessCode);

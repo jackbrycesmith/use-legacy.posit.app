@@ -45,7 +45,7 @@ class Organisation extends Model implements AccountOwnerInterface
      */
     public function contacts()
     {
-        return $this->hasMany(OrganisationContact::class);
+        return $this->hasMany(TeamContact::class);
     }
 
     /**

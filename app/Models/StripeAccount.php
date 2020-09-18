@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use CloudCreativity\LaravelStripe\Models\StripeAccount as LaravelStripeAccount;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Stripe\Account;
 use Stripe\StripeObject;
 
 class StripeAccount extends LaravelStripeAccount
 {
+    use HasFactory;
+
     protected $casts = [
         'business_profile' => 'array',
         'capabilities' => 'array',

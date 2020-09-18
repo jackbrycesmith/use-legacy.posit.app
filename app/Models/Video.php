@@ -90,6 +90,17 @@ class Video extends Model
         // return Storage::disk('s3')->url($this-> . '.m3u8')
     }
 
+    /**
+     * Gets the poster url attribute.
+     *
+     * @return null|string The poster url attribute.
+     */
+    public function getPosterUrlAttribute(): ?string
+    {
+        if (is_null($this->poster_path)) {
+            return null;
+        }
 
-
+        return Storage::disk('s3')->temporaryUrl($this->poster_path, now()->addDays(7));
+    }
 }

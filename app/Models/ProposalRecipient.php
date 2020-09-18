@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class ProposalUser extends Pivot
+class ProposalRecipient extends Pivot
 {
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -21,7 +21,7 @@ class ProposalUser extends Pivot
      */
     protected $casts = [
         'proposal_id' => 'integer',
-        'team_user_id' => 'integer',
+        'team_contact_id' => 'integer',
     ];
 
     /**
@@ -35,12 +35,12 @@ class ProposalUser extends Pivot
     }
 
     /**
-     * Get the team member
+     * Get the team contact
      *
      * @return BelongsTo The belongs to relation.
      */
-    public function teamMember(): BelongsTo
+    public function teamContact(): BelongsTo
     {
-        return $this->belongsTo(TeamMember::class);
+        return $this->belongsTo(TeamContact::class);
     }
 }

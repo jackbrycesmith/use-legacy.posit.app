@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\OrganisationContact;
+use App\Models\TeamContact;
 use App\Models\Proposal;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -78,7 +78,7 @@ class ProposalPolicy
      *
      * @return mixed
      */
-    public function upsertRecipient(User $user, Proposal $proposal, ?OrganisationContact $contact)
+    public function upsertRecipient(User $user, Proposal $proposal, ?TeamContact $contact)
     {
         // TODO Would be nice to not load models? check hasmanydeep package
         // TODO whether a ProposalUser has read/write abilities
@@ -87,8 +87,8 @@ class ProposalPolicy
         }
 
         if (! is_null($contact)) {
-            if ($contact->organisation_id !== $proposal->organisation_id) {
-                return Response::deny('Contact does not belong to the proposal organisation.');
+            if ($contact->team_id !== $proposal->team_id) {
+                return Response::deny('Contact does not belong to the proposal team.');
             }
         }
 

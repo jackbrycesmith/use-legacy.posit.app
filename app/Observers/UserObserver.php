@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Actions\User\CreatePersonalOrg;
 use App\Models\User;
 
 class UserObserver
@@ -16,8 +15,7 @@ class UserObserver
      */
     public function created(User $user)
     {
-        // TODO perhaps move this to after they've confirmed their email
-        CreatePersonalOrg::run($user);
+        //
     }
 
     /**
