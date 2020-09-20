@@ -32,8 +32,7 @@ class ProposalPolicy
      */
     public function view(User $user, Proposal $proposal)
     {
-        // TODO Would be nice to not load models? check hasmanydeep package
-        if (! $proposal->users->contains($user)) {
+        if (! $user->belongsToTeam($proposal->team)) {
             return Response::deny('You do not have permission to view this proposal.');
         }
 

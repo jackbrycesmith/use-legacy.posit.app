@@ -1,36 +1,38 @@
 <?php
 
-use App\Actions\Organisation\CreateDraftProposal;
+use App\Actions\Team\CreateDraftProposal;
+use App\Models\Team;
 use App\Models\User;
-use function Tests\assertInertiaComponent;
 use function Tests\actingAs;
+use function Tests\assertInertiaComponent;
 
 test('user cannot get UseProposalView page if proposal does not exist', function () {
-    $user = factory(User::class)->create();
+    $user = User::factory()->create();
 
     $response = actingAs($user)->get(route('use.proposal.view', ['proposal' => 'non-existant-proposal']));
 
     $response->assertStatus(404);
 });
 
-test('user who is not a proposaluser cannot get UseProposalView page', function () {
-    $user = factory(User::class)->create();
-    $otherUser = factory(User::class)->create();
-
+test('user who is not a team member cannot get UseProposalView page', function () {
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $user->organisations->first()
+        'team' => $team
     ]);
 
+    $otherUser = User::factory()->create();
     $response = actingAs($otherUser)->get(route('use.proposal.view', ['proposal' => $proposal]));
 
     $response->assertStatus(403);
 });
 
-test('user who is a proposaluser can get UseProposalView page', function () {
-    $user = factory(User::class)->create();
+test('user who is a team member can get UseProposalView page', function () {
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
 
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $user->organisations->first()
+        'team' => $team
     ]);
 
     $response = actingAs($user)->get(route('use.proposal.view', ['proposal' => $proposal]));
