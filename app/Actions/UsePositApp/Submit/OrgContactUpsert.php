@@ -3,7 +3,7 @@
 namespace App\Actions\UsePositApp\Submit;
 
 use App\Models\Organisation;
-use App\Models\OrganisationContact;
+use App\Models\TeamContact;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Redirect;
@@ -31,7 +31,7 @@ class OrgContactUpsert extends Action
      *
      * @return bool
      */
-    public function authorize(Organisation $org, ?OrganisationContact $contact = null)
+    public function authorize(Organisation $org, ?TeamContact $contact = null)
     {
         return $this->can('upsertContact', [$org, $contact]);
     }
@@ -53,7 +53,7 @@ class OrgContactUpsert extends Action
      *
      * @return mixed
      */
-    public function handle(Organisation $org, ?OrganisationContact $contact = null)
+    public function handle(Organisation $org, ?TeamContact $contact = null)
     {
         // TODO; tests + less naive e.g. saving directly on meta?
         if (is_null($contact)) {

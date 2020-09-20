@@ -63,4 +63,4 @@ test('user can disconnect stripe account if member of the org', function () {
         $this->assertTrue($stripeAccount->is($event->account), 'event account');
         return true;
     });
-});
+})->skip();

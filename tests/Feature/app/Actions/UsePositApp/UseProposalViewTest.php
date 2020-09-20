@@ -16,7 +16,7 @@ test('user cannot get UseProposalView page if proposal does not exist', function
 
 test('user who is not a team member cannot get UseProposalView page', function () {
     $user = User::factory()->create();
-    $team = Team::factory()->create(['user_id' => $user->id]);
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
         'team' => $team
     ]);

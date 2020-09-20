@@ -5,7 +5,7 @@ namespace App\Actions\UsePositApp;
 use App\Http\Resources\OrgContactResource;
 use App\Http\Resources\OrganisationResource;
 use App\Models\Organisation;
-use App\Models\OrganisationContact;
+use App\Models\TeamContact;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Inertia\Inertia;
@@ -43,7 +43,7 @@ class UseOrgContactsUpsert extends Action
      *
      * @return mixed
      */
-    public function handle(Organisation $org, ?OrganisationContact $contact = null)
+    public function handle(Organisation $org, ?TeamContact $contact = null)
     {
         return Inertia::render('Use/OrgContactsUpsert', [
             'org' => new OrganisationResource($org),

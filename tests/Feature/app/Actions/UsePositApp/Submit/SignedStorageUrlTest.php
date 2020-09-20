@@ -9,7 +9,7 @@ test('signedstorageurl endpoint requires user logged in...', function () {
 });
 
 test('can upload to s3 from created presigned url', function () {
-    $user = factory(User::class)->create();
+    $user = User::factory()->create();
     $response = actingAs($user)->postJson(route('use.submit.signed-storage-url', [
         'content_type' => 'text/plain',
     ]));

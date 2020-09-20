@@ -56,9 +56,9 @@ test('user cannot add proposal recipient if not a member of team owning the prop
 
 test('user can add proposal recipient', function () {
     $user = User::factory()->create();
-
+    $team = Team::factory()->create(['user_id' => $user->id]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $user->organisations->first()
+        'team' => $team
     ]);
 
     $response = actingAs($user)->post(
