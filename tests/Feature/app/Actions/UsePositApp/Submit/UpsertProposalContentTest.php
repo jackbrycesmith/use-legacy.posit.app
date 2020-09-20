@@ -1,6 +1,7 @@
 <?php
 
-use App\Actions\Organisation\CreateDraftProposal;
+use App\Actions\Team\CreateDraftProposal;
+use App\Models\Team;
 use App\Models\User;
 use function Tests\actingAs;
 
@@ -10,35 +11,35 @@ test('updating proposal content requires proposal exist', function () {
 });
 
 test('updating proposal content requires login', function () {
-    $user = factory(User::class)->create();
-
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $user->organisations->first()
+        'team' => $team
     ]);
 
     $response = $this->put(route('use.submit.upsert-proposal-content', ['proposal' => $proposal]));
     $response->assertRedirect(route('login'));
 });
 
-test('user cannot update proposal content if not a proposal user', function () {
-    $user = factory(User::class)->create();
-    $otherUser = factory(User::class)->create();
-
+test('user cannot update proposal content if not a team member', function () {
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $user->organisations->first()
+        'team' => $team
     ]);
 
+    $otherUser = User::factory()->create();
     $response = actingAs($otherUser)->put(route('use.submit.upsert-proposal-content', ['proposal' => $proposal]));
 
     $response->assertStatus(403);
 });
 
-test('user can update proposal content if a proposal user', function () {
+test('user can update proposal content if a team member', function () {
     // TODO this isn't production ready; need to validate inputs etc...
-    $user = factory(User::class)->create();
-
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $user->organisations->first()
+        'team' => $team
     ]);
 
     $proposalContent = [
