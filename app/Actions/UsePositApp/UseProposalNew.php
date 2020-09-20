@@ -2,7 +2,7 @@
 
 namespace App\Actions\UsePositApp;
 
-use App\Actions\Organisation\CreateDraftProposal;
+use App\Actions\Team\CreateDraftProposal;
 use App\Models\Proposal;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Redirect;
@@ -13,8 +13,10 @@ class UseProposalNew extends Action
 {
     public static function routes(Router $router)
     {
-        // Would be nice to specify the domain route here...
-        $router->domain(use_posit_domain())->middleware(['web'])->get('/proposal/new', static::class)->name('use.proposal.new');
+        $router->domain(use_posit_domain())
+            ->middleware(['web'])
+            ->get('/proposal/new', static::class)
+            ->name('use.proposal.new');
     }
 
     /**
@@ -49,13 +51,13 @@ class UseProposalNew extends Action
             return null;
         }
 
-        if ($user->organisations()->count() > 1) {
+        if ($user->allTeams()->count() > 1) {
             $this->hasMultipleOrgs = true;
             return null;
         }
 
         $proposal = (new CreateDraftProposal)->run([
-            'organisation' => $user->organisations->first()
+            'team' => $user->currentTeam
         ]);
 
         return $proposal;

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Proposal;
+use App\Models\Team;
 use App\Models\User;
 use function Tests\actingAs;
 use function Tests\assertInertiaComponent;
@@ -14,22 +15,22 @@ it('shows new ProposalNewTryout page if not logged in', function () {
 });
 
 it('creates proposal if user is member of one org, then redirects to view proposal details page', function () {
-    $user = factory(User::class)->create();
-    $org = $user->organisations->first();
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
 
-    assertEquals(0, $org->proposals()->count());
+    assertEquals(0, $team->proposals()->count());
     $response = actingAs($user)->get(route('use.proposal.new'));
-    assertEquals(1, $org->proposals()->count());
+    assertEquals(1, $team->proposals()->count());
 
-    $proposal = $org->proposals->first();
+    $proposal = $team->proposals->first();
     $response->assertRedirect(route('use.proposal.view', ['proposal' => $proposal->uuid]));
 });
 
 it('redirects to choose organisation page, if user is a member of multiple orgs', function () {
     $proposalCountBefore = Proposal::count();
-    $user = factory(User::class)->create();
-    $org1 = $user->organisations()->create(['name' => 'org1']);
-    $org2 = $user->organisations()->create(['name' => 'org2']);
+    $user = User::factory()->create();
+    $team1 = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
+    $team2 = Team::factory()->create(['user_id' => $user->id, 'personal_team' => false]);
 
     $response = actingAs($user)->get(route('use.proposal.new'));
     $response->assertRedirect(route('use.proposal.new.choose-org'));
