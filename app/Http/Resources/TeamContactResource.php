@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 
-class OrgContactResource extends JsonResource
+class TeamContactResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

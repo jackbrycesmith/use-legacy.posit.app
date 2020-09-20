@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Actions\Organisation;
+namespace App\Actions\Team;
 
-use App\Models\Organisation;
-use App\Models\OrganisationMember;
 use App\Models\Proposal;
-use App\Models\ProposalUser;
+use App\Models\Team;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
 class CreateDraftProposal extends Action
@@ -21,8 +18,8 @@ class CreateDraftProposal extends Action
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth'])
-            ->post('orgs/{organisation:uuid}/proposals', static::class)
-            ->where('organisation', Constant::PATTERN_UUID)
+            ->post('teams/{team:uuid}/proposals', static::class)
+            ->where('team', Constant::PATTERN_UUID)
             ->name('org.create-draft-proposal');
     }
 
@@ -31,13 +28,13 @@ class CreateDraftProposal extends Action
      *
      * @return bool
      */
-    public function authorize(Organisation $organisation)
+    public function authorize(Team $team)
     {
         if ($this->runningAs('object')) {
             return true; // TODO Don't like this, but cant immediately see why below isn't being called right now...
         }
 
-        return $this->can('createDraftProposal', $organisation);
+        return $this->can('actionProposal', $team);
     }
 
     /**
@@ -55,18 +52,19 @@ class CreateDraftProposal extends Action
      *
      * @return mixed
      */
-    public function handle(Organisation $organisation)
+    public function handle(Team $team)
     {
-        $proposal = DB::transaction(function () use ($organisation) {
+        $proposal = DB::transaction(function () use ($team) {
             // TODO: Potentially move to one nice method?
-            // e.g. $user->proposals($organisation->id)->create();
-            $proposal = $organisation->proposals()->create();
+            // e.g. $user->proposals($team->id)->create();
+            $proposal = $team->proposals()->create();
 
-            $orgMember = OrganisationMember::select('id')->where('user_id', $this->user()->id)->first();
-            ProposalUser::create([
-                'proposal_id' => $proposal->id,
-                'organisation_member_id' => $orgMember->id
-            ]);
+            // TODO: if use ProposalUser; do it.
+            // $orgMember = OrganisationMember::select('id')->where('user_id', $this->user()->id)->first();
+            // ProposalUser::create([
+            //     'proposal_id' => $proposal->id,
+            //     'organisation_member_id' => $orgMember->id
+            // ]);
 
             return $proposal;
         });
@@ -74,9 +72,15 @@ class CreateDraftProposal extends Action
         return $proposal;
     }
 
+    /**
+     * HTTP response
+     *
+     * @param \App\Models\Proposal $proposal The proposal
+     *
+     * @return Illuminate\Http\Response
+     */
     public function response(Proposal $proposal)
     {
         return Redirect::route('use.proposal.view', ['proposal' => $proposal->uuid]);
-        // Kinda stumped here on what to return, e.g. inertia response? Pure json if axios?
     }
 }

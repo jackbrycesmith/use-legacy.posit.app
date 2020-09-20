@@ -2,9 +2,9 @@
 
 namespace App\Actions\UsePositApp\Submit;
 
-use App\Http\Resources\OrgContactResource;
-use App\Models\OrganisationContact;
+use App\Http\Resources\TeamContactResource;
 use App\Models\Proposal;
+use App\Models\TeamContact;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Request;
@@ -32,7 +32,7 @@ class ProposalRecipientUpsert extends Action
      *
      * @return bool
      */
-    public function authorize(Proposal $proposal, ?OrganisationContact $recipient = null)
+    public function authorize(Proposal $proposal, ?TeamContact $recipient = null)
     {
         return $this->can('upsertRecipient', [$proposal, $recipient]);
     }
@@ -57,15 +57,15 @@ class ProposalRecipientUpsert extends Action
      * Execute the action and return a result.
      *
      * @param \App\Models\Proposal $proposal The proposal
-     * @param \App\Models\OrganisationContact|nullable $recipient The recipient
+     * @param \App\Models\TeamContact|nullable $recipient The recipient
      *
      * @return mixed
      */
-    public function handle(Proposal $proposal, ?OrganisationContact $recipient = null)
+    public function handle(Proposal $proposal, ?TeamContact $recipient = null)
     {
         if (is_null($recipient)) {
-            $org = $proposal->organisation;
-            $recipient = $org->contacts()->create([
+            $team = $proposal->team;
+            $recipient = $team->contacts()->create([
                 'meta' => $this->validated()
             ]);
         }
@@ -75,8 +75,8 @@ class ProposalRecipientUpsert extends Action
         return $recipient;
     }
 
-    public function response(OrganisationContact $recipient)
+    public function response(TeamContact $recipient)
     {
-        return new OrgContactResource($recipient);
+        return new TeamContactResource($recipient);
     }
 }

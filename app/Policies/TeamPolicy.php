@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class TeamPolicy
 {
@@ -102,5 +103,43 @@ class TeamPolicy
     public function delete(User $user, Team $team)
     {
         return $user->ownsTeam($team);
+    }
+
+    /**
+     * Determine whether the user can create a proposal for an team.
+     *
+     * @param \App\Models\User $user
+     * @param \App\Models\Team $team The team
+     *
+     * @return mixed
+     */
+    public function createDraftProposal(User $user, Team $team)
+    {
+        if (! $user->belongsToTeam($team)) {
+            return Response::deny('You do not belong to the team.');
+        }
+
+        // TODO other proposal creation restrictions...
+        return Response::allow();
+    }
+
+    /**
+     * Determine whether the user can do anything to a proposal resource.
+     *
+     * @param \App\Models\User $user
+     * @param \App\Models\Team $team The team
+     *
+     * @return mixed
+     */
+    public function actionProposal(User $user, Team $team)
+    {
+        // TODO something more elaborate; e.g. ProposalUser's...
+
+        if (! $user->belongsToTeam($team)) {
+            return Response::deny('You do not belong to the team.');
+        }
+
+        // TODO other proposal creation restrictions...
+        return Response::allow();
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use App\Actions\Organisation\CreateDraftProposal;
-use App\Models\Organisation;
-use App\Models\OrganisationContact;
+use App\Actions\Team\CreateDraftProposal;
+use App\Models\Team;
+use App\Models\TeamContact;
 use App\Models\User;
 use function Tests\actingAs;
 
@@ -13,9 +13,10 @@ test('adding proposal recipient, proposal must exist', function () {
 });
 
 test('adding proposal recipient requires login', function () {
-    $user = factory(User::class)->create();
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $user->organisations->first()
+        'team' => $team
     ]);
 
     $response = $this->post(route('use.proposal.recipients.add-submit', ['proposal' => $proposal]));
@@ -24,10 +25,10 @@ test('adding proposal recipient requires login', function () {
 });
 
 test('user cannot add proposal recipient if no name supplied', function () {
-    $user = factory(User::class)->create();
-
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $user->organisations->first()
+        'team' => $team
     ]);
 
     $response = actingAs($user)->postJson(
@@ -38,13 +39,14 @@ test('user cannot add proposal recipient if no name supplied', function () {
     assertEquals(0, $proposal->recipients()->count());
 });
 
-test('user cannot add proposal recipient if not a proposal user', function () {
-    $user = factory(User::class)->create();
-    $otherUser = factory(User::class)->create();
-
+test('user cannot add proposal recipient if not a member of team owning the proposal', function () {
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $user->organisations->first()
+        'team' => $team
     ]);
+
+    $otherUser = User::factory()->create();
 
     $response = actingAs($otherUser)->post(route('use.proposal.recipients.add-submit', ['proposal' => $proposal]), ['name' => 'Test Name']);
 
@@ -53,7 +55,7 @@ test('user cannot add proposal recipient if not a proposal user', function () {
 });
 
 test('user can add proposal recipient', function () {
-    $user = factory(User::class)->create();
+    $user = User::factory()->create();
 
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
         'organisation' => $user->organisations->first()
@@ -77,11 +79,11 @@ test('updating proposal recipient, proposal & recipient must exist', function ()
 });
 
 test('updating proposal recipient requires login', function () {
-    $user = factory(User::class)->create();
-    $org = $user->organisations->first();
-    $contact = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id]);
+    $contact = TeamContact::factory()->create(['team_id' => $team->id]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $org
+        'team' => $team
     ]);
 
     $response = $this->put(route('use.proposal.recipients.update', [
@@ -91,16 +93,15 @@ test('updating proposal recipient requires login', function () {
     $response->assertRedirect(route('login'));
 });
 
-test('user cannot update the proposal recipient if not a proposal user', function () {
-    $user = factory(User::class)->create();
-    $otherUser = factory(User::class)->create();
-    $org = $user->organisations->first();
-
+test('user cannot update the proposal recipient if not a member of team owning the proposal', function () {
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id]);
+    $contact = TeamContact::factory()->create(['team_id' => $team->id]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $org
+        'team' => $team
     ]);
 
-    $contact = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
+    $otherUser = User::factory()->create();
 
     $response = actingAs($otherUser)->put(
         route('use.proposal.recipients.update', ['proposal' => $proposal, 'recipient' => $contact->id])
@@ -110,21 +111,19 @@ test('user cannot update the proposal recipient if not a proposal user', functio
     assertEquals(0, $proposal->recipients()->count());
 });
 
-test('user cannot update the proposal recipient if contact is not from the proposal org', function () {
-    $user = factory(User::class)->create();
-    $org = $user->organisations->first();
+test('user cannot update the proposal recipient if contact is not from the proposal team', function () {
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id]);
 
-    $otherOrg = factory(Organisation::class)->create();
-    $otherContact = factory(OrganisationContact::class)->create(['organisation_id' => $otherOrg->id]);
+    $otherTeam = Team::factory()->create();
+    $otherTeam = TeamContact::factory()->create(['team_id' => $otherTeam->id]);
 
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $org
+        'team' => $team
     ]);
 
-    $contact = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
-
     $response = actingAs($user)->put(
-        route('use.proposal.recipients.update', ['proposal' => $proposal, 'recipient' => $otherContact->id])
+        route('use.proposal.recipients.update', ['proposal' => $proposal, 'recipient' => $otherTeam->id])
     );
 
     $response->assertStatus(403);
@@ -132,12 +131,11 @@ test('user cannot update the proposal recipient if contact is not from the propo
 });
 
 test('user can update the proposal recipient', function () {
-    $user = factory(User::class)->create();
-    $org = $user->organisations->first();
-    $contact = factory(OrganisationContact::class)->create(['organisation_id' => $org->id]);
-
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id]);
+    $contact = TeamContact::factory()->create(['team_id' => $team->id]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
-        'organisation' => $org
+        'team' => $team
     ]);
 
     $response = actingAs($user)->put(

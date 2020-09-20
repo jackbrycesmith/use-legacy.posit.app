@@ -82,8 +82,8 @@ class ProposalPolicy
     {
         // TODO Would be nice to not load models? check hasmanydeep package
         // TODO whether a ProposalUser has read/write abilities
-        if (! $proposal->users->contains($user)) {
-            return Response::deny('You do not have permission to view this proposal.');
+        if (! $user->belongsToTeam($proposal->team)) {
+            return Response::deny('You do not have permission to action this proposal.');
         }
 
         if (! is_null($contact)) {
