@@ -4,6 +4,7 @@ namespace App\Actions\Fortify;
 
 use App\Models\Team;
 use App\Models\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -22,16 +23,16 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input)
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['sometimes', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
         ])->validate();
 
         return DB::transaction(function () use ($input) {
             return tap(User::create([
-                'name' => $input['name'],
-                'email' => $input['email'],
-                'password' => Hash::make($input['password']),
+                'name' => Arr::get($input, 'name'),
+                'email' => Arr::get($input, 'email'),
+                'password' => Hash::make(Arr::get($input, 'password')),
             ]), function (User $user) {
                 $this->createTeam($user);
             });
@@ -48,7 +49,7 @@ class CreateNewUser implements CreatesNewUsers
     {
         $user->ownedTeams()->save(Team::forceCreate([
             'user_id' => $user->id,
-            'name' => explode(' ', $user->name, 2)[0]."'s Team",
+            'name' => strstr($user->email, '@', true),
             'personal_team' => true,
         ]));
     }

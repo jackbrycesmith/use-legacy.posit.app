@@ -34,6 +34,9 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
+        Fortify::loginView(fn() => inertia('Auth/Login')->toResponse(request()));
+        Fortify::registerView(fn() => inertia('Auth/Register')->toResponse(request()));
+
         Route::group([
             'namespace' => 'Laravel\Fortify\Http\Controllers',
             'domain' => config('fortify.domain', null),
