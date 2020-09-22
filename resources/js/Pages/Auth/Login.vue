@@ -14,7 +14,7 @@
         </h2>
       </div>
 
-      <NewLoginForm class="mt-8"/>
+      <LoginForm class="mt-8"/>
       <p class="mt-2 text-center text-sm leading-5 text-gray-600 absolute bottom-4 right-0 left-0">
         <inertia-link :href="$route('password.request')" class="font-medium text-yellow-300 hover:text-yellow-400 focus:outline-none focus:underline transition ease-in-out duration-150">
           Forgot your password?
@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import NewLoginForm from '@/Forms/NewLoginForm'
+import LoginForm from '@/Forms/LoginForm'
 import ApplicationLogo from '@/Jetstream/ApplicationLogo'
 
 export default {
-  components: { ApplicationLogo, NewLoginForm },
+  components: { ApplicationLogo, LoginForm },
   metaInfo: () => ({
     htmlAttrs: {
       class: ['h-full', 'bg-yellow-50']

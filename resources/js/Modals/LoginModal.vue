@@ -15,13 +15,13 @@
     </template>
 
     <template #hint-body-section>
-      <LoginForm
+<!--       <LoginForm
         ref="loginForm"
         class="mt-3"
         @logging-in="canClose = false"
         @login-success="handleLoginSuccess"
         @login-error="canClose = true"
-        />
+        /> -->
     </template>
 
   </BaseModal>
@@ -29,10 +29,10 @@
 
 <script>
 import BaseModal from '@/Modals/BaseModal'
-import LoginForm from '@/Forms/LoginForm'
+// import LoginForm from '@/Forms/LoginForm'
 
 export default {
-  components: { BaseModal, LoginForm },
+  components: { BaseModal },
   data: () => ({
     isVisible: false,
     canClose: true
