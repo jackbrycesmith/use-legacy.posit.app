@@ -8,7 +8,7 @@
 export default {
   props: {
     onFormSubmit: { type: Function },
-    retrieveFormPayload: { type: Function, required: true },
+    retrieveFormPayload: { type: Function, default: () => null },
     requestUrl: { type: String },
     requestType: {
       type: String,

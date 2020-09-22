@@ -37,6 +37,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::loginView(fn() => inertia('Auth/Login')->toResponse(request()));
         Fortify::registerView(fn() => inertia('Auth/Register')->toResponse(request()));
         Fortify::verifyEmailView(fn() => inertia('Auth/VerifyEmail')->toResponse(request()));
+        Fortify::requestPasswordResetLinkView(fn() => inertia('Auth/ForgotPassword')->toResponse(request()));
 
         Route::group([
             'namespace' => 'Laravel\Fortify\Http\Controllers',

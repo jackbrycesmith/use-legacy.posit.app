@@ -10,27 +10,26 @@
         </p>
 
         <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-          Create new account
+          Reset Password
         </h2>
 
         <p class="mt-2 text-center text-sm leading-5 text-gray-600">
-          <IconHeroiconsSmallCheck class="h-5 w-5 text-yellow-400 inline-block align-middle"/> Send 3 proposals a month — FREE
+          Forgot your password? Not to worry. Enter the account email & we'll send a link for you to choose a new password.
         </p>
       </div>
 
-      <RegisterForm class="mt-8"/>
+      <ForgotPasswordForm class="mt-8"/>
 
     </div>
   </div>
 </template>
 
 <script>
-import RegisterForm from '@/Forms/RegisterForm'
+import ForgotPasswordForm from '@/Forms/ForgotPasswordForm'
 import ApplicationLogo from '@/Jetstream/ApplicationLogo'
-import IconHeroiconsSmallCheck from '@/Icons/IconHeroiconsSmallCheck'
 
 export default {
-  components: { ApplicationLogo, RegisterForm, IconHeroiconsSmallCheck },
+  components: { ApplicationLogo, ForgotPasswordForm },
   metaInfo: () => ({
     htmlAttrs: {
       class: ['h-full', 'bg-yellow-50']
