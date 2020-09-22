@@ -6,6 +6,7 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
@@ -38,6 +39,12 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::registerView(fn() => inertia('Auth/Register')->toResponse(request()));
         Fortify::verifyEmailView(fn() => inertia('Auth/VerifyEmail')->toResponse(request()));
         Fortify::requestPasswordResetLinkView(fn() => inertia('Auth/ForgotPassword')->toResponse(request()));
+        Fortify::resetPasswordView(function (Request $request) {
+            return inertia('Auth/ResetPassword', [
+                'email' => $request->email,
+                'token' => $request->token
+            ])->toResponse($request);
+        });
 
         Route::group([
             'namespace' => 'Laravel\Fortify\Http\Controllers',
