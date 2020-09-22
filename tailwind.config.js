@@ -10,6 +10,20 @@ module.exports = {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
+      colors: {
+        'primary-yellow': {
+          50: '#FFFCF4',
+          100: '#FFF9EA',
+          200: '#FFF1CA',
+          300: '#FFE8A9',
+          400: '#FFD769',
+          500: '#FFC629',
+          600: '#E6B225',
+          700: '#997719',
+          800: '#735912',
+          900: '#4D3B0C'
+        }
+      },
       keyframes: {
         wave: {
           '0%, 60%, 100%': { transform: 'rotate(0deg)' },
@@ -24,8 +38,14 @@ module.exports = {
       }
     },
   },
+
+  variants: {
+    opacity: ['responsive', 'hover', 'focus', 'disabled'],
+  },
+
   purge: {
     content: [
+      './storage/framework/views/*.php',
       './app/**/*.php',
       './resources/**/*.html',
       './resources/**/*.js',
@@ -34,7 +54,6 @@ module.exports = {
       './resources/**/*.tsx',
       './resources/**/*.php',
       './resources/**/*.vue',
-      './resources/**/*.twig',
     ],
     options: {
       // defaultExtractor: (content) => content.match(/[\w-/.:]+(?<!:)/g) || [],

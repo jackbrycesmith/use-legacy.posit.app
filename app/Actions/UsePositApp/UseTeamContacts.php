@@ -2,22 +2,29 @@
 
 namespace App\Actions\UsePositApp;
 
-use App\Http\Resources\OrganisationResource;
-use App\Models\Organisation;
+use App\Http\Resources\TeamResource;
+use App\Models\Team;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
-class UseOrgContacts extends Action
+class UseTeamContacts extends Action
 {
+    /**
+     * Add any routes for this action.
+     *
+     * @param \Illuminate\Routing\Router $router The router
+     *
+     * @return void
+     */
     public static function routes(Router $router)
     {
         $router->domain(use_posit_domain())
-            ->middleware(['web', 'auth'])
-            ->get('/org/{org:uuid}/contacts', static::class)
-            ->where('org', Constant::PATTERN_UUID)
-            ->name('use.org.contacts');
+            ->middleware(['web', 'auth:sanctum', 'verified'])
+            ->get('/team/{team:uuid}/contacts', static::class)
+            ->where('team', Constant::PATTERN_UUID)
+            ->name('use.team.contacts');
     }
 
     /**
@@ -25,9 +32,9 @@ class UseOrgContacts extends Action
      *
      * @return bool
      */
-    public function authorize(Organisation $org)
+    public function authorize(Team $team)
     {
-        return $this->can('view', $org);
+        return $this->can('view', $team);
     }
 
     /**
@@ -45,12 +52,12 @@ class UseOrgContacts extends Action
      *
      * @return mixed
      */
-    public function handle(Organisation $org)
+    public function handle(Team $team)
     {
-        $org->loadMissing(['contacts']);
+        $team->loadMissing(['contacts']);
 
         return Inertia::render('Use/OrgContacts', [
-            'org' => new OrganisationResource($org)
+            'org' => new TeamResource($team)
         ]);
     }
 }

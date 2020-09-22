@@ -23,7 +23,7 @@ export default class Organisation extends Model {
   }
 
   get route_contacts () {
-    return route('use.org.contacts', { org: this.uuid }).url()
+    return route('use.team.contacts', { team: this.uuid }).url()
   }
 
   get route_contacts_add () {
