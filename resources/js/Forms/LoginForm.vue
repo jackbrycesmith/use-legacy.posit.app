@@ -1,7 +1,7 @@
 <template>
   <BaseForm
     :on-form-submit="handleFormSubmit">
-    <template #contents="{ isSubmitting }">
+    <template #contents>
 
       <!-- Errors -->
       <ul v-if="hasErrors" class="text-sm text-red-600 mb-1">
@@ -97,9 +97,6 @@ export default {
     }
   },
   methods: {
-    retrieveFormPayload () {
-      return this.form
-    },
     async handleFormSubmit () {
       await this.form.post(this.route)
     }

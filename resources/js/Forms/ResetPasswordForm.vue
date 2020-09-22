@@ -3,12 +3,14 @@
     :on-form-submit="handleFormSubmit">
     <template #contents>
 
+      <!-- Errors -->
       <ul v-if="hasErrors" class="text-sm text-red-600 mb-1">
         <li v-for="error in form.errors()">
           {{ error }}
         </li>
       </ul>
 
+      <!-- Form elements -->
       <div class="rounded-md shadow-sm">
         <div>
           <input
