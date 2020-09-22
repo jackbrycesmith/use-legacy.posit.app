@@ -4,6 +4,7 @@ namespace App\Actions\UsePositApp;
 
 use App\Http\Resources\OrganisationResource;
 use App\Http\Resources\ProposalResource;
+use App\Http\Resources\TeamResource;
 use Illuminate\Routing\Router;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
@@ -12,7 +13,10 @@ class UseIndex extends Action
 {
     public static function routes(Router $router)
     {
-        $router->domain(use_posit_domain())->middleware(['web', 'auth'])->get('/', static::class)->name('use.index');
+        $router->domain(use_posit_domain())
+            ->middleware(['web', 'auth:sanctum', 'verified'])
+            ->get('/', static::class)
+            ->name('use.index');
     }
 
     /**
@@ -42,24 +46,15 @@ class UseIndex extends Action
      */
     public function handle()
     {
-        // $proposals = optional($this->user(), function ($user) {
-        //     return ProposalResource::collection($user->proposals);
-        // });
+        $team = $this->user()->currentTeam()->with(['proposals'])->first();
 
-        $org = optional($this->user(), function ($user) {
-            $firstOrg = $user->organisations->first();
+        return $team;
+    }
 
-            if (is_null($firstOrg)) {
-                return null;
-            }
-
-            $firstOrg->loadMissing(['proposals']);
-
-            return new OrganisationResource($firstOrg);
-        });
-
+    public function response($team)
+    {
         return Inertia::render('Use/Index', [
-            'org' => $org,
+            'org' => new TeamResource($team),
         ]);
     }
 }

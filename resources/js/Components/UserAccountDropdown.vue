@@ -35,7 +35,7 @@
         v-if="isOpen"
         class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
         <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-          <inertia-link @click="handleDropdownItemClick" :href="$route('use.user.settings')" class="block px-4 py-2 text-sm text-cool-gray-700 hover:bg-cool-gray-100 transition ease-in-out duration-150" role="menuitem">User Settings</inertia-link>
+          <inertia-link @click="handleDropdownItemClick" :href="$route('profile.show')" class="block px-4 py-2 text-sm text-cool-gray-700 hover:bg-cool-gray-100 transition ease-in-out duration-150" role="menuitem">User Settings</inertia-link>
           <inertia-link :href="$route('logout')" method="post" class="block px-4 py-2 text-sm text-cool-gray-700 hover:bg-cool-gray-100 transition ease-in-out duration-150" role="menuitem">Logout</inertia-link>
         </div>
       </div>

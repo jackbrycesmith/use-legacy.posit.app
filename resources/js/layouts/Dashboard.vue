@@ -8,6 +8,9 @@
       <DashboardNavbar class="flex-shrink-0" />
 
       <slot />
+
+      <!-- Jetstream Modal Portal -->
+      <portal-target name="modal" multiple />
     </div>
   </fragment>
 </template>

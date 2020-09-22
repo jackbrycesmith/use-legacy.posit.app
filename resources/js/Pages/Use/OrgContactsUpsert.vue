@@ -29,16 +29,7 @@
 
                 <!-- Action buttons -->
                 <div class="flex flex-col space-y-3 sm:space-y-0 sm:space-x-3 sm:flex-row xl:flex-col xl:space-x-0 xl:space-y-3">
-                  <span class="inline-flex rounded-md shadow-sm">
-                    <inertia-link :href="$route('use.proposal.new')" class="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
-                      New Proposal
-                    </inertia-link>
-                  </span>
-<!--                   <span class="inline-flex rounded-md shadow-sm">
-                    <button type="button" class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-                      Invite Team
-                    </button>
-                  </span> -->
+                  <NewProposalButton />
                 </div>
               </div>
 
@@ -86,10 +77,11 @@ import OrgNavigation from '@/Components/OrgNavigation'
 import OrgDropdown from '@/Components/OrgDropdown'
 import OrgContactListItem from '@/Lists/OrgContactListItem'
 import OrgContactUpsertForm from '@/Forms/OrgContactUpsertForm'
+import NewProposalButton from '@/Components/NewProposalButton'
 import { isNil } from 'lodash-es'
 
 export default {
-  components: { OrgDropdown, OrgNavigation, OrgContactUpsertForm, OrgContactListItem },
+  components: { OrgDropdown, OrgNavigation, OrgContactUpsertForm, OrgContactListItem, NewProposalButton },
   props: {
     org: { type: Object },
     contact: { type: Object }

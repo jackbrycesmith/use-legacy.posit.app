@@ -4,8 +4,8 @@
       <div class="relative flex items-center justify-between h-16">
         <!-- Logo section -->
         <div class="flex items-center px-2 lg:px-0 xl:w-64">
-          <inertia-link :href="$route('use.index')" class="flex-shrink-0" title="Home">
-            <img class="h-8 w-auto" src="/posit-icon.png" alt="Posit logo">
+          <inertia-link :href="$route('use.index')" class="flex-shrink-0 text-primary-yellow-500" title="Home">
+            <ApplicationLogo class="h-8 w-auto" />
           </inertia-link>
         </div>
 
@@ -27,10 +27,11 @@
 
 <script>
 import UserAccountDropdown from '@/Components/UserAccountDropdown'
+import ApplicationLogo from '@/Jetstream/ApplicationLogo'
 
 export default {
   components: {
-    UserAccountDropdown
+    UserAccountDropdown, ApplicationLogo
   },
   data () {
     return {
