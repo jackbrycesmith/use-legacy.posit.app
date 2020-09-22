@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-yellow-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="min-h-screen flex items-center justify-center bg-primary-yellow-50 py-12 px-4 sm:px-6 lg:px-8">
 
     <div class="max-w-md w-full">
       <div>
@@ -35,7 +35,7 @@ export default {
   components: { ApplicationLogo, IconSimpleIconsMinuteMailer, UserAccountDropdown },
   metaInfo: () => ({
     htmlAttrs: {
-      class: ['h-full', 'bg-yellow-50']
+      class: ['h-full', 'bg-primary-yellow-50']
       // TODO this removes existing class attributes on html... so maybe remove from app.blade.php & then follow the rule of allowing to ovveride bodyAttrs for classes?
     }
   })
