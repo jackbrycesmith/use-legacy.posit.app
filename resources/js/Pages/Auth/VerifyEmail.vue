@@ -3,7 +3,7 @@
 
     <div class="max-w-md w-full">
       <div>
-        <img class="mx-auto h-12 w-auto" src="/posit-icon-2-grey-gold.svg" alt="Posit.app logo">
+        <ApplicationLogo class="h-10 w-40 mx-auto" />
         <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
           Verify your account
         </h2>
@@ -11,6 +11,7 @@
 
       <div class="flex items-center justify-center mt-2">
         <UserAccountDropdown />
+        <!-- TODO potentially have button to resend verification email -->
       </div>
 
       <IconSimpleIconsMinuteMailer
@@ -21,17 +22,17 @@
         Please check your <strong>{{ $page.user.email }}</strong> inbox & follow the verification link.
       </p>
 
-      <!-- TODO potentially have button to resend verification email -->
-
     </div>
   </div>
 </template>
+
 <script>
 import UserAccountDropdown from '@/Components/UserAccountDropdown'
 import IconSimpleIconsMinuteMailer from '@/Icons/IconSimpleIconsMinuteMailer'
+import ApplicationLogo from '@/Jetstream/ApplicationLogo'
 
 export default {
-  components: { IconSimpleIconsMinuteMailer, UserAccountDropdown },
+  components: { ApplicationLogo, IconSimpleIconsMinuteMailer, UserAccountDropdown },
   metaInfo: () => ({
     htmlAttrs: {
       class: ['h-full', 'bg-yellow-50']
