@@ -2,7 +2,6 @@
 
 use CloudCreativity\LaravelStripe\Facades\Stripe;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,5 +23,3 @@ Route::domain(use_posit_domain())->group(function () {
 });
 
 Stripe::webhook('/stripe/webhooks/connect', 'connect');
-
-Auth::routes();
