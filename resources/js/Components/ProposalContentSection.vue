@@ -1,15 +1,25 @@
 <template>
-  <editor-content
-    :editor="editor"
-    @handleControlHitUp="handleControlHitUp"
-    @handleControlHitDown="handleControlHitDown"
-    @handleAddBlockAbove="handleAddBlockAbove"
-    @handleAddBlockBelow="handleAddBlockBelow"
-    @handleDeleteBlock="handleDeleteBlock" />
+  <div class="relative">
+
+    <EditorContent
+      :editor="editor"
+      @handleControlHitUp="handleControlHitUp"
+      @handleControlHitDown="handleControlHitDown"
+      @handleAddBlockAbove="handleAddBlockAbove"
+      @handleAddBlockBelow="handleAddBlockBelow"
+      @handleDeleteBlock="handleDeleteBlock" />
+
+
+    <EditorSelectMenuBubble
+      :editor="editor"
+      :keep-in-bounds="keepInBounds"/>
+
+  </div>
 </template>
 
 <script>
-import { Editor, EditorContent, EditorFloatingMenu } from 'tiptap'
+import EditorSelectMenuBubble from '@/PositEditor/Menus/EditorSelectMenuBubble'
+import { Editor, EditorContent } from 'tiptap'
 import {
   Blockquote,
   BulletList,
@@ -37,7 +47,7 @@ import PositLayoutDocOne from '@/PositEditor/Nodes/PositLayoutDocOne'
 export default {
   components: {
     EditorContent,
-    EditorFloatingMenu,
+    EditorSelectMenuBubble
   },
   data () {
     return {
