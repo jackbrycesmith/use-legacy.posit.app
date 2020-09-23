@@ -56,5 +56,8 @@
         "webpack-livereload-plugin": "^1.2.0",
         "worker-loader": "^2.0.0",
         "xstate": "^4.13.0"
+    },
+    "resolutions": {
+        "prosemirror-model": "1.11.2"
     }
 }
