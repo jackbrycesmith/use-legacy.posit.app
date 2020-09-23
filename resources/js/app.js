@@ -9,6 +9,7 @@ import Vue from 'vue'
 import store from '@/store'
 import axios from 'axios'
 import vClickOutside from 'v-click-outside'
+import { inspect } from "@xstate/inspect"
 import { InertiaForm } from 'laravel-jetstream'
 
 // Plugins.
@@ -29,6 +30,13 @@ const isDev = process.env.NODE_ENV !== "production"
 Vue.config.performance = isDev
 
 const app = document.getElementById('app')
+
+if (isDev) {
+  // xstate devtools...
+  inspect({
+    iframe: false
+  })
+}
 
 new Vue({
   store,
