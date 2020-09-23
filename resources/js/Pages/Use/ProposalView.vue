@@ -6,7 +6,8 @@
       @edit-title-done="handleEditTitleDone"/>
 
     <ProposalContentSection
-      ref="content"/>
+      ref="content"
+      @update="handleContentUpdate"/>
 
     <ProposalClosingSection
       class="mt-36"
@@ -37,6 +38,7 @@ import LoginModal from '@/Modals/LoginModal'
 import Proposal from '@/models/Proposal'
 import proposalViewStore from '@/stores/proposalViewStore'
 import ProposalBackHome from '@/Components/ProposalBackHome'
+import { debounce } from 'lodash-es'
 
 export default {
   components: {
@@ -92,6 +94,16 @@ export default {
     }
   },
   methods: {
+    handleContentUpdate ({ state, getHTML, getJSON, transaction }) {
+      this.updateContentOnServer({ payload: getJSON(), vm: this })
+    },
+    updateContentOnServer: debounce(async ({ payload, vm }) => {
+      const response = await vm.$http.put(
+        vm.$route('use.submit.upsert-proposal-content', { proposal: vm.proposalUuid }),
+        payload
+      )
+      console.log('updateContentOnServer response: ', response)
+    }, 1000),
     async handleUpdatePressed () {
       // TODO this is not production ready
       const response = this.$http.put(

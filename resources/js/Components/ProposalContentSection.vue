@@ -41,6 +41,7 @@ export default {
   },
   data () {
     return {
+      keepInBounds: true,
       editor: new Editor({
         editorProps: {
           attributes: {
@@ -90,9 +91,7 @@ export default {
       console.log(view)
     },
     onEditorUpdate ({ state, getHTML, getJSON, transaction }) {
-      console.log('onEditorUpdate')
-      console.log(state, transaction)
-      console.log(getHTML(), getJSON())
+      this.$emit('update', { state, getHTML, getJSON, transaction })
     },
     onEditorFocus ({ event,  state, view }) {
       console.log('onEditorFocus')
