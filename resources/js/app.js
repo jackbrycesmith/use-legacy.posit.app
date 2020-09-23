@@ -8,7 +8,6 @@ import VueMeta from 'vue-meta'
 import Vue from 'vue'
 import store from '@/store'
 import axios from 'axios'
-import FormInput from '@/Components/form-input'
 import vClickOutside from 'v-click-outside'
 
 // Plugins.
@@ -21,7 +20,6 @@ Vue.use(VueMeta)
 Vue.use(vClickOutside)
 Vue.use(Fragment.Plugin)
 Vue.component('FocusTrap', FocusTrap)
-Vue.component('form-input', FormInput) // TODO remove this auth scaffolding thing.
 Vue.prototype.$route = (...args) => route(...args).url()
 Vue.prototype.$http = axios.create()
 
