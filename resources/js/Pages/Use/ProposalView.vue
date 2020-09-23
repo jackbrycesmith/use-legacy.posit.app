@@ -6,9 +6,6 @@
       @edit-title-done="handleEditTitleDone"
     />
 
-    <ProposalBackHome
-      class="fixed top-5 left-5 z-50"/>
-
     <editor-content
       :editor="editor"
       @handleControlHitUp="handleControlHitUp"
@@ -22,6 +19,9 @@
       class="mt-36"
       :proposal="proposal__"
     />
+
+    <ProposalBackHome
+      class="fixed top-5 left-5"/>
 
     <ProposalSlideOver
       ref="proposalSlideOver"
@@ -66,6 +66,7 @@ import {
 import PositBlockNode from '@/PositEditor/Nodes/PositBlockNode'
 import PositLayoutDocOne from '@/PositEditor/Nodes/PositLayoutDocOne'
 import Proposal from '@/models/Proposal'
+import proposalViewStore from '@/stores/proposalViewStore'
 import ProposalBackHome from '@/Components/ProposalBackHome'
 
 export default {
