@@ -6,14 +6,8 @@
       @edit-title-done="handleEditTitleDone"
     />
 
-      <div
-        class="absolute h-full left-0 top-0">
-        <div class="fixed h-screen">
-          <ProposalBackHome
-            class="absolute top-5 left-5"
-          />
-        </div>
-      </div>
+    <ProposalBackHome
+      class="fixed top-5 left-5 z-50"/>
 
     <editor-content
       :editor="editor"
