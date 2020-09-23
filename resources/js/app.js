@@ -9,6 +9,7 @@ import Vue from 'vue'
 import store from '@/store'
 import axios from 'axios'
 import vClickOutside from 'v-click-outside'
+import { InertiaForm } from 'laravel-jetstream'
 
 // Plugins.
 import registerPlugins from '@/plugins'
@@ -16,6 +17,7 @@ registerPlugins(Vue)
 
 Vue.use(InertiaApp)
 Vue.use(PortalVue)
+Vue.use(InertiaForm)
 Vue.use(VueMeta)
 Vue.use(vClickOutside)
 Vue.use(Fragment.Plugin)
