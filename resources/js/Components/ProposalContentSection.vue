@@ -9,6 +9,9 @@
       @handleAddBlockBelow="handleAddBlockBelow"
       @handleDeleteBlock="handleDeleteBlock" />
 
+    <EditorNewLineFloatingMenu
+      :editor="editor"
+    />
 
     <EditorSelectMenuBubble
       :editor="editor"
@@ -19,6 +22,7 @@
 
 <script>
 import EditorSelectMenuBubble from '@/PositEditor/Menus/EditorSelectMenuBubble'
+import EditorNewLineFloatingMenu from '@/PositEditor/Menus/EditorNewLineFloatingMenu'
 import { Editor, EditorContent } from 'tiptap'
 import {
   Blockquote,
@@ -47,6 +51,7 @@ import PositLayoutDocOne from '@/PositEditor/Nodes/PositLayoutDocOne'
 export default {
   components: {
     EditorContent,
+    EditorNewLineFloatingMenu,
     EditorSelectMenuBubble
   },
   data () {
