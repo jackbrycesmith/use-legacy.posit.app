@@ -11,6 +11,22 @@ import axios from 'axios'
 import vClickOutside from 'v-click-outside'
 import { inspect } from "@xstate/inspect"
 import { InertiaForm } from 'laravel-jetstream'
+import { InertiaProgress } from '@inertiajs/progress'
+
+InertiaProgress.init({
+  // The delay after which the progress bar will
+  // appear during navigation, in milliseconds.
+  delay: 250,
+
+  // The color of the progress bar.
+  color: '#FFC629',
+
+  // Whether to include the default NProgress styles.
+  includeCSS: true,
+
+  // Whether the NProgress spinner will be shown.
+  showSpinner: false,
+})
 
 // Plugins.
 import registerPlugins from '@/plugins'
