@@ -10,9 +10,9 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "@inertiajs/inertia": "^0.3.1",
-        "@inertiajs/inertia-vue": "^0.1.4",
-        "@inertiajs/progress": "^0.1.0",
+        "@inertiajs/inertia": "^0.3.4",
+        "@inertiajs/inertia-vue": "^0.2.4",
+        "@inertiajs/progress": "^0.1.2",
         "@stripe/stripe-js": "^1.8.0",
         "@tailwindcss/typography": "^0.1.4",
         "@tailwindcss/ui": "^0.5.0",
@@ -21,7 +21,7 @@
         "@xstate/inspect": "^0.1.0",
         "@xstate/vue": "^0.3.0",
         "autoprefixer": "^9.8.6",
-        "axios": "^0.19",
+        "axios": "^0.20.0",
         "collect.js": "^4.28.2",
         "country-flag-emoji": "^1.0.3",
         "cross-env": "^7.0",
