@@ -120,21 +120,21 @@ export default {
     },
 
     showQrCode() {
-      return axios.get('/user/two-factor-qr-code')
+      return this.$http.get('/user/two-factor-qr-code')
         .then(response => {
           this.qrCode = response.data.svg
         })
     },
 
     showRecoveryCodes() {
-      return axios.get('/user/two-factor-recovery-codes')
+      return this.$http.get('/user/two-factor-recovery-codes')
         .then(response => {
           this.recoveryCodes = response.data
         })
     },
 
     regenerateRecoveryCodes() {
-      axios.post('/user/two-factor-recovery-codes')
+      this.$http.post('/user/two-factor-recovery-codes')
         .then(response => {
           this.showRecoveryCodes()
         })
