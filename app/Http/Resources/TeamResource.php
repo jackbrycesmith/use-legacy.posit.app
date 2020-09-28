@@ -20,6 +20,7 @@ class TeamResource extends JsonResource
             'uuid' => $this->uuid,
             'name' => $this->name,
             'meta' => $this->meta,
+            'owner' => new UserResource($this->whenLoaded('owner')),
             'users' => UserResource::collection($this->whenLoaded('users')),
             'proposals' => ProposalResource::collection($this->whenLoaded('proposals')),
             'contacts' => TeamContactResource::collection($this->whenLoaded('contacts')),

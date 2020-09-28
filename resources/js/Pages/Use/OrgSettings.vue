@@ -45,30 +45,63 @@
       <div class="lg:min-w-0 lg:flex-1">
         <div class="pl-4 pr-6 pt-4 pb-4 border-b border-t border-gray-200 sm:pl-6 lg:pl-8 xl:pl-6 xl:pt-6 xl:border-t-0">
           <div class="flex items-center">
-            <h1 class="flex-1 text-3xl leading-7 font-bold">Settings</h1>
+            <h1 class="flex-1 text-3xl leading-7 font-bold">Team Settings</h1>
           </div>
         </div>
 
-        <StripeConnectSetup
-          :stripe-account="org__.stripeAccount"
-          :org-uuid="org__.uuid"
-          class="mt-10 sm:mx-10"
-          @disconnected="handleStripeAccountDisconnected"/>
+        <!-- Team name settings -->
+        <div class="md:grid md:grid-cols-3 md:gap-6">
 
-        <CoinbaseCommerceSetup
-          :coinbase-commerce-account="org__.coinbaseCommerceAccount"
-          :org-uuid="org__.uuid"
-          class="mt-10 sm:mx-10"
-        />
+          <div class="md:col-span-1">
+            <div class="pl-4 sm:pl-6 lg:pl-8 xl:pl-6 mt-7">
+              <h3 class="text-xl font-medium text-gray-900">
+                Team Name
+              </h3>
+              <p class="mt-1 text-sm text-gray-600">
+                The team's name and owner information.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-5 md:col-span-2">
+            <UpdateTeamInformationForm :team="org__" :permissions="permissions" />
+          </div>
+
+        </div>
+
+        <JetSectionBorder />
+
+        <!-- Payment Settings -->
+        <div class="md:grid md:grid-cols-3 md:gap-6">
+
+          <div class="md:col-span-1">
+            <div class="pl-4 sm:pl-6 lg:pl-8 xl:pl-6">
+              <h3 class="text-xl font-medium text-gray-900">
+                Receive Payments
+              </h3>
+              <p class="mt-1 text-sm text-gray-600">
+                Setup integrations so you can start receiving payments from your proposals.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-5 md:mt-0 md:col-span-2">
+            <!-- Payments... -->
+            <StripeConnectSetup
+              :stripe-account="org__.stripeAccount"
+              :org-uuid="org__.uuid"
+              @disconnected="handleStripeAccountDisconnected"/>
+
+            <CoinbaseCommerceSetup
+              :coinbase-commerce-account="org__.coinbaseCommerceAccount"
+              :org-uuid="org__.uuid"
+              class="mt-10"/>
+          </div>
+
+        </div>
 
 
-<!--         <ul class="relative z-0 divide-y divide-gray-200 border-b border-gray-200">
-          <ProposalDashboardListItem
-            v-for="proposal in org__.proposals"
-            :key="proposal.id"
-            :proposal="proposal"
-          />
-        </ul> -->
+
       </div>
     </div>
 
@@ -83,11 +116,23 @@ import NewProposalButton from '@/Components/NewProposalButton'
 import OrgDropdown from '@/Components/OrgDropdown'
 import StripeConnectSetup from '@/Components/StripeConnectSetup'
 import CoinbaseCommerceSetup from '@/Components/CoinbaseCommerceSetup'
+import JetSectionBorder from '@/Jetstream/SectionBorder'
+import UpdateTeamInformationForm from '@/Forms/UpdateTeamInformationForm'
 
 export default {
-  components: { OrgDropdown, OrgNavigation, StripeConnectSetup, CoinbaseCommerceSetup, NewProposalButton },
+  components: {
+    OrgDropdown,
+    OrgNavigation,
+    StripeConnectSetup,
+    CoinbaseCommerceSetup,
+    NewProposalButton,
+    JetSectionBorder,
+    UpdateTeamInformationForm
+  },
   props: {
-    org: { type: Object, default: () => {} }
+    org: { type: Object, default: () => {} },
+    availableRoles: {},
+    permissions: {}
   },
   layout: Dashboard,
   data () {

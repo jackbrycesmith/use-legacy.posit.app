@@ -2,11 +2,13 @@
 
 namespace App\Actions\UsePositApp;
 
-use App\Http\Resources\OrganisationResource;
-use App\Models\Organisation;
+use App\Http\Resources\TeamResource;
+use App\Models\Team;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
+use Laravel\Jetstream\Jetstream;
 use Lorisleiva\Actions\Action;
 
 class UseOrgSettings extends Action
@@ -14,10 +16,10 @@ class UseOrgSettings extends Action
     public static function routes(Router $router)
     {
         $router->domain(use_posit_domain())
-            ->middleware(['web', 'auth'])
-            ->get('/org/{org:uuid}/settings', static::class)
-            ->where('org', Constant::PATTERN_UUID)
-            ->name('use.org.settings');
+            ->middleware(['web', 'auth:sanctum', 'verified'])
+            ->get('/team/{team:uuid}/settings', static::class)
+            ->where('team', Constant::PATTERN_UUID)
+            ->name('use.team.settings');
     }
 
     /**
@@ -25,9 +27,9 @@ class UseOrgSettings extends Action
      *
      * @return bool
      */
-    public function authorize(Organisation $org)
+    public function authorize(Team $team)
     {
-        return $this->can('view', $org);
+        return $this->can('view', $team);
     }
 
     /**
@@ -45,12 +47,21 @@ class UseOrgSettings extends Action
      *
      * @return mixed
      */
-    public function handle(Organisation $org)
+    public function handle(Team $team)
     {
-        $org->loadMissing(['users', 'stripeAccount']);
+        $team->loadMissing(['owner', 'stripeAccount']);
 
         return Inertia::render('Use/OrgSettings', [
-            'org' => new OrganisationResource($org)
+            'org' => new TeamResource($team),
+            'availableRoles' => array_values(Jetstream::$roles),
+            'availablePermissions' => Jetstream::$permissions,
+            'defaultPermissions' => Jetstream::$defaultPermissions,
+            'permissions' => [
+                'canAddTeamMembers' => Gate::check('addTeamMember', $team),
+                'canDeleteTeam' => Gate::check('delete', $team),
+                'canRemoveTeamMembers' => Gate::check('removeTeamMember', $team),
+                'canUpdateTeam' => Gate::check('update', $team),
+            ],
         ]);
     }
 }

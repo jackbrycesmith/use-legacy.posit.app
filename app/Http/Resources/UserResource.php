@@ -19,6 +19,7 @@ class UserResource extends JsonResource
             'uuid' => $this->uuid,
             'name' => $this->name,
             'email' => $this->email,
+            'profile_photo_url' => $this->profile_photo_url,
             'proposals' => ProposalResource::collection($this->whenLoaded('proposals')),
         ];
     }
