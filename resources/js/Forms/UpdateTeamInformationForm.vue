@@ -7,16 +7,9 @@
         <div class="px-4 py-5 bg-white sm:p-6">
           <div class="grid grid-cols-6 gap-6">
 
-            <!-- Team Owner Information -->
-            <div class="col-span-6">
-              <jet-label value="Team Owner" />
-              <div class="flex items-center mt-2">
-                <img class="w-12 h-12 rounded-full object-cover" :src="team.owner.profile_photo_url" :alt="team.owner.name">
-                <div class="ml-4 leading-tight">
-                  <div>{{ team.owner.name }}</div>
-                  <div class="text-gray-700 text-sm">{{ team.owner.email }}</div>
-                </div>
-              </div>
+            <!-- Team Logo -->
+            <div class="col-span-6 sm:col-span-4">
+              <!-- TODO -->
             </div>
 
             <!-- Team Name -->
