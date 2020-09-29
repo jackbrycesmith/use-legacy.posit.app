@@ -20,7 +20,11 @@
 
                 <!-- Current Profile Photo -->
                 <div class="mt-2" v-show="! photoPreview">
-                    <img :src="$page.user.profile_photo_url" alt="Current Profile Photo" class="rounded-full h-20 w-20 object-cover">
+                  <img v-if="$page.user.profile_photo_url" :src="$page.user.profile_photo_url" alt="Current Profile Photo" class="rounded-full h-20 w-20 object-cover">
+
+                  <div v-else class="h-20 w-20 rounded-full bg-primary-yellow-400 text-gray-900 font-semibold flex items-center justify-center text-2xl">
+                    {{ userAvatarInitial }}
+                  </div>
                 </div>
 
                 <!-- New Profile Photo Preview -->
@@ -76,6 +80,8 @@
     import JetLabel from '@/Jetstream/Label'
     import JetActionMessage from '@/Jetstream/ActionMessage'
     import JetSecondaryButton from '@/Jetstream/SecondaryButton'
+    import { trim } from 'lodash-es'
+    import { initials } from '@/utils/strings'
 
     export default {
         components: {
@@ -104,6 +110,18 @@
 
                 photoPreview: null,
             }
+        },
+
+        computed: {
+          userAvatarInitial () {
+            const name = trim(this.$page.user.name)
+
+            if (name && name.length > 0) {
+              return initials(name)
+            }
+
+            return initials(this.$page.user.email)
+          }
         },
 
         methods: {

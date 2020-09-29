@@ -135,4 +135,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return 's3-public'; // TODO
     }
+
+    /**
+     * Get the default profile photo URL if no profile photo has been uploaded.
+     *
+     * @return string
+     */
+    protected function defaultProfilePhotoUrl()
+    {
+        return null;
+    }
 }
