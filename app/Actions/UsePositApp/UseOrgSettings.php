@@ -49,7 +49,7 @@ class UseOrgSettings extends Action
      */
     public function handle(Team $team)
     {
-        $team->loadMissing(['owner', 'stripeAccount']);
+        $team->loadMissing(['owner', 'media', 'stripeAccount']);
 
         return Inertia::render('Use/OrgSettings', [
             'org' => new TeamResource($team),

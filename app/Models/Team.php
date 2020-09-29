@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Casts\StrLimitCast;
+use App\Models\Concerns\HasLogo;
 use App\Models\Concerns\HasUuid;
 use CloudCreativity\LaravelStripe\Connect\OwnsStripeAccounts;
 use CloudCreativity\LaravelStripe\Contracts\Connect\AccountOwnerInterface;
@@ -13,11 +14,17 @@ use Laravel\Jetstream\Events\TeamCreated;
 use Laravel\Jetstream\Events\TeamDeleted;
 use Laravel\Jetstream\Events\TeamUpdated;
 use Laravel\Jetstream\Team as JetstreamTeam;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Team extends JetstreamTeam implements AccountOwnerInterface
+class Team extends JetstreamTeam implements AccountOwnerInterface, HasMedia
 {
     use HasFactory;
+    use HasLogo {
+        registerMediaCollections as protected registerLogoMediaCollections;
+    }
     use HasUuid;
+    use InteractsWithMedia;
     use OwnsStripeAccounts;
 
     /**
@@ -97,5 +104,15 @@ class Team extends JetstreamTeam implements AccountOwnerInterface
             'owner_id',
             $this->getStripeIdentifierName()
         )->latest();
+    }
+
+    /**
+     * Register any media collections & associated conversions.
+     *
+     * @see https://spatie.be/docs/laravel-medialibrary/v8/working-with-media-collections/defining-media-collections
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->registerLogoMediaCollections();
     }
 }

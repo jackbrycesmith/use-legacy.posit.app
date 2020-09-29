@@ -7,17 +7,17 @@ use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Lorisleiva\Actions\Action;
 
-class UpdateTeamName extends Action
+class UpdateTeamInfo extends Action
 {
-    protected $errorBag = 'updateTeamName';
+    protected $errorBag = 'updateTeamInfo';
 
     public static function routes(Router $router)
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->put('/teams/{team:uuid}/update-name', static::class)
+            ->put('/teams/{team:uuid}/update-info', static::class)
             ->where('team', Constant::PATTERN_UUID)
-            ->name('teams.update-name');
+            ->name('teams.update-info');
     }
 
     /**
@@ -39,6 +39,7 @@ class UpdateTeamName extends Action
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'logo' => ['nullable', 'image', 'max:5120'],
         ];
     }
 
@@ -50,6 +51,10 @@ class UpdateTeamName extends Action
     public function handle(Team $team)
     {
         $input = $this->validated();
+
+        if (isset($input['logo'])) {
+            $team->updateLogo($input['logo']);
+        }
 
         $team->forceFill([
             'name' => $input['name'],

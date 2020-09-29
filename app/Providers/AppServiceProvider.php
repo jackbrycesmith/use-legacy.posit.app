@@ -10,6 +10,7 @@ use App\Models\StripeCheckoutSession;
 use App\Models\StripeCustomer;
 use App\Models\StripeEvent;
 use App\Models\StripePaymentIntent;
+use App\Models\Team;
 use App\Models\TeamContact;
 use App\Models\TeamMember;
 use App\Models\User;
@@ -58,6 +59,7 @@ class AppServiceProvider extends ServiceProvider
     protected function setRelationMorphMap()
     {
         Relation::morphMap([
+            'team' => Team::class,
             'team_contact' => TeamContact::class,
             'team_member' => TeamMember::class,
             'proposal' => Proposal::class,
