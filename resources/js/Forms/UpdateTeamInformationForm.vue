@@ -9,7 +9,41 @@
 
             <!-- Team Logo -->
             <div class="col-span-6 sm:col-span-4">
-              <!-- TODO -->
+                <!-- Profile Photo File Input -->
+                <input type="file" class="hidden"
+                            ref="logo"
+                            @change="updateLogoPreview">
+
+                <jet-label for="logo" value="Logo" />
+
+                <!-- Current Logo -->
+                <div class="mt-2" v-show="! logoPreview">
+                  <img v-if="teamLogoUrl" :src="teamLogoUrl" alt="Current Team Logo" class="rounded-full h-20 w-20 object-cover">
+
+                  <div v-else class="h-20 w-20 rounded-full bg-primary-yellow-400 text-gray-900 font-semibold flex items-center justify-center text-2xl">
+                    {{ teamInitials }}
+                  </div>
+                </div>
+
+                <!-- New Logo Preview -->
+                <div class="mt-2" v-show="logoPreview">
+                    <span class="block rounded-full w-20 h-20"
+                          :style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + logoPreview + '\');'">
+                    </span>
+                </div>
+
+                <template v-if="permissions.canUpdateTeam">
+                  <jet-secondary-button class="mt-2 mr-2" type="button" @click.native.prevent="selectNewPhoto">
+                      Select A New Logo
+                  </jet-secondary-button>
+
+                  <jet-secondary-button type="button" class="mt-2" @click.native.prevent="deleteLogo" v-if="teamLogoUrl">
+                      Remove Logo
+                  </jet-secondary-button>
+
+                  <jet-input-error :message="form.error('logo')" class="mt-2" />
+                </template>
+
             </div>
 
             <!-- Team Name -->
@@ -49,6 +83,8 @@ import JetInput from '@/Jetstream/Input'
 import JetInputError from '@/Jetstream/InputError'
 import JetLabel from '@/Jetstream/Label'
 import JetActionMessage from '@/Jetstream/ActionMessage'
+import JetSecondaryButton from '@/Jetstream/SecondaryButton'
+import { initials } from '@/utils/strings'
 
 export default {
   components: {
@@ -57,30 +93,66 @@ export default {
     JetInputError,
     JetActionMessage,
     JetButton,
-    JetLabel
+    JetLabel,
+    JetSecondaryButton
   },
   props: ['team', 'permissions'],
   data () {
     return {
       form: this.$inertia.form({
+        '_method': 'PUT',
         name: this.team.name,
+        logo: null,
       }, {
-        bag: 'updateTeamName',
+        bag: 'updateTeamInfo',
         resetOnSuccess: false,
-      })
+      }),
+      logoPreview: null,
     }
   },
   computed: {
     route () {
-      return this.$route('teams.update-name', { team: this.team.uuid })
+      return this.$route('teams.update-info', { team: this.team.uuid })
+    },
+    deleteLogoRoute () {
+      return this.$route('teams.delete-logo', { team: this.team.uuid })
+    },
+    teamInitials () {
+      return initials(this.team.name)
+    },
+    teamLogoUrl () {
+      return this.team.logo_url
     }
   },
   methods: {
     handleFormSubmit () {
-      this.form.put(this.route, {
+      if (this.$refs.logo) {
+          this.form.logo = this.$refs.logo.files[0]
+      }
+
+      this.form.post(this.route, {
         preserveScroll: false
       });
-    }
+    },
+    selectNewPhoto() {
+        this.$refs.logo.click()
+    },
+    updateLogoPreview() {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            this.logoPreview = e.target.result;
+        };
+
+        reader.readAsDataURL(this.$refs.logo.files[0]);
+    },
+    deleteLogo() {
+        this.$inertia.delete(this.deleteLogoRoute, {
+            preserveScroll: true,
+        }).then(() => {
+            this.logoPreview = null
+        });
+    },
   }
 }
 </script>
