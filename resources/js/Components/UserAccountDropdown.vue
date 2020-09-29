@@ -2,7 +2,7 @@
   <div class="relative">
     <div>
       <button ref="menuTriggerButton" @click="handleAvatarClick" class="max-w-xs flex items-center text-sm rounded-full focus:outline-none focus:bg-orange-100 lg:p-2 lg:rounded-md lg:hover:bg-orange-100" aria-label="User menu" aria-haspopup="true">
-        <div class="h-8 w-8 rounded-full bg-orange-200 text-gray-900 font-semibold flex items-center justify-center">
+        <div class="h-8 w-8 rounded-full bg-primary-yellow-400 text-gray-900 font-semibold flex items-center justify-center">
           {{ userAvatarInitial }}
         </div>
         <p class="hidden ml-3 text-cool-gray-700 text-sm leading-5 font-medium lg:block">
@@ -45,6 +45,9 @@
 </template>
 
 <script>
+import { trim } from 'lodash-es'
+import { initials } from '@/utils/strings'
+
 export default {
   data () {
     return {
@@ -65,7 +68,13 @@ export default {
       return this.$page?.user?.email
     },
     userAvatarInitial () {
-      return this.userEmail?.charAt(0)?.toUpperCase()
+      const name = trim(this.$page.user.name)
+
+      if (name && name.length > 0) {
+        return initials(name)
+      }
+
+      return initials(this.userEmail)
     }
   },
   methods: {
