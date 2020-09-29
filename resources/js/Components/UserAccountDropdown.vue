@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div>
-      <button ref="menuTriggerButton" @click="handleAvatarClick" class="max-w-xs flex items-center text-sm rounded-full focus:outline-none focus:bg-orange-100 lg:p-2 lg:rounded-md lg:hover:bg-orange-100" aria-label="User menu" aria-haspopup="true">
+      <button ref="menuTriggerButton" @click="handleAvatarClick" class="max-w-xs flex items-center text-sm rounded-full focus:outline-none focus:bg-primary-yellow-200 lg:p-2 lg:rounded-md lg:hover:bg-primary-yellow-200" aria-label="User menu" aria-haspopup="true">
         <div class="h-8 w-8 rounded-full bg-primary-yellow-400 text-gray-900 font-semibold flex items-center justify-center">
           {{ userAvatarInitial }}
         </div>
