@@ -65,6 +65,17 @@ return [
             'use_path_style_endpoint' => true
         ],
 
+        's3-public' => [
+            'driver' => 's3',
+            'key' => env('S3_PUBLIC_AWS_ACCESS_KEY_ID'),
+            'secret' => env('S3_PUBLIC_AWS_SECRET_ACCESS_KEY'),
+            'region' => env('S3_PUBLIC_AWS_DEFAULT_REGION'),
+            'bucket' => env('S3_PUBLIC_AWS_BUCKET'),
+            'endpoint' => env('S3_PUBLIC_AWS_URL'),
+            'visibility' => 'public',
+            'use_path_style_endpoint' => true
+        ],
+
     ],
 
     /*
