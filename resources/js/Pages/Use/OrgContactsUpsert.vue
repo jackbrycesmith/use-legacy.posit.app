@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import Dashboard from '@/layouts/Dashboard'
+import Dashboard from '@/Layouts/Dashboard'
 import Organisation from '@/models/Organisation'
 import OrganisationContact from '@/models/OrganisationContact'
 import OrgContactListItem from '@/Lists/OrgContactListItem'

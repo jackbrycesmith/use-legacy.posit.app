@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import Dashboard from '@/layouts/Dashboard'
+import Dashboard from '@/Layouts/Dashboard'
 import DeleteUserForm from './DeleteUserForm'
 import JetSectionBorder from '@/Jetstream/SectionBorder'
 import LogoutOtherBrowserSessionsForm from './LogoutOtherBrowserSessionsForm'

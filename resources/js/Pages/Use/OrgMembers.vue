@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import Dashboard from '@/layouts/Dashboard'
+import Dashboard from '@/Layouts/Dashboard'
 import Organisation from '@/models/Organisation'
 import TeamDashboardSidebar from '@/Components/TeamDashboardSidebar'
 

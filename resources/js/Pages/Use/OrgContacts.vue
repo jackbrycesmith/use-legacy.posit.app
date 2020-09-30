@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import Dashboard from '@/layouts/Dashboard'
+import Dashboard from '@/Layouts/Dashboard'
 import Organisation from '@/models/Organisation'
 import OrgContactListItem from '@/Lists/OrgContactListItem'
 import TeamDashboardSidebar from '@/Components/TeamDashboardSidebar'

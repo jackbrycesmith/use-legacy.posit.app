@@ -58,7 +58,7 @@
 import TeamDashboardSidebar from '@/Components/TeamDashboardSidebar'
 import ProposalList from '@/Lists/ProposalList'
 import OrganisationList from '@/Lists/OrganisationList'
-import Dashboard from '@/layouts/Dashboard'
+import Dashboard from '@/Layouts/Dashboard'
 import Organisation from '@/models/Organisation'
 import ProposalDashboardListItem from '@/Lists/ProposalDashboardListItem'
 
