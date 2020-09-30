@@ -3,7 +3,7 @@
 
     <div class="flex items-center space-x-2">
       <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path></svg>
-      <span class="text-sm text-gray-500 leading-5 font-medium">0 Credits</span>
+      <span class="text-sm text-gray-500 leading-5 font-medium">&infin; Credits</span>
     </div>
 
     <!--  -->

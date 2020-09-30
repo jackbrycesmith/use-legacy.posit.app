@@ -4,17 +4,17 @@
     <div class="sm:mt-6 relative text-left">
       <!-- Dropdown menu toggle, controlling the show/hide state of dropdown menu. -->
       <div>
-        <button ref="menuTriggerButton" @click="handleDropdownButtonClick" type="button" class="group w-full rounded-md px-3.5 py-2 text-sm leading-5 font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-500 focus:outline-none focus:bg-gray-200 focus:border-blue-300 active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150" id="options-menu" aria-haspopup="true" aria-expanded="true">
+        <button ref="menuTriggerButton" @click="handleDropdownButtonClick" type="button" class="group w-full rounded-md px-3.5 py-2 text-sm leading-5 font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-500 focus:outline-none focus:bg-gray-200 focus:border-blue-300 active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150" id="options-menu" aria-haspopup="true" :aria-expanded="isOpen">
           <div class="flex w-full justify-between items-center">
             <div class="flex items-center justify-between space-x-3">
               <div class="w-10 h-10 bg-gray-300 rounded-full flex-shrink-0 flex items-center justify-center">
                 {{ org__.avatar_letter_initial }}
               </div>
               <div class="flex-1">
-                <h2 class="text-gray-900 text-sm leading-5 font-medium">
+                <h2 class="text-gray-900 text-sm leading-5 font-medium text-left">
                   {{ org__.name }}
                 </h2>
-                <p class="text-gray-500 text-sm leading-5 truncate uppercase">org</p>
+                <p class="text-gray-500 text-sm leading-5 truncate uppercase text-left">personal</p>
               </div>
             </div>
             <svg class="h-5 w-5 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
