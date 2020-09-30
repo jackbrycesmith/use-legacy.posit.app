@@ -60,6 +60,18 @@ class UpdateTeamInfo extends Action
             'name' => $input['name'],
         ])->save();
 
+        return $team;
+    }
+
+    /**
+     * The action http response.
+     *
+     * @param \App\Models\Team $team The team
+     *
+     * @return Illuminate\Http\Response
+     */
+    public function response(Team $team)
+    {
         return back(303);
     }
 }

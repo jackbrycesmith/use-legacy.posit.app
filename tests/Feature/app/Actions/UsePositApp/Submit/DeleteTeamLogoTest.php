@@ -4,7 +4,7 @@ use App\Models\Team;
 use App\Models\User;
 use function Tests\actingAs;
 
-test('to delete team logo, logo must exist', function () {
+test('to delete team logo, team must exist', function () {
     $response = $this->delete(route('teams.delete-logo', ['team' => 'blah']));
 
     $response->assertStatus(404);
