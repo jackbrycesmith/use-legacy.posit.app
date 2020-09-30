@@ -11,7 +11,7 @@ use Inertia\Inertia;
 use Laravel\Jetstream\Jetstream;
 use Lorisleiva\Actions\Action;
 
-class UseOrgSettings extends Action
+class UseTeamSettings extends Action
 {
     public static function routes(Router $router)
     {
@@ -51,8 +51,8 @@ class UseOrgSettings extends Action
     {
         $team->loadMissing(['owner', 'media', 'stripeAccount']);
 
-        return Inertia::render('Use/OrgSettings', [
-            'org' => new TeamResource($team),
+        return Inertia::render('Use/TeamSettings', [
+            'team' => new TeamResource($team),
             'availableRoles' => array_values(Jetstream::$roles),
             'availablePermissions' => Jetstream::$permissions,
             'defaultPermissions' => Jetstream::$defaultPermissions,
