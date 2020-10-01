@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\StripeAccount;
+use App\Models\Team;
 use App\Models\User;
 use CloudCreativity\LaravelStripe\Events\AccountDeauthorized;
 use CloudCreativity\LaravelStripe\Facades\Stripe;
@@ -9,25 +10,25 @@ use Stripe\OAuth;
 use Stripe\StripeObject;
 use function Tests\actingAs;
 
-test('disconnect org stripe account, org must exist', function () {
-    $response = $this->put(route('use.submit.disconnect-stripe-account', ['org' => 'blah']));
+test('disconnect team stripe account, team must exist', function () {
+    $response = $this->put(route('use.submit.disconnect-stripe-account', ['team' => 'blah']));
     $response->assertStatus(404);
-})->skip();
+});
 
-test('disconnect org stripe account requires login', function () {
+test('disconnect team stripe account requires login', function () {
     $user = User::factory()->create();
-    $org = $user->organisations()->create(['name' => 'org']);
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
 
-    $response = $this->put(route('use.submit.disconnect-stripe-account', ['org' => $org]));
+    $response = $this->put(route('use.submit.disconnect-stripe-account', ['team' => $team]));
 
     $response->assertRedirect(route('login'));
-})->skip();
+});
 
-test('user cannot disconnect stripe account if not a member of the org', function () {
+test('user cannot disconnect stripe account if not a member of the team', function () {
     $user = User::factory()->create();
-    $org = $user->organisations()->create(['name' => 'org']);
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
 
-    $stripeAccount = StripeAccount::factory()->create(['owner_id' => $org->id]);
+    $stripeAccount = StripeAccount::factory()->create(['owner_id' => $team->id]);
 
     $otherUser = User::factory()->create();
 
@@ -35,22 +36,22 @@ test('user cannot disconnect stripe account if not a member of the org', functio
     Event::fake();
     Stripe::fake($expected = new StripeObject());
 
-    $response = actingAs($otherUser)->put(route('use.submit.disconnect-stripe-account', ['org' => $org]));
+    $response = actingAs($otherUser)->put(route('use.submit.disconnect-stripe-account', ['team' => $team]));
 
     $response->assertStatus(403);
-})->skip();
+});
 
 
-test('user can disconnect stripe account if member of the org', function () {
+test('user can disconnect stripe account if owner of the team', function () {
     $user = User::factory()->create();
-    $org = $user->organisations()->create(['name' => 'org']);
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
 
-    $stripeAccount = StripeAccount::factory()->create(['owner_id' => $org->id]);
+    $stripeAccount = StripeAccount::factory()->create(['owner_id' => $team->id]);
 
     Event::fake();
     Stripe::fake($expected = new StripeObject());
 
-    $response = actingAs($user)->put(route('use.submit.disconnect-stripe-account', ['org' => $org]));
+    $response = actingAs($user)->put(route('use.submit.disconnect-stripe-account', ['team' => $team]));
 
     $response->assertStatus(204);
 
@@ -63,4 +64,4 @@ test('user can disconnect stripe account if member of the org', function () {
         $this->assertTrue($stripeAccount->is($event->account), 'event account');
         return true;
     });
-})->skip();
+});
