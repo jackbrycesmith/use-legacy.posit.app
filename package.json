@@ -10,7 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "@inertiajs/inertia": "^0.3.4",
+        "@inertiajs/inertia": "^0.3.6",
         "@inertiajs/inertia-vue": "^0.2.4",
         "@inertiajs/progress": "^0.1.2",
         "@stripe/stripe-js": "^1.8.0",
