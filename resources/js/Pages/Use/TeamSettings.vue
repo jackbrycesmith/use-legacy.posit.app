@@ -54,7 +54,7 @@
             <!-- Payments... -->
             <StripeConnectSetup
               :stripe-account="org__.stripeAccount"
-              :org-uuid="org__.uuid"
+              :team-uuid="org__.uuid"
               @disconnected="handleStripeAccountDisconnected"/>
 
             <CoinbaseCommerceSetup
