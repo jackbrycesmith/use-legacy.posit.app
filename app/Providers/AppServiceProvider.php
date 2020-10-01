@@ -102,7 +102,7 @@ class AppServiceProvider extends ServiceProvider
         LaravelStripe::connectState(\App\Utils\StripeOauthSessionState::class);
 
         LaravelStripe::currentOwnerResolver(function (Request $request) {
-            return $request->stripeConnectOauthOrg();
+            return $request->stripeConnectOauthTeam();
         });
 
         return $this;

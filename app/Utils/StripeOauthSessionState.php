@@ -38,9 +38,9 @@ class StripeOauthSessionState implements StateProviderInterface
         $sessionToken = $this->session->token();
 
         if ($this->request->isStripeConnectOauthStart()) {
-            $orgUuid = $this->request->segment(2);
-            // TODO? check $orgUuid correctness; uuid or exists?
-            return "{$sessionToken}.{$orgUuid}";
+            $teamUuid = $this->request->segment(2);
+            // TODO? check $teamUuid correctness; uuid or exists?
+            return "{$sessionToken}.{$teamUuid}";
         }
 
         return $sessionToken;

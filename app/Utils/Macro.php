@@ -6,20 +6,20 @@ use Ramsey\Uuid\Uuid;
 use Spatie\Regex\Regex;
 
 Request::macro('isStripeConnectOauthStart', function () {
-    $startsCorrectly = $this->segment(1) === 'org';
+    $startsCorrectly = $this->segment(1) === 'team';
     $endsCorrectly = $this->segment(3) === 'stripe-connect-oauth-start';
     return $startsCorrectly && $endsCorrectly;
 });
 
-Request::macro('stripeConnectOauthOrg', function () {
+Request::macro('stripeConnectOauthTeam', function () {
     $stripeConnectOauthReturnState = $this->query('state');
     if (is_null($stripeConnectOauthReturnState)) return null;
 
-    // org uuid is placed after session token; App/Utils/StripeOauthSessionState:43
-    $orgUuid = Regex::match('/[^.]+$/', $stripeConnectOauthReturnState)->result();
-    if (! Uuid::isValid($orgUuid)) return null;
+    // team uuid is placed after session token; App/Utils/StripeOauthSessionState:43
+    $teamUuid = Regex::match('/[^.]+$/', $stripeConnectOauthReturnState)->result();
+    if (! Uuid::isValid($teamUuid)) return null;
 
-    return Team::where('uuid', $orgUuid)->first();
+    return Team::where('uuid', $teamUuid)->first();
 });
 
 Request::macro('stripeConnectOauthStateSessionToken', function () {

@@ -17,23 +17,23 @@ test('macro Request::isStripeConnectOauthStart returns true', function ($urlPath
 
     assertTrue($request->isStripeConnectOauthStart());
 })->with([
-    '/org/some-uuid/stripe-connect-oauth-start',
+    '/team/some-uuid/stripe-connect-oauth-start',
 ]);
 
-test('macro Request::stripeConnectOauthOrg returns team', function () {
+test('macro Request::stripeConnectOauthTeam returns team', function () {
     $org = Team::factory()->create();
 
     $stateQuery = "sessiontoken.{$org->uuid}";
     $request = Request::create('/', 'GET', ['state' => $stateQuery]);
 
-    assertInstanceOf(Team::class, $request->stripeConnectOauthOrg());
+    assertInstanceOf(Team::class, $request->stripeConnectOauthTeam());
 });
 
-test('macro Request::stripeConnectOauthOrg returns null team', function ($stateQuery) {
+test('macro Request::stripeConnectOauthTeam returns null team', function ($stateQuery) {
     $org = Team::factory()->create();
     $request = Request::create('/', 'GET', ['state' => $stateQuery]);
 
-    assertNull($request->stripeConnectOauthOrg());
+    assertNull($request->stripeConnectOauthTeam());
 })->with([
     null,
     'onlytoken',
