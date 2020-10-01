@@ -52,6 +52,7 @@
         "vue": "^2.6.11",
         "vue-fragment": "^1.5.1",
         "vue-meta": "^2.4.0",
+        "vue-smooth-reflow": "^0.1.12",
         "vue-template-compiler": "^2.6.11",
         "vuex": "^3.5.1",
         "webpack-livereload-plugin": "^1.2.0",
