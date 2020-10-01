@@ -7,19 +7,19 @@ export default class StripeAccount extends Model {
     }
 
     get is_stripe_integration_ok () {
-      return this.charges_enabled && this.payouts_enabled
+      return this.charges_enabled
     }
 
     get stripe_charges_payouts_state_text () {
       if (this.is_stripe_integration_ok) {
-        return 'Ready to take payments & receive payouts'
+        return 'Ready to receive payments into your Stripe account'
       }
 
       return 'Integration is not ready'
     }
 
-    async disconnect (orgUuid = '') {
-      await Http.put(route('use.submit.disconnect-stripe-account', { org: orgUuid }))
+    async disconnect (teamUuid = '') {
+      await Http.put(route('use.submit.disconnect-stripe-account', { team: teamUuid }))
     }
 
 }
