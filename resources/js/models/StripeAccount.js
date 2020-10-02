@@ -18,6 +18,14 @@ export default class StripeAccount extends Model {
       return 'Unable to receive payments, please update the connection'
     }
 
+    get account_link_text () {
+      if (this.details_submitted) {
+        return 'Update Connection'
+      }
+
+      return 'Continue Setup'
+    }
+
     async disconnect (teamUuid = '') {
       await Http.put(route('use.submit.disconnect-stripe-account', { team: teamUuid }))
     }
