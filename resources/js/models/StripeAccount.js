@@ -15,7 +15,7 @@ export default class StripeAccount extends Model {
         return 'Ready to receive payments into your Stripe account'
       }
 
-      return 'Integration is not ready'
+      return 'Unable to receive payments, please update the connection'
     }
 
     async disconnect (teamUuid = '') {
