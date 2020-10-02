@@ -5,6 +5,7 @@ namespace App\Actions\UsePositApp\Submit;
 use App\Models\Team;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Request;
 use Lorisleiva\Actions\Action;
 use Stripe\Exception\OAuth\InvalidClientException;
 
@@ -60,6 +61,7 @@ class DisconnectStripeAccount extends Action
         try {
             $team->stripeAccount->stripe()->deauthorize();
         } catch (InvalidClientException $exception) {
+            logger($exception->getMessage());
             // Somethings gone wrong here? Trying to disconnect from an account that i longer have access to
             // So will soft delete...
             $team->stripeAccount->delete();
@@ -78,8 +80,6 @@ class DisconnectStripeAccount extends Action
      */
     public function response($success)
     {
-        return $success
-            ? response()->noContent()
-            : response()->response(null, 400);
+        return back(303)->with('status', 'stripe-account-disconnected');
     }
 }
