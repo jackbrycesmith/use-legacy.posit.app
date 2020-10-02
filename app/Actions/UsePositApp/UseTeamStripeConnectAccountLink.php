@@ -89,6 +89,9 @@ class UseTeamStripeConnectAccountLink extends Action
      */
     public static function stripeAccountCreationParams(): array
     {
+        return [];
+
+        // Error... "You cannot create Standard connected accounts with capabilities via API"
         return [
             'capabilities' => [
                 'card_payments' => [
