@@ -23,6 +23,9 @@ class StripeAccountResource extends JsonResource
             'dashboard_name' => Arr::get($this->settings, 'dashboard.display_name'),
             'charges_enabled' => (bool) $this->charges_enabled,
             'payouts_enabled' => (bool) $this->payouts_enabled,
+            'details_submitted' => (bool) $this->details_submitted,
+            'has_card_payments_capability' => $this->hasCapability('card_payments'),
+            'has_bacs_debit_payments_capability' => $this->hasCapability('bacs_debit_payments'),
         ];
     }
 }

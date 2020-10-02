@@ -5,6 +5,7 @@ namespace App\Models;
 use CloudCreativity\LaravelStripe\Models\StripeAccount as LaravelStripeAccount;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Arr;
 use Stripe\Account;
 use Stripe\StripeObject;
 
@@ -57,6 +58,32 @@ class StripeAccount extends LaravelStripeAccount
         }
 
         return $this;
+    }
+
+    /**
+     * Determines if account has a given capability.
+     *
+     * @param string $capability The capability
+     *
+     * @return boolean True if has active capability, False otherwise.
+     *
+     * @see https://stripe.com/docs/api/accounts/object?lang=php#account_object-capabilities
+     */
+    public function hasCapability(string $capability): bool
+    {
+        return Arr::get($this->capabilities, $capability) === 'active';
+    }
+
+    /**
+     * Get the account link type for this account.
+     *
+     * @return string The stripe account link type
+     *
+     * @see https://stripe.com/docs/api/account_links/create#create_account_link-type
+     */
+    public function accountLinkType(): string
+    {
+        return 'account_onboarding'; // Standard accounts only support 'account_onboarding'// $this->details_submitted ? 'account_update' : 'account_onboarding';
     }
 
     /**
