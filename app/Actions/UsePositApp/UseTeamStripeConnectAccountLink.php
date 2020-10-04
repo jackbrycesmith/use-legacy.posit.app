@@ -7,6 +7,7 @@ use App\Models\Team;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Request;
+use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
 class UseTeamStripeConnectAccountLink extends Action
@@ -74,7 +75,7 @@ class UseTeamStripeConnectAccountLink extends Action
     public function response(string $redirectUrl)
     {
         if (Request::inertia()) {
-            return response('', 409)->header('X-Inertia-Location', $redirectUrl);
+            return Inertia::location($redirectUrl);
         }
 
         return redirect()->away($redirectUrl);

@@ -7,6 +7,7 @@ use App\Utils\Constant;
 use CloudCreativity\LaravelStripe\Facades\Stripe;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Request;
+use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
 class UseOrgStripeConnectOauthStart extends Action
@@ -49,8 +50,7 @@ class UseOrgStripeConnectOauthStart extends Action
     {
         // TODO specify exact oauth redirectUri & ensure its a configured value in the stripe dashboard
         if (Request::inertia()) {
-            return response('', 409)
-                ->header('X-Inertia-Location', Stripe::authorizeUrl()->login()->readWrite()->toString());
+            return Inertia::location(Stripe::authorizeUrl()->login()->readWrite()->toString());
         }
 
         return Stripe::authorizeUrl()->login()->readWrite()->redirect();

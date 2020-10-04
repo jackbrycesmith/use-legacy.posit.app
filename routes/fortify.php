@@ -74,13 +74,15 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
     // Profile Information...
     if (Features::enabled(Features::updateProfileInformation())) {
         Route::put('/user/profile-information', 'ProfileInformationController@update')
-                    ->middleware(['auth']);
+                    ->middleware(['auth'])
+                    ->name('user-profile-information.update');
     }
 
     // Passwords...
     if (Features::enabled(Features::updatePasswords())) {
         Route::put('/user/password', 'PasswordController@update')
-                    ->middleware(['auth']);
+                    ->middleware(['auth'])
+                    ->name('user-password.update');
     }
 
     // Password Confirmation...
