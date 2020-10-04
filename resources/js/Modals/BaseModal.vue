@@ -1,11 +1,11 @@
 <template>
-  <focus-trap v-model="isVisible">
+  <focus-trap v-model="isVisible__">
     <div
       ref="modal"
       v-show="isRootVisible"
       tabindex="0"
       @keyup.esc="handleEscapeKeyHit"
-      class="fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center">
+      :class="modalRootClass">
       <!-- TODO figure out nice close animation -->
       <transition
         enter-active-class="ease-out duration-300"
@@ -15,7 +15,7 @@
         leave-class="opacity-100"
         leave-to-class="opacity-0">
         <div
-          v-show="isVisible"
+          v-show="isVisible__"
           class="fixed inset-0 transition-opacity"
           @click="handleBackgroundHit">
           <div class="absolute inset-0 bg-gray-500 opacity-75"/>
@@ -23,6 +23,7 @@
       </transition>
 
       <transition
+        v-if="showDefaultModalStyle"
         enter-active-class="ease-out duration-300"
         enter-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         enter-to-class="opacity-100 translate-y-0 sm:scale-100"
@@ -30,7 +31,7 @@
         leave-class="opacity-100 translate-y-0 sm:scale-100"
         leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
 
-        <div v-show="isVisible" class="relative bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6">
+        <div v-show="isVisible__" class="relative bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6">
           <!-- Close button -->
           <slot name="close-button">
             <div class="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
@@ -69,7 +70,8 @@
                 <button
                   @click="handleMainActionButtonHit"
                   type="button"
-                  class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-red-400 text-base leading-6 font-medium text-white shadow-sm hover:bg-red-300 focus:outline-none focus:border-red-500 focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                  :class="mainActionButtonColors"
+                  class="inline-flex justify-center w-full rounded-md px-4 py-2 text-base leading-6 font-medium shadow-sm transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                   {{ mainActionButtonText }}
                 </button>
               </span>
@@ -82,6 +84,8 @@
           </slot>
         </div>
       </transition>
+
+      <slot v-if="!showDefaultModalStyle" name="alternative-modal" />
     </div>
   </focus-trap>
 </template>
@@ -89,9 +93,13 @@
 <script>
 export default {
   props: {
+    showDefaultModalStyle: { type: Boolean, default: true },
+    modalRootClass: { type: String, default: 'fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center' },
     isVisible: { type: Boolean, default: false },
+    rootVisibleHideDelay: { type: Number, default: 300 },
     cancelActionButtonText: { type: String, default: 'Cancel' },
     mainActionButtonText: { type: String, default: 'Ok' },
+    mainActionButtonColors: { type: String, default: 'border border-transparent bg-red-400 text-white hover:bg-red-300 focus:outline-none focus:border-red-500 focus:shadow-outline-red' },
     showBottomButtonGroup: { type: Boolean, default: true },
     hintIconBackgroundColor: { type: String, default: 'bg-red-100' },
     hintTitle: { type: String, default: 'Title' },
@@ -103,7 +111,8 @@ export default {
     onEscapeKeyHit: { type: Function },
   },
   data: () => ({
-    isRootVisible: false
+    isRootVisible: false,
+    isVisible__: false
   }),
   computed: {
     handleBackgroundHit () {
@@ -143,43 +152,64 @@ export default {
     },
   },
   watch: {
+    isVisible__ (value) {
+      this.$emit('update:isVisible', value)
+
+      if (value) {
+        this.isRootVisible = true
+
+        // Allow escape key handling to work
+        this.$nextTick(() => {
+          this.$refs.modal.focus()
+        })
+
+        this.$emit('opened')
+
+        return
+      }
+
+      // So we can get the nice out transition
+      setTimeout(() => this.isRootVisible = false, this.rootVisibleHideDelay)
+    },
     isVisible: {
       immediate: true,
       handler (value) {
-        if (value) {
-          this.isRootVisible = true
+        this.isVisible__ = value
 
-          // Allow escape key handling to work
-          this.$nextTick(() => {
-            this.$refs.modal.focus()
-          })
+        // if (value) {
+        //   this.isRootVisible = true
 
-          this.$emit('opened')
+        //   // Allow escape key handling to work
+        //   this.$nextTick(() => {
+        //     this.$refs.modal.focus()
+        //   })
 
-          return
-        }
+        //   this.$emit('opened')
 
-        // So we can get the nice out transition
-        setTimeout(() => this.isRootVisible = false, 300)
+        //   return
+        // }
+
+        // // So we can get the nice out transition
+        // setTimeout(() => this.isRootVisible = false, this.rootVisibleHideDelay)
       }
-    }
+    },
   },
   methods: {
     defaultHandleBackgroundHit () {
-      this.$emit('update:isVisible', false)
+      this.isVisible__ = false
     },
     defaultHandleCloseButtonHit () {
-      this.$emit('update:isVisible', false)
+      this.isVisible__ = false
     },
     defaultHandleCancelActionButtonHit () {
-      this.$emit('update:isVisible', false)
+      this.isVisible__ = false
     },
     defaultHandleMainActionButtonHit () {
-      this.$emit('update:isVisible', false)
+      this.isVisible__ = false
     },
     defaultEscapeKeyHit () {
       // For some reason i'm getting 🤷‍♂️ [Vue warn]: Avoid mutating a prop directly
-      this.$emit('update:isVisible', false)
+      this.isVisible__ = false
     }
   }
 }
