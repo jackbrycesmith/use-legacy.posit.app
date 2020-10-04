@@ -55,6 +55,7 @@
 
               <!-- Disconnect -->
               <InertiaSingleButtonForm
+                v-if="permissions.canUpdateTeam"
                 :route="disconnectRoute"
                 request-method="put"
                 button-class="text-xs text-red-400 relative"
@@ -105,7 +106,7 @@
             </div>
 
             <!-- Stripe Account Link Button -->
-            <div class="mt-5 sm:ml-4 sm:flex-shrink-0">
+            <div v-if="permissions.canUpdateTeam" class="mt-5 sm:ml-4 sm:flex-shrink-0">
               <span class="inline-flex rounded-md shadow-sm">
                 <InertiaSingleButtonForm :route="accountLinkRoute">
                   <template #button="{ form }">
@@ -154,11 +155,12 @@ export default {
     InertiaSingleButtonForm,
     IconHeroiconsSpinner,
     IconHeroiconsMediumCheckCircle,
-    SmoothReflow
+    SmoothReflow,
   },
   props: {
     teamUuid: { type: String },
-    stripeAccount: { type: Object }
+    stripeAccount: { type: Object },
+    permissions: { type: Object }
   },
   data () {
     return {

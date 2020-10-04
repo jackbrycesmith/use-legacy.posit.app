@@ -55,6 +55,7 @@
             <StripeConnectSetup
               :stripe-account="org__.stripeAccount"
               :team-uuid="org__.uuid"
+              :permissions="permissions"
               @disconnected="handleStripeAccountDisconnected"/>
 
             <CoinbaseCommerceSetup
