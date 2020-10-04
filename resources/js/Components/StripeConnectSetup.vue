@@ -57,8 +57,12 @@
               <InertiaSingleButtonForm
                 v-if="permissions.canUpdateTeam"
                 :route="disconnectRoute"
+                :should-confirm="true"
+                confirm-modal-title="Disconnect Stripe Account"
+                confirm-modal-description="Are you sure you want to disconnect the Stripe Account?"
+                confirm-modal-button="Yes, please disconnect"
                 request-method="put"
-                button-class="text-xs text-red-400 relative"
+                button-class="text-xs text-red-400 relative focus:outline-none"
                 class="absolute top-0 right-0 inset-y-auto">
                 <template #button-inner="{ form }">
                   <IconHeroiconsSpinner v-if="form.processing" class="inline h-3 w-3 absolute inset-y-auto -ml-4 mt-1.5" />
