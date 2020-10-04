@@ -1,33 +1,47 @@
 import Model from './Model'
-import Http from '@/services/Http'
+import { omitBy, isNil } from 'lodash-es'
 
 export default class StripeAccount extends Model {
     exists () {
       return !(this.id == null)
     }
 
-    get is_stripe_integration_ok () {
-      return this.charges_enabled
-    }
-
-    get stripe_charges_payouts_state_text () {
-      if (this.is_stripe_integration_ok) {
-        return 'Ready to receive payments into your Stripe account'
+    get integration_info_points () {
+      if (!this.details_submitted || !this.charges_enabled) {
+        return [
+          {
+            icon: 'warning',
+            text: 'Not ready to receive payments, please complete setup with Stripe',
+          }
+        ]
       }
 
-      return 'Unable to receive payments, please update the connection'
+      if (!this.charges_enabled) {
+        return [
+          {
+            icon: 'warning',
+            text: 'Not ready to receive payments, please complete setup with Stripe',
+          }
+        ]
+      }
+
+      return omitBy([
+        {
+          icon: 'check',
+          text: 'Ready to receive payments into your Stripe Account',
+        },
+        this.has_card_payments_capability ? {
+          icon: 'check',
+          text: 'Card related payments enabled'
+        } : null,
+      ], isNil)
     }
 
     get account_link_text () {
       if (this.details_submitted) {
-        return 'Update Connection'
+        return 'Update Stripe Account'
       }
 
-      return 'Continue Setup'
+      return 'Complete Stripe Setup'
     }
-
-    async disconnect (teamUuid = '') {
-      await Http.put(route('use.submit.disconnect-stripe-account', { team: teamUuid }))
-    }
-
 }
