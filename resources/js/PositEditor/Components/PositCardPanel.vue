@@ -1,14 +1,17 @@
 <template>
   <div>
     <slot name="controls"/>
-    <div :contenteditable="isExpanded && view.editable.toString()" class="bg-white overflow-hidden shadow rounded-lg mx-auto" style="max-width: 70ch;">
+    <SmoothReflow
+      :options="{ property: 'height', transition: 'height .25s ease-in-out' }"
+      :contenteditable="isExpanded && view.editable.toString()"
+      tag="div"
+      class="bg-white overflow-hidden shadow rounded-lg mx-auto"
+      style="max-width: 70ch;">
       <div :contenteditable="isExpanded && view.editable.toString()" class="px-4 py-5 sm:p-6 focus:outline-none relative" style="min-height: 100px;">
 
-        <transition-expand>
-          <div v-show="isExpanded">
-            <slot name="content" v-bind="{ isExpanded }"/>
-          </div>
-        </transition-expand>
+        <div v-show="isExpanded">
+          <slot name="content" v-bind="{ isExpanded }"/>
+        </div>
 
         <!-- TODO figure out why this is taking up some vertical space... -->
         <div class="absolute left-0 right-0 px-4">
@@ -16,15 +19,15 @@
         </div>
 
       </div>
-    </div>
+    </SmoothReflow>
   </div>
 </template>
 
 <script>
-import TransitionExpand from '@/Components/TransitionExpand'
+import SmoothReflow from '@/Components/SmoothReflow'
 
 export default {
-  components: { TransitionExpand },
+  components: { SmoothReflow },
   // there are some props available
   // `node` is a Prosemirror Node Object
   // `updateAttrs` is a function to update attributes defined in `schema`
