@@ -78,10 +78,10 @@
 
                 <!-- Stripe Metadata Badges -->
                 <div class="text-sm leading-5 font-medium text-gray-600 uppercase">
-                  <span class="inline-flex">
-                    <BadgeWithDotSmall color="blue" class="mr-1">
+                  <span class="inline-flex gap-1 flex-wrap">
+                    <BadgeWithDotSmall color="blue">
                       <template #dot>
-                        <EmojiFlag v-if="stripeAccount__.country" :code="stripeAccount__.country" class="-ml-0.5 mr-1.5 w-full h-full align-middle"/>
+                        <EmojiFlag v-if="stripeAccount__.country" :code="stripeAccount__.country" class="-ml-0.5 mr-1.5 h-full align-middle"/>
                       </template>
                       {{ stripeAccount__.dashboard_name }}
                     </BadgeWithDotSmall>
@@ -98,17 +98,22 @@
                     <li
                       v-for="(point, i) in stripeAccount__.integration_info_points"
                       :key="point.text"
+                      class="flex gap-1"
                       :class="{ 'mt-0.5': i > 0 }">
 
                       <IconHeroiconsMediumCheckCircle
                         v-if="point.icon === 'check'"
-                        class="h-5 w-5 text-green-400 inline-block align-text-top" />
+                        class="h-5 w-5 text-green-400 inline-block align-text-top flex-shrink-0" />
 
                       <IconHeroiconsMediumExclamation
                         v-if="point.icon === 'warning'"
-                        class="h-5 w-5 text-yellow-400 inline-block align-text-top" />
+                        class="h-5 w-5 text-yellow-400 inline-block align-text-top flex-shrink-0" />
 
-                      <span class="align-middle">{{ point.text }}</span>
+                      <IconHeroiconsMediumInformationCircle
+                        v-if="point.icon === 'info'"
+                        class="h-5 w-5 text-blue-400 inline-block align-text-top flex-shrink-0" />
+
+                      <span class="align-middle" v-html="point.text"/>
                     </li>
                   </ul>
                 </div>
@@ -156,6 +161,7 @@ import SmoothReflow from '@/Components/SmoothReflow'
 import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
 import IconHeroiconsMediumCheckCircle from '@/Icons/IconHeroiconsMediumCheckCircle'
 import IconHeroiconsMediumExclamation from '@/Icons/IconHeroiconsMediumExclamation'
+import IconHeroiconsMediumInformationCircle from '@/Icons/IconHeroiconsMediumInformationCircle'
 
 export default {
   components: {
@@ -167,6 +173,7 @@ export default {
     IconHeroiconsSpinner,
     IconHeroiconsMediumCheckCircle,
     IconHeroiconsMediumExclamation,
+    IconHeroiconsMediumInformationCircle,
     SmoothReflow,
   },
   props: {

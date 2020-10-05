@@ -34,6 +34,17 @@ export default class StripeAccount extends Model {
           icon: 'check',
           text: 'Card related payments enabled'
         } : null,
+        this.has_bacs_debit_payments_capability ? {
+          icon: 'check',
+          text: 'BACS Direct Debit payments enabled'
+        } : {
+          icon: 'info',
+          text: `
+            <a class="text-blue-500 font-medium" href="https://dashboard.stripe.com/settings/payments" target=”_blank” rel=”noopener noreferrer”>
+              Enable other payment methods in Stripe (e.g. BACS Direct Debit) »
+            </a>
+          `
+        },
       ], isNil)
     }
 
