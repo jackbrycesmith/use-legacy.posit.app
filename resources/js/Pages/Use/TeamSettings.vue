@@ -8,14 +8,14 @@
 
       <!-- Settings List -->
       <div class="lg:min-w-0 lg:flex-1">
-        <div class="pl-4 pr-6 pt-4 pb-4 border-b border-t border-gray-200 sm:pl-6 lg:pl-8 xl:pl-6 xl:pt-6 xl:border-t-0">
+        <div class="pl-4 pr-6 pt-4 pb-4 border-b border-t border-gray-200 sm:pl-6 lg:sticky lg:bg-primary-yellow-50 lg:top-16 lg:z-10 lg:pl-8 xl:pl-6 xl:pt-6 xl:border-t-0">
           <div class="flex items-center">
             <h1 class="flex-1 text-3xl leading-7 font-bold">Team Settings</h1>
           </div>
         </div>
 
         <!-- Team name settings -->
-        <div class="md:grid md:grid-cols-3 md:gap-6">
+        <div class="md:grid md:grid-cols-3 md:gap-6 lg:pr-1">
 
           <div class="md:col-span-1">
             <div class="pl-4 sm:pl-6 lg:pl-8 xl:pl-6 mt-7">
@@ -37,7 +37,7 @@
         <JetSectionBorder />
 
         <!-- Payment Settings -->
-        <div class="md:grid md:grid-cols-3 md:gap-6">
+        <div class="md:grid md:grid-cols-3 md:gap-6 lg:pr-1 mb-5">
 
           <div class="md:col-span-1">
             <div class="pl-4 sm:pl-6 lg:pl-8 xl:pl-6">
