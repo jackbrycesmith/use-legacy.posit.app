@@ -95,8 +95,22 @@
         <div class="flex-1 flex flex-col justify-between">
           <div class="px-4 sm:px-6">
             <!-- Section -->
-            <div class="space-y-6 pt-6 pb-5">
+            <div class="space-y-6 pt-6 pb-5 mt-5">
 
+              <div class="space-y-1">
+                <label for="proposal_theme" class="block text-sm font-medium leading-5 text-gray-600">
+                  Theme
+                </label>
+
+                <!-- Theme list options -->
+                <div class="flex gap-2 items-center">
+                  <ProposalThemeBlock name="Cool Grey" class="flex-shrink-0" />
+                  <p class="flex-1 text-center text-gray-400 text-xs">
+                    <IconHeroiconsMediumInformationCircle class="inline w-5 h-5 align-bottom" />
+                    More theme choices coming soon!
+                  </p>
+                </div>
+              </div>
 
             </div>
 
@@ -142,9 +156,16 @@
 <script>
 import BaseSlideOver from '@/SlideOvers/BaseSlideOver'
 import ProposalRecipientSelector from '@/Components/ProposalRecipientSelector'
+import ProposalThemeBlock from '@/Components/ProposalThemeBlock'
+import IconHeroiconsMediumInformationCircle from '@/Icons/IconHeroiconsMediumInformationCircle'
 
 export default {
-  components: { BaseSlideOver, ProposalRecipientSelector },
+  components: {
+    BaseSlideOver,
+    ProposalRecipientSelector,
+    ProposalThemeBlock,
+    IconHeroiconsMediumInformationCircle
+  },
   props: {
     proposal: { type: Object }
   },
