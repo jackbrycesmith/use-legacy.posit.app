@@ -51,13 +51,27 @@ export default {
       type: String,
       default: 'blue',
       validator (val) { return has(COLORS, val) }
-    }
+    },
+    customBadgeClass: {
+      type: String
+    },
+    customDotClass: {
+      type: String
+    },
   },
   computed: {
     badgeColorClass () {
+      if (this.customBadgeClass) {
+        return this.customBadgeClass
+      }
+
       return get(COLORS, `${this.color}.badgeColor`)
     },
     dotColorClass () {
+      if (this.customDotClass) {
+        return this.customDotClass
+      }
+
       return get(COLORS, `${this.color}.dotColor`)
     }
   }
