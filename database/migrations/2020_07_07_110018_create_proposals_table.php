@@ -17,7 +17,8 @@ class CreateProposalsTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->foreignId('team_id')->constrained()->onDelete('cascade'); // TODO make this nullable?
-            $table->string('name')->nullable();
+            $table->string('name')->nullable(); // TODO change to text type?
+            $table->string('theme')->nullable();
             $table->json('meta')->nullable();
             $table->timestamps();
         });

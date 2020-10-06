@@ -88,6 +88,11 @@ class Proposal extends Model implements HasMedia
         'name' => 'Proposal',
     ];
 
+    const THEME_COOL_GREY = 'cool_grey';
+    const ALLOWED_THEMES = [
+        self::THEME_COOL_GREY
+    ];
+
     const STATUS_DRAFT = 'proposal_draft';
     const STATUS_PUBLISHED = 'proposal_published';
     const STATUS_ACCEPTED = 'proposal_accepted';
@@ -240,5 +245,16 @@ class Proposal extends Model implements HasMedia
         return $this->recipients()->where(function ($query) use ($accessCode) {
             $query->where('access_code', $accessCode);
         })->first();
+    }
+
+    /**
+     * Get the default proposal theme
+     *
+     * @return string
+     * @todo consider making non static & configurable default for team...
+     */
+    public static function defaultTheme(): string
+    {
+        return config('posit-settings.proposal.theme_default', Proposal::THEME_COOL_GREY);
     }
 }

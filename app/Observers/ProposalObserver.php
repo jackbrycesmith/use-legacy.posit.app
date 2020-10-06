@@ -7,6 +7,19 @@ use App\Models\Proposal;
 class ProposalObserver
 {
     /**
+     * Handle the proposal "creating" event.
+     *
+     * @param  \App\Models\Proposal  $proposal
+     * @return void
+     */
+    public function creating(Proposal $proposal)
+    {
+        if (is_null($proposal->theme)) {
+            $proposal->theme = $proposal->defaultTheme();
+        }
+    }
+
+    /**
      * Handle the proposal "created" event.
      *
      * @param  \App\Models\Proposal  $proposal
