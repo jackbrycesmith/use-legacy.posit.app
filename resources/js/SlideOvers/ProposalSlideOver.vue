@@ -121,6 +121,38 @@
                 </div>
               </div>
 
+              <!-- Public URL Share -->
+              <div class="space-y-1">
+                <label for="public_link" class="block text-sm font-medium leading-5 text-gray-600">
+                  Share Link
+                </label>
+
+                <div class="mt-1 flex rounded-md shadow-sm">
+                  <div class="relative flex-grow focus-within:z-10">
+                    <a
+                      :href="proposal.route_pub_proposal_view_link"
+                      title="Visit Public Link Now"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 hover:text-primary-yellow-500 transition duration-150 ease-in-out">
+                      <ApplicationMark class="w-5 h-5" />
+                    </a>
+
+                    <input
+                      v-model="proposal.route_pub_proposal_view_link"
+                      id="public_link"
+                      class="form-input block w-full rounded-none rounded-l-md pl-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                      disabled>
+                  </div>
+                  <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+
+                    <IconHeroiconsSmallExternalLink class="h-5 w-5 text-gray-400" />
+                    <span class="ml-2">Copy</span>
+
+                  </button>
+                </div>
+              </div>
+
             </div>
 
             <!-- Another section -->
@@ -164,20 +196,24 @@
 
 <script>
 import ApplicationLogo from '@/Jetstream/ApplicationLogo'
+import ApplicationMark from '@/Jetstream/ApplicationMark'
 import BaseSlideOver from '@/SlideOvers/BaseSlideOver'
 import ProposalRecipientSelector from '@/Components/ProposalRecipientSelector'
 import ProposalThemeBlock from '@/Components/ProposalThemeBlock'
 import IconHeroiconsMediumInformationCircle from '@/Icons/IconHeroiconsMediumInformationCircle'
+import IconHeroiconsSmallExternalLink from '@/Icons/IconHeroiconsSmallExternalLink'
 import BadgeWithDotSmall from '@/Components/TailwindUI/BadgeWithDotSmall'
 
 export default {
   components: {
     ApplicationLogo,
+    ApplicationMark,
     BadgeWithDotSmall,
     BaseSlideOver,
     ProposalRecipientSelector,
     ProposalThemeBlock,
-    IconHeroiconsMediumInformationCircle
+    IconHeroiconsMediumInformationCircle,
+    IconHeroiconsSmallExternalLink
   },
   props: {
     proposal: { type: Object }
