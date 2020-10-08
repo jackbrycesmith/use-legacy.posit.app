@@ -134,7 +134,7 @@
                       title="Visit Public Link Now"
                       rel="noopener noreferrer"
                       target="_blank"
-                      class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 hover:text-primary-yellow-500 transition duration-150 ease-in-out">
+                      class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 outline-none hover:text-primary-yellow-500 focus:text-primary-yellow-500 transition duration-150 ease-in-out">
                       <ApplicationMark class="w-5 h-5" />
                     </a>
 
@@ -144,9 +144,22 @@
                       class="form-input block w-full rounded-none rounded-l-md pl-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
                       disabled>
                   </div>
-                  <button class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+                  <button ref="copyButton" @click.prevent="handleCopyPublicLinkHit" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-yellow focus:border-primary-yellow-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
 
-                    <IconHeroiconsSmallExternalLink class="h-5 w-5 text-gray-400" />
+                    <SuccessFlashSwitcher
+                      ref="copyIcon"
+                      :to-blur-after-success-el="$refs['copyButton']">
+
+                      <template #normal>
+                        <IconHeroiconsSmallExternalLink class="h-5 w-5 text-gray-400" />
+                      </template>
+
+                      <template #success>
+                        <IconHeroiconsSmallCheck class="h-5 w-5 text-primary-yellow-400" />
+                      </template>
+                    </SuccessFlashSwitcher>
+
+
                     <span class="ml-2">Copy</span>
 
                   </button>
@@ -202,7 +215,10 @@ import ProposalRecipientSelector from '@/Components/ProposalRecipientSelector'
 import ProposalThemeBlock from '@/Components/ProposalThemeBlock'
 import IconHeroiconsMediumInformationCircle from '@/Icons/IconHeroiconsMediumInformationCircle'
 import IconHeroiconsSmallExternalLink from '@/Icons/IconHeroiconsSmallExternalLink'
+import IconHeroiconsSmallCheck from '@/Icons/IconHeroiconsSmallCheck'
+import SuccessFlashSwitcher from '@/Components/SuccessFlashSwitcher'
 import BadgeWithDotSmall from '@/Components/TailwindUI/BadgeWithDotSmall'
+import copy from 'clipboard-copy'
 
 export default {
   components: {
@@ -213,7 +229,9 @@ export default {
     ProposalRecipientSelector,
     ProposalThemeBlock,
     IconHeroiconsMediumInformationCircle,
-    IconHeroiconsSmallExternalLink
+    IconHeroiconsSmallExternalLink,
+    IconHeroiconsSmallCheck,
+    SuccessFlashSwitcher
   },
   props: {
     proposal: { type: Object }
@@ -230,6 +248,10 @@ export default {
     },
     hide () {
       this.isVisible = false
+    },
+    async handleCopyPublicLinkHit () {
+      await copy(this.proposal.route_pub_proposal_view_link)
+      this.$refs.copyIcon.success()
     }
   }
 }
