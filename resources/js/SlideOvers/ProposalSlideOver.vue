@@ -107,6 +107,29 @@
             <div class="space-y-6 pt-6 pb-5 mt-5">
 
               <div class="space-y-1">
+                <label for="price" class="block text-sm leading-5 font-medium text-gray-600">Project Value</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span class="text-gray-500 sm:text-sm sm:leading-5">
+                      $
+                    </span>
+                  </div>
+                  <input id="price" class="form-input block w-full pl-7 pr-12 sm:text-sm sm:leading-5" placeholder="0.00">
+                  <div class="absolute inset-y-0 right-0 flex items-center">
+                    <select aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
+                      <option>USD</option>
+                      <option>CAD</option>
+                      <option>EUR</option>
+                    </select>
+                  </div>
+
+<!--                   <div class="absolute rounded-md w-full h-full inset-y-0 inset-x-0 flex bg-primary-yellow-500 opacity-50 items-center justify-center">
+                    <span>Locked</span>
+                  </div> -->
+                </div>
+              </div>
+
+              <div class="space-y-1">
                 <label for="proposal_theme" class="block text-sm font-medium leading-5 text-gray-600">
                   Theme
                 </label>
@@ -121,60 +144,12 @@
                 </div>
               </div>
 
-              <!-- Public URL Share -->
-              <div class="space-y-1">
-                <label for="public_link" class="block text-sm font-medium leading-5 text-gray-600">
-                  Share Link
-                </label>
-
-                <div class="mt-1 flex rounded-md shadow-sm">
-                  <div class="relative flex-grow focus-within:z-10">
-                    <a
-                      :href="proposal.route_pub_proposal_view_link"
-                      title="Visit Public Link Now"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                      class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 outline-none hover:text-primary-yellow-500 focus:text-primary-yellow-500 transition duration-150 ease-in-out">
-                      <ApplicationMark class="w-5 h-5" />
-                    </a>
-
-                    <input
-                      v-model="proposal.route_pub_proposal_view_link"
-                      id="public_link"
-                      class="form-input block w-full rounded-none rounded-l-md pl-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
-                      disabled>
-                  </div>
-                  <button ref="copyButton" @click.prevent="handleCopyPublicLinkHit" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-yellow focus:border-primary-yellow-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
-
-                    <SuccessFlashSwitcher
-                      ref="copyIcon"
-                      :to-blur-after-success-el="$refs['copyButton']">
-
-                      <template #normal>
-                        <IconHeroiconsSmallExternalLink class="h-5 w-5 text-gray-400" />
-                      </template>
-
-                      <template #success>
-                        <IconHeroiconsSmallCheck class="h-5 w-5 text-primary-yellow-400" />
-                      </template>
-                    </SuccessFlashSwitcher>
-
-
-                    <span class="ml-2">Copy</span>
-
-                  </button>
-                </div>
-              </div>
-
             </div>
 
             <!-- Another section -->
             <div class="space-y-4 pt-4 pb-6">
               <!-- Next Actions -->
               <div class="space-y-2">
-<!--                 <h3 class="text-md font-medium leading-5 text-gray-900">
-                  Define next steps/actions...
-                </h3> -->
 
 
               </div>
@@ -185,11 +160,61 @@
       </template>
 
       <template #footer>
-        <span class="inline-flex rounded-md shadow-sm">
-          <button @click.prevent="$emit('updatePressed')" type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-primary-yellow-900 bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:border-primary-yellow-500 focus:shadow-outline-primary-yellow active:bg-primary-yellow-500 transition duration-150 ease-in-out">
-            Publish Proposal
-          </button>
-        </span>
+
+        <div class="flex-1">
+          <!-- Public URL Share -->
+          <div class="space-y-1">
+            <label for="public_link" class="block text-sm font-medium leading-5 text-gray-600">
+              Share Link
+            </label>
+
+            <div class="mt-1 flex rounded-md shadow-sm">
+              <div class="relative flex-grow focus-within:z-10">
+                <a
+                  :href="proposal.route_pub_proposal_view_link"
+                  title="Visit Public Link Now"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 outline-none hover:text-primary-yellow-500 focus:text-primary-yellow-500 transition duration-150 ease-in-out">
+                  <ApplicationMark class="w-5 h-5" />
+                </a>
+
+                <input
+                  v-model="proposal.route_pub_proposal_view_link"
+                  id="public_link"
+                  class="form-input block w-full rounded-none rounded-l-md pl-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                  disabled>
+              </div>
+              <button ref="copyButton" @click.prevent="handleCopyPublicLinkHit" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-yellow focus:border-primary-yellow-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+
+                <SuccessFlashSwitcher
+                  ref="copyIcon"
+                  :to-blur-after-success-el="$refs['copyButton']">
+
+                  <template #normal>
+                    <IconHeroiconsSmallExternalLink class="h-5 w-5 text-gray-400" />
+                  </template>
+
+                  <template #success>
+                    <IconHeroiconsSmallCheck class="h-5 w-5 text-primary-yellow-400" />
+                  </template>
+                </SuccessFlashSwitcher>
+
+
+                <span class="ml-2">Copy</span>
+
+              </button>
+            </div>
+          </div>
+
+<!--           <span class="inline-flex rounded-md shadow-sm">
+            <button @click.prevent="$emit('updatePressed')" type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-primary-yellow-900 bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:border-primary-yellow-500 focus:shadow-outline-primary-yellow active:bg-primary-yellow-500 transition duration-150 ease-in-out">
+              Publish Proposal
+            </button>
+          </span> -->
+        </div>
+
+
 
       </template>
 
