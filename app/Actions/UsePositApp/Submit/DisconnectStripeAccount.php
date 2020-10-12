@@ -5,7 +5,6 @@ namespace App\Actions\UsePositApp\Submit;
 use App\Models\Team;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Request;
 use Lorisleiva\Actions\Action;
 use Stripe\Exception\OAuth\InvalidClientException;
 

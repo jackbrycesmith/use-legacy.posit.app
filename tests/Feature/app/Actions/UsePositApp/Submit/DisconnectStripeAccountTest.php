@@ -53,7 +53,8 @@ test('user can disconnect stripe account if owner of the team', function () {
 
     $response = actingAs($user)->put(route('use.submit.disconnect-stripe-account', ['team' => $team]));
 
-    $response->assertStatus(204);
+    $response->assertStatus(303);
+    $response->assertSessionHas('status', 'stripe-account-disconnected');
 
     Stripe::assertInvoked(OAuth::class, 'deauthorize', function ($params, $options) use ($stripeAccount) {
         $this->assertSame(['stripe_user_id' => $stripeAccount->id], $params, 'params');
