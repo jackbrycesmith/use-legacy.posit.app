@@ -19,6 +19,12 @@ class CreateProposalsTable extends Migration
             $table->foreignId('team_id')->constrained()->onDelete('cascade'); // TODO make this nullable?
             $table->string('name')->nullable(); // TODO change to text type?
             $table->string('theme')->nullable();
+
+            $valueTotal = config('posit-settings.proposal.value_max_digits') + config('posit-settings.proposal.value_digits_round');
+            $valuePlaces = config('posit-settings.proposal.value_digits_round');
+            $table->unsignedDecimal('value_amount', $valueTotal, $valuePlaces)->nullable();
+
+            $table->string('value_currency_code', 3)->nullable()->index();
             $table->json('meta')->nullable();
             $table->timestamps();
         });
