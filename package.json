@@ -22,6 +22,7 @@
         "@xstate/vue": "^0.3.0",
         "autoprefixer": "^9.8.6",
         "axios": "^0.20.0",
+        "cleave.js": "^1.6.0",
         "clipboard-copy": "github:jalt007/clipboard-copy#fallback-on-error",
         "collect.js": "^4.28.2",
         "country-flag-emoji": "^1.0.3",
