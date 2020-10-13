@@ -168,6 +168,7 @@ test('user can update proposal value if team member & valid params', function ($
     );
     $response->assertStatus(204);
 
+    $amount = $amount == '' ? null : $amount; // Empty string gets converted to null
     $this->assertDatabaseHas('proposals', [
         'id' => $proposal->id,
         'value_amount' => $amount,
@@ -178,11 +179,17 @@ test('user can update proposal value if team member & valid params', function ($
         null, 'GBP'
     ],
     [
+        '', 'GBP'
+    ],
+    [
         1000, 'GBP'
+    ],
+    [
+        "1000", 'GBP'
     ],
     [
         1000.99, 'USD'
     ],
-]);
+])->only();
 
 

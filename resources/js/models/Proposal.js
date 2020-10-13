@@ -36,6 +36,10 @@ export default class Proposal extends Model {
     return route('use.proposal.view', { proposal: this.uuid }).url()
   }
 
+  get route_pub_proposal_view_link () {
+    return route('pub.proposal.view', { proposal: this.uuid }).url()
+  }
+
   get has_recipient () {
     return !isNil(this.recipient)
   }
@@ -61,6 +65,18 @@ export default class Proposal extends Model {
     if (isNil(contactId)) return
 
     await Http.put(route('use.proposal.recipients.update', { proposal: this.uuid, recipient: contactId }))
+  }
+
+  async updateProjectValue () {
+    const response = await Http.put(
+      route('use.submit.upsert-proposal-value', { proposal: this.uuid }),
+      {
+        value_amount: this.value_amount,
+        value_currency_code: this.value_currency_code,
+      }
+    )
+
+    return response
   }
 
   async addRecipient (payload) {
