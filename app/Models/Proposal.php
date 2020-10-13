@@ -85,8 +85,7 @@ class Proposal extends Model implements HasMedia
      * @var array
      */
     protected $attributes = [
-        'name' => 'Proposal',
-        'value_currency_code' => config('posit-settings.proposal.value_currency_system_default')
+        //
     ];
 
     const THEME_COOL_GREY = 'cool_grey';
@@ -260,5 +259,27 @@ class Proposal extends Model implements HasMedia
     public static function defaultTheme(): string
     {
         return config('posit-settings.proposal.theme_default', Proposal::THEME_COOL_GREY);
+    }
+
+    /**
+     * Get the default proposal value currency
+     *
+     * @return string
+     * @todo consider making non static & configurable default for team...
+     */
+    public static function defaultValueCurrency(): string
+    {
+        return config('posit-settings.proposal.value_currency_system_default', 'GBP');
+    }
+
+    /**
+     * Get the default proposal name
+     *
+     * @return string
+     * @todo consider making non static & configurable default for team...
+     */
+    public static function defaultName(): string
+    {
+        return config('posit-settings.proposal.name_default');
     }
 }

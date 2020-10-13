@@ -14,8 +14,16 @@ class ProposalObserver
      */
     public function creating(Proposal $proposal)
     {
+        if (is_null($proposal->name)) {
+            $proposal->name = $proposal->defaultName();
+        }
+
         if (is_null($proposal->theme)) {
             $proposal->theme = $proposal->defaultTheme();
+        }
+
+        if (is_null($proposal->value_currency_code)) {
+            $proposal->value_currency_code = $proposal->defaultValueCurrency();
         }
     }
 
