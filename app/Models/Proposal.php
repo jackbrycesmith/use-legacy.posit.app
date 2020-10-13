@@ -86,6 +86,7 @@ class Proposal extends Model implements HasMedia
      */
     protected $attributes = [
         'name' => 'Proposal',
+        'value_currency_code' => config('posit-settings.proposal.value_currency_system_default')
     ];
 
     const THEME_COOL_GREY = 'cool_grey';
