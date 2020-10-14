@@ -42,7 +42,7 @@
         "postcss-import": "^12.0.1",
         "postcss-preset-env": "^6.7.0",
         "pusher-js": "^7.0.0",
-        "tailwindcss": "^1.8.10",
+        "tailwindcss": "^1.9.1",
         "tiptap": "^1.30.0",
         "tiptap-commands": "^1.15.0",
         "tiptap-extensions": "^1.33.0",
