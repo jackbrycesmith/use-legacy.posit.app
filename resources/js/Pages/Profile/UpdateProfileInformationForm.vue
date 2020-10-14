@@ -10,7 +10,7 @@
 
         <template #form>
             <!-- Profile Photo -->
-            <div class="col-span-6 sm:col-span-4" v-if="$page.jetstream.managesProfilePhotos">
+            <div class="col-span-6 sm:col-span-4" v-if="$page.props.jetstream.managesProfilePhotos">
                 <!-- Profile Photo File Input -->
                 <input type="file" class="hidden"
                             ref="photo"
@@ -20,7 +20,7 @@
 
                 <!-- Current Profile Photo -->
                 <div class="mt-2" v-show="! photoPreview">
-                  <img v-if="$page.user.profile_photo_url" :src="$page.user.profile_photo_url" alt="Current Profile Photo" class="rounded-full h-20 w-20 object-cover">
+                  <img v-if="$page.props.user.profile_photo_url" :src="$page.props.user.profile_photo_url" alt="Current Profile Photo" class="rounded-full h-20 w-20 object-cover">
 
                   <div v-else class="h-20 w-20 rounded-full bg-primary-yellow-400 text-gray-900 font-semibold flex items-center justify-center text-2xl">
                     {{ userAvatarInitial }}
@@ -38,7 +38,7 @@
                     Select A New Photo
                 </jet-secondary-button>
 
-                <jet-secondary-button type="button" class="mt-2" @click.native.prevent="deletePhoto" v-if="$page.user.profile_photo_path">
+                <jet-secondary-button type="button" class="mt-2" @click.native.prevent="deletePhoto" v-if="$page.props.user.profile_photo_path">
                     Remove Photo
                 </jet-secondary-button>
 
@@ -114,13 +114,13 @@
 
         computed: {
           userAvatarInitial () {
-            const name = trim(this.$page.user.name)
+            const name = trim(this.$page.props.user.name)
 
             if (name && name.length > 0) {
               return initials(name)
             }
 
-            return initials(this.$page.user.email)
+            return initials(this.$page.props.user.email)
           }
         },
 

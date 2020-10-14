@@ -92,7 +92,7 @@
                   {{ displayableRole(user.membership.role) }}
                 </div>
                 <!-- Leave Team -->
-                <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none" @click="confirmLeavingTeam" v-if="$page.user.id === user.id">
+                <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none" @click="confirmLeavingTeam" v-if="$page.props.user.id === user.id">
                   Leave
                 </button>
                 <!-- Remove Team Member -->
@@ -280,7 +280,7 @@ export default {
     },
 
     leaveTeam() {
-      this.leaveTeamForm.delete('/teams/' + this.team.id + '/members/' + this.$page.user.id)
+      this.leaveTeamForm.delete('/teams/' + this.team.id + '/members/' + this.$page.props.user.id)
     },
 
     confirmTeamMemberRemoval(teamMember) {

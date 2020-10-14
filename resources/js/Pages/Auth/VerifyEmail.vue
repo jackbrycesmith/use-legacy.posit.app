@@ -19,7 +19,7 @@
       />
 
       <p class="mt-10 text-center text-sm leading-5 text-gray-600">
-        Please check your <strong>{{ $page.user.email }}</strong> inbox & follow the verification link.
+        Please check your <strong>{{ $page.props.user.email }}</strong> inbox & follow the verification link.
       </p>
 
     </div>

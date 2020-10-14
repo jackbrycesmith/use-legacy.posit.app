@@ -65,10 +65,10 @@ export default {
   computed: {
     userEmail () {
       // TODO this should ideally be part of some global thing that I can import...
-      return this.$page?.user?.email
+      return this.$page.props.user?.email
     },
     userAvatarInitial () {
-      const name = trim(this.$page.user.name)
+      const name = trim(this.$page.props.user.name)
 
       if (name && name.length > 0) {
         return initials(name)

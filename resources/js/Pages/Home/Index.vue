@@ -110,7 +110,7 @@ export default {
       this.$refs.proposalSlideOver.show()
     }, 1200)
 
-    console.log(this.$page.user)
+    console.log(this.$page.props.user)
 
     setTimeout(() => {
       // this.$refs.firstWelcomeModal.show()
