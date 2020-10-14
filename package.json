@@ -34,7 +34,7 @@
         "illusory": "^2.0.1",
         "js-cookie": "^3.0.0-rc.1",
         "laravel-echo": "^1.8.1",
-        "laravel-jetstream": "^0.1.2",
+        "laravel-jetstream": "^1.0.0",
         "laravel-mix": "^5.0.5",
         "lodash-es": "^4.17.15",
         "portal-vue": "^2.1.7",

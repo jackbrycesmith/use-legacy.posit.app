@@ -1,6 +1,6 @@
 require('./bootstrap')
 
-import { InertiaApp } from '@inertiajs/inertia-vue'
+import { App as InertiaApp, plugin as InertiaPlugin } from '@inertiajs/inertia-vue'
 import { FocusTrap } from 'focus-trap-vue'
 import PortalVue from 'portal-vue'
 import Fragment from 'vue-fragment'
@@ -32,7 +32,7 @@ InertiaProgress.init({
 import registerPlugins from '@/plugins'
 registerPlugins(Vue)
 
-Vue.use(InertiaApp)
+Vue.use(InertiaPlugin)
 Vue.use(PortalVue)
 Vue.use(InertiaForm)
 Vue.use(VueMeta)
@@ -49,9 +49,9 @@ const app = document.getElementById('app')
 
 if (isDev) {
   // xstate devtools...
-  inspect({
-    iframe: false
-  })
+  // inspect({
+  //   iframe: false
+  // })
 }
 
 new Vue({
