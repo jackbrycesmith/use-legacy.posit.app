@@ -160,7 +160,7 @@
 
       <template #footer>
 
-        <div class="flex-1">
+        <div class="flex-1 opacity-25 transition-opacity active:opacity-100 duration-300 focus:opacity-100 hover:opacity-100">
           <!-- Public URL Share -->
           <div class="space-y-1">
             <label for="public_link" class="block text-sm font-medium leading-5 text-gray-600">
@@ -213,7 +213,35 @@
           </span> -->
         </div>
 
+        <div
+          class="absolute top-0 inset-x-0 h-13 w-max-content bg-primary-yellow-100 border -mt-13 border-b-0 rounded-t-lg p-2 flex items-center justify-center z-10"
+          style="margin-left: auto; margin-right: auto;">
 
+<!--           <span class="inline-flex rounded-md shadow-sm">
+            <button
+              type="button"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-orange-400 hover:bg-orange-300 focus:outline-none focus:border-orange-500 focus:shadow-outline-orange active:bg-orange-500 transition duration-150 ease-in-out">
+              Action
+            </button>
+          </span> -->
+
+          <span class="relative z-0 inline-flex shadow-sm rounded-md" style="min-width: 185px;">
+            <button
+              type="button"
+              class="relative inline-flex justify-center items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 flex-1">
+              Publish
+            </button>
+            <span class="-ml-px relative block">
+              <button type="button" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" aria-label="Expand">
+                <!-- Heroicon name: chevron-down -->
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </span>
+          </span>
+
+        </div>
 
       </template>
 
