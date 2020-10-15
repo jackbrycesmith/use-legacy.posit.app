@@ -1,6 +1,7 @@
 <template>
   <RenderlessTabs
     ref="renderlessTabs"
+    :selected-index.sync="selectedIndex__"
     #default="{ orderedTabPanes, isActive, select }">
     <fragment>
       <div :class="tabsClass">
@@ -41,6 +42,7 @@ import RenderlessTabs from '@/Components/Renderless/RenderlessTabs'
 
 export default {
   props: {
+    selectedIndex: { type: Number, default: -1 },
     align: {
       type: String,
       default: 'center',
@@ -75,7 +77,15 @@ export default {
   },
   data () {
     return {
-
+      selectedIndex__: this.selectedIndex
+    }
+  },
+  watch: {
+    selectedIndex (newIndex) {
+      this.$refs.renderlessTabs.select(newIndex)
+    },
+    selectedIndex__ (value) {
+      this.$emit('update:selectedIndex', value)
     }
   },
   methods: {

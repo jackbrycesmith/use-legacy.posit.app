@@ -105,6 +105,7 @@
         <div class="flex-1 flex flex-col justify-between">
           <div class="px-4 sm:px-6">
             <Tabs
+              :selected-index.sync="tabIndex"
               :show-tab-text-when-inactive="false"
               active-tab-class="border-b-2 border-primary-yellow-500 text-primary-yellow-600 focus:outline-none focus:text-primary-yellow-800 focus:border-primary-yellow-700"
               active-tab-icon-class="text-primary-yellow-500 group-focus:text-primary-yellow-600"
@@ -301,7 +302,8 @@ export default {
     proposal: { type: Object }
   },
   data: () => ({
-    isVisible: false
+    isVisible: false,
+    tabIndex: 1
   }),
   computed: {
     detailsTabIcon () {
