@@ -1,6 +1,7 @@
 const mix = require('laravel-mix');
 // const webpack = require('webpack');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
+const path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -19,48 +20,44 @@ if (mix.inProduction()) {
   mix.sourceMaps()
 }
 
-mix.options({
-    terser: {
-        terserOptions: {
-            compress: {
-                drop_console: true,
-            },
-        },
-    },
+mix.js('resources/js/app.js', 'public/js').vue({
+  version: 2,
+  extractVueStyles: true,
+  globalVueStyles: false
 })
-.js('resources/js/app.js', 'public/js')
-.postCss('resources/css/app.css', 'public/css/app.css', [
-  require('postcss-import')(),
-  require('postcss-preset-env')(),
-  require('tailwindcss')('./tailwind.config.js'),
-])
-.webpackConfig({
-  output: { chunkFilename: 'js/[name].js?id=[chunkhash]' },
-  module: {
-    rules: [
-      {
-        test: /\.worker\.js$/,
-        loader: 'worker-loader',
-        options: {
-          name: 'js/[name].[hash].worker.js',
-          inline: !mix.inProduction(),
-          fallback: mix.inProduction()
-        }
-      }
+.postCss('resources/css/app.css', 'public/css')
+.options({ autoprefixer: false })
+.alias({
+  // 'vue$': 'vue/dist/vue.runtime.esm.js',
+  '@': path.resolve(__dirname, 'resources/js/'),
+})
+.webpackConfig(webpack => {
+  return {
+    plugins: [
+      // new LiveReloadPlugin()
     ]
-  },
-  resolve: {
-    symlinks: false,
-    alias: {
-      'vue$': 'vue/dist/vue.runtime.esm.js',
-      '@': path.resolve(__dirname, 'resources/js/'),
-    },
-  },
-  plugins: [
-    // new LiveReloadPlugin()
-  ]
-    // plugins: [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)],
+  }
 })
+// .webpackConfig({
+//   // output: { chunkFilename: 'js/[name].js?id=[chunkhash]' },
+//   module: {
+//     rules: [
+//       {
+//         test: /\.worker\.js$/,
+//         loader: 'worker-loader',
+//         options: {
+//           name: 'js/[name].[hash].worker.js',
+//           inline: !mix.inProduction(),
+//           fallback: mix.inProduction()
+//         }
+//       }
+//     ]
+//   },
+//   plugins: [
+//     new LiveReloadPlugin()
+//   ]
+//     // plugins: [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)],
+// })
 .version()
 // .extract([
 //   '@ethersproject/wallet',
