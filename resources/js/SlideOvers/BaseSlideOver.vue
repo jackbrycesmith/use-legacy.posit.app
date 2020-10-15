@@ -55,7 +55,8 @@
                 <slot name="body"/>
 
               </div>
-              <div v-if="showStickyFooter" class="flex-shrink-0 px-4 py-4 space-x-4 flex justify-end">
+
+              <div v-if="showStickyFooter" :class="stickyFooterClass">
                 <slot name="footer"/>
 <!--                 <span class="inline-flex rounded-md shadow-sm">
                   <button type="button" class="py-2 px-4 border border-gray-300 rounded-md text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out">
@@ -85,6 +86,7 @@ export default {
     showStickyFooter: { type: Boolean, default: true },
     isRoundedPaddingClass: { type: String, default: 'py-2 pr-2' },
     isRoundedRoundClass: { type: String, default: 'rounded-lg' },
+    stickyFooterClass: { type: String, default: 'flex-shrink-0 px-4 py-4 space-x-4 flex justify-end relative' },
     onCloseButtonHit: { type: Function },
     onBackgroundOverlayHit: { type: Function },
     headerTitle: { type: String },

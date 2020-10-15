@@ -24,6 +24,7 @@
     <BaseSlideOver
       :is-visible.sync="isVisible"
       :is-rounded="true"
+      sticky-footer-class="flex-shrink-0 px-4 py-4 space-x-4 flex justify-end relative bg-primary-yellow-100 rounded-b-lg"
     >
 
       <template #header="{ handleCloseButtonHit }">
