@@ -1,5 +1,7 @@
 <template>
-  <RenderlessTabs #default="{ orderedTabPanes, isActive, select }">
+  <RenderlessTabs
+    ref="renderlessTabs"
+    #default="{ orderedTabPanes, isActive, select }">
     <fragment>
       <div :class="tabsClass">
         <div class="border-b border-gray-200">
@@ -12,15 +14,15 @@
               :key="tab.name"
               :title="tab.title"
               :class="isActive(index) ? activeTabClass : inactiveTabClass"
-              class="group inline-flex items-center p-2 text-sm leading-5 font-medium"
+              class="group inline-flex items-center py-2 px-3 select-none text-sm leading-5 font-medium"
               @click="select(index)">
 
               <component
                 :is="tab.icon"
-                :class="isActive(index) ? activeTabIconClass : inactiveTabIconClass"
-                class="-ml-0.5 mr-2 h-5 w-5"/>
+                :class="{ activeTabIconClass: isActive(index), inactiveTabIconClass : !isActive(index), '-ml-0.5 mr-2': shouldShowTabText(tab, index) }"
+                class="h-5 w-5"/>
 
-              <span>
+              <span v-show="shouldShowTabText(tab, index)">
                 {{ tab.title }}
               </span>
             </a>
@@ -46,6 +48,10 @@ export default {
         return ['center'].includes(val)
       }
     },
+    showTabTextWhenInactive: {
+      type: Boolean,
+      default: true
+    },
     tabsClass: { type: String },
     activeTabClass: {
       type: String,
@@ -70,6 +76,15 @@ export default {
   data () {
     return {
 
+    }
+  },
+  methods: {
+    shouldShowTabText (tab, index) {
+      if (this.showTabTextWhenInactive) {
+        return true
+      }
+
+      return this.$refs.renderlessTabs.isActive(index)
     }
   }
 }
