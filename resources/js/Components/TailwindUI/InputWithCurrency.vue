@@ -26,7 +26,10 @@
         <select
           v-model="selectedCurrencyCode"
           aria-label="Currency"
-          class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5 cursor-pointer">
+          :disabled="!canSwitchCurrency"
+          :style="selectCurrencyStyleObject"
+          :class="canSwitchCurrency ? `pr-7 cursor-pointer` : `pr-2`"
+          class="form-select h-full py-0 pl-2 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
 
           <option
             v-for="currency in currencies"
@@ -102,6 +105,10 @@ export default {
       type: Number,
       default: 1000
     },
+    canSwitchCurrency: {
+      type: Boolean,
+      default: true
+    },
     min: Number,
     max: Number
   },
@@ -116,6 +123,13 @@ export default {
     },
     selectedCurrency () {
       return find(this.currencies, { code: this.selectedCurrencyCode })
+    },
+    selectCurrencyStyleObject () {
+      if (this.canSwitchCurrency) return {}
+
+      return {
+        backgroundImage: 'none'
+      }
     },
     amount: {
       get () {
