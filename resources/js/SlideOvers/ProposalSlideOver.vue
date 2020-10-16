@@ -148,6 +148,7 @@
 
                     <!-- Deposit -->
                     <ProposalDepositConfigure
+                      :proposal="proposal"
                       class="space-y-1"
                     />
 

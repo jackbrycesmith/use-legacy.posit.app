@@ -48,7 +48,7 @@ class UseProposalView extends Action
     public function handle()
     {
         return $this->proposal->loadMissing([
-            'team', 'team.contacts', 'proposalContent', 'recipient', 'video'
+            'team', 'team.contacts', 'team.stripeAccount', 'proposalContent', 'recipient', 'video'
         ]);
     }
 
