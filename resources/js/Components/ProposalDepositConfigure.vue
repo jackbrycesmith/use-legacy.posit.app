@@ -52,13 +52,23 @@
                     <span class="align-middle">Provider not ready, see settings »</span>
                 </inertia-link>
               </template>
+
+              <!-- Amount -->
+              <InputWithCurrency
+                :currency-model="proposal.value_currency_code"
+                :max="999999999"
+                :can-switch-currency="false"
+                label="Amount"
+                @changed="handleUpdateDepositAmount"
+                class="mt-4 space-y-1" />
+
             </div>
-
-
           </div>
         </li>
       </ul>
     </nav>
+
+
 
 
 
@@ -85,12 +95,14 @@
 import ProposalPaymentProviderStripe from '@/Components/ProposalPaymentProviderStripe'
 import ProposalPaymentProviderCoinbase from '@/Components/ProposalPaymentProviderCoinbase'
 import IconHeroiconsMediumExclamation from '@/Icons/IconHeroiconsMediumExclamation'
+import InputWithCurrency from '@/Components/TailwindUI/InputWithCurrency'
 
 export default {
   components: {
     ProposalPaymentProviderStripe,
     ProposalPaymentProviderCoinbase,
-    IconHeroiconsMediumExclamation
+    IconHeroiconsMediumExclamation,
+    InputWithCurrency
   },
   props: {
     proposal: { type: Object }
@@ -107,6 +119,11 @@ export default {
     isSelectedProviderReady () {
       // TODO don't hardcode stripe check...
       return this.proposal.org?.stripeAccount?.has_card_payments_capability ?? false
+    }
+  },
+  methods: {
+    handleUpdateDepositAmount () {
+      // TODO
     }
   }
 }
