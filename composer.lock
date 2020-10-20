@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ce9e2aff6ad348dd17b10989ca6e7e0",
+    "content-hash": "7b85a26190af37c11ce2432379b48778",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -256,21 +256,20 @@
         },
         {
             "name": "beyondcode/laravel-websockets",
-            "version": "2.0.0-beta.25",
+            "version": "2.0.0-beta.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beyondcode/laravel-websockets.git",
-                "reference": "9cb83dccfd97ab93f76cd98f67b2c60a1a1d9ead"
+                "reference": "90f1eb12d731dcf8cedc8f51a046d5fb17a12d21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beyondcode/laravel-websockets/zipball/9cb83dccfd97ab93f76cd98f67b2c60a1a1d9ead",
-                "reference": "9cb83dccfd97ab93f76cd98f67b2c60a1a1d9ead",
+                "url": "https://api.github.com/repos/beyondcode/laravel-websockets/zipball/90f1eb12d731dcf8cedc8f51a046d5fb17a12d21",
+                "reference": "90f1eb12d731dcf8cedc8f51a046d5fb17a12d21",
                 "shasum": ""
             },
             "require": {
                 "cboden/ratchet": "^0.4.1",
-                "clue/buzz-react": "^2.5",
                 "clue/redis-react": "^2.3",
                 "doctrine/dbal": "^2.0",
                 "evenement/evenement": "^2.0|^3.0",
@@ -347,7 +346,7 @@
                 "laravel-websockets",
                 "php"
             ],
-            "time": "2020-09-26T12:37:25+00:00"
+            "time": "2020-10-18T07:13:03+00:00"
         },
         {
             "name": "brick/math",
@@ -457,77 +456,6 @@
                 "websocket"
             ],
             "time": "2020-07-07T15:50:14+00:00"
-        },
-        {
-            "name": "clue/buzz-react",
-            "version": "v2.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/clue/reactphp-buzz.git",
-                "reference": "eb180b5e0db00a3febaa458289706b8ca80ffe2a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/clue/reactphp-buzz/zipball/eb180b5e0db00a3febaa458289706b8ca80ffe2a",
-                "reference": "eb180b5e0db00a3febaa458289706b8ca80ffe2a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3",
-                "psr/http-message": "^1.0",
-                "react/event-loop": "^1.0 || ^0.5",
-                "react/http-client": "^0.5.10",
-                "react/promise": "^2.2.1 || ^1.2.1",
-                "react/promise-stream": "^1.0 || ^0.1.2",
-                "react/socket": "^1.1",
-                "react/stream": "^1.0 || ^0.7",
-                "ringcentral/psr7": "^1.2"
-            },
-            "require-dev": {
-                "clue/block-react": "^1.0",
-                "clue/http-proxy-react": "^1.3",
-                "clue/reactphp-ssh-proxy": "^1.0",
-                "clue/socks-react": "^1.0",
-                "phpunit/phpunit": "^9.0 || ^5.7 || ^4.8.35",
-                "react/http": "^0.8"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Clue\\React\\Buzz\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christian Lück",
-                    "email": "christian@clue.engineering"
-                }
-            ],
-            "description": "Simple, async PSR-7 HTTP client for concurrently processing any number of HTTP requests, built on top of ReactPHP",
-            "homepage": "https://github.com/clue/reactphp-buzz",
-            "keywords": [
-                "async",
-                "http",
-                "http client",
-                "psr-7",
-                "reactphp"
-            ],
-            "funding": [
-                {
-                    "url": "https://clue.engineering/support",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/clue",
-                    "type": "github"
-                }
-            ],
-            "abandoned": "react/http",
-            "time": "2020-07-03T10:43:43+00:00"
         },
         {
             "name": "clue/redis-protocol",
@@ -5070,51 +4998,6 @@
             "time": "2020-01-01T18:39:52+00:00"
         },
         {
-            "name": "react/http-client",
-            "version": "v0.5.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactphp/http-client.git",
-                "reference": "f16ab55150ec369f8f9b5db64972f248691093b0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/http-client/zipball/f16ab55150ec369f8f9b5db64972f248691093b0",
-                "reference": "f16ab55150ec369f8f9b5db64972f248691093b0",
-                "shasum": ""
-            },
-            "require": {
-                "evenement/evenement": "^3.0 || ^2.0 || ^1.0",
-                "php": ">=5.3.0",
-                "react/event-loop": "^1.0 || ^0.5 || ^0.4 || ^0.3",
-                "react/promise": "^2.1 || ^1.2.1",
-                "react/socket": "^1.0 || ^0.8.4",
-                "react/stream": "^1.0 || ^0.7.1",
-                "ringcentral/psr7": "^1.2"
-            },
-            "require-dev": {
-                "clue/block-react": "^1.2",
-                "phpunit/phpunit": "^7.0 || ^6.4 || ^5.7 || ^4.8.35",
-                "react/promise-stream": "^1.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "React\\HttpClient\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Event-driven, streaming HTTP client for ReactPHP",
-            "keywords": [
-                "http"
-            ],
-            "abandoned": "react/http",
-            "time": "2020-01-14T08:36:16+00:00"
-        },
-        {
             "name": "react/promise",
             "version": "v2.8.0",
             "source": {
@@ -5159,62 +5042,6 @@
                 "promises"
             ],
             "time": "2020-05-12T15:16:56+00:00"
-        },
-        {
-            "name": "react/promise-stream",
-            "version": "v1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactphp/promise-stream.git",
-                "reference": "6384d8b76cf7dcc44b0bf3343fb2b2928412d1fe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise-stream/zipball/6384d8b76cf7dcc44b0bf3343fb2b2928412d1fe",
-                "reference": "6384d8b76cf7dcc44b0bf3343fb2b2928412d1fe",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3",
-                "react/promise": "^2.1 || ^1.2",
-                "react/stream": "^1.0 || ^0.7 || ^0.6 || ^0.5 || ^0.4.6"
-            },
-            "require-dev": {
-                "clue/block-react": "^1.0",
-                "phpunit/phpunit": "^7.0 || ^6.4 || ^5.7 || ^4.8.35",
-                "react/event-loop": "^1.0 || ^0.5 || ^0.4 || ^0.3",
-                "react/promise-timer": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "React\\Promise\\Stream\\": "src/"
-                },
-                "files": [
-                    "src/functions_include.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christian Lück",
-                    "email": "christian@lueck.tv"
-                }
-            ],
-            "description": "The missing link between Promise-land and Stream-land for ReactPHP",
-            "homepage": "https://github.com/reactphp/promise-stream",
-            "keywords": [
-                "Buffer",
-                "async",
-                "promise",
-                "reactphp",
-                "stream",
-                "unwrap"
-            ],
-            "time": "2019-07-03T12:29:10+00:00"
         },
         {
             "name": "react/promise-timer",
@@ -5394,64 +5221,6 @@
                 "writable"
             ],
             "time": "2020-05-04T10:17:57+00:00"
-        },
-        {
-            "name": "ringcentral/psr7",
-            "version": "1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ringcentral/psr7.git",
-                "reference": "360faaec4b563958b673fb52bbe94e37f14bc686"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ringcentral/psr7/zipball/360faaec4b563958b673fb52bbe94e37f14bc686",
-                "reference": "360faaec4b563958b673fb52bbe94e37f14bc686",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3",
-                "psr/http-message": "~1.0"
-            },
-            "provide": {
-                "psr/http-message-implementation": "1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "RingCentral\\Psr7\\": "src/"
-                },
-                "files": [
-                    "src/functions_include.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "PSR-7 message implementation",
-            "keywords": [
-                "http",
-                "message",
-                "stream",
-                "uri"
-            ],
-            "time": "2018-05-29T20:21:04+00:00"
         },
         {
             "name": "spatie/image",
@@ -8843,6 +8612,77 @@
             "time": "2020-09-07T19:32:39+00:00"
         },
         {
+            "name": "clue/buzz-react",
+            "version": "v2.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/clue/reactphp-buzz.git",
+                "reference": "eb180b5e0db00a3febaa458289706b8ca80ffe2a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/clue/reactphp-buzz/zipball/eb180b5e0db00a3febaa458289706b8ca80ffe2a",
+                "reference": "eb180b5e0db00a3febaa458289706b8ca80ffe2a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3",
+                "psr/http-message": "^1.0",
+                "react/event-loop": "^1.0 || ^0.5",
+                "react/http-client": "^0.5.10",
+                "react/promise": "^2.2.1 || ^1.2.1",
+                "react/promise-stream": "^1.0 || ^0.1.2",
+                "react/socket": "^1.1",
+                "react/stream": "^1.0 || ^0.7",
+                "ringcentral/psr7": "^1.2"
+            },
+            "require-dev": {
+                "clue/block-react": "^1.0",
+                "clue/http-proxy-react": "^1.3",
+                "clue/reactphp-ssh-proxy": "^1.0",
+                "clue/socks-react": "^1.0",
+                "phpunit/phpunit": "^9.0 || ^5.7 || ^4.8.35",
+                "react/http": "^0.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Clue\\React\\Buzz\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Lück",
+                    "email": "christian@clue.engineering"
+                }
+            ],
+            "description": "Simple, async PSR-7 HTTP client for concurrently processing any number of HTTP requests, built on top of ReactPHP",
+            "homepage": "https://github.com/clue/reactphp-buzz",
+            "keywords": [
+                "async",
+                "http",
+                "http client",
+                "psr-7",
+                "reactphp"
+            ],
+            "funding": [
+                {
+                    "url": "https://clue.engineering/support",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/clue",
+                    "type": "github"
+                }
+            ],
+            "abandoned": "react/http",
+            "time": "2020-07-03T10:43:43+00:00"
+        },
+        {
             "name": "doctrine/instantiator",
             "version": "1.3.1",
             "source": {
@@ -10738,6 +10578,165 @@
                 }
             ],
             "time": "2020-10-02T03:54:37+00:00"
+        },
+        {
+            "name": "react/http-client",
+            "version": "v0.5.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/http-client.git",
+                "reference": "f16ab55150ec369f8f9b5db64972f248691093b0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/http-client/zipball/f16ab55150ec369f8f9b5db64972f248691093b0",
+                "reference": "f16ab55150ec369f8f9b5db64972f248691093b0",
+                "shasum": ""
+            },
+            "require": {
+                "evenement/evenement": "^3.0 || ^2.0 || ^1.0",
+                "php": ">=5.3.0",
+                "react/event-loop": "^1.0 || ^0.5 || ^0.4 || ^0.3",
+                "react/promise": "^2.1 || ^1.2.1",
+                "react/socket": "^1.0 || ^0.8.4",
+                "react/stream": "^1.0 || ^0.7.1",
+                "ringcentral/psr7": "^1.2"
+            },
+            "require-dev": {
+                "clue/block-react": "^1.2",
+                "phpunit/phpunit": "^7.0 || ^6.4 || ^5.7 || ^4.8.35",
+                "react/promise-stream": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "React\\HttpClient\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Event-driven, streaming HTTP client for ReactPHP",
+            "keywords": [
+                "http"
+            ],
+            "abandoned": "react/http",
+            "time": "2020-01-14T08:36:16+00:00"
+        },
+        {
+            "name": "react/promise-stream",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/promise-stream.git",
+                "reference": "6384d8b76cf7dcc44b0bf3343fb2b2928412d1fe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/promise-stream/zipball/6384d8b76cf7dcc44b0bf3343fb2b2928412d1fe",
+                "reference": "6384d8b76cf7dcc44b0bf3343fb2b2928412d1fe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3",
+                "react/promise": "^2.1 || ^1.2",
+                "react/stream": "^1.0 || ^0.7 || ^0.6 || ^0.5 || ^0.4.6"
+            },
+            "require-dev": {
+                "clue/block-react": "^1.0",
+                "phpunit/phpunit": "^7.0 || ^6.4 || ^5.7 || ^4.8.35",
+                "react/event-loop": "^1.0 || ^0.5 || ^0.4 || ^0.3",
+                "react/promise-timer": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "React\\Promise\\Stream\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Lück",
+                    "email": "christian@lueck.tv"
+                }
+            ],
+            "description": "The missing link between Promise-land and Stream-land for ReactPHP",
+            "homepage": "https://github.com/reactphp/promise-stream",
+            "keywords": [
+                "Buffer",
+                "async",
+                "promise",
+                "reactphp",
+                "stream",
+                "unwrap"
+            ],
+            "time": "2019-07-03T12:29:10+00:00"
+        },
+        {
+            "name": "ringcentral/psr7",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ringcentral/psr7.git",
+                "reference": "360faaec4b563958b673fb52bbe94e37f14bc686"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ringcentral/psr7/zipball/360faaec4b563958b673fb52bbe94e37f14bc686",
+                "reference": "360faaec4b563958b673fb52bbe94e37f14bc686",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3",
+                "psr/http-message": "~1.0"
+            },
+            "provide": {
+                "psr/http-message-implementation": "1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "RingCentral\\Psr7\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "PSR-7 message implementation",
+            "keywords": [
+                "http",
+                "message",
+                "stream",
+                "uri"
+            ],
+            "time": "2018-05-29T20:21:04+00:00"
         },
         {
             "name": "scrivo/highlight.php",
