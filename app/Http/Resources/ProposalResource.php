@@ -24,6 +24,7 @@ class ProposalResource extends JsonResource
             'value_amount' => $this->value_amount,
             'value_currency_code' => $this->value_currency_code,
             'content' => new ProposalContentResource($this->whenLoaded('proposalContent')),
+            'deposit_payment' => new ProposalPaymentResource($this->whenLoaded('depositPayment')),
             'org' => new TeamResource($this->whenLoaded('team')),
             'users' => UserResource::collection($this->whenLoaded('users')),
             'recipient' => new TeamContactResource($this->whenLoaded('recipient')),

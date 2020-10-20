@@ -47,8 +47,9 @@ class UseProposalView extends Action
      */
     public function handle()
     {
+        // TODO probs dont prematurely load this; e.g. if using inertia 'only' feature...
         return $this->proposal->loadMissing([
-            'team', 'team.contacts', 'team.stripeAccount', 'proposalContent', 'recipient', 'video'
+            'team', 'team.contacts', 'team.stripeAccount', 'proposalContent', 'depositPayment', 'recipient', 'video'
         ]);
     }
 

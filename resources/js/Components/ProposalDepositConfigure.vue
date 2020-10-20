@@ -56,6 +56,7 @@
               <!-- Amount -->
               <InputWithCurrency
                 :currency-model="proposal.value_currency_code"
+                :amount-model.sync="proposal.deposit_amount"
                 :max="999999999"
                 :can-switch-currency="false"
                 label="Amount"
@@ -122,8 +123,12 @@ export default {
     }
   },
   methods: {
-    handleUpdateDepositAmount () {
-      // TODO
+    async handleUpdateDepositAmount () {
+      try {
+        await this.proposal.updateDepositAmount()
+      } catch (e) {
+        // TODO handle update project value error...
+      }
     }
   }
 }

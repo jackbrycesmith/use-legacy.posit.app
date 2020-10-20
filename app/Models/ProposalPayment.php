@@ -13,6 +13,7 @@ class ProposalPayment extends Model
     use HasUuid;
 
     const TYPE_DEPOSIT = 'deposit';
+    const PROVIDER_STRIPE = 'stripe';
 
     /**
      * The attributes that aren't mass assignable.
@@ -20,6 +21,24 @@ class ProposalPayment extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'amount' => 'float',
+    ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'provider' => self::PROVIDER_STRIPE
+    ];
 
     /**
      * Get the proposal

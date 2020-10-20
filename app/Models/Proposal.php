@@ -77,6 +77,7 @@ class Proposal extends Model implements HasMedia
         'name' => StrLimitCast::class,
         'organisation_id' => 'integer',
         'meta' => 'array',
+        'value_amount' => 'float',
     ];
 
     /**

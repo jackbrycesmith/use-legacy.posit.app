@@ -2,6 +2,7 @@ import Model from './Model'
 import Http from '@/services/Http'
 import User from './User'
 import ProposalContent from './ProposalContent'
+import ProposalPayment from './ProposalPayment'
 import Organisation from './Organisation'
 import OrganisationContact from './OrganisationContact'
 import Video from './Video'
@@ -60,6 +61,19 @@ export default class Proposal extends Model {
     return this.has_intro_video && this.intro_video.is_processing
   }
 
+  get deposit_amount () {
+    return get(this.deposit_payment, 'amount')
+  }
+
+  set deposit_amount (amount) {
+    if (isNil(this.deposit_payment)) {
+      this.deposit_payment = ProposalPayment.make({ amount })
+      return
+    }
+
+    set(this.deposit_payment, 'amount', amount)
+  }
+
   async updateRecipient () {
     const contactId = this.recipient?.id
     if (isNil(contactId)) return
@@ -73,6 +87,17 @@ export default class Proposal extends Model {
       {
         value_amount: this.value_amount,
         value_currency_code: this.value_currency_code,
+      }
+    )
+
+    return response
+  }
+
+  async updateDepositAmount () {
+    const response = await Http.put(
+      route('use.submit.upsert-proposal-deposit', { proposal: this.uuid }),
+      {
+        amount: this.deposit_amount,
       }
     )
 
@@ -109,6 +134,7 @@ export default class Proposal extends Model {
       recipient: OrganisationContact,
       content: ProposalContent,
       intro_video: Video,
+      deposit_payment: ProposalPayment
     }
   }
 }
