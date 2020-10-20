@@ -2,6 +2,7 @@
 
 use App\Models\OrganisationMember;
 use App\Models\Proposal;
+use App\Models\ProposalPayment;
 use App\Models\ProposalUser;
 use App\Models\Team;
 use App\Models\TeamContact;
@@ -78,3 +79,21 @@ test('proposal can get recipient for given access code', function () {
     assertInstanceOf(TeamContact::class, $recipient);
     assertEquals($contact->id, $recipient->id);
 });
+
+test('proposal has a deposit payment', function () {
+    $team = Team::factory()->create();
+    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
+
+    $payment = $proposal->payments()->create([
+        'type' => null
+    ]);
+
+    $depositPayment = $proposal->payments()->create([
+        'type' => ProposalPayment::TYPE_DEPOSIT
+    ]);
+
+    assertInstanceOf(ProposalPayment::class, $proposal->depositPayment);
+    assertEquals($depositPayment->id, $proposal->depositPayment->id);
+
+})->only();
+

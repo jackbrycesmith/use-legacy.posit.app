@@ -190,6 +190,6 @@ test('user can update proposal value if team member & valid params', function ($
     [
         1000.99, 'USD'
     ],
-])->only();
+]);
 
 

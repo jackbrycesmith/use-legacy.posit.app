@@ -196,6 +196,16 @@ class Proposal extends Model implements HasMedia
     }
 
     /**
+     * Get all the proposal payments
+     *
+     * @return HasMany The has many relation.
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(ProposalPayment::class);
+    }
+
+    /**
      * Get the proposal content
      *
      * @return HasOne The has one relation.
@@ -204,6 +214,16 @@ class Proposal extends Model implements HasMedia
     {
         // TODO this will need to be removed/refactored...
         return $this->hasOne(ProposalContent::class);
+    }
+
+    /**
+     * Get the deposit type
+     *
+     * @return HasOne The has one relation.
+     */
+    public function depositPayment(): HasOne
+    {
+        return $this->hasOne(ProposalPayment::class)->deposit();
     }
 
     /**
