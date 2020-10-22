@@ -1,5 +1,5 @@
 import Model from './Model'
-import { omitBy, isNil } from 'lodash-es'
+import { omitBy, isNil, toArray } from 'lodash-es'
 
 export default class StripeAccount extends Model {
     exists () {
@@ -25,7 +25,7 @@ export default class StripeAccount extends Model {
         ]
       }
 
-      return omitBy([
+      return toArray(omitBy([
         {
           icon: 'check',
           text: 'Ready to receive payments into your Stripe Account',
@@ -45,7 +45,7 @@ export default class StripeAccount extends Model {
             </a>
           `
         },
-      ], isNil)
+      ], isNil))
     }
 
     get account_link_text () {

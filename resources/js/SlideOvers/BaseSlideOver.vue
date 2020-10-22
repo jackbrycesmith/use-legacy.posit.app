@@ -32,7 +32,7 @@
           <div v-show="isVisible" :class="paddingClass" class="relative w-screen max-w-md">
             <slot name="extra-close-button-handling" v-bind="{ handleCloseButtonHit }"/>
 
-            <div :class="roundedClass" class="h-full divide-y divide-gray-200 flex flex-col bg-white shadow-xl">
+            <div :class="`${roundedClass} ${divideYClass}`" class="h-full flex flex-col bg-white shadow-xl">
               <div :class="roundedClass" class="flex-1 h-0 overflow-y-auto">
                 <slot name="header" v-bind="{ handleCloseButtonHit }">
                   <header class="space-y-1 py-6 px-4 bg-indigo-700 sm:px-6">
@@ -56,19 +56,21 @@
 
               </div>
 
-              <div v-if="showStickyFooter" :class="stickyFooterClass">
-                <slot name="footer"/>
-<!--                 <span class="inline-flex rounded-md shadow-sm">
-                  <button type="button" class="py-2 px-4 border border-gray-300 rounded-md text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out">
-                    Cancel
-                  </button>
-                </span> -->
-<!--                 <span class="inline-flex rounded-md shadow-sm">
-                  <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
-                    Save
-                  </button>
-                </span> -->
-              </div>
+              <slot name="footer">
+                <div v-if="showStickyFooter" :class="stickyFooterClass">
+                  <slot name="footer-inner"/>
+  <!--                 <span class="inline-flex rounded-md shadow-sm">
+                    <button type="button" class="py-2 px-4 border border-gray-300 rounded-md text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition duration-150 ease-in-out">
+                      Cancel
+                    </button>
+                  </span> -->
+  <!--                 <span class="inline-flex rounded-md shadow-sm">
+                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                      Save
+                    </button>
+                  </span> -->
+                </div>
+              </slot>
             </div>
           </div>
         </transition>
@@ -86,6 +88,8 @@ export default {
     showStickyFooter: { type: Boolean, default: true },
     isRoundedPaddingClass: { type: String, default: 'py-2 pr-2' },
     isRoundedRoundClass: { type: String, default: 'rounded-lg' },
+    isDivideY: { type: Boolean, default: true },
+    isDivideYClass: { type: String, default: 'divide-y divide-gray-200' },
     stickyFooterClass: { type: String, default: 'flex-shrink-0 px-4 py-4 space-x-4 flex justify-end relative' },
     onCloseButtonHit: { type: Function },
     onBackgroundOverlayHit: { type: Function },
@@ -116,6 +120,9 @@ export default {
     },
     roundedClass () {
       return this.isRounded ? this.isRoundedRoundClass : ''
+    },
+    divideYClass () {
+      return this.isDivideY ? this.isDivideYClass : ''
     }
   },
   watch: {

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import ProposalSlideOver from '@/SlideOvers/ProposalSlideOver'
+import { ProposalSlideOver } from '@/SlideOvers/ProposalSlideOver'
 import FirstWelcomeModal from '@/Modals/FirstWelcomeModal'
 import ProposalOpeningSection from '@/Components/ProposalOpeningSection'
 import ProposalContentSection from '@/Components/ProposalContentSection'

@@ -24,7 +24,7 @@
     <BaseSlideOver
       :is-visible.sync="isVisible"
       :is-rounded="true"
-      sticky-footer-class="flex-shrink-0 px-4 py-4 space-x-4 flex justify-end relative bg-primary-yellow-100 rounded-b-lg"
+      :is-divide-y="false"
     >
 
       <template #header="{ handleCloseButtonHit }">
@@ -51,7 +51,7 @@
 
           <!-- Creator / Recipient overlap -->
           <div
-            class="absolute h-15 left-0 right-0 grid grid-cols-3 items-center justify-evenly"
+            class="absolute h-15 left-0 right-0 grid grid-cols-3 items-center justify-evenly z-10"
             style="bottom: -1.875rem;">
 
             <!-- Creator -->
@@ -111,98 +111,38 @@
             :leave-class="leaveClass"
             :leave-to-class="leaveToClass"
           >
-            <keep-alive>
-              <component :is="bodyComponent" :proposal="proposal" class="absolute inset-0" />
+            <keep-alive include="ProposalTweakView">
+              <component
+                :is="bodyComponent"
+                :proposal="proposal"
+                :state="contentCurrentState"
+                class="absolute inset-0"
+                @back-to-default-view="contentMachineService.send('BACK_TO_DEFAULT_VIEW')" />
             </keep-alive>
           </transition>
         </div>
       </template>
 
       <template #footer>
+        <div class="overflow-hidden flex flex-shrink-0">
 
-        <div class="flex-1 opacity-25 transition-opacity active:opacity-100 duration-300 focus:opacity-100 hover:opacity-100">
-          <!-- Public URL Share -->
-          <div class="space-y-1">
-            <label for="public_link" class="block text-sm font-medium leading-5 text-gray-600">
-              Share Link
-            </label>
-
-            <div class="mt-1 flex rounded-md shadow-sm">
-              <div class="relative flex-grow focus-within:z-10">
-                <a
-                  :href="proposal.route_pub_proposal_view_link"
-                  title="Visit Public Link Now"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 outline-none hover:text-primary-yellow-500 focus:text-primary-yellow-500 transition duration-150 ease-in-out">
-                  <ApplicationMark class="w-5 h-5" />
-                </a>
-
-                <input
-                  v-model="proposal.route_pub_proposal_view_link"
-                  id="public_link"
-                  class="form-input block w-full rounded-none rounded-l-md pl-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
-                  disabled>
-              </div>
-              <button ref="copyButton" @click.prevent="handleCopyPublicLinkHit" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-yellow focus:border-primary-yellow-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
-
-                <SuccessFlashSwitcher
-                  ref="copyIcon"
-                  :to-blur-after-success-el="$refs['copyButton']">
-
-                  <template #normal>
-                    <IconHeroiconsSmallExternalLink class="h-5 w-5 text-gray-400" />
-                  </template>
-
-                  <template #success>
-                    <IconHeroiconsSmallCheck class="h-5 w-5 text-primary-yellow-400" />
-                  </template>
-                </SuccessFlashSwitcher>
-
-
-                <span class="ml-2">Copy</span>
-
-              </button>
+          <transition
+            enter-active-class="transform transition ease-in-out duration-500 sm:duration-700"
+            :enter-class="footerEnterClass"
+            :enter-to-class="footerEnterToClass"
+            leave-active-class="transform transition ease-in-out duration-500 sm:duration-700"
+            :leave-class="footerLeaveClass"
+            :leave-to-class="footerLeaveToClass">
+            <div v-if="isDefaultView" class="px-4 py-4 flex flex-1 border-t border-gray-200">
+              <span class="inline-flex rounded-md shadow-sm flex-1">
+                <button @click.prevent="contentMachineService.send('PREPARE_TO_PUBLISH')" type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-primary-yellow-900 bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:border-primary-yellow-500 focus:shadow-outline-primary-yellow focus:bg-primary-yellow-300 active:bg-primary-yellow-300 transition duration-150 ease-in-out flex-1">
+                  Ready to Publish »
+                </button>
+              </span>
             </div>
-          </div>
-
-<!--           <span class="inline-flex rounded-md shadow-sm">
-            <button @click.prevent="$emit('updatePressed')" type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-primary-yellow-900 bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:border-primary-yellow-500 focus:shadow-outline-primary-yellow active:bg-primary-yellow-500 transition duration-150 ease-in-out">
-              Publish Proposal
-            </button>
-          </span> -->
-        </div>
-
-        <div
-          class="absolute top-0 inset-x-0 h-13 w-max-content bg-primary-yellow-100 border -mt-13 border-b-0 rounded-t-lg p-2 flex items-center justify-center z-10"
-          style="margin-left: auto; margin-right: auto;">
-
-<!--           <span class="inline-flex rounded-md shadow-sm">
-            <button
-              type="button"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-orange-400 hover:bg-orange-300 focus:outline-none focus:border-orange-500 focus:shadow-outline-orange active:bg-orange-500 transition duration-150 ease-in-out">
-              Action
-            </button>
-          </span> -->
-
-          <span class="relative z-0 inline-flex shadow-sm rounded-md" style="min-width: 185px;">
-            <button
-              type="button"
-              class="relative inline-flex justify-center items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 flex-1">
-              Publish
-            </button>
-            <span class="-ml-px relative block">
-              <button type="button" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" aria-label="Expand">
-                <!-- Heroicon name: chevron-down -->
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-              </button>
-            </span>
-          </span>
+          </transition>
 
         </div>
-
       </template>
 
       <template #extra-close-button-handling="{ handleCloseButtonHit }">
@@ -220,39 +160,55 @@
 </template>
 
 <script>
+import { interpret, assign } from 'xstate'
 import ApplicationLogo from '@/Jetstream/ApplicationLogo'
-import ApplicationMark from '@/Jetstream/ApplicationMark'
 import BaseSlideOver from '@/SlideOvers/BaseSlideOver'
 import ProposalRecipientSelector from '@/Components/ProposalRecipientSelector'
-import IconHeroiconsSmallExternalLink from '@/Icons/IconHeroiconsSmallExternalLink'
-import IconHeroiconsSmallCheck from '@/Icons/IconHeroiconsSmallCheck'
-import SuccessFlashSwitcher from '@/Components/SuccessFlashSwitcher'
 import BadgeWithDotSmall from '@/Components/TailwindUI/BadgeWithDotSmall'
-import ProposalTweakView from '@/Components/ProposalTweakView'
-import ProposalConfirmView from '@/Components/ProposalConfirmView'
-import copy from 'clipboard-copy'
+import {
+  proposalSlideOverContentMachine,
+  // ProposalConfirmView, // IDK why this isn't working; throwing some error in the console so will import manually
+  // ProposalTweakView
+} from '@/SlideOvers/ProposalSlideOver'
+import ProposalConfirmView from '@/SlideOvers/ProposalSlideOver/ProposalConfirmView'
+import ProposalTweakView from '@/SlideOvers/ProposalSlideOver/ProposalTweakView'
 
 export default {
   components: {
     ApplicationLogo,
-    ApplicationMark,
     BadgeWithDotSmall,
     BaseSlideOver,
     ProposalRecipientSelector,
-    IconHeroiconsSmallExternalLink,
-    IconHeroiconsSmallCheck,
-    SuccessFlashSwitcher,
     ProposalTweakView,
     ProposalConfirmView,
   },
   props: {
     proposal: { type: Object }
   },
-  data: () => ({
-    isVisible: false,
-    isDefaultView: true
-  }),
+  created () {
+    this.contentMachineService
+      .onTransition(state => {
+        // Update the currentState state component data property with the next state
+        this.contentCurrentState = state
+        // Update the context component data property with the updated context
+        this.contentContext = state.context
+      })
+      .start()
+  },
+  data () {
+    const machine = proposalSlideOverContentMachine.withConfig({})
+
+    return {
+      isVisible: false,
+      contentMachineService: interpret(machine, { devTools: true }),
+      contentCurrentState: machine.initialState,
+      contentContext: machine.context
+    }
+  },
   computed: {
+    isDefaultView () {
+      return this.contentCurrentState.matches('defaultView')
+    },
     bodyComponent () {
       return this.isDefaultView ? ProposalTweakView : ProposalConfirmView
     },
@@ -268,6 +224,18 @@ export default {
     enterToClass () {
       return !this.isDefaultView ? 'translate-x-0' : 'translate-x-0'
     },
+    footerLeaveClass () {
+      return !this.isDefaultView ? 'translate-x-0' : 'translate-x-0'
+    },
+    footerLeaveToClass () {
+      return !this.isDefaultView ? '-translate-x-full' : '-translate-x-full'
+    },
+    footerEnterClass () {
+      return !this.isDefaultView ? '-translate-x-full' : '-translate-x-full'
+    },
+    footerEnterToClass () {
+      return !this.isDefaultView ? 'translate-x-0' : 'translate-x-0'
+    },
   },
   methods: {
     handleExtraCloseButtonHit () {
@@ -278,10 +246,6 @@ export default {
     },
     hide () {
       this.isVisible = false
-    },
-    async handleCopyPublicLinkHit () {
-      await copy(this.proposal.route_pub_proposal_view_link)
-      this.$refs.copyIcon.success()
     },
   }
 }

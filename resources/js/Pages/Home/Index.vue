@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import ProposalSlideOver from '@/SlideOvers/ProposalSlideOver'
+import { ProposalSlideOver } from '@/SlideOvers/ProposalSlideOver'
 import FirstWelcomeModal from '@/Modals/FirstWelcomeModal'
 import LoginModal from '@/Modals/LoginModal'
 import { Editor, EditorContent } from 'tiptap'

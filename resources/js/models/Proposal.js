@@ -7,7 +7,7 @@ import Organisation from './Organisation'
 import OrganisationContact from './OrganisationContact'
 import Video from './Video'
 import { appendOrUpdateData } from '@/utils/data'
-import { get, set, head, isNil } from 'lodash-es'
+import { get, set, head, omitBy, isNil, toArray } from 'lodash-es'
 
 export default class Proposal extends Model {
 
@@ -63,6 +63,67 @@ export default class Proposal extends Model {
 
   get deposit_amount () {
     return get(this.deposit_payment, 'amount')
+  }
+
+  get is_selected_payment_provider_ready () {
+    // TODO don't hardcode stripe check...
+    return this.org?.stripeAccount?.has_card_payments_capability ?? false
+  }
+
+  get has_set_mininum_deposit () {
+    return this.deposit_amount >= 1
+  }
+
+  get has_set_mininum_project_value_amount () {
+    return this.value_amount >= 1
+  }
+
+  get is_deposit_greater_than_project_value () {
+    return this.deposit_amount > this.value_amount
+  }
+
+  get to_fix_before_publish () {
+
+    return toArray(omitBy([
+      !this.has_recipient ? {
+        icon: 'warning',
+        text: `You need a recipient!`
+      } : null,
+
+      !this.is_selected_payment_provider_ready ? {
+        icon: 'warning',
+        text: `Payment provider not ready`
+      } : null,
+
+      !this.has_set_mininum_project_value_amount ? {
+        icon: 'warning',
+        text: `Project value must be at least 1 ${this.value_currency_code}`
+      } : null,
+
+      !this.has_set_mininum_deposit ? {
+        icon: 'warning',
+        text: `Deposit must be at least 1 ${this.value_currency_code}`
+      } : null,
+
+      this.is_deposit_greater_than_project_value ? {
+        icon: 'warning',
+        text: 'Deposit cannot exceed the project value'
+      } : null,
+
+      // TODO Has at least one block
+    ], isNil))
+  }
+
+  get isDraft () {
+    return this.status === 'proposal_draft'
+  }
+
+  get has_things_to_fix_before_publish () {
+    return this.to_fix_before_publish.length >= 1
+  }
+
+  get can_publish () {
+    return this.isDraft && !this.has_things_to_fix_before_publish
   }
 
   set deposit_amount (amount) {

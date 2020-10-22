@@ -67,6 +67,7 @@ import IconHeroiconsMediumInformationCircle from '@/Icons/IconHeroiconsMediumInf
 import ProposalThemeBlock from '@/Components/ProposalThemeBlock'
 
 export default {
+  name: 'ProposalTweakView',
   components: {
     IconHeroiconsSmallBriefcase,
     IconHeroiconsSmallAdjustments,
@@ -92,6 +93,9 @@ export default {
     designTabIcon () {
       return IconHeroiconsSmallAdjustments
     }
+  },
+  created () {
+    console.log('created ProposalTweakView')
   },
   methods: {
     async handleUpdateProjectValue () {

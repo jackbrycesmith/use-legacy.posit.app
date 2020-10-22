@@ -118,8 +118,7 @@ export default {
       return this.proposal.org.route_settings
     },
     isSelectedProviderReady () {
-      // TODO don't hardcode stripe check...
-      return this.proposal.org?.stripeAccount?.has_card_payments_capability ?? false
+      return this.proposal.is_selected_payment_provider_ready ?? false
     }
   },
   methods: {
