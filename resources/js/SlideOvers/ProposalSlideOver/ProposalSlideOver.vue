@@ -73,11 +73,11 @@
 
             <!-- Status -->
             <div class="flex col-span-1 justify-center">
-              <BadgeWithDotSmall
+              <BadgeWithDot
                 custom-badge-class="bg-white text-primary-yellow-800 shadow-md"
                 custom-dot-class="text-primary-yellow-400">
                 {{ proposal.status_name | titleCase }}
-              </BadgeWithDotSmall>
+              </BadgeWithDot>
             </div>
 
             <!-- Recipient -->
@@ -164,7 +164,7 @@ import { interpret, assign } from 'xstate'
 import ApplicationLogo from '@/Jetstream/ApplicationLogo'
 import BaseSlideOver from '@/SlideOvers/BaseSlideOver'
 import ProposalRecipientSelector from '@/Components/ProposalRecipientSelector'
-import BadgeWithDotSmall from '@/Components/TailwindUI/BadgeWithDotSmall'
+import BadgeWithDot from '@/Components/TailwindUI/BadgeWithDot'
 import {
   proposalSlideOverContentMachine,
   // ProposalConfirmView, // IDK why this isn't working; throwing some error in the console so will import manually
@@ -176,7 +176,7 @@ import ProposalTweakView from '@/SlideOvers/ProposalSlideOver/ProposalTweakView'
 export default {
   components: {
     ApplicationLogo,
-    BadgeWithDotSmall,
+    BadgeWithDot,
     BaseSlideOver,
     ProposalRecipientSelector,
     ProposalTweakView,
@@ -247,6 +247,16 @@ export default {
     hide () {
       this.isVisible = false
     },
+  },
+  watch: {
+    'proposal.has_things_to_fix_before_publish': {
+      immediate: true,
+      handler (value) {
+        console.log('proposal.has_things_to_fix_before_publish [watch]: ', value)
+        const event = value ? 'CANNOT_PUBLISH' : 'CAN_PUBLISH'
+        this.contentMachineService.send(event)
+      }
+    }
   }
 }
 </script>

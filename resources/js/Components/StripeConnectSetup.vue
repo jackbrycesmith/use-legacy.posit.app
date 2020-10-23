@@ -79,16 +79,16 @@
                 <!-- Stripe Metadata Badges -->
                 <div class="text-sm leading-5 font-medium text-gray-600 uppercase">
                   <span class="inline-flex gap-1 flex-wrap">
-                    <BadgeWithDotSmall color="blue">
+                    <BadgeWithDot color="blue">
                       <template #dot>
                         <EmojiFlag v-if="stripeAccount__.country" :code="stripeAccount__.country" class="-ml-0.5 mr-1.5 h-full align-middle"/>
                       </template>
                       {{ stripeAccount__.dashboard_name }}
-                    </BadgeWithDotSmall>
+                    </BadgeWithDot>
 
-                    <BadgeWithDotSmall color="blue">
+                    <BadgeWithDot color="blue">
                       {{ stripeAccount__.email }}
-                    </BadgeWithDotSmall>
+                    </BadgeWithDot>
                   </span>
                 </div>
 
@@ -156,7 +156,7 @@ import EmojiFlag from '@/Components/EmojiFlag'
 import LogoStripe from '@/Logos/LogoStripe'
 import BaseForm from '@/Forms/BaseForm'
 import InertiaSingleButtonForm from '@/Components/InertiaSingleButtonForm'
-import BadgeWithDotSmall from '@/Components/TailwindUI/BadgeWithDotSmall'
+import BadgeWithDot from '@/Components/TailwindUI/BadgeWithDot'
 import SmoothReflow from '@/Components/SmoothReflow'
 import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
 import IconHeroiconsMediumCheckCircle from '@/Icons/IconHeroiconsMediumCheckCircle'
@@ -165,7 +165,7 @@ import IconHeroiconsMediumInformationCircle from '@/Icons/IconHeroiconsMediumInf
 
 export default {
   components: {
-    BadgeWithDotSmall,
+    BadgeWithDot,
     BaseForm,
     EmojiFlag,
     LogoStripe,

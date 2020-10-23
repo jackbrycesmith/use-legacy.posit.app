@@ -1,9 +1,9 @@
 <template>
   <span
-    :class="badgeColorClass"
-    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium leading-4">
+    :class="badgeClass"
+    class="inline-flex items-center rounded-full font-medium">
     <slot name="dot">
-      <svg :class="dotColorClass" class="-ml-0.5 mr-1.5 h-2 w-2" fill="currentColor" viewBox="0 0 8 8">
+      <svg :class="dotClass" fill="currentColor" viewBox="0 0 8 8">
         <circle cx="4" cy="4" r="3" />
       </svg>
     </slot>
@@ -47,6 +47,12 @@ const COLORS = {
 
 export default {
   props: {
+    size: {
+      default: 'small',
+      validator (val) {
+        return ['small', 'large'].includes(val)
+      }
+    },
     color: {
       type: String,
       default: 'blue',
@@ -60,6 +66,30 @@ export default {
     },
   },
   computed: {
+    badgeSizeClass () {
+      if (this.size === 'small') {
+        return 'px-2.5 py-0.5 text-xs leading-4'
+      }
+
+      if (this.size === 'large') {
+        return 'px-3 py-0.5 text-sm leading-5'
+      }
+    },
+    dotSizeClass () {
+      if (this.size === 'small') {
+        return '-ml-0.5 mr-1.5 h-2 w-2'
+      }
+
+      if (this.size === 'large') {
+        return '-ml-1 mr-1.5 h-2 w-2'
+      }
+    },
+    badgeClass () {
+      return `${this.badgeSizeClass} ${this.badgeColorClass}`
+    },
+    dotClass () {
+      return `${this.dotSizeClass} ${this.dotColorClass}`
+    },
     badgeColorClass () {
       if (this.customBadgeClass) {
         return this.customBadgeClass
