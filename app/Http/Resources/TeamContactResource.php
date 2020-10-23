@@ -18,6 +18,7 @@ class TeamContactResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => Arr::get($this->meta, 'name'),
+            'access_code' => $this->access_code, // TODO make sure this is private where necessary
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
