@@ -117,7 +117,8 @@
                 :proposal="proposal"
                 :state="contentCurrentState"
                 class="absolute inset-0"
-                @back-to-default-view="contentMachineService.send('BACK_TO_DEFAULT_VIEW')" />
+                @back-to-default-view="contentMachineService.send('BACK_TO_DEFAULT_VIEW')"
+                @publish="contentMachineService.send('PUBLISH')" />
             </keep-alive>
           </transition>
         </div>
@@ -133,12 +134,22 @@
             leave-active-class="transform transition ease-in-out duration-500 sm:duration-700"
             :leave-class="footerLeaveClass"
             :leave-to-class="footerLeaveToClass">
-            <div v-if="isDefaultView" class="px-4 py-4 flex flex-1 border-t border-gray-200">
-              <span class="inline-flex rounded-md shadow-sm flex-1">
-                <button @click.prevent="contentMachineService.send('PREPARE_TO_PUBLISH')" type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-primary-yellow-900 bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:border-primary-yellow-500 focus:shadow-outline-primary-yellow focus:bg-primary-yellow-300 active:bg-primary-yellow-300 transition duration-150 ease-in-out flex-1">
-                  Ready to Publish »
-                </button>
-              </span>
+            <div v-if="isDefaultView || isSuccessPublishView" class="px-4 py-4 flex flex-1 border-t border-gray-200">
+              <template v-if="isDefaultView">
+                <span class="inline-flex rounded-md shadow-sm flex-1">
+                  <button @click.prevent="contentMachineService.send('PREPARE_TO_PUBLISH')" type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-primary-yellow-900 bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:border-primary-yellow-500 focus:shadow-outline-primary-yellow focus:bg-primary-yellow-300 active:bg-primary-yellow-300 transition duration-150 ease-in-out flex-1">
+                    Ready to Publish »
+                  </button>
+                </span>
+              </template>
+
+              <template v-if="isSuccessPublishView">
+                <span class="inline-flex rounded-md shadow-sm flex-1">
+                  <button @click.prevent="contentMachineService.send('BACK_TO_DEFAULT_VIEW')" type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-primary-yellow-900 bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:border-primary-yellow-500 focus:shadow-outline-primary-yellow focus:bg-primary-yellow-300 active:bg-primary-yellow-300 transition duration-150 ease-in-out flex-1">
+                    Back to details
+                  </button>
+                </span>
+              </template>
             </div>
           </transition>
 
@@ -194,9 +205,15 @@ export default {
         this.contentContext = state.context
       })
       .start()
+
+    this.setupInitialMachineContext()
   },
   data () {
-    const machine = proposalSlideOverContentMachine.withConfig({})
+    const machine = proposalSlideOverContentMachine.withConfig({
+      services: {
+        'publishAction': this.publishAction
+      }
+    })
 
     return {
       isVisible: false,
@@ -208,6 +225,9 @@ export default {
   computed: {
     isDefaultView () {
       return this.contentCurrentState.matches('defaultView')
+    },
+    isSuccessPublishView () {
+      return this.contentCurrentState.matches('confirmPublishView.publishSuccess')
     },
     bodyComponent () {
       return this.isDefaultView ? ProposalTweakView : ProposalConfirmView
@@ -247,16 +267,24 @@ export default {
     hide () {
       this.isVisible = false
     },
+    setupInitialMachineContext () {
+      this.handleHasThingsToPublishEvent(this.proposal.has_things_to_fix_before_publish)
+    },
+    handleHasThingsToPublishEvent (value) {
+      const event = value ? 'CANNOT_PUBLISH' : 'CAN_PUBLISH'
+      this.contentMachineService.send(event)
+    },
+    async publishAction () {
+      // TODO hook up to publish endpoint...
+      await new Promise(resolve => setTimeout(resolve, 1500))
+    }
   },
   watch: {
     'proposal.has_things_to_fix_before_publish': {
-      immediate: true,
       handler (value) {
-        console.log('proposal.has_things_to_fix_before_publish [watch]: ', value)
-        const event = value ? 'CANNOT_PUBLISH' : 'CAN_PUBLISH'
-        this.contentMachineService.send(event)
+        this.handleHasThingsToPublishEvent(value)
       }
     }
-  }
+  },
 }
 </script>

@@ -7,7 +7,6 @@ export const proposalSlideOverContentMachine = Machine({
     canPublish: false,
     hasSufficientCredits: true, // Hardcode for now
     isPublishing: false,
-    publishFailed: false
   },
   initial: 'defaultView',
   states: {
@@ -17,7 +16,7 @@ export const proposalSlideOverContentMachine = Machine({
       }
     },
     confirmPublishView: {
-      initial: 'entering',
+      initial: 'publishSuccess',
       on: {
         BACK_TO_DEFAULT_VIEW: 'defaultView'
       },
@@ -41,17 +40,47 @@ export const proposalSlideOverContentMachine = Machine({
           }
         },
         canPublish: {
+          initial: 'ready',
           on: {
             CANNOT_PUBLISH: {
               target: ['entering'],
               actions: ['setCannotPublish'],
             },
+          },
+          states: {
+            ready: {
+              on: {
+                PUBLISH: {
+                  target: ['publishing'],
+                  actions: ['setIsPublishing']
+                }
+              }
+            },
+            publishing: {
+              invoke: {
+                src: 'publishAction',
+                onDone: {
+                  target: '#publishSuccess',
+                  actions: ['setIsNotPublishing', 'setIsPublished']
+                },
+                onError: {
+                  target: 'publishError',
+                  actions: ['setIsNotPublishing']
+                }
+              }
+            },
+            publishError: {
+              on: {
+                PUBLISH: {
+                  target: ['publishing'],
+                  actions: ['setIsPublishing']
+                }
+              }
+            }
           }
         },
-        publishNetworkError: {
-
-        },
         publishSuccess: {
+          id: 'publishSuccess'
 
         }
       }
@@ -73,5 +102,8 @@ export const proposalSlideOverContentMachine = Machine({
   actions: {
     setCanPublish: assign({ canPublish: context => context.canPublish = true }),
     setCannotPublish: assign({ canPublish: context => context.canPublish = false }),
+    setIsPublishing: assign({ isPublishing: context => context.isPublishing = true }),
+    setIsNotPublishing: assign({ isPublishing: context => context.isPublishing = false }),
+    setIsPublished: assign({ isPublished: context => context.isPublished = true }),
   }
 })

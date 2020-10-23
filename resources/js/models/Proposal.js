@@ -7,7 +7,7 @@ import Organisation from './Organisation'
 import OrganisationContact from './OrganisationContact'
 import Video from './Video'
 import { appendOrUpdateData } from '@/utils/data'
-import { get, set, head, omitBy, isNil, toArray } from 'lodash-es'
+import { get, set, head, omitBy, isNil, toArray, words } from 'lodash-es'
 
 export default class Proposal extends Model {
 
@@ -51,6 +51,16 @@ export default class Proposal extends Model {
 
   get recipient_name () {
     return get(this.recipient, 'name')
+  }
+
+  get recipient_access_code () {
+    return get(this.recipient, 'access_code')
+  }
+
+  get convenient_copyable_recipient_access_message () {
+    const name = head(words(this.recipient_name))
+
+    return `Hi ${name},\n\nI've made this proposal for you at:\n\n${this.route_pub_proposal_view_link}\n\nYou'll need to use this access code:\n\n${this.recipient_access_code}\n\nLet me know what you think!`
   }
 
   get has_intro_video () {

@@ -102,30 +102,39 @@
 
         <div class="text-center">
           <span class="inline-flex rounded-md shadow-sm">
-            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-primary-yellow-900 bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:border-primary-yellow-500 focus:shadow-outline-primary-yellow focus:bg-primary-yellow-300 active:bg-primary-yellow-300 transition duration-150 ease-in-out">
+            <button
+              @click.prevent="$emit('publish')"
+              type="submit"
+              :disabled="state.matches('confirmPublishView.canPublish.publishing')"
+              :class="{ 'cursor-wait': state.matches('confirmPublishView.canPublish.publishing') }"
+              class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-primary-yellow-900 bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:border-primary-yellow-500 focus:shadow-outline-primary-yellow focus:bg-primary-yellow-300 active:bg-primary-yellow-300 transition duration-150 ease-in-out">
+              <!-- TODO loading spinner -->
+
               Publish Now
             </button>
           </span>
         </div>
 
-        <div class="mt-6 relative">
-          <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-gray-300"></div>
+        <template v-if="state.matches('confirmPublishView.canPublish.ready') || state.matches('confirmPublishView.canPublish.publishError')">
+          <div class="mt-6 relative">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm leading-5">
+              <span class="px-2 bg-white text-gray-500">
+                OR
+              </span>
+            </div>
           </div>
-          <div class="relative flex justify-center text-sm leading-5">
-            <span class="px-2 bg-white text-gray-500">
-              OR
+
+          <div class="text-center mt-5">
+            <span class="inline-flex rounded-md shadow-sm">
+              <button @click.prevent="$emit('back-to-default-view')" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                Go back
+              </button>
             </span>
           </div>
-        </div>
-
-        <div class="text-center mt-5">
-          <span class="inline-flex rounded-md shadow-sm">
-            <button @click.prevent="$emit('back-to-default-view')" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-              Go back
-            </button>
-          </span>
-        </div>
+        </template>
 
       </template>
 
@@ -136,9 +145,7 @@
         </h3>
 
         <div class="text-center mt-5">
-          <IconHeroiconsMediumCheckCircle
-            class="h-20 w-20 text-green-400 inline-block"
-          />
+          <IconHeroiconsMediumCheck class="h-20 w-20 text-primary-yellow-400 inline-block" />
         </div>
 
         <!-- Public URL Share -->
@@ -186,10 +193,75 @@
           </div>
         </div>
 
-      </template>
+        <!-- Access Code  -->
+        <div class="space-y-1 mt-8">
+          <label for="access_code_link" class="block text-sm font-medium leading-5 text-gray-600 truncate">
+            Access Code for {{ proposal.recipient_name }}
+          </label>
 
-      <!-- TODO: to extract this copy link thingy i think -->
-      <template v-if="false">
+          <div class="mt-1 flex rounded-md shadow-sm">
+            <div class="relative flex-grow focus-within:z-10">
+              <input
+                v-model="proposal.recipient_access_code"
+                id="access_code_link"
+                class="form-input block w-full rounded-none rounded-l-md transition ease-in-out duration-150 sm:text-sm sm:leading-5 font-mono"
+                disabled>
+            </div>
+            <button ref="copyAccessCodeButton" @click.prevent="handleCopyAccessCodeHit" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-yellow focus:border-primary-yellow-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+
+              <SuccessFlashSwitcher
+                ref="copyAccessCodeIcon"
+                :to-blur-after-success-el="$refs['copyAccessCodeButton']">
+
+                <template #normal>
+                  <IconHeroiconsSmallExternalLink class="h-5 w-5 text-gray-400" />
+                </template>
+
+                <template #success>
+                  <IconHeroiconsSmallCheck class="h-5 w-5 text-primary-yellow-400" />
+                </template>
+              </SuccessFlashSwitcher>
+
+
+              <span class="ml-2">Copy</span>
+
+            </button>
+          </div>
+        </div>
+
+        <!-- Convenient message -->
+        <div class="space-y-1 mt-8 mb-20">
+          <label for="copy_message" class="block text-sm font-medium leading-5 text-gray-600 truncate">
+            Example Message
+          </label>
+
+          <div class="relative">
+            <textarea readonly disabled rows="7" class="form-textarea resize-none block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">{{ proposal.convenient_copyable_recipient_access_message }}</textarea>
+
+            <div class="absolute bottom-0 right-0">
+              <button ref="copyMessageButton" @click.prevent="handleCopyMessageHit" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-tl-md rounded-tr-none rounded-br-md rounded-bl-none text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-yellow focus:border-primary-yellow-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+
+                <SuccessFlashSwitcher
+                  ref="copyMessageIcon"
+                  :to-blur-after-success-el="$refs['copyMessageButton']">
+
+                  <template #normal>
+                    <IconHeroiconsSmallExternalLink class="h-5 w-5 text-gray-400" />
+                  </template>
+
+                  <template #success>
+                    <IconHeroiconsSmallCheck class="h-5 w-5 text-primary-yellow-400" />
+                  </template>
+                </SuccessFlashSwitcher>
+
+
+                <span class="ml-2">Copy</span>
+
+              </button>
+            </div>
+          </div>
+        </div>
+
       </template>
     </div>
   </div>
@@ -204,6 +276,7 @@ import IconHeroiconsMediumArrowNarrowRight from '@/Icons/IconHeroiconsMediumArro
 import IconHeroiconsMediumCheckCircle from '@/Icons/IconHeroiconsMediumCheckCircle'
 import IconHeroiconsMediumExclamationCircle from '@/Icons/IconHeroiconsMediumExclamationCircle'
 import IconHeroiconsSmallCheck from '@/Icons/IconHeroiconsSmallCheck'
+import IconHeroiconsMediumCheck from '@/Icons/IconHeroiconsMediumCheck'
 import SuccessFlashSwitcher from '@/Components/SuccessFlashSwitcher'
 import BadgeWithDot from '@/Components/TailwindUI/BadgeWithDot'
 import copy from 'clipboard-copy'
@@ -219,6 +292,7 @@ export default {
     IconHeroiconsMediumArrowNarrowRight,
     IconHeroiconsMediumExclamationCircle,
     IconHeroiconsSmallCheck,
+    IconHeroiconsMediumCheck,
     SuccessFlashSwitcher
   },
   props: {
@@ -230,15 +304,19 @@ export default {
 
     }
   },
-  mounted () {
-    console.log('mounted ProposalConfirmView')
-    // console.log('hasThings to fixx... ', this.proposal.has_things_to_fix_before_publish)
-  },
   methods: {
     async handleCopyPublicLinkHit () {
       await copy(this.proposal.route_pub_proposal_view_link)
       this.$refs.copyIcon.success()
-    }
+    },
+    async handleCopyAccessCodeHit () {
+      await copy(this.proposal.recipient_access_code)
+      this.$refs.copyAccessCodeIcon.success()
+    },
+    async handleCopyMessageHit () {
+      await copy(this.proposal.convenient_copyable_recipient_access_message)
+      this.$refs.copyMessageIcon.success()
+    },
   },
 }
 </script>
