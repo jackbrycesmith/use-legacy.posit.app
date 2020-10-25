@@ -95,5 +95,5 @@ test('proposal has a deposit payment', function () {
     assertInstanceOf(ProposalPayment::class, $proposal->depositPayment);
     assertEquals($depositPayment->id, $proposal->depositPayment->id);
 
-})->only();
+});
 

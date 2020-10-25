@@ -9,7 +9,7 @@ use function Tests\actingAs;
 test('updating proposal deposit requires proposal exist', function () {
     $response = $this->put(route('use.submit.upsert-proposal-deposit', ['proposal' => 'blah']));
     $response->assertStatus(404);
-})->only();
+});
 
 test('updating proposal deposit requires login', function () {
     $user = User::factory()->create();
@@ -20,7 +20,7 @@ test('updating proposal deposit requires login', function () {
 
     $response = $this->put(route('use.submit.upsert-proposal-deposit', ['proposal' => $proposal]));
     $response->assertRedirect(route('login'));
-})->only();
+});
 
 test('user cannot update proposal deposit if not a team member', function () {
     $user = User::factory()->create();
@@ -33,7 +33,7 @@ test('user cannot update proposal deposit if not a team member', function () {
     $response = actingAs($otherUser)->put(route('use.submit.upsert-proposal-deposit', ['proposal' => $proposal]));
 
     $response->assertStatus(403);
-})->only();
+});
 
 test('it creates proposal deposit payment if non-existant', function () {
     $user = User::factory()->create();
@@ -54,7 +54,7 @@ test('it creates proposal deposit payment if non-existant', function () {
     $proposal->refresh();
     $response->assertStatus(204);
     assertNotNull($proposal->depositPayment);
-})->only();
+});
 
 test('user can update proposal deposit payment amount', function ($amount) {
     $user = User::factory()->create();
@@ -101,4 +101,4 @@ test('user can update proposal deposit payment amount', function ($amount) {
     [
         1000.99,
     ],
-])->only();
+]);

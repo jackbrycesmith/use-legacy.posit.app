@@ -67,6 +67,31 @@ class ProposalPolicy
         return Response::allow();
     }
 
+
+    /**
+     * Determine whether the user can publish the proposal.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Proposal  $proposal
+     * @return mixed
+     */
+    public function publish(User $user, Proposal $proposal)
+    {
+        // Cannot publish if not part of the team
+        if (! $user->belongsToTeam($proposal->team)) {
+            return Response::deny('You do not have permission to view this proposal.');
+        }
+
+        // Cannot publish if already published
+        if ($proposal->hasEverHadStatus(Proposal::STATUS_PUBLISHED)) {
+            return Response::deny('This proposal has already been published.');
+        }
+
+        // TODO: Cannot publish if insufficient credits
+
+        return Response::allow();
+    }
+
     /**
      * Determine whether the user can upsert a recipient on the model.
      *
