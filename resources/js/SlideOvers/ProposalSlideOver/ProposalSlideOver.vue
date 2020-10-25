@@ -138,7 +138,7 @@
               <template v-if="isDefaultView">
                 <span class="inline-flex rounded-md shadow-sm flex-1">
                   <button @click.prevent="contentMachineService.send('PREPARE_TO_PUBLISH')" type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-primary-yellow-900 bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:border-primary-yellow-500 focus:shadow-outline-primary-yellow focus:bg-primary-yellow-300 active:bg-primary-yellow-300 transition duration-150 ease-in-out flex-1">
-                    Ready to Publish »
+                    {{ contentContext.isPublished ? 'View Access Details »' : 'Ready to Publish »' }}
                   </button>
                 </span>
               </template>
