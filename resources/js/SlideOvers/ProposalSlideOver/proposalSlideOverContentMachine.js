@@ -16,13 +16,16 @@ export const proposalSlideOverContentMachine = Machine({
       }
     },
     confirmPublishView: {
-      initial: 'publishSuccess',
+      initial: 'entering',
       on: {
         BACK_TO_DEFAULT_VIEW: 'defaultView'
       },
       states: {
         entering: {
           always: [
+            {
+              target: 'publishSuccess', cond: 'isPublished'
+            },
             {
               target: 'cannotPublish', cond: 'cannotPublish'
             },
@@ -92,12 +95,19 @@ export const proposalSlideOverContentMachine = Machine({
     },
     CANNOT_PUBLISH: {
       actions: ['setCannotPublish']
-    }
+    },
+    IS_PUBLISHED: {
+      actions: ['setIsPublished']
+    },
+    IS_NOT_PUBLISHED: {
+      actions: ['setIsNotPublished']
+    },
   }
 }, {
   guards: {
     cannotPublish: ctx => ctx.canPublish === false,
     canPublish: ctx => ctx.canPublish,
+    isPublished: ctx => ctx.isPublished,
   },
   actions: {
     setCanPublish: assign({ canPublish: context => context.canPublish = true }),
@@ -105,5 +115,6 @@ export const proposalSlideOverContentMachine = Machine({
     setIsPublishing: assign({ isPublishing: context => context.isPublishing = true }),
     setIsNotPublishing: assign({ isPublishing: context => context.isPublishing = false }),
     setIsPublished: assign({ isPublished: context => context.isPublished = true }),
+    setIsNotPublished: assign({ isPublished: context => context.isPublished = false }),
   }
 })

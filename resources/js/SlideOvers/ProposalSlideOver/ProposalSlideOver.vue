@@ -269,14 +269,18 @@ export default {
     },
     setupInitialMachineContext () {
       this.handleHasThingsToPublishEvent(this.proposal.has_things_to_fix_before_publish)
+      this.handleHasBeenPublishedEvent(this.proposal.has_been_published)
     },
     handleHasThingsToPublishEvent (value) {
       const event = value ? 'CANNOT_PUBLISH' : 'CAN_PUBLISH'
       this.contentMachineService.send(event)
     },
+    handleHasBeenPublishedEvent (value) {
+      const event = value ? 'IS_PUBLISHED' : 'IS_NOT_PUBLISHED'
+      this.contentMachineService.send(event)
+    },
     async publishAction () {
-      // TODO hook up to publish endpoint...
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await this.proposal.publish()
     }
   },
   watch: {

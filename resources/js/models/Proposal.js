@@ -29,6 +29,10 @@ export default class Proposal extends Model {
     return get(this.status_name_maps(), this.status, 'unknown')
   }
 
+  get has_been_published () {
+    return ['proposal_published', 'proposal_accepted', 'proposal_expired'].includes(this.status)
+  }
+
   get creator_name () {
     return get(head(this.users), 'name', '?')
   }
@@ -171,6 +175,16 @@ export default class Proposal extends Model {
         amount: this.deposit_amount,
       }
     )
+
+    return response
+  }
+
+  async publish () {
+    const response = await Http.put(
+      route('use.submit.publish-proposal', { proposal: this.uuid })
+    )
+
+    this.status = 'proposal_published'
 
     return response
   }

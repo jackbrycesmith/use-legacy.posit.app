@@ -101,14 +101,22 @@
 
 
         <div class="text-center">
-          <span class="inline-flex rounded-md shadow-sm">
+          <span
+            class="inline-flex rounded-md shadow-sm">
             <button
               @click.prevent="$emit('publish')"
               type="submit"
               :disabled="state.matches('confirmPublishView.canPublish.publishing')"
               :class="{ 'cursor-wait': state.matches('confirmPublishView.canPublish.publishing') }"
-              class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-primary-yellow-900 bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:border-primary-yellow-500 focus:shadow-outline-primary-yellow focus:bg-primary-yellow-300 active:bg-primary-yellow-300 transition duration-150 ease-in-out">
-              <!-- TODO loading spinner -->
+              class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-primary-yellow-900 bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:border-primary-yellow-500 focus:shadow-outline-primary-yellow focus:bg-primary-yellow-300 active:bg-primary-yellow-300 transition duration-150 ease-in-out relative"
+              style="min-width: 200px;">
+
+              <span
+                v-if="state.matches('confirmPublishView.canPublish.publishing')"
+                class="absolute left-0 inset-y-0 flex items-center pl-3">
+                <IconHeroiconsSpinner
+                  class="h-5 w-5 text-primary-yellow-100" />
+              </span>
 
               Publish Now
             </button>
@@ -137,7 +145,6 @@
         </template>
 
       </template>
-
 
       <template v-if="state.matches('confirmPublishView.publishSuccess')">
         <h3 class="mt-10 text-center text-2xl font-medium text-gray-800">
@@ -236,7 +243,10 @@
           </label>
 
           <div class="relative">
-            <textarea readonly disabled rows="7" class="form-textarea resize-none block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">{{ proposal.convenient_copyable_recipient_access_message }}</textarea>
+            <textarea
+              v-model="proposal.convenient_copyable_recipient_access_message"
+              readonly disabled rows="7"
+              class="form-textarea resize-none block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
 
             <div class="absolute bottom-0 right-0">
               <button ref="copyMessageButton" @click.prevent="handleCopyMessageHit" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-tl-md rounded-tr-none rounded-br-md rounded-bl-none text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-yellow focus:border-primary-yellow-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
@@ -273,10 +283,10 @@ import IconCredits from '@/Icons/IconCredits'
 import IconHeroiconsSmallExternalLink from '@/Icons/IconHeroiconsSmallExternalLink'
 import IconHeroiconsMediumExclamation from '@/Icons/IconHeroiconsMediumExclamation'
 import IconHeroiconsMediumArrowNarrowRight from '@/Icons/IconHeroiconsMediumArrowNarrowRight'
-import IconHeroiconsMediumCheckCircle from '@/Icons/IconHeroiconsMediumCheckCircle'
 import IconHeroiconsMediumExclamationCircle from '@/Icons/IconHeroiconsMediumExclamationCircle'
 import IconHeroiconsSmallCheck from '@/Icons/IconHeroiconsSmallCheck'
 import IconHeroiconsMediumCheck from '@/Icons/IconHeroiconsMediumCheck'
+import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
 import SuccessFlashSwitcher from '@/Components/SuccessFlashSwitcher'
 import BadgeWithDot from '@/Components/TailwindUI/BadgeWithDot'
 import copy from 'clipboard-copy'
@@ -287,22 +297,17 @@ export default {
     BadgeWithDot,
     IconCredits,
     IconHeroiconsSmallExternalLink,
-    IconHeroiconsMediumCheckCircle,
     IconHeroiconsMediumExclamation,
     IconHeroiconsMediumArrowNarrowRight,
     IconHeroiconsMediumExclamationCircle,
     IconHeroiconsSmallCheck,
+    IconHeroiconsSpinner,
     IconHeroiconsMediumCheck,
-    SuccessFlashSwitcher
+    SuccessFlashSwitcher,
   },
   props: {
     proposal: { type: Object },
     state: { type: Object }
-  },
-  data () {
-    return {
-
-    }
   },
   methods: {
     async handleCopyPublicLinkHit () {
