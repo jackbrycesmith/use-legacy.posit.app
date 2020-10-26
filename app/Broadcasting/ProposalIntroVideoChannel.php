@@ -4,6 +4,7 @@ namespace App\Broadcasting;
 
 use App\Models\Proposal;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 class ProposalIntroVideoChannel
 {
@@ -26,6 +27,10 @@ class ProposalIntroVideoChannel
     public function join(User $user, string $proposalUuid)
     {
         $proposal = Proposal::where('uuid', $proposalUuid)->first();
-        return $proposal->users->contains($user);
+        if (is_null($proposal)) {
+            return false;
+        }
+
+        return Gate::forUser($user)->allows('view', $proposal);
     }
 }
