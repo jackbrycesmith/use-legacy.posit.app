@@ -20,7 +20,7 @@
 
                 <!-- Current Profile Photo -->
                 <div class="mt-2" v-show="! photoPreview">
-                  <img v-if="$page.props.user.profile_photo_url" :src="$page.props.user.profile_photo_url" alt="Current Profile Photo" class="rounded-full h-20 w-20 object-cover">
+                  <img v-if="user.profile_photo_url" :src="user.profile_photo_url" alt="Current Profile Photo" class="rounded-full h-20 w-20 object-cover">
 
                   <div v-else class="h-20 w-20 rounded-full bg-primary-yellow-400 text-gray-900 font-semibold flex items-center justify-center text-2xl">
                     {{ userAvatarInitial }}
@@ -38,7 +38,7 @@
                     Select A New Photo
                 </jet-secondary-button>
 
-                <jet-secondary-button type="button" class="mt-2" @click.native.prevent="deletePhoto" v-if="$page.props.user.profile_photo_path">
+                <jet-secondary-button type="button" class="mt-2" @click.native.prevent="deletePhoto" v-if="user.profile_photo_path">
                     Remove Photo
                 </jet-secondary-button>
 
@@ -94,14 +94,16 @@
             JetSecondaryButton,
         },
 
-        props: ['name', 'email'],
+        props: {
+          user: Object
+        },
 
         data() {
             return {
                 form: this.$inertia.form({
                     '_method': 'PUT',
-                    name: this.name,
-                    email: this.email,
+                    name: this.user.name,
+                    email: this.user.email,
                     photo: null,
                 }, {
                     bag: 'updateProfileInformation',

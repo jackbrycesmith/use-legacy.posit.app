@@ -9,7 +9,7 @@
     </header>
     <main>
       <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-        <update-profile-information-form :name="$page.props.user.name" :email="$page.props.user.email" />
+        <update-profile-information-form :user="$page.user" />
 
         <jet-section-border />
 
