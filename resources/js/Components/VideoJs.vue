@@ -16,10 +16,10 @@ window.VIDEOJS_NO_DYNAMIC_STYLE = true
 import 'video.js/dist/video-js.css'
 // import '@videojs/themes/dist/city/index.css';
 import videojs from 'video.js'
-// import 'videojs-record/dist/css/videojs.record.css'
-// import 'webrtc-adapter'
-// import RecordRTC from 'recordrtc'
-// import Record from 'videojs-record/dist/videojs.record.js'
+import '@/plugins/video-js-record.css'
+import 'webrtc-adapter'
+import RecordRTC from 'recordrtc'
+import Record from 'videojs-record/src/js/videojs.record.js'
 
 const RECORD_PLUGIN_EVENTS = [
   'deviceReady',
@@ -54,11 +54,15 @@ export default {
   },
   async mounted () {
     if (this.loadRecordPlugin) {
-      console.log('will import...')
-      await import('videojs-record/dist/css/videojs.record.css')
-      await import('recordrtc')
-      await import('videojs-record/dist/videojs.record.js')
-      await import('webrtc-adapter')
+      // const css = await import('videojs-record/dist/css/videojs.record.css')
+      // console.log('css: ', css)
+      // const record = await import('recordrtc')
+      // console.log('record: ', record)
+      // console.log('hereo')
+      // const videojsRecord = await import('videojs-record')
+      // console.log('videojsrecord: ', videojsRecord)
+      // const webrtcadapter = await import('webrtc-adapter')
+      // console.log('webrtcadapter', webrtcadapter)
     }
     this.initPlayer()
   },
