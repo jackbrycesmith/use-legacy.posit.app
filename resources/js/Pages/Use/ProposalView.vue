@@ -3,6 +3,7 @@
     <ProposalOpeningSection
       class="mb-36"
       :proposal.sync="proposal__"
+      @live-edit-name="handleLiveEditedName"
       @edit-title-done="handleEditTitleDone"/>
 
     <ProposalContentSection
@@ -112,9 +113,18 @@ export default {
       )
       console.log(response)
     },
-    handleEditTitleDone (value) {
-
-    }
+    handleEditTitleDone (name) {
+      this.updateNameOnServer({ payload: { name }, vm: this })
+    },
+    handleLiveEditedName (name) {
+      this.updateNameOnServer({ payload: { name }, vm: this })
+    },
+    updateNameOnServer: debounce(async ({ payload, vm }) => {
+      const response = await vm.$http.put(
+        vm.$route('use.submit.upsert-proposal-name', { proposal: vm.proposalUuid }),
+        payload
+      )
+    }, 1000)
   },
 }
 </script>

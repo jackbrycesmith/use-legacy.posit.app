@@ -5,6 +5,7 @@
       class="outline-none max-w-screen-xl text-center text-4xl tracking-tight leading-10 font-extrabold text-gray-900 sm:text-5xl sm:leading-none md:text-6xl"
       tag="h1"
       :model.sync="title"
+      @live-edit="handleLiveEditedName"
       @edit-done="handleEditTitleDone" />
 
     <div class="mt-10 flex items-center">
@@ -29,11 +30,10 @@
 </template>
 
 <script>
+import Proposal from '@/models/Proposal'
 import ContentEditable from '@/Components/ContentEditable'
 import ProposalRecipientSelector from '@/Components/ProposalRecipientSelector'
 import ProposalIntroVideoRecording from '@/Components/ProposalIntroVideoRecording'
-import Proposal from '@/models/Proposal'
-// import VideoIntro from '@/Components/VideoIntro'
 
 export default {
   props: {
@@ -68,7 +68,10 @@ export default {
   methods: {
     handleEditTitleDone (value) {
       this.$emit('edit-title-done', value)
-    }
+    },
+    handleLiveEditedName (value) {
+      this.$emit('live-edit-name', value)
+    },
   }
 }
 </script>

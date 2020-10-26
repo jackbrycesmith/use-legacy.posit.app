@@ -45,6 +45,7 @@ export default {
       if (!this.liveUpdateModel) return
 
       this.$emit('update:model', evt.target.innerText)
+      this.$emit('live-edit', evt.target.innerText)
     },
     endEdit () {
       this.$refs.contentEditable.blur()
