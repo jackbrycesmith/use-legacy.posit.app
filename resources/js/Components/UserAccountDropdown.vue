@@ -2,9 +2,13 @@
   <div class="relative">
     <div>
       <button ref="menuTriggerButton" @click="handleAvatarClick" class="max-w-xs flex items-center text-sm rounded-full focus:outline-none focus:bg-primary-yellow-200 lg:p-2 lg:rounded-md lg:hover:bg-primary-yellow-200" aria-label="User menu" aria-haspopup="true">
-        <div class="h-8 w-8 rounded-full bg-primary-yellow-400 text-gray-900 font-semibold flex items-center justify-center">
+
+        <img v-if="hasProfilePhoto" :src="userProfilePhotoUrl" alt="User profile image" class="rounded-full h-8 w-8 object-cover">
+
+        <div v-else class="h-8 w-8 rounded-full bg-primary-yellow-400 text-gray-900 font-semibold flex items-center justify-center">
           {{ userAvatarInitial }}
         </div>
+
         <p class="hidden ml-3 text-cool-gray-700 text-sm leading-5 font-medium lg:block">
           {{ userEmail }}
         </p>
@@ -45,7 +49,7 @@
 </template>
 
 <script>
-import { trim } from 'lodash-es'
+import { trim, isEmpty } from 'lodash-es'
 import { initials } from '@/utils/strings'
 
 export default {
@@ -66,6 +70,12 @@ export default {
     userEmail () {
       // TODO this should ideally be part of some global thing that I can import...
       return this.$page.props.user?.email
+    },
+    userProfilePhotoUrl () {
+      return this.$page.props.user?.profile_photo_url
+    },
+    hasProfilePhoto () {
+      return !isEmpty(this.userProfilePhotoUrl)
     },
     userAvatarInitial () {
       const name = trim(this.$page.props.user.name)
