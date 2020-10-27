@@ -7,7 +7,8 @@ import Organisation from './Organisation'
 import OrganisationContact from './OrganisationContact'
 import Video from './Video'
 import { appendOrUpdateData } from '@/utils/data'
-import { get, set, head, omitBy, isNil, toArray, words } from 'lodash-es'
+import { initials } from '@/utils/strings'
+import { get, set, head, omitBy, isNil, isEmpty, toArray, words, trim } from 'lodash-es'
 
 export default class Proposal extends Model {
 
@@ -34,7 +35,26 @@ export default class Proposal extends Model {
   }
 
   get creator_name () {
-    return get(head(this.users), 'name', '?')
+    return get(this.creator, 'name')
+  }
+
+  get creator_initials () {
+    const name = this.creator_name
+    const email = this.creator?.email
+
+    if (! isEmpty(name)) {
+      return initials(name)
+    }
+
+    return isEmpty(email) ? '?' : initials(email)
+  }
+
+  get creator_profile_photo_url () {
+    return this.creator?.profile_photo_url
+  }
+
+  get creator_has_profile_photo () {
+    return !isEmpty(this.creator_profile_photo_url)
   }
 
   get route_proposal_view () {
@@ -216,6 +236,7 @@ export default class Proposal extends Model {
     return {
       users: User,
       org: Organisation,
+      creator: User,
       recipient: OrganisationContact,
       content: ProposalContent,
       intro_video: Video,

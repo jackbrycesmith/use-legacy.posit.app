@@ -64,9 +64,15 @@
 
               <div class="flex space-x-2 justify-center">
                 <span :title="proposal.creator_name">
-                    <div class="inline-flex justify-center items-center h-10 w-10 bg-white text-primary-yellow-500 rounded-full shadow-md select-none">
-                      {{ proposal.creator_name | initials }}
-                    </div>
+
+                  <div class="inline-flex justify-center items-center h-10 w-10 bg-white text-orange-400 rounded-full shadow-md select-none">
+                    <template v-if="proposal.creator_has_profile_photo">
+                      <img :src="proposal.creator_profile_photo_url" alt="Creato profile photo" class="rounded-full h-9 w-9 object-cover">
+                    </template>
+                    <template v-else>
+                      {{ proposal.creator_initials }}
+                    </template>
+                  </div>
                 </span>
               </div>
             </div>

@@ -21,6 +21,7 @@ class ProposalResource extends JsonResource
             'name' => $this->name,
             'status' => $this->status,
             'meta' => $this->meta,
+            'creator' => new UserResource($this->whenLoaded('creator')),
             'value_amount' => $this->value_amount,
             'value_currency_code' => $this->value_currency_code,
             'content' => new ProposalContentResource($this->whenLoaded('proposalContent')),
