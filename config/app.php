@@ -173,6 +173,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\ResponseMacroServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
         App\Providers\InertiaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,

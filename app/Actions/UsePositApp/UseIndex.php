@@ -6,7 +6,6 @@ use App\Http\Resources\OrganisationResource;
 use App\Http\Resources\ProposalResource;
 use App\Http\Resources\TeamResource;
 use Illuminate\Routing\Router;
-use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
 class UseIndex extends Action
@@ -53,7 +52,7 @@ class UseIndex extends Action
 
     public function response($team)
     {
-        return Inertia::render('Use/Index', [
+        return response()->inertiable('Use/Index', [
             'org' => new TeamResource($team),
         ]);
     }
