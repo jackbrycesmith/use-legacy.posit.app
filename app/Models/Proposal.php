@@ -153,6 +153,20 @@ class Proposal extends Model implements HasMedia
     }
 
     /**
+     * Get the creator
+     *
+     * @return HasOneDeep The has one deep.
+     * @todo   Don't hardcode the creator as the team owner
+     */
+    public function creator(): HasOneDeep
+    {
+        return $this->hasOneDeepFromRelations(
+            $this->team(),
+            (new Team)->owner()
+        );
+    }
+
+    /**
      * Get the recipient
      * // TODO think this is unnecessary complicated
      *

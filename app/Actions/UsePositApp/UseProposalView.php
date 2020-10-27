@@ -14,7 +14,7 @@ class UseProposalView extends Action
     public static function routes(Router $router)
     {
         $router->domain(use_posit_domain())
-            ->middleware(['web', 'auth'])
+            ->middleware(['web', 'auth:sanctum', 'verified'])
             ->get('/proposal/{proposal:uuid}', static::class)
             ->where('proposal', Constant::PATTERN_UUID)
             ->name('use.proposal.view');
@@ -22,6 +22,8 @@ class UseProposalView extends Action
 
     /**
      * Determine if the user is authorized to make this action.
+     *
+     * @param \App\Models\Proposal $proposal The proposal
      *
      * @return bool
      */
@@ -43,20 +45,30 @@ class UseProposalView extends Action
     /**
      * Execute the action and return a result.
      *
+     * @param \App\Models\Proposal $proposal The proposal
+     *
      * @return mixed
      */
-    public function handle()
+    public function handle(Proposal $proposal)
     {
-        // TODO probs dont prematurely load this; e.g. if using inertia 'only' feature...
-        return $this->proposal->loadMissing([
-            'team', 'team.contacts', 'team.stripeAccount', 'proposalContent', 'depositPayment', 'recipient', 'video'
+        return Inertia::render('Use/ProposalView', [
+            'proposal' => fn() => $this->getProposalResource($proposal)
         ]);
     }
 
-    public function response(Proposal $proposal)
+    /**
+     * Returns the proposal resource
+     *
+     * @param \App\Models\Proposal $proposal The proposal
+     *
+     * @return ProposalResource
+     */
+    protected function getProposalResource(Proposal $proposal)
     {
-        return Inertia::render('Use/ProposalView', [
-            'proposal' => new ProposalResource($proposal)
+        $proposal->loadMissing([
+            'team', 'creator', 'team.contacts', 'team.stripeAccount', 'proposalContent', 'depositPayment', 'recipient', 'video'
         ]);
+
+        return new ProposalResource($proposal);
     }
 }

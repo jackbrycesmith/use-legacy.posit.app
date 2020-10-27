@@ -80,6 +80,15 @@ test('proposal can get recipient for given access code', function () {
     assertEquals($contact->id, $recipient->id);
 });
 
+test('proposal creator is the team owner', function () {
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
+    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
+
+    assertInstanceOf(User::class, $proposal->creator);
+    assertEquals($user->id, $proposal->creator->id);
+});
+
 test('proposal has a deposit payment', function () {
     $team = Team::factory()->create();
     $proposal = Proposal::factory()->create(['team_id' => $team->id]);
