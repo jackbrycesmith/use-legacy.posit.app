@@ -21,6 +21,9 @@ class TeamResource extends JsonResource
             'name' => $this->name,
             'meta' => $this->meta,
             'owner' => new UserResource($this->whenLoaded('owner')),
+            'logo_url' => $this->whenLoaded('media', function () {
+                return $this->logo_url;
+            }),
             'users' => UserResource::collection($this->whenLoaded('users')),
             'proposals' => ProposalResource::collection($this->whenLoaded('proposals')),
             'contacts' => TeamContactResource::collection($this->whenLoaded('contacts')),

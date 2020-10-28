@@ -45,7 +45,7 @@ class UseIndex extends Action
      */
     public function handle()
     {
-        $team = $this->user()->currentTeam()->with(['proposals'])->first();
+        $team = $this->user()->currentTeam()->with(['proposals', 'media'])->first();
 
         return $team;
     }

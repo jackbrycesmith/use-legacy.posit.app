@@ -12,7 +12,7 @@ use Lorisleiva\Actions\Action;
 class UseTeamContacts extends Action
 {
     /**
-     * Add any routes for this action.
+     * Add routes for this action.
      *
      * @param \Illuminate\Routing\Router $router The router
      *
@@ -54,7 +54,7 @@ class UseTeamContacts extends Action
      */
     public function handle(Team $team)
     {
-        $team->loadMissing(['contacts']);
+        $team->loadMissing(['contacts', 'media']);
 
         return Inertia::render('Use/OrgContacts', [
             'org' => new TeamResource($team)

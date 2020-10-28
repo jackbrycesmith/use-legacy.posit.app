@@ -4,6 +4,7 @@ import Proposal from './Proposal'
 import StripeAccount from './StripeAccount'
 import OrganisationContact from './OrganisationContact'
 import Http from '@/services/Http'
+import { initials } from '@/utils/strings'
 
 export default class Organisation extends Model {
   exists() {
@@ -11,7 +12,7 @@ export default class Organisation extends Model {
   }
 
   get avatar_letter_initial () {
-    return this.name?.charAt(0)?.toUpperCase()
+    return initials(this.name)
   }
 
   get route_settings () {
