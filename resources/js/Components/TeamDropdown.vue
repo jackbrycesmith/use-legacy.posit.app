@@ -42,7 +42,13 @@
             </div>
             <div class="border-t border-gray-100"></div>
             <div class="py-1">
-              <a href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Create new team</a>
+              <span class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 cursor-not-allowed select-none" role="menuitem">
+                Create new team
+
+                <BadgeWithDot :show-dot="false" color="yellow" class="ml-1">
+                  Soon
+                </BadgeWithDot>
+              </span>
             </div>
           </div>
         </div>
@@ -53,8 +59,12 @@
 
 <script>
 import Organisation from '@/models/Organisation'
+import BadgeWithDot from '@/Components/TailwindUI/BadgeWithDot'
 
 export default {
+  components: {
+    BadgeWithDot
+  },
   props: {
     org: { type: Object, default: () => {} }
   },

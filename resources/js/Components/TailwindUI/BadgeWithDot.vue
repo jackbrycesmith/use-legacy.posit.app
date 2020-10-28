@@ -2,7 +2,7 @@
   <span
     :class="badgeClass"
     class="inline-flex items-center rounded-full font-medium">
-    <slot name="dot">
+    <slot v-if="showDot" name="dot">
       <svg :class="dotClass" fill="currentColor" viewBox="0 0 8 8">
         <circle cx="4" cy="4" r="3" />
       </svg>
@@ -64,6 +64,10 @@ export default {
     customDotClass: {
       type: String
     },
+    showDot: {
+      type: Boolean,
+      default: true
+    }
   },
   computed: {
     badgeSizeClass () {
