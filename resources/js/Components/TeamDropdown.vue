@@ -38,16 +38,24 @@
           class="z-10 origin-top absolute right-0 left-0 mt-1 rounded-md shadow-lg">
           <div class="rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
             <div class="py-1">
-              <a href="#" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Org ✔️</a>
+              <span @click="handleDropdownItemClick" class="block px-4 py-2 pr-9 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 relative cursor-pointer" role="menuitem">
+                <span class="block font-semibold truncate">{{ org__.name }}</span>
+
+                <span class="text-primary-yellow-500 absolute inset-y-0 right-0 flex items-center pr-4">
+                  <IconHeroiconsMediumCheck class="h-5 w-5" />
+                </span>
+              </span>
             </div>
             <div class="border-t border-gray-100"></div>
             <div class="py-1">
-              <span class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 cursor-not-allowed select-none" role="menuitem">
-                Create new team
+              <span class="block px-4 py-2 pr-16 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 cursor-not-allowed select-none relative" role="menuitem">
+                <span class="truncate block">Create new team</span>
 
-                <BadgeWithDot :show-dot="false" color="yellow" class="ml-1">
-                  Soon
-                </BadgeWithDot>
+                <span class="absolute inset-y-0 right-0 flex items-center pr-3">
+                  <BadgeWithDot :show-dot="false" color="yellow" class="uppercase">
+                    Soon
+                  </BadgeWithDot>
+                </span>
               </span>
             </div>
           </div>
@@ -60,10 +68,12 @@
 <script>
 import Organisation from '@/models/Organisation'
 import BadgeWithDot from '@/Components/TailwindUI/BadgeWithDot'
+import IconHeroiconsMediumCheck from '@/Icons/IconHeroiconsMediumCheck'
 
 export default {
   components: {
-    BadgeWithDot
+    BadgeWithDot,
+    IconHeroiconsMediumCheck
   },
   props: {
     org: { type: Object, default: () => {} }
