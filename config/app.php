@@ -175,7 +175,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\ResponseMacroServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
-        App\Providers\InertiaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
