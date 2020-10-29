@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
+use Inertia\LazyProp;
 
 class ResponseMacroServiceProvider extends ServiceProvider
 {
@@ -37,6 +38,10 @@ class ResponseMacroServiceProvider extends ServiceProvider
 
             if (request()->expectsJson()) {
                 array_walk_recursive($props, function (&$prop) {
+                    if ($prop instanceof LazyProp) {
+                        $prop = App::call($prop);
+                    }
+
                     if ($prop instanceof Closure) {
                         $prop = App::call($prop);
                     }
