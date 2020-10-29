@@ -42,7 +42,7 @@
 
                   <template v-else>
                     <!-- Current one... -->
-                    <span class="absolute h-4 w-4 rounded-full bg-primary-yellow-200"></span>
+                    <span :class="{ 'animate-ping': animateCurrentActiveStep }" class="absolute h-4 w-4 rounded-full bg-primary-yellow-200"></span>
                     <span class="relative block w-2 h-2 bg-primary-yellow-600 rounded-full"></span>
                   </template>
                 </div>
@@ -67,7 +67,9 @@
 
                   <template v-if="hasSetupPaymentProvider && !hasSentFirstProposal">
                     <!-- Current one... -->
-                    <span class="absolute h-4 w-4 rounded-full bg-primary-yellow-200"></span>
+                    <span
+                      :class="{ 'animate-ping': animateCurrentActiveStep }"
+                      class="absolute h-4 w-4 rounded-full bg-primary-yellow-200"/>
                     <span class="relative block w-2 h-2 bg-primary-yellow-600 rounded-full"></span>
                   </template>
 
@@ -106,6 +108,10 @@ export default {
   props: {
     team: {
       type: Object
+    },
+    animateCurrentActiveStep: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
