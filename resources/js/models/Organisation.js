@@ -15,6 +15,15 @@ export default class Organisation extends Model {
     return initials(this.name)
   }
 
+  get has_setup_payment_provider () {
+    // TODO don't hardcode stripe check...
+    return this.stripeAccount?.has_card_payments_capability ?? false
+  }
+
+  get has_sent_first_proposal () {
+    return this.published_proposals_count >= 1
+  }
+
   get route_settings () {
     return route('use.team.settings', { team: this.uuid }).url()
   }

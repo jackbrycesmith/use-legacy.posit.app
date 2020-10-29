@@ -127,8 +127,7 @@ export default {
       return this.team?.has_setup_payment_provider ?? false
     },
     hasSentFirstProposal () {
-      // TODO check if a proposal has been published under the team
-      return false
+      return this.team?.has_sent_first_proposal ?? false
     }
   },
   data () {

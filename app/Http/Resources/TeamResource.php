@@ -28,6 +28,7 @@ class TeamResource extends JsonResource
             'proposals' => ProposalResource::collection($this->whenLoaded('proposals')),
             'contacts' => TeamContactResource::collection($this->whenLoaded('contacts')),
             'stripeAccount' => new StripeAccountResource($this->whenLoaded('stripeAccount')),
+            'published_proposals_count' => $this->published_proposals_count,
             'created_at' => $this->created_at,
         ];
     }

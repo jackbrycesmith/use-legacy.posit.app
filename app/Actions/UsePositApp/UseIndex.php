@@ -52,7 +52,10 @@ class UseIndex extends Action
 
     protected function teamResource($user)
     {
-        $team = $user->currentTeam()->with(['media', 'stripeAccount'])->first();
+        $team = $user->currentTeam()
+            ->with(['media', 'stripeAccount'])
+            ->withCount(['publishedProposals'])
+            ->first();
 
         return new TeamResource($team);
     }
