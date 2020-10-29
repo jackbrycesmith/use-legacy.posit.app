@@ -1,4 +1,5 @@
 import filters from './filters'
+import TailablePagination from 'tailable-pagination'
 
 export default function (Vue) {
     // External plugins.
@@ -8,4 +9,5 @@ export default function (Vue) {
     // Vue.use(require('./register-components').default)
     // Vue.use(require('./stores').default)
     Vue.use(filters)
+    Vue.use(TailablePagination)
 }

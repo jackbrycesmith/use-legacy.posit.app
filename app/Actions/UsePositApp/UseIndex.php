@@ -2,7 +2,6 @@
 
 namespace App\Actions\UsePositApp;
 
-use App\Http\Resources\OrganisationResource;
 use App\Http\Resources\ProposalResource;
 use App\Http\Resources\TeamResource;
 use Illuminate\Routing\Router;
@@ -45,15 +44,25 @@ class UseIndex extends Action
      */
     public function handle()
     {
-        $team = $this->user()->currentTeam()->with(['proposals', 'media', 'stripeAccount'])->first();
-
-        return $team;
+        return response()->inertiable('Use/Index', [
+            'team' => fn() => $this->teamResource($this->user()),
+            'proposals' => fn() => $this->proposalsResource($this->user())
+        ]);
     }
 
-    public function response($team)
+    protected function teamResource($user)
     {
-        return response()->inertiable('Use/Index', [
-            'org' => new TeamResource($team),
-        ]);
+        $team = $user->currentTeam()->with(['media', 'stripeAccount'])->first();
+
+        return new TeamResource($team);
+    }
+
+    protected function proposalsResource($user)
+    {
+        $proposals = $user->currentTeam->proposals()
+            ->with(['recipient'])
+            ->paginate(10);
+
+        return ProposalResource::collection($proposals);
     }
 }
