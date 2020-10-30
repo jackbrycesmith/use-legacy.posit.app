@@ -15,7 +15,7 @@
           <button
             @click="handleExtraCloseButtonHit"
             class="absolute bottom-0 top-0 right-0 bg-white inline-block h-20 my-auto rounded-l-full w-7 shadow focus:outline-none focus:shadow-xl">
-            <svg class="h-5 w-5 ml-1 text-primary-yellow-500 animate-pulse" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M15 19l-7-7 7-7"></path></svg>
+            <svg class="h-5 w-5 ml-1 text-primary-yellow-500 animate-wave" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M15 19l-7-7 7-7"></path></svg>
           </button>
         </div>
       </div>
