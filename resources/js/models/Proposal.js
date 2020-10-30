@@ -34,6 +34,10 @@ export default class Proposal extends Model {
     return ['proposal_published', 'proposal_accepted', 'proposal_expired'].includes(this.status)
   }
 
+  get is_editable () {
+    return ['proposal_draft'].includes(this.status)
+  }
+
   get creator_name () {
     return get(this.creator, 'name')
   }

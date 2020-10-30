@@ -49,6 +49,12 @@ import PositBlockNode from '@/PositEditor/Nodes/PositBlockNode'
 import PositLayoutDocOne from '@/PositEditor/Nodes/PositLayoutDocOne'
 
 export default {
+  props: {
+    editable: {
+      type: Boolean,
+      default: true
+    }
+  },
   components: {
     EditorContent,
     EditorNewLineFloatingMenu,
@@ -58,6 +64,7 @@ export default {
     return {
       keepInBounds: true,
       editor: new Editor({
+        editable: this.editable,
         editorProps: {
           attributes: {
             class: 'outline-none space-y-2/12'
@@ -98,6 +105,13 @@ export default {
         onDrop: this.onEditorDrop,
       })
     }
+  },
+  watch: {
+    editable() {
+      this.editor.setOptions({
+        editable: this.editable,
+      })
+    },
   },
   methods: {
     onEditorInit ({ state, view }) {

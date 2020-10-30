@@ -8,6 +8,7 @@
 
     <ProposalContentSection
       ref="content"
+      :editable="editorMachineContext.canEdit"
       @update="handleContentUpdate"/>
 
     <ProposalClosingSection
@@ -30,6 +31,7 @@
 </template>
 
 <script>
+import { interpret } from 'xstate'
 import { ProposalSlideOver } from '@/SlideOvers/ProposalSlideOver'
 import FirstWelcomeModal from '@/Modals/FirstWelcomeModal'
 import ProposalOpeningSection from '@/Components/ProposalOpeningSection'
@@ -38,6 +40,7 @@ import ProposalClosingSection from '@/Components/ProposalClosingSection'
 import LoginModal from '@/Modals/LoginModal'
 import Proposal from '@/models/Proposal'
 import ProposalBackHome from '@/Components/ProposalBackHome'
+import { proposalEditorMachine } from '@/machines/proposalEditorMachine'
 import { debounce } from 'lodash-es'
 
 export default {
@@ -60,8 +63,23 @@ export default {
       }
     }
   },
+  created () {
+    this.editorMachineService
+      .onTransition(state => {
+        this.editorMachineCurrentState = state
+        this.editorMachineContext = state.context
+      })
+      .start()
+
+    this.setupInitialMachineContext()
+  },
   data () {
+    const machine = proposalEditorMachine.withConfig({})
+
     return {
+      editorMachineService: interpret(machine, { devTools: true }),
+      editorMachineCurrentState: machine.initialState,
+      editorMachineContext: machine.context,
       proposal__: Proposal.make(),
     }
   },
@@ -91,9 +109,21 @@ export default {
           )
         })
       }
-    }
+    },
+    'proposal__.is_editable': {
+      handler (value) {
+        this.handleEditableEventSend(value)
+      }
+    },
   },
   methods: {
+    setupInitialMachineContext () {
+      this.handleEditableEventSend(this.proposal__.is_editable)
+    },
+    handleEditableEventSend (value) {
+      const event = value ? 'CAN_EDIT' : 'CANNOT_EDIT'
+      this.editorMachineService.send(event)
+    },
     handleContentUpdate ({ state, getHTML, getJSON, transaction }) {
       this.updateContentOnServer({ payload: getJSON(), vm: this })
     },
