@@ -6,7 +6,6 @@ import PortalVue from 'portal-vue'
 import Fragment from 'vue-fragment'
 import VueMeta from 'vue-meta'
 import Vue from 'vue'
-import store from '@/store'
 import axios from 'axios'
 import vClickOutside from 'v-click-outside'
 import { inspect } from "@xstate/inspect"
@@ -49,15 +48,14 @@ const app = document.getElementById('app')
 
 if (isDev) {
   // xstate devtools...
-  // inspect({
-  //   iframe: false
-  // })
+  inspect({
+    iframe: false
+  })
 }
 
 new Vue({
-  store,
   metaInfo: {
-    titleTemplate: (title) => title ? `${title} – Posit.app` : 'Posit.app'
+    titleTemplate: (title) => title ? `${title} | posit.app` : 'Posit.app'
   },
   render: h => h(InertiaApp, {
     props: {

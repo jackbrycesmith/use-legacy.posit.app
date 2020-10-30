@@ -64,7 +64,6 @@ mix.js('resources/js/app.js', 'public/js').vue({
 //   '@ethersproject/hdnode',
 //   'eciesjs',
 //   'vue',
-//   'vuex',
 // ])
 // .sourceMaps()
 

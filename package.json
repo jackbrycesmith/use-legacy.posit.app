@@ -8,9 +8,9 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@inertiajs/inertia": "^0.4.1",
-        "@inertiajs/inertia-vue": "^0.3.2",
-        "@inertiajs/progress": "^0.1.2",
+        "@inertiajs/inertia": "^0.6.1",
+        "@inertiajs/inertia-vue": "^0.4.1",
+        "@inertiajs/progress": "^0.2.1",
         "@stripe/stripe-js": "^1.8.0",
         "@tailwindcss/typography": "^0.1.4",
         "@tailwindcss/ui": "^0.5.0",
@@ -51,7 +51,6 @@
         "tiptap-extensions": "^1.33.0",
         "tiptap-utils": "^1.11.0",
         "v-click-outside": "^3.0.1",
-        "v-shared-element": "^2.1.0",
         "verbal-expressions": "^1.0.2",
         "videojs-record": "github:jalt007/videojs-record#01e8213",
         "vue": "^2.6.11",
@@ -60,7 +59,6 @@
         "vue-meta": "^2.4.0",
         "vue-smooth-reflow": "^0.1.12",
         "vue-template-compiler": "^2.6.11",
-        "vuex": "^3.5.1",
         "webpack-livereload-plugin": "^1.2.0",
         "worker-loader": "^2.0.0",
         "xstate": "^4.13.0"
