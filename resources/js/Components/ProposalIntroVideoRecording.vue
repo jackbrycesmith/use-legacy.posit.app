@@ -88,7 +88,6 @@
 
 <script>
 import { BaseVideoRecord } from '@/Components/BaseVideoRecord'
-import { snapshotCache } from '@/plugins/SharedElementPlugin'
 import { illusory } from 'illusory'
 import IconVideoMessage from '@/Components/IconVideoMessage'
 import IconHeroiconsMediumCog from '@/Icons/IconHeroiconsMediumCog'

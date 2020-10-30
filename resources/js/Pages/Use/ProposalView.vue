@@ -12,7 +12,7 @@
 
     <ProposalClosingSection
       class="mt-36"
-      :proposal="proposal__"/>
+      :proposal="proposal__" />
 
     <ProposalBackHome
       class="fixed top-5 left-5"/>
@@ -37,7 +37,6 @@ import ProposalContentSection from '@/Components/ProposalContentSection'
 import ProposalClosingSection from '@/Components/ProposalClosingSection'
 import LoginModal from '@/Modals/LoginModal'
 import Proposal from '@/models/Proposal'
-import proposalViewStore from '@/stores/proposalViewStore'
 import ProposalBackHome from '@/Components/ProposalBackHome'
 import { debounce } from 'lodash-es'
 
