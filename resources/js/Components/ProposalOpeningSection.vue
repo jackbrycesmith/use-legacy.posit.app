@@ -5,6 +5,7 @@
       class="outline-none max-w-screen-xl text-center text-4xl tracking-tight leading-10 font-extrabold text-gray-900 sm:text-5xl sm:leading-none md:text-6xl"
       tag="h1"
       :model.sync="title"
+      :is-content-editable="editable"
       @live-edit="handleLiveEditedName"
       @edit-done="handleEditTitleDone" />
 
@@ -37,7 +38,11 @@ import ProposalIntroVideoRecording from '@/Components/ProposalIntroVideoRecordin
 
 export default {
   props: {
-    proposal: { type: Object }
+    proposal: { type: Object },
+    editable: {
+      type: Boolean,
+      default: true
+    }
   },
   components: {
     ContentEditable, ProposalRecipientSelector, ProposalIntroVideoRecording

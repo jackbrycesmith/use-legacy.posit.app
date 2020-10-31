@@ -2,6 +2,7 @@
   <fragment>
     <ProposalOpeningSection
       class="mb-36"
+      :editable="editorMachineContext.canEdit"
       :proposal.sync="proposal__"
       @live-edit-name="handleLiveEditedName"
       @edit-title-done="handleEditTitleDone"/>

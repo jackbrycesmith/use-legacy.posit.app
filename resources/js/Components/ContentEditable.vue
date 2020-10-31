@@ -38,11 +38,14 @@ export default {
   },
   methods: {
     onEdit (evt) {
+      if (!this.isContentEditable) return
+
       this.$emit('update:model', evt.target.innerText)
       this.$emit('edit-done', evt.target.innerText)
     },
     onLiveEdit (evt) {
       if (!this.liveUpdateModel) return
+      if (!this.isContentEditable) return
 
       this.$emit('update:model', evt.target.innerText)
       this.$emit('live-edit', evt.target.innerText)
