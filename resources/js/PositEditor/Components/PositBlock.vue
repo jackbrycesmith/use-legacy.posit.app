@@ -28,10 +28,6 @@
         ❌
       </button>
 
-      <button @click="handleToggleExpand" :contenteditable="false" class="absolute top-0 -mb-13 bg-white" style="right: 45%;">
-        🔁
-      </button>
-
       <button @click="handleAddBlockBelow" :contenteditable="false" class="absolute bottom-0 -mb-2 bg-white" style="left: 50%; right: 50%;">
         ➕
       </button>
