@@ -20,8 +20,7 @@
 
     <ProposalSlideOver
       ref="proposalSlideOver"
-      :proposal.sync="proposal__"
-      @updatePressed="handleUpdatePressed"/>
+      :proposal.sync="proposal__"/>
 
     <!-- Modals -->
     <FirstWelcomeModal ref="firstWelcomeModal"/>
@@ -125,6 +124,8 @@ export default {
       this.editorMachineService.send(event)
     },
     handleContentUpdate ({ state, getHTML, getJSON, transaction }) {
+      if (!this.editorMachineContext.canEdit) return
+
       this.updateContentOnServer({ payload: getJSON(), vm: this })
     },
     updateContentOnServer: debounce(async ({ payload, vm }) => {
@@ -134,18 +135,14 @@ export default {
       )
       console.log('updateContentOnServer response: ', response)
     }, 1000),
-    async handleUpdatePressed () {
-      // TODO this is not production ready
-      const response = this.$http.put(
-        this.$route('use.submit.upsert-proposal-content', { proposal: this.proposalUuid }),
-        this.$refs.content.editor.getJSON()
-      )
-      console.log(response)
-    },
     handleEditTitleDone (name) {
+      if (!this.editorMachineContext.canEdit) return
+
       this.updateNameOnServer({ payload: { name }, vm: this })
     },
     handleLiveEditedName (name) {
+      if (!this.editorMachineContext.canEdit) return
+
       this.updateNameOnServer({ payload: { name }, vm: this })
     },
     updateNameOnServer: debounce(async ({ payload, vm }) => {
