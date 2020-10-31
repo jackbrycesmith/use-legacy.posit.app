@@ -122,6 +122,7 @@
                 :is="bodyComponent"
                 :proposal="proposal"
                 :state="contentCurrentState"
+                :proposal-editor-machine-state="proposalEditorMachineState"
                 class="absolute inset-0"
                 @back-to-default-view="contentMachineService.send('BACK_TO_DEFAULT_VIEW')"
                 @publish="contentMachineService.send('PUBLISH')" />
@@ -200,7 +201,8 @@ export default {
     ProposalConfirmView,
   },
   props: {
-    proposal: { type: Object }
+    proposal: { type: Object },
+    proposalEditorMachineState: {}
   },
   created () {
     this.contentMachineService

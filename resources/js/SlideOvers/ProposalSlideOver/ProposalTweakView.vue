@@ -38,6 +38,7 @@
               <InputWithCurrency
                 :currency-model.sync="proposal.value_currency_code"
                 :amount-model.sync="proposal.value_amount"
+                :editable="proposalEditorMachineState.context.canEdit"
                 :max="999999999"
                 label="Project Value"
                 @changed="handleUpdateProjectValue"
@@ -79,7 +80,8 @@ export default {
     TabPane
   },
   props: {
-    proposal: { type: Object }
+    proposal: { type: Object },
+    proposalEditorMachineState: {}
   },
   data () {
     return {

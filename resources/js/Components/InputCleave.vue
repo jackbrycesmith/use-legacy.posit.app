@@ -1,5 +1,8 @@
 <template>
-  <input type="text" @keyup="updateValue">
+  <input
+    :disabled="!editable"
+    type="text"
+    @keyup="updateValue">
 </template>
 
 <script>
@@ -9,6 +12,10 @@ export default {
   props: {
     value: {},
     options: {},
+    editable: {
+      type: Boolean,
+      default: true
+    },
   },
   mounted() {
    this.cleave = new Cleave(this.$el, this.options)
@@ -22,6 +29,8 @@ export default {
   },
   methods: {
     updateValue() {
+      if (!this.editable) return
+
       var val = this.cleave.getRawValue()
 
       if (val !== this.value) {

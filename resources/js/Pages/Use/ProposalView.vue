@@ -21,6 +21,7 @@
 
     <ProposalSlideOver
       ref="proposalSlideOver"
+      :proposal-editor-machine-state="editorMachineCurrentState"
       :proposal.sync="proposal__"/>
 
     <!-- Modals -->

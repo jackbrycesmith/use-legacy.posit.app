@@ -2,6 +2,8 @@
   <div>
     <label :for="inputLabelId" class="block text-sm leading-5 font-medium text-gray-600">
       {{ label }}
+
+      <slot name="label-append" />
     </label>
     <div class="mt-1 relative rounded-md shadow-sm">
       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -13,11 +15,13 @@
       <InputCleave
         :id="inputLabelId"
         v-model="amount"
+        :editable="editable"
         :options="{
           numeral: true,
           numeralPositiveOnly: true,
           numeralThousandsGroupStyle: 'thousand'
         }"
+        :class="{ 'cursor-not-allowed': !editable }"
         class="form-input block w-full pl-7 pr-12 sm:text-sm sm:leading-5"
         placeholder="0.00"
         />
@@ -26,9 +30,9 @@
         <select
           v-model="selectedCurrencyCode"
           aria-label="Currency"
-          :disabled="!canSwitchCurrency"
+          :disabled="isCurrencySwitchDisabled"
           :style="selectCurrencyStyleObject"
-          :class="canSwitchCurrency ? `pr-7 cursor-pointer` : `pr-2`"
+          :class="isCurrencySwitchDisabled ? `pr-2` : `pr-7 cursor-pointer`"
           class="form-select h-full py-0 pl-2 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
 
           <option
@@ -105,6 +109,10 @@ export default {
       type: Number,
       default: 1000
     },
+    editable: {
+      type: Boolean,
+      default: true
+    },
     canSwitchCurrency: {
       type: Boolean,
       default: true
@@ -118,6 +126,9 @@ export default {
     }, this.notifyChangeDebounceMs)
   },
   computed: {
+    isCurrencySwitchDisabled () {
+      return !this.editable || !this.canSwitchCurrency
+    },
     inputLabelId () {
       return snakeCase(this.label)
     },
@@ -125,7 +136,7 @@ export default {
       return find(this.currencies, { code: this.selectedCurrencyCode })
     },
     selectCurrencyStyleObject () {
-      if (this.canSwitchCurrency) return {}
+      if (!this.isCurrencySwitchDisabled) return {}
 
       return {
         backgroundImage: 'none'
