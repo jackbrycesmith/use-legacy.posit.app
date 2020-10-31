@@ -47,6 +47,7 @@
               <!-- Deposit -->
               <ProposalDepositConfigure
                 :proposal="proposal"
+                :editable="proposalEditorMachineState.context.canEdit"
                 class="space-y-1"
               />
 
@@ -101,6 +102,8 @@ export default {
   },
   methods: {
     async handleUpdateProjectValue () {
+      if (!this.proposalEditorMachineState.context.canEdit) return
+
       try {
         await this.proposal.updateProjectValue()
       } catch (e) {

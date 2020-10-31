@@ -58,6 +58,7 @@
                 :currency-model="proposal.value_currency_code"
                 :amount-model.sync="proposal.deposit_amount"
                 :max="999999999"
+                :editable="editable"
                 :can-switch-currency="false"
                 label="Amount"
                 @changed="handleUpdateDepositAmount"
@@ -106,7 +107,11 @@ export default {
     InputWithCurrency
   },
   props: {
-    proposal: { type: Object }
+    proposal: { type: Object },
+    editable: {
+      type: Boolean,
+      default: true
+    },
   },
   data () {
     return {
@@ -123,6 +128,8 @@ export default {
   },
   methods: {
     async handleUpdateDepositAmount () {
+      if (!this.editable) return
+
       try {
         await this.proposal.updateDepositAmount()
       } catch (e) {
