@@ -142,6 +142,8 @@ export default {
       console.log(params)
     },
     handleControlHitUp ({ node, view, startPos }) {
+      if (!this.editable) return
+
       console.log(`handleControlHitUp`, node, view, startPos)
       const pos = startPos
       const { nodeBefore } = view.state.doc.resolve(pos)
@@ -168,6 +170,8 @@ export default {
       view.dispatch(transactionMoveNodeUp)
     },
     handleControlHitDown ({ node, view, startPos }) {
+      if (!this.editable) return
+
       // TODO this whole thing is broken and I dont know why...
       console.log(`handleControlHitDown`, node, view, startPos)
       const pos = startPos
@@ -187,16 +191,19 @@ export default {
       view.dispatch(transactionMoveNodeDown)
     },
     handleAddBlockAbove ({ node, view, startPos }) {
+      if (!this.editable) return
       console.log('handleAddBlockAbove')
       const transaction = view.state.tr.insert(startPos, this.editor.schema.node("posit_block", null, [this.editor.schema.node("paragraph")]))
       view.dispatch(transaction)
     },
     handleAddBlockBelow ({ node, view, startPos }) {
+      if (!this.editable) return
       console.log('handleAddBlockBelow: ', node, view, startPos)
       const transaction = view.state.tr.insert(startPos + node.nodeSize, this.editor.schema.node("posit_block", null, [this.editor.schema.node("paragraph")]))
       view.dispatch(transaction)
     },
     handleDeleteBlock ({ node, view, startPos }) {
+      if (!this.editable) return
       console.log('handleDeleteBlock: ', node, view, startPos)
       const transaction = view.state.tr.replace(startPos, startPos + node.nodeSize)
       view.dispatch(transaction)
