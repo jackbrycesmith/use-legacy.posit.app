@@ -1,8 +1,10 @@
 <?php
 
 use App\Actions\Team\CreateDraftProposal;
+use App\Models\Proposal;
 use App\Models\Team;
 use App\Models\User;
+use Illuminate\Support\Facades\Event;
 use function Tests\actingAs;
 
 test('updating proposal value requires proposal exist', function () {
@@ -33,6 +35,29 @@ test('user cannot update proposal value if not a team member', function () {
 
     $response->assertStatus(403);
 });
+
+test('user cannot update proposal value in certain statuses', function ($status) {
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
+    $proposal = (new CreateDraftProposal)->actingAs($user)->run([
+        'team' => $team
+    ]);
+
+    Event::fake();
+    $proposal->setStatus($status);
+
+    $response = actingAs($user)->putJson(
+        route('use.submit.upsert-proposal-value', ['proposal' => $proposal]),
+        [
+            'value_amount' => 1,
+            'value_currency_code' => 'GBP',
+        ]
+    );
+
+    $response->assertStatus(403);
+})->with([
+    ...Proposal::CANNOT_UPDATE_STATUSES
+]);
 
 test('user cannot update proposal value if missing params', function () {
     $user = User::factory()->create();

@@ -64,6 +64,11 @@ class ProposalPolicy
             return Response::deny('You do not have permission to view this proposal.');
         }
 
+
+        if (in_array($status = $proposal->status, Proposal::CANNOT_UPDATE_STATUSES)) {
+            return Response::deny("Cannot update proposal when in status: {$status}.");
+        }
+
         return Response::allow();
     }
 

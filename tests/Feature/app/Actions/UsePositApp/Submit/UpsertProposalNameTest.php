@@ -1,8 +1,10 @@
 <?php
 
 use App\Actions\Team\CreateDraftProposal;
+use App\Models\Proposal;
 use App\Models\Team;
 use App\Models\User;
+use Illuminate\Support\Facades\Event;
 use function Tests\actingAs;
 
 test('proposal must exist to update the name', function () {
@@ -40,7 +42,29 @@ test('user cannot update proposal name if not a team member', function () {
     $response->assertStatus(403);
 });
 
-test('user cannot update proposal name', function () {
+test('user cannot update proposal name in certain statuses', function ($status) {
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
+    $proposal = (new CreateDraftProposal)->actingAs($user)->run([
+        'team' => $team
+    ]);
+
+    Event::fake();
+    $proposal->setStatus($status);
+
+    $response = actingAs($user)->putJson(
+        route('use.submit.upsert-proposal-name', ['proposal' => $proposal]),
+        [
+            'name' => 'Name'
+        ]
+    );
+
+    $response->assertStatus(403);
+})->with([
+    ...Proposal::CANNOT_UPDATE_STATUSES
+]);
+
+test('user cann update proposal name', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([

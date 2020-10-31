@@ -1,8 +1,10 @@
 <?php
 
 use App\Actions\Team\CreateDraftProposal;
+use App\Models\Proposal;
 use App\Models\Team;
 use App\Models\User;
+use Illuminate\Support\Facades\Event;
 use function Tests\actingAs;
 
 test('updating proposal content requires proposal exist', function () {
@@ -33,6 +35,30 @@ test('user cannot update proposal content if not a team member', function () {
 
     $response->assertStatus(403);
 });
+
+test('user cannot update proposal content in certain statuses', function ($status) {
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
+    $proposal = (new CreateDraftProposal)->actingAs($user)->run([
+        'team' => $team
+    ]);
+
+    Event::fake();
+    $proposal->setStatus($status);
+
+    $proposalContent = [
+        'hi' => 'hello'
+    ];
+
+    $response = actingAs($user)->put(
+        route('use.submit.upsert-proposal-content', ['proposal' => $proposal]),
+        $proposalContent
+    );
+
+    $response->assertStatus(403);
+})->with([
+    ...Proposal::CANNOT_UPDATE_STATUSES
+]);
 
 test('user can update proposal content if a team member', function () {
     // TODO this isn't production ready; need to validate inputs etc...

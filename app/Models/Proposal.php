@@ -102,6 +102,14 @@ class Proposal extends Model implements HasMedia
     const ALLOWED_STATUSES = [
         self::STATUS_DRAFT, self::STATUS_PUBLISHED, self::STATUS_ACCEPTED, self::STATUS_EXPIRED, self::STATUS_VOID
     ];
+
+    const CANNOT_UPDATE_STATUSES = [
+        self::STATUS_PUBLISHED,
+        self::STATUS_ACCEPTED,
+        self::STATUS_EXPIRED,
+        self::STATUS_VOID
+    ];
+
     const ALLOWED_VALUE_CURRENCIES = [
         'GBP', 'USD', 'EUR', 'AUD', 'CAD', 'NZD'
     ];
