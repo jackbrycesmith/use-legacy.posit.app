@@ -18,6 +18,7 @@
         </div>
 
         <slot name="controls" />
+        <slot name="overlay" />
       </div>
     </SmoothReflow>
   </div>

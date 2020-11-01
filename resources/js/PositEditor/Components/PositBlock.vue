@@ -63,17 +63,67 @@
         class="prose"
         :contenteditable="view.editable.toString()"/>
     </template>
+
+    <template #overlay>
+
+      <transition
+        enter-active-class="ease-out duration-300"
+        enter-class="transform opacity-0"
+        enter-to-class="transform opacity-100"
+        leave-active-class="ease-in duration-300"
+        leave-class="transform opacity-100"
+        leave-to-class="transform opacity-0">
+
+        <div
+          v-if="isViewEditable && showSettingsOverlay"
+          class="absolute w-full h-full inset-0 rounded-lg cursor-default flex items-center justify-center"
+          @click="toggleSettings"
+          style="background-color: rgba(255,255,255,0.5); backdrop-filter: blur(4px);">
+
+          <span class="relative z-0 inline-flex shadow-sm">
+            <button
+              @click="handleControlHitUp"
+              type="button" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" title="Move card up" aria-label="Move card up">
+              <IconHeroiconsSmallChevronDoubleUp class="h-5 w-5" />
+            </button>
+            <button
+              @click="handleControlHitDown"
+              type="button" class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
+              title="Move card down" aria-label="Move card down">
+              <IconHeroiconsSmallChevronDoubleDown class="h-5 w-5" />
+            </button>
+          </span>
+
+        </div>
+
+      </transition>
+
+      <button
+        v-if="isViewEditable"
+        @click="toggleSettings"
+        class="absolute w-6 h-6 rounded-full top-1 right-1 flex items-center justify-center focus:outline-none text-gray-200 hover:text-gray-400 transition ease-in-out duration-300"
+        title="Toggle Settings">
+        <IconHeroiconsSmallCog class="h-5 w-5" />
+      </button>
+
+    </template>
   </component>
 </template>
 
 <script>
 import PositCardPanel from '@/PositEditor/Components/PositCardPanel'
 import IconHeroiconsSmallPlus from '@/Icons/IconHeroiconsSmallPlus'
+import IconHeroiconsSmallChevronDoubleDown from '@/Icons/IconHeroiconsSmallChevronDoubleDown'
+import IconHeroiconsSmallChevronDoubleUp from '@/Icons/IconHeroiconsSmallChevronDoubleUp'
+import IconHeroiconsSmallCog from '@/Icons/IconHeroiconsSmallCog'
 
 export default {
   components: {
     PositCardPanel,
-    IconHeroiconsSmallPlus
+    IconHeroiconsSmallPlus,
+    IconHeroiconsSmallChevronDoubleDown,
+    IconHeroiconsSmallChevronDoubleUp,
+    IconHeroiconsSmallCog
   },
   // there are some props available
   // `node` is a Prosemirror Node Object
@@ -118,10 +168,14 @@ export default {
   },
   data () {
     return {
-      hasFocus: false
+      hasFocus: false,
+      showSettingsOverlay: false
     }
   },
   methods: {
+    toggleSettings () {
+      this.showSettingsOverlay = !this.showSettingsOverlay
+    },
     collapsedBlockHeaderContent () {
       console.log(this.node)
       return 'this.$refs.content?.innerText'
