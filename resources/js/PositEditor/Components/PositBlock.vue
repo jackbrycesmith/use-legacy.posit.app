@@ -6,31 +6,48 @@
     :view="view"
     :class="blockClass"
     :expanded="expanded"
-    class="relative posit-block"
-    @focus="handlePositBlockFocus">
+    class="relative posit-block">
     <!-- Would be nice for this to be the slot for a dynamic component based on the type.., but not sure if it will work... -->
-    <template #controls v-if="isViewEditable">
-      <button @click="handleControlHitUp" :contenteditable="false" class="absolute top-0 -mt-13" style="left: 50%; right: 50%;">
+    <template #controls>
+<!--       <button @click="handleControlHitUp" :contenteditable="false" class="absolute top-0 -mt-13" style="left: 50%; right: 50%;">
         ⬆️
-      </button>
+      </button> -->
 
-      <button @click="handleControlHitDown" :contenteditable="false" class="absolute bottom-0 -mb-13" style="left: 50%; right: 50%;">
+<!--       <button @click="handleControlHitDown" :contenteditable="false" class="absolute bottom-0 -mb-13" style="left: 50%; right: 50%;">
         ⬇️
-      </button>
+      </button> -->
 
+<!--       <button @click="handleDeleteBlock" :contenteditable="false" class="absolute top-0 -mb-13 bg-white" style="right: 40%;">
+        ❌
+      </button> -->
 
       <!-- TODO template v-if="hasFocus" but it doesnt emit the event -->
-      <button @click="handleAddBlockAbove" :contenteditable="false" class="absolute top-0 -mb-13 bg-white" style="left: 50%; right: 50%;">
-        ➕
-      </button>
 
-      <button @click="handleDeleteBlock" :contenteditable="false" class="absolute top-0 -mb-13 bg-white" style="right: 40%;">
-        ❌
-      </button>
+      <template v-if="isViewEditable">
 
-      <button @click="handleAddBlockBelow" :contenteditable="false" class="absolute bottom-0 -mb-2 bg-white" style="left: 50%; right: 50%;">
-        ➕
-      </button>
+        <div class="absolute top-0 -mt-7 -ml-4 sm:-ml-6 w-full text-center">
+          <!-- Dummy.. -->
+          <span class="bg-white inline-flex items-center justify-center h-7 w-20 rounded-t-full shadow focus:outline-none absolute ml-1" style="z-index: -1;" />
+
+          <button
+            @click="handleAddBlockAbove"
+            class="inline-flex items-center justify-center h-7 w-20 rounded-t-full focus:outline-none">
+            <IconHeroiconsSmallPlus class="h-5 w-5 text-gray-300" />
+          </button>
+        </div>
+
+        <div class="absolute bottom-0 -mb-7 -ml-4 sm:-ml-6 w-full text-center">
+          <!-- Dummy.. -->
+          <span class="bg-white inline-flex items-center justify-center h-7 w-20 rounded-b-full shadow focus:outline-none absolute ml-1" style="z-index: -1;" />
+
+          <button
+            @click="handleAddBlockBelow"
+            class="inline-flex items-center justify-center h-7 w-20 rounded-t-full focus:outline-none">
+            <IconHeroiconsSmallPlus class="h-5 w-5 text-gray-300" />
+          </button>
+        </div>
+
+      </template>
 
     </template>
 
@@ -51,9 +68,13 @@
 
 <script>
 import PositCardPanel from '@/PositEditor/Components/PositCardPanel'
+import IconHeroiconsSmallPlus from '@/Icons/IconHeroiconsSmallPlus'
 
 export default {
-  components: { PositCardPanel },
+  components: {
+    PositCardPanel,
+    IconHeroiconsSmallPlus
+  },
   // there are some props available
   // `node` is a Prosemirror Node Object
   // `updateAttrs` is a function to update attributes defined in `schema`
@@ -63,8 +84,11 @@ export default {
   // `editor` is a reference to the TipTap editor instance
   // `getPos` is a function to retrieve the start position of the node
   // `decorations` is an array of decorations around the node
-  props: ['node', 'updateAttrs', 'view', 'getPos', 'selected', 'decorations'],
+  props: ['node', 'updateAttrs', 'view', 'getPos', 'selected', 'decorations', 'options'],
   computed: {
+    parentIsEditable () {
+      return this.$parent
+    },
     isViewEditable () {
       return this.view?.['editable'] ?? false
     },
@@ -116,8 +140,8 @@ export default {
         startPos: this.getPos()
       })
     },
-    handlePositBlockFocus () {
-      console.log('handlePositBlockFocus')
+    handlePositBlockFocusOut () {
+      console.log('handlePositBlockFocusOut')
     },
     focusChanged (event) {
       if (! (event.target === this.$refs.positblock)) {

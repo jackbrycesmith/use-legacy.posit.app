@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <slot name="controls"/>
+  <div @focusin="hasFocusIn = true" @focusout="hasFocusIn = false">
     <SmoothReflow
       :options="{ property: 'height', transition: 'height .25s ease-in-out' }"
       :contenteditable="isExpanded && view.editable.toString()"
       tag="div"
-      class="bg-white overflow-hidden shadow rounded-lg mx-auto"
+      class="bg-white shadow rounded-lg mx-auto"
       style="max-width: 70ch;">
       <div :contenteditable="isExpanded && view.editable.toString()" class="px-4 py-5 sm:p-6 focus:outline-none relative" style="min-height: 100px;">
 
@@ -18,6 +17,7 @@
           <slot v-if="!isExpanded" name="collapsed-content" v-bind="{ isExpanded }" />
         </div>
 
+        <slot name="controls" />
       </div>
     </SmoothReflow>
   </div>
@@ -41,6 +41,11 @@ export default {
   computed: {
     isExpanded () { return this.expanded }
   },
+  data () {
+    return {
+      hasFocusIn: false
+    }
+  },
   // Could probably pass these down...
   watch: {
     expanded: {
@@ -48,6 +53,11 @@ export default {
       handler (value) {
 
       }
+    }
+  },
+  methods: {
+    handleFocusIn () {
+      console.log('handleFocusIn')
     }
   }
 }
