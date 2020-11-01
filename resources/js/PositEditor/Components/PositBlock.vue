@@ -9,7 +9,7 @@
     class="relative posit-block"
     @focus="handlePositBlockFocus">
     <!-- Would be nice for this to be the slot for a dynamic component based on the type.., but not sure if it will work... -->
-    <template #controls>
+    <template #controls v-if="isViewEditable">
       <button @click="handleControlHitUp" :contenteditable="false" class="absolute top-0 -mt-13" style="left: 50%; right: 50%;">
         ⬆️
       </button>
@@ -65,6 +65,9 @@ export default {
   // `decorations` is an array of decorations around the node
   props: ['node', 'updateAttrs', 'view', 'getPos', 'selected', 'decorations'],
   computed: {
+    isViewEditable () {
+      return this.view?.['editable'] ?? false
+    },
     positComponent () {
       return PositCardPanel
     },
