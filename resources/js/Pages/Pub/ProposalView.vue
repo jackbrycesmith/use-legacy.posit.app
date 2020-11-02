@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { loadStripe } from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js/pure'
 import Proposal from '@/models/Proposal'
 import ProposalOpeningSection from '@/Components/ProposalOpeningSection'
 import ProposalContentSection from '@/Components/ProposalContentSection'
@@ -67,6 +67,7 @@ export default {
     }
   },
   mounted () {
+    loadStripe.setLoadParameters({ advancedFraudSignals: false })
     // setTimeout(async () => {
     //   let stripe = await loadStripe(this.stripe_pub_key, {
     //     stripeAccount: this.proposal.data.stripe_account_id
