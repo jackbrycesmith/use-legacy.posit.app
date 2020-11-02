@@ -2,9 +2,11 @@
   <fragment>
     <ProposalOpeningSection
       class="mb-36"
+      :editable="false"
       :proposal="proposal__" />
 
-    <ProposalContentSection ref="content" />
+    <ProposalContentSectionPublic
+      ref="content" />
 
     <ProposalClosingSection
       class="mt-36"
@@ -19,13 +21,13 @@
 import { loadStripe } from '@stripe/stripe-js/pure'
 import Proposal from '@/models/Proposal'
 import ProposalOpeningSection from '@/Components/ProposalOpeningSection'
-import ProposalContentSection from '@/Components/ProposalContentSection'
+import ProposalContentSectionPublic from '@/Components/ProposalContentSectionPublic'
 import ProposalClosingSection from '@/Components/ProposalClosingSection'
 
 export default {
   components: {
     ProposalOpeningSection,
-    ProposalContentSection,
+    ProposalContentSectionPublic,
     ProposalClosingSection
   },
   props: {
@@ -44,7 +46,8 @@ export default {
     return {
       htmlAttrs: {
         class: ['h-full', this.htmlBgColorClass]
-      }
+      },
+      title: this.proposal__.name
     }
   },
   computed: {
