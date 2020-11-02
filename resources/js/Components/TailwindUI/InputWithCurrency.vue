@@ -50,6 +50,7 @@
 <script>
 import InputCleave from '@/Components/InputCleave'
 import { isNil, find, get, debounce, snakeCase } from 'lodash-es'
+import { defaultCurrencies } from '@/data/currencies'
 
 export default {
   components: {
@@ -66,38 +67,7 @@ export default {
     },
     currencies: {
       type: Array,
-      default: () => [
-        {
-          code: 'GBP',
-          symbol_native: '£',
-          emoji: '🇬🇧'
-        },
-        {
-          code: 'USD',
-          symbol_native: '$',
-          emoji: '🇺🇸'
-        },
-        {
-          code: 'EUR',
-          symbol_native: '€',
-          emoji: '🇪🇺'
-        },
-        {
-          code: 'AUD',
-          symbol_native: '$',
-          emoji: '🇦🇺'
-        },
-        {
-          code: 'CAD',
-          symbol_native: '$',
-          emoji: '🇨🇦'
-        },
-        {
-          code: 'NZD',
-          symbol_native: '$',
-          emoji: '🇳🇿'
-        },
-      ]
+      default: () => [...defaultCurrencies]
     },
     currencyModel: {
       type: String

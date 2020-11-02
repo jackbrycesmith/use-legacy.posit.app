@@ -8,7 +8,8 @@ import OrganisationContact from './OrganisationContact'
 import Video from './Video'
 import { appendOrUpdateData } from '@/utils/data'
 import { initials } from '@/utils/strings'
-import { get, set, head, omitBy, isNil, isEmpty, toArray, words, trim } from 'lodash-es'
+import { defaultCurrencies } from '@/data/currencies'
+import { get, set, head, omitBy, find, isNil, isEmpty, toArray, words, trim } from 'lodash-es'
 
 export default class Proposal extends Model {
 
@@ -118,6 +119,45 @@ export default class Proposal extends Model {
 
   get is_deposit_greater_than_project_value () {
     return this.deposit_amount > this.value_amount
+  }
+
+  get total_amount_display_format () {
+    const locale = isEmpty(navigator.language) ? 'en' : navigator.language
+
+    let formatted
+
+    try {
+      formatted = new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency: this.value_currency_code,
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 0,
+      }).format(this.value_amount)
+    } catch (e) {
+      formatted = this.value_amount
+    }
+
+    return formatted
+  }
+
+  get deposit_amount_display_format () {
+    const amount = this.deposit_amount ?? 0
+
+    const locale = isEmpty(navigator.language) ? 'en' : navigator.language
+    let formatted
+
+    try {
+      formatted = new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency: this.value_currency_code,
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 0,
+      }).format(amount)
+    } catch (e) {
+      formatted = amount
+    }
+
+    return formatted
   }
 
   get to_fix_before_publish () {
