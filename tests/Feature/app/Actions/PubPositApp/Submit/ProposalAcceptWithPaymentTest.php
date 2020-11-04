@@ -79,7 +79,7 @@ it('does not create new stripe checkout session if one exists already', function
         'stripe_account_id' => $stripeAccount->id,
         'stripe_checkout_session_id' => $stripeCheckoutSession->id
     ]);
-})->only();
+});
 
 
 it('creates new stripe checkout session if one does not exist', function () {
@@ -125,4 +125,4 @@ it('creates new stripe checkout session if one does not exist', function () {
         'model_type' => 'proposal_payment',
         'model_id' => $depositPayment->id,
     ]);
-})->only();
+});

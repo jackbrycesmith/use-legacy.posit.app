@@ -21,7 +21,7 @@ class ProposalAcceptWithPayment extends Action
     public static function routes(Router $router)
     {
         $router->domain(pub_posit_domain())
-            ->middleware(['web', 'public.proposal.access'])
+            ->middleware(['web', 'public.proposal.access:ignore-status-check'])
             ->put('/proposal/{proposal:uuid}/accept-with-payment', static::class)
             ->where('proposal', Constant::PATTERN_UUID)
             ->name('pub.proposal.accept-with-payment');
