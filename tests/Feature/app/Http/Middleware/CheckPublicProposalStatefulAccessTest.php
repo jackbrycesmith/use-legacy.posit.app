@@ -51,6 +51,10 @@ test('if no valid proposal access cookie, redirect to public proposal auth page'
 })
 ->with(Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES);
 
+test('ignore-status-check', function () {
+    // TODO: tests & consider refactor of recently added 'ignore-status-check' param
+})->skip();
+
 test('cannot access if authed for team, but not a recipient of the requested proposal', function ($status) {
     $team = Team::factory()->create();
     $proposal = Proposal::factory()->create(['team_id' => $team->id]);

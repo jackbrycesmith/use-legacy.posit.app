@@ -166,6 +166,31 @@ class StripeAccount extends LaravelStripeAccount
     }
 
     /**
+     * Get the payment method types for a stripe checkout session (all that are
+     * active for the account)
+     *
+     * @todo could be done better
+     *
+     * @return array
+     */
+    public function checkoutSessionPaymentMethodTypes(): array
+    {
+        return collect([
+            $this->hasCapability('card_payments') ? 'card' : null,
+            $this->hasCapability('bacs_debit_payments') ? 'bacs_debit' : null,
+            $this->hasCapability('bancontact_payments') ? 'bancontact' : null,
+            $this->hasCapability('eps_payments') ? 'eps' : null,
+            $this->hasCapability('giropay_payments') ? 'giropay' : null,
+            $this->hasCapability('ideal_payments') ? 'ideal' : null,
+            $this->hasCapability('p24_payments') ? 'p24' : null,
+            $this->hasCapability('sofort_payments') ? 'sofort' : null,
+            $this->hasCapability('sepa_debit_payments') ? 'sepa_debit' : null,
+        ])
+        ->filter(fn($value) => !is_null($value))
+        ->toArray();
+    }
+
+    /**
      * Makes a stripe checkout session from their api.
      *
      * @param array $params The parameters

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasStripeCheckoutSession;
 use App\Models\Concerns\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,8 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProposalPayment extends Model
 {
-    use HasFactory;
     use HasUuid;
+    use HasFactory;
+    use HasStripeCheckoutSession;
 
     const TYPE_DEPOSIT = 'deposit';
     const PROVIDER_STRIPE = 'stripe';
@@ -60,5 +62,17 @@ class ProposalPayment extends Model
     public function scopeDeposit($query)
     {
         return $query->where('type', '=', self::TYPE_DEPOSIT);
+    }
+
+    /**
+     * Gets the stripe api amount attribute.
+     *
+     * @see https://stripe.com/docs/currencies#zero-decimal
+     * @todo handle zero decimal currencies e.g. JPY
+     * @return integer The stripe api amount attribute.
+     */
+    public function getStripeApiAmountAttribute(): int
+    {
+        return (int) $this->amount * 100;
     }
 }

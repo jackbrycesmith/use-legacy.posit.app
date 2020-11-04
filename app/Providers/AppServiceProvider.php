@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Proposal;
 use App\Models\ProposalContent;
+use App\Models\ProposalPayment;
 use App\Models\ProposalUser;
 use App\Models\StripeAccount;
 use App\Models\StripeCheckoutSession;
@@ -64,6 +65,7 @@ class AppServiceProvider extends ServiceProvider
             'team_member' => TeamMember::class,
             'proposal' => Proposal::class,
             'proposal_content' => ProposalContent::class,
+            'proposal_payment' => ProposalPayment::class,
             'proposal_user' => ProposalUser::class,
             'stripe_account' => StripeAccount::class,
             'stripe_checkout_session' => StripeCheckoutSession::class,

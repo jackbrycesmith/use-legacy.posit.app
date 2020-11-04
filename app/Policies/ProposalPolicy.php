@@ -124,6 +124,21 @@ class ProposalPolicy
     }
 
     /**
+     * Determine if the proposal can be accepted with a payment.
+     *
+     * @param \App\Models\User|null $user The user
+     * @param \App\Models\Proposal $proposal The proposal
+     *
+     * @return mixed
+     */
+    public function publicAcceptWithPayment(?User $user, Proposal $proposal)
+    {
+        // TODO check proposal state etc...
+        // TODO
+        return true;
+    }
+
+    /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user

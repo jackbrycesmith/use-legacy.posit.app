@@ -18,12 +18,14 @@ class CheckPublicProposalStatefulAccess
      *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $param = null)
     {
         $proposal = $this->resolveProposal($request);
 
-        if (! in_array($proposal->status, Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES)) {
-            return $next($request);
+        if ($param !== 'ignore-status-check') {
+            if (! in_array($proposal->status, Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES)) {
+                return $next($request);
+            }
         }
 
         if ($this->hasValidAccessCookie($request, $proposal)) {
@@ -69,6 +71,7 @@ class CheckPublicProposalStatefulAccess
         $cookie = $request->cookie(PublicProposalAccessCookie::cookieName(
             $proposal->team
         ));
+
         if (is_null($cookie)) return false;
 
         return PublicProposalAccessCookie::isValid($proposal, $cookie);
