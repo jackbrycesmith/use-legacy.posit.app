@@ -70,6 +70,10 @@ export default class Proposal extends Model {
     return route('pub.proposal.view', { proposal: this.uuid }).url()
   }
 
+  get route_pub_accept_with_payment () {
+     return route('pub.proposal.accept-with-payment', { proposal: this.uuid }).url()
+  }
+
   get has_recipient () {
     return !isNil(this.recipient)
   }
