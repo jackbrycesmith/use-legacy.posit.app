@@ -18,7 +18,13 @@ class ProposalPaymentResource extends JsonResource
             'uuid' => $this->uuid,
             'provider' => $this->provider,
             'type' => $this->type,
-            'amount' => $this->amount
+            'amount' => $this->amount,
+            'stripe_checkout_session_id' => $this->whenLoaded('stripeCheckoutSession', function () {
+                return $this->stripeCheckoutSession->id;
+            }),
+            'stripe_account_id' => $this->whenLoaded('stripeCheckoutSession', function () {
+                return $this->stripeCheckoutSession->stripe_account_id;
+            }),
         ];
     }
 }

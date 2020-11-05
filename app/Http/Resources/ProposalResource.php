@@ -29,12 +29,6 @@ class ProposalResource extends JsonResource
             'org' => new TeamResource($this->whenLoaded('team')),
             'users' => UserResource::collection($this->whenLoaded('users')),
             'recipient' => new TeamContactResource($this->whenLoaded('recipient')),
-            'stripe_checkout_session_id' => $this->whenLoaded('stripeCheckoutSession', function () {
-                return $this->stripeCheckoutSession->id;
-            }),
-            'stripe_account_id' => $this->whenLoaded('stripeCheckoutSession', function () {
-                return $this->stripeCheckoutSession->stripe_account_id;
-            }),
             'intro_video' => new VideoResource($this->whenLoaded('video')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
