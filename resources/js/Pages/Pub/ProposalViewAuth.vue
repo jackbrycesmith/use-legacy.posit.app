@@ -1,8 +1,8 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-yellow-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="min-h-screen flex items-center justify-center bg-primary-yellow-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full">
       <div>
-        <img class="mx-auto h-12 w-auto" src="/posit-icon.png" alt="Posit.app logo">
+        <img class="mx-auto h-12 w-auto" src="/posit-icon-2-grey-gold.svg" alt="Posit.app logo">
         <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
           Enter Access Code
         </h2>

@@ -1,6 +1,7 @@
 <template>
   <div class="h-screen flex justify-center items-center">
     <div>
+      <img class="h-24 m-auto mb-3" src="/posit-icon-2-grey-gold.svg"/>
       <h3 class="text-2xl leading-6 font-medium text-gray-900 text-center">
         pub.posit.app
       </h3>

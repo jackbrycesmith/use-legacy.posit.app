@@ -115,41 +115,41 @@ export default {
   },
   methods: {
     onEditorInit ({ state, view }) {
-      console.log('onEditorInit')
-      console.log(state)
-      console.log(view)
+      // console.log('onEditorInit')
+      // console.log(state)
+      // console.log(view)
     },
     onEditorUpdate ({ state, getHTML, getJSON, transaction }) {
       this.$emit('update', { state, getHTML, getJSON, transaction })
     },
     onEditorFocus ({ event,  state, view }) {
       console.log('onEditorFocus')
-      console.log(event, state, view)
+      // console.log(event, state, view)
     },
     onEditorBlur ({ event,  state, view }) {
       console.log('onEditorBlur')
-      console.log(event, state, view)
+      // console.log(event, state, view)
     },
     onEditorPaste () {
-      console.log(`New content was added from the user's clipboard!`)
+      // console.log(`New content was added from the user's clipboard!`)
     },
     onEditorDrop (view, event, slice, moved) {
-      console.log(`onEditorDrop`)
-      console.log(view, event, slice, moved)
+      // console.log(`onEditorDrop`)
+      // console.log(view, event, slice, moved)
     },
     onEditorTransaction (params) {
-      console.log(`onEditorTransaction`)
-      console.log(params)
+      // console.log(`onEditorTransaction`)
+      // console.log(params)
     },
     handleControlHitUp ({ node, view, startPos }) {
       if (!this.editable) return
 
-      console.log(`handleControlHitUp`, node, view, startPos)
+      // console.log(`handleControlHitUp`, node, view, startPos)
       const pos = startPos
       const { nodeBefore } = view.state.doc.resolve(pos)
 
       if (!nodeBefore) {
-        console.log('no node before...')
+        // console.log('no node before...')
         return
       }
 
@@ -157,15 +157,15 @@ export default {
       const newPosition = pos - nodeBefore.nodeSize;
       const from = pos
       const to = pos + node.nodeSize
-      console.log('newPosition: ', newPosition)
-      console.log('from: ', from)
-      console.log('to: ', to)
+      // console.log('newPosition: ', newPosition)
+      // console.log('from: ', from)
+      // console.log('to: ', to)
 
       const transactionMoveNodeUp = view.state.tr
         .replace(from, to)
         .insert(newPosition, node)
 
-      console.log(transactionMoveNodeUp)
+      // console.log(transactionMoveNodeUp)
 
       view.dispatch(transactionMoveNodeUp)
     },
@@ -173,14 +173,14 @@ export default {
       if (!this.editable) return
 
       // TODO this whole thing is broken and I dont know why...
-      console.log(`handleControlHitDown`, node, view, startPos)
+      // console.log(`handleControlHitDown`, node, view, startPos)
       const pos = startPos
 
       const childAfter = view.state.doc.childAfter(startPos + node.nodeSize)
-      console.log('childAfter: ', childAfter)
+      // console.log('childAfter: ', childAfter)
 
       if (childAfter.node == null) {
-        console.log('cannot move down because its the last one/no node after...')
+        // console.log('cannot move down because its the last one/no node after...')
         return
       }
 
@@ -192,19 +192,19 @@ export default {
     },
     handleAddBlockAbove ({ node, view, startPos }) {
       if (!this.editable) return
-      console.log('handleAddBlockAbove')
+      // console.log('handleAddBlockAbove')
       const transaction = view.state.tr.insert(startPos, this.editor.schema.node("posit_block", null, [this.editor.schema.node("paragraph")]))
       view.dispatch(transaction)
     },
     handleAddBlockBelow ({ node, view, startPos }) {
       if (!this.editable) return
-      console.log('handleAddBlockBelow: ', node, view, startPos)
+      // console.log('handleAddBlockBelow: ', node, view, startPos)
       const transaction = view.state.tr.insert(startPos + node.nodeSize, this.editor.schema.node("posit_block", null, [this.editor.schema.node("paragraph")]))
       view.dispatch(transaction)
     },
     handleDeleteBlock ({ node, view, startPos }) {
       if (!this.editable) return
-      console.log('handleDeleteBlock: ', node, view, startPos)
+      // console.log('handleDeleteBlock: ', node, view, startPos)
       const transaction = view.state.tr.replace(startPos, startPos + node.nodeSize)
       view.dispatch(transaction)
     },
