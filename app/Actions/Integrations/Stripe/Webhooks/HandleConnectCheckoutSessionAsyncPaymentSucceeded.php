@@ -2,6 +2,7 @@
 
 namespace App\Actions\Integrations\Stripe\Webhooks;
 
+use App\Actions\Integrations\Stripe\UpdateStripeCheckoutSessionFromWebhook;
 use CloudCreativity\LaravelStripe\Webhooks\ConnectWebhook;
 use Lorisleiva\Actions\Action;
 
@@ -21,6 +22,7 @@ class HandleConnectCheckoutSessionAsyncPaymentSucceeded extends Action
      */
     public function handle()
     {
-        // Execute the action.
+        logger('HandleConnectCheckoutSessionAsyncPaymentSucceeded...');
+        $stripeCheckoutSession = UpdateStripeCheckoutSessionFromWebhook::run($this->webhook);
     }
 }
