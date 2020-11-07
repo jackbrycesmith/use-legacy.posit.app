@@ -64,6 +64,6 @@ class OrgContactUpsert extends Action
             $contact->update(['meta' => $this->validated()]);
         }
 
-        return Redirect::route('use.org.contacts', $org);
+        return Redirect::route('use.team.contacts', $org);
     }
 }
