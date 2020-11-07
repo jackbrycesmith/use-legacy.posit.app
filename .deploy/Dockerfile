@@ -1,5 +1,5 @@
 ARG PHP_VERSION=7.4
-FROM php:${PHP_VERSION}-fpm-alpine
+FROM php:${PHP_VERSION}-fpm-alpine AS system-setup
 
 # Install system dependencies
 RUN apk add --no-cache dcron busybox-suid libcap curl zip unzip git
@@ -8,15 +8,19 @@ RUN apk add --no-cache dcron busybox-suid libcap curl zip unzip git
 COPY --from=ochinchina/supervisord:latest /usr/local/bin/supervisord /usr/local/bin/supervisord
 
 # Install caddy
-COPY --from=caddy:2.0.0 /usr/bin/caddy /usr/local/bin/caddy
+COPY --from=caddy:2.2.1 /usr/bin/caddy /usr/local/bin/caddy
 RUN setcap 'CAP_NET_BIND_SERVICE=+ep' /usr/local/bin/caddy
+
+FROM system-setup AS php-setup
 
 # Install PHP extensions
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 RUN install-php-extensions intl bcmath gd pdo_mysql pdo_pgsql opcache redis uuid exif pcntl zip
 
 # Install composer
-COPY --from=composer:1.10.5 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer/composer:2 /usr/bin/composer /usr/local/bin/composer
+
+FROM php-setup AS app-setup
 
 # Set working directory
 ENV LARAVEL_PATH=/srv/app
@@ -31,8 +35,6 @@ RUN echo "* * * * * /usr/local/bin/php /srv/app/artisan schedule:run >> /dev/nul
 COPY composer.json composer.lock ./
 RUN chown -R www-data:www-data $LARAVEL_PATH
 USER www-data
-# TODO remove prestissimo when composer hits v2
-RUN composer global require hirak/prestissimo --no-plugins --no-scripts
 RUN composer install --prefer-dist --no-scripts --no-dev --no-autoloader
 RUN rm -rf /home/www-data/.composer
 
@@ -80,6 +82,28 @@ ARG PUSHER_APP_ID=${PUSHER_APP_ID}
 ARG PUSHER_APP_KEY=${PUSHER_APP_KEY}
 ARG PUSHER_APP_SECRET=${PUSHER_APP_SECRET}
 ARG PUSHER_APP_CLUSTER=${PUSHER_APP_CLUSTER}
+
+ARG AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+ARG AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+ARG AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+ARG AWS_BUCKET=${AWS_BUCKET}
+ARG AWS_URL=${AWS_URL}
+
+ARG S3_PUBLIC_AWS_ACCESS_KEY_ID=${S3_PUBLIC_AWS_ACCESS_KEY_ID}
+ARG S3_PUBLIC_AWS_SECRET_ACCESS_KEY=${S3_PUBLIC_AWS_SECRET_ACCESS_KEY}
+ARG S3_PUBLIC_AWS_DEFAULT_REGION=${S3_PUBLIC_AWS_DEFAULT_REGION}
+ARG S3_PUBLIC_AWS_BUCKET=${S3_PUBLIC_AWS_BUCKET}
+ARG S3_PUBLIC_AWS_URL=${S3_PUBLIC_AWS_URL}
+
+ARG STRIPE_CLIENT_ID=${STRIPE_CLIENT_ID}
+ARG STRIPE_SECRET=${STRIPE_SECRET}
+ARG STRIPE_KEY=${STRIPE_KEY}
+ARG STRIPE_WEBHOOKS_CONNECT_SIGNING_SECRET=${STRIPE_WEBHOOKS_CONNECT_SIGNING_SECRET}
+
+ARG TELESCOPE_ENABLED=${TELESCOPE_ENABLED}
+ARG DEBUGBAR_ENABLED=${DEBUGBAR_ENABLED}
+
+RUN composer dump-autoload --no-interaction --no-dev --optimize
 
 # Start app
 EXPOSE 80
