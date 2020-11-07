@@ -92,7 +92,8 @@ class ProposalAcceptWithPayment extends Action
             'success_url' => route('pub.proposal.view', ['proposal' => $proposal]),
             'client_reference_id' => $proposal->uuid,
             'payment_intent_data' => [
-                'setup_future_usage' => 'off_session'
+                'setup_future_usage' => 'off_session', // bacs_debit requires this... not sure about others
+                'description' => 'Test description...'
             ],
             'line_items' => [
                 [

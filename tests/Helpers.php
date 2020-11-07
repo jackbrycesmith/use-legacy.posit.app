@@ -8,14 +8,6 @@ use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 
 /**
- * A basic assert example.
- */
-function assertExample(): void
-{
-    test()->assertTrue(true);
-}
-
-/**
  * Dump the content of database table.
  *
  * @param  string|array $tables

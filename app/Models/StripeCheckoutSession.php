@@ -25,8 +25,8 @@ class StripeCheckoutSession extends Model
     protected $casts = [
         'amount_subtotal' => 'integer',
         'amount_total' => 'integer',
-        'line_items' => 'array',
         'payment_method_types' => 'array',
+        'livemode' => 'boolean',
     ];
 
     /**
@@ -77,13 +77,20 @@ class StripeCheckoutSession extends Model
     {
         $this->id = data_get($session, 'id');
         $this->currency = data_get($session, 'currency');
-        $this->success_url = data_get($session, 'success_url');
-        $this->cancel_url = data_get($session, 'cancel_url');
+        $this->mode = data_get($session, 'mode');
+        $this->livemode = (bool) data_get($session, 'livemode');
+        $this->payment_status = data_get($session, 'payment_status');
         $this->amount_subtotal = data_get($session, 'amount_subtotal');
         $this->amount_total = data_get($session, 'amount_total');
         $this->payment_method_types = data_get($session, 'payment_method_types');
 
-        // TODO other things
+        if (($customer = data_get($session, 'customer')) && is_string($customer)) {
+            $this->stripe_customer_id = $customer;
+        }
+
+        if (($paymentIntent = data_get($session, 'payment_intent')) && is_string($paymentIntent)) {
+            $this->stripe_payment_intent_id = $paymentIntent;
+        }
 
         return $this;
     }

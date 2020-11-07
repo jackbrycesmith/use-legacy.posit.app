@@ -18,15 +18,15 @@ class CreateStripeCheckoutSessionsTable extends Migration
             $table->string('id', 255)->primary()->collate(LaravelStripe::ID_DATABASE_COLLATION);
             $table->string('stripe_account_id', 255)->nullable()->collate(LaravelStripe::ID_DATABASE_COLLATION);
             $table->string('stripe_customer_id', 255)->nullable()->collate(LaravelStripe::ID_DATABASE_COLLATION);
+            $table->string('stripe_payment_intent_id', 255)->nullable()->collate(LaravelStripe::ID_DATABASE_COLLATION);
             $table->nullableMorphs('model');
-            $table->string('success_url')->nullable();
-            $table->string('cancel_url')->nullable();
+            $table->string('payment_status')->nullable();
             $table->string('mode')->nullable();
+            $table->boolean('livemode')->default(false);
             $table->string('currency', 3)->nullable();
             $table->unsignedInteger('amount_subtotal')->nullable();
             $table->unsignedInteger('amount_total')->nullable();
             $table->json('payment_method_types')->nullable();
-            $table->json('line_items')->nullable();
             $table->timestamps();
         });
     }
