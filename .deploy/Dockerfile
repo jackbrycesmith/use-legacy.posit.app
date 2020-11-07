@@ -19,6 +19,8 @@ RUN install-php-extensions intl bcmath gd pdo_mysql pdo_pgsql opcache redis uuid
 
 # Install composer
 COPY --from=composer/composer:2 /usr/bin/composer /usr/local/bin/composer
+ARG COMPOSER_AUTH
+ENV COMPOSER_AUTH=${COMPOSER_AUTH}
 
 FROM php-setup AS app-setup
 
