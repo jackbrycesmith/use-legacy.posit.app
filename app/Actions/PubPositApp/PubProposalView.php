@@ -49,16 +49,33 @@ class PubProposalView extends Action
      */
     public function handle(Proposal $proposal)
     {
+        return Inertia::render('Pub/ProposalView', [
+            'proposal' => fn() => $this->proposalResource($proposal),
+            'stripe_pub_key' => fn() => config('services.stripe.key')
+        ]);
+    }
+
+    /**
+     * Returns the proposal resource
+     *
+     * @param \App\Models\Proposal $proposal The proposal
+     *
+     * @return ProposalLiteResource|ProposalResource
+     */
+    protected function proposalResource(Proposal $proposal)
+    {
         if ($proposal->requiresLiteResource()) {
-            $proposalResource = new ProposalLiteResource($proposal);
-        } else {
-            $proposal->loadMissing(['proposalContent', 'stripeCheckoutSession']);
-            $proposalResource = new ProposalResource($proposal);
+            return new ProposalLiteResource($proposal);
         }
 
-        return Inertia::render('Pub/ProposalView', [
-            'proposal' => $proposalResource,
-            'stripe_pub_key' => config('services.stripe.key')
+        $proposal->loadMissing([
+            'proposalContent',
+            'video',
+            'depositPayment',
+            'depositPayment.stripeCheckoutSession',
+            'recipient'
         ]);
+
+        return new ProposalResource($proposal);
     }
 }
