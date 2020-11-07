@@ -28,3 +28,18 @@ html {
     bottom: 0;
     z-index: -1;
 }
+
+.vjs-icon-av-perm::before {
+    content: '' !important;
+    background-size: cover;
+    height: 4rem;
+    width: 4rem;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    right: 50%;
+}
+
+.vjs-icon-av-perm::before{
+  background-image: url('/img/video-record-icon.svg');
+}
