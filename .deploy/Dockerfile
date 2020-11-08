@@ -7,6 +7,10 @@ COPY --from=ochinchina/supervisord:latest /usr/local/bin/supervisord /usr/local/
 COPY --from=caddy:2.2.1 /usr/bin/caddy /usr/local/bin/caddy
 RUN setcap 'CAP_NET_BIND_SERVICE=+ep' /usr/local/bin/caddy
 
+# Install ffmpeg
+COPY --from=mwader/static-ffmpeg:4.3.1-2 /ffmpeg /usr/local/bin/
+COPY --from=mwader/static-ffmpeg:4.3.1-2 /ffprobe /usr/local/bin/
+
 # Install composer
 COPY --from=composer/composer:2 /usr/bin/composer /usr/local/bin/composer
 ARG COMPOSER_AUTH
