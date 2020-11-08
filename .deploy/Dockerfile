@@ -1,8 +1,4 @@
-ARG PHP_VERSION=7.4
-FROM php:${PHP_VERSION}-fpm-alpine AS system-setup
-
-# Install system dependencies
-RUN apk add --no-cache dcron busybox-suid libcap curl zip unzip git
+FROM ghcr.io/jalt007/php-sys-dep:latest AS php-system-setup
 
 # Install supervisord implementation
 COPY --from=ochinchina/supervisord:latest /usr/local/bin/supervisord /usr/local/bin/supervisord
@@ -11,18 +7,12 @@ COPY --from=ochinchina/supervisord:latest /usr/local/bin/supervisord /usr/local/
 COPY --from=caddy:2.2.1 /usr/bin/caddy /usr/local/bin/caddy
 RUN setcap 'CAP_NET_BIND_SERVICE=+ep' /usr/local/bin/caddy
 
-FROM system-setup AS php-setup
-
-# Install PHP extensions
-COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
-RUN install-php-extensions intl bcmath gd pdo_mysql pdo_pgsql opcache redis uuid exif pcntl zip
-
 # Install composer
 COPY --from=composer/composer:2 /usr/bin/composer /usr/local/bin/composer
 ARG COMPOSER_AUTH
 ENV COMPOSER_AUTH=${COMPOSER_AUTH}
 
-FROM php-setup AS app-setup
+FROM php-system-setup AS app-setup
 
 # Set working directory
 ENV LARAVEL_PATH=/srv/app
