@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('cloudflare:reload')->daily();
         $schedule->command('telescope:prune')->daily();
+        $schedule->command('horizon:snapshot')->everyFiveMinutes();
     }
 
     /**
