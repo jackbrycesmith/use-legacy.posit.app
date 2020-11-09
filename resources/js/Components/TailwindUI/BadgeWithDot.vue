@@ -19,6 +19,10 @@ const COLORS = {
     badgeColor: 'bg-indigo-100 text-indigo-800',
     dotColor: 'text-indigo-400'
   },
+  'red': {
+    badgeColor: 'bg-red-100 text-red-800',
+    dotColor: 'text-red-400'
+  },
   'pink': {
     badgeColor: 'bg-pink-100 text-pink-800',
     dotColor: 'text-pink-400'

@@ -9,26 +9,21 @@ import Video from './Video'
 import { appendOrUpdateData } from '@/utils/data'
 import { initials } from '@/utils/strings'
 import { defaultCurrencies } from '@/data/currencies'
+import { mapProposalStatusHuman, mapProposalStatusColor } from '@/data/proposal'
 import { get, set, head, omitBy, find, isNil, isEmpty, toArray, words, trim } from 'lodash-es'
 
 export default class Proposal extends Model {
-
-  status_name_maps () {
-    return {
-      proposal_draft: 'draft',
-      proposal_published: 'published',
-      proposal_accepted: 'accepted',
-      proposal_expired: 'expired',
-      proposal_void: 'void',
-    }
-  }
 
   exists () {
     return this.uuid !== null
   }
 
   get status_name () {
-    return get(this.status_name_maps(), this.status, 'unknown')
+    return get(mapProposalStatusHuman, this.status, 'unknown')
+  }
+
+  get status_color () {
+    return get(mapProposalStatusColor, this.status)
   }
 
   get has_been_published () {
