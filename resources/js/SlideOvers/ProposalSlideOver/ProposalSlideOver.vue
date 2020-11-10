@@ -63,17 +63,9 @@
               </div>
 
               <div class="flex space-x-2 justify-center">
-                <span :title="proposal.creator_name">
-
-                  <div class="inline-flex justify-center items-center h-10 w-10 bg-white text-orange-400 rounded-full shadow-md select-none">
-                    <template v-if="proposal.creator_has_profile_photo">
-                      <img :src="proposal.creator_profile_photo_url" alt="Creato profile photo" class="rounded-full h-9 w-9 object-cover">
-                    </template>
-                    <template v-else>
-                      {{ proposal.creator_initials }}
-                    </template>
-                  </div>
-                </span>
+                <!-- <span :title="proposal.creator_name"> -->
+                  <ProposalCreatorAvatar :proposal="proposal" />
+                <!-- </span> -->
               </div>
             </div>
 
@@ -182,6 +174,7 @@ import { interpret, assign } from 'xstate'
 import ApplicationLogo from '@/Jetstream/ApplicationLogo'
 import BaseSlideOver from '@/SlideOvers/BaseSlideOver'
 import ProposalRecipientSelector from '@/Components/ProposalRecipientSelector'
+import ProposalCreatorAvatar from '@/Components/ProposalCreatorAvatar'
 import BadgeWithDot from '@/Components/TailwindUI/BadgeWithDot'
 import {
   proposalSlideOverContentMachine,
@@ -197,6 +190,7 @@ export default {
     BadgeWithDot,
     BaseSlideOver,
     ProposalRecipientSelector,
+    ProposalCreatorAvatar,
     ProposalTweakView,
     ProposalConfirmView,
   },
