@@ -7,13 +7,13 @@
         </div>
         <h3 class="mt-3 text-gray-900 text-lg truncate leading-5 font-medium">{{ orgContact.name }}</h3>
       </div>
-<!--       <dl class="mt-1 flex-grow flex flex-col justify-between">
-        <dd class="text-gray-500 text-sm leading-5">Add tag</dd>
-        <dd class="mt-3">
-          <span class="px-2 py-1 text-teal-800 text-xs leading-4 font-medium bg-teal-100 rounded-full">Internal Tag</span>
 
-        </dd>
-      </dl> -->
+      <AccessCodeDisplayField
+        :code="orgContact.access_code"
+        label-class="block text-xs font-medium leading-5 text-gray-600 truncate"
+        class="mt-1"
+      />
+
     </div>
     <div class="border-t border-gray-200">
       <div class="-mt-px flex">
@@ -29,7 +29,12 @@
 </template>
 
 <script>
+import AccessCodeDisplayField from '@/Components/AccessCodeDisplayField'
+
 export default {
+  components: {
+    AccessCodeDisplayField
+  },
   props: {
     orgUuid: { type: String },
     orgContact: { type: Object, default: () => {} }
