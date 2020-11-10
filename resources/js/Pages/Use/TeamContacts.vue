@@ -22,7 +22,7 @@
 
         <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 mt-5 mx-5">
           <OrgContactListItem
-            v-for="orgContact in orgContacts"
+            v-for="orgContact in contacts__"
             :key="orgContact.id"
             :org-uuid="org__.uuid"
             :org-contact="orgContact" />
@@ -45,8 +45,10 @@
 <script>
 import Dashboard from '@/Layouts/Dashboard'
 import Organisation from '@/models/Organisation'
+import OrganisationContact from '@/models/OrganisationContact'
 import OrgContactListItem from '@/Lists/OrgContactListItem'
 import TeamDashboardSidebar from '@/Components/TeamDashboardSidebar'
+import { getPayloadData } from '@/utils/data'
 
 export default {
   components: {
@@ -54,26 +56,32 @@ export default {
     OrgContactListItem,
   },
   props: {
-    org: { type: Object }
+    team: { type: Object },
+    contacts: {},
   },
   layout: Dashboard,
   data () {
     return {
-      org__: Organisation.make()
+      org__: Organisation.make(),
+      contacts__: []
     }
   },
   computed: {
-    orgContacts () {
-      return this.org__.contacts ?? []
-    }
+
   },
   watch: {
-    org: {
+    team: {
       immediate: true,
       handler (value) {
         this.org__ = Organisation.make(value)
       }
-    }
+    },
+    contacts: {
+      immediate: true,
+      handler (value) {
+        this.contacts__ = OrganisationContact.make(getPayloadData(value))
+      }
+    },
   },
   methods: {
 

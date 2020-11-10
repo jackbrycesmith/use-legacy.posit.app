@@ -51,6 +51,7 @@ import Proposal from '@/models/Proposal'
 import ProposalDashboardListItem from '@/Lists/ProposalDashboardListItem'
 import GettingStartedWelcome from '@/Components/GettingStartedWelcome'
 import { find } from 'lodash-es'
+import { getPayloadData } from '@/utils/data'
 
 export default {
   components: {
@@ -94,7 +95,7 @@ export default {
     proposals: {
       immediate: true,
       handler (value) {
-        this.proposals__ = Proposal.make(value['data'])
+        this.proposals__ = Proposal.make(getPayloadData(value))
       }
     },
   },

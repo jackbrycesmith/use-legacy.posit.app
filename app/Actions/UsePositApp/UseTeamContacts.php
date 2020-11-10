@@ -2,11 +2,11 @@
 
 namespace App\Actions\UsePositApp;
 
+use App\Http\Resources\TeamContactResource;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
-use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
 class UseTeamContacts extends Action
@@ -30,6 +30,8 @@ class UseTeamContacts extends Action
     /**
      * Determine if the user is authorized to make this action.
      *
+     * @param \App\Models\Team $team The team
+     *
      * @return bool
      */
     public function authorize(Team $team)
@@ -50,14 +52,44 @@ class UseTeamContacts extends Action
     /**
      * Execute the action and return a result.
      *
+     * @param \App\Models\Team $team The team
+     *
      * @return mixed
      */
     public function handle(Team $team)
     {
-        $team->loadMissing(['contacts', 'media']);
-
-        return Inertia::render('Use/OrgContacts', [
-            'org' => new TeamResource($team)
+        return response()->inertiable('Use/TeamContacts', [
+            'team' => fn() => $this->teamResource($team),
+            'contacts' => fn() => $this->contactsResource($team)
         ]);
+    }
+
+    /**
+     * Get the team resource.
+     *
+     * @param \App\Models\Team $team The team
+     *
+     * @return TeamResource The team resource.
+     */
+    protected function teamResource(Team $team)
+    {
+        $team->loadMissing(['media']);
+
+        return new TeamResource($team);
+    }
+
+    /**
+     * Get the contacts resource.
+     *
+     * @param \App\Models\Team $team The team
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    protected function contactsResource(Team $team)
+    {
+        $contacts = $team->contacts()
+            ->paginate(10);
+
+        return TeamContactResource::collection($contacts);
     }
 }
