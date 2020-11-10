@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Team;
+use App\Models\TeamContact;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
@@ -140,6 +141,32 @@ class TeamPolicy
         }
 
         // TODO other proposal creation restrictions...
+        return Response::allow();
+    }
+
+    /**
+     * Determine whether the user can upsert a contact on the model.
+     *
+     * @param \App\Models\User $user The user
+     * @param \App\Models\Team $team The team
+     * @param \App\Models\TeamContact $contact The contact
+     *
+     * @return mixed
+     */
+    public function upsertContact(User $user, Team $team, ?TeamContact $contact)
+    {
+        if (is_null($contact)) {
+            return $user->belongsToTeam($team);
+        }
+
+        if (! $user->belongsToTeam($team)) {
+            return Response::deny('You do not belong to the team.');
+        }
+
+        if ($team->id !== $contact->team_id) {
+            return Response::deny('Contact does not belong to the team.');
+        }
+
         return Response::allow();
     }
 }

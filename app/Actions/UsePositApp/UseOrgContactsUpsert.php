@@ -2,9 +2,9 @@
 
 namespace App\Actions\UsePositApp;
 
-use App\Http\Resources\OrgContactResource;
-use App\Http\Resources\OrganisationResource;
-use App\Models\Organisation;
+use App\Http\Resources\TeamContactResource;
+use App\Http\Resources\TeamResource;
+use App\Models\Team;
 use App\Models\TeamContact;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
@@ -16,16 +16,16 @@ class UseOrgContactsUpsert extends Action
     public static function routes(Router $router)
     {
         $router->domain(use_posit_domain())
-            ->middleware(['web', 'auth'])
-            ->get('/org/{org:uuid}/contacts/add', static::class)
-            ->where('org', Constant::PATTERN_UUID)
-            ->name('use.org.contacts.add');
+            ->middleware(['web', 'auth:sanctum', 'verified'])
+            ->get('/team/{team:uuid}/contacts/add', static::class)
+            ->where('team', Constant::PATTERN_UUID)
+            ->name('use.team.contacts.add');
 
         $router->domain(use_posit_domain())
-            ->middleware(['web', 'auth'])
-            ->get('/org/{org:uuid}/contacts/{contact}/edit', static::class)
-            ->where('org', Constant::PATTERN_UUID)
-            ->name('use.org.contacts.edit');
+            ->middleware(['web', 'auth:sanctum', 'verified'])
+            ->get('/team/{team:uuid}/contacts/{contact}/edit', static::class)
+            ->where('team', Constant::PATTERN_UUID)
+            ->name('use.team.contacts.edit');
     }
 
     /**
@@ -33,9 +33,9 @@ class UseOrgContactsUpsert extends Action
      *
      * @return bool
      */
-    public function authorize(Organisation $org)
+    public function authorize(Team $team, ?TeamContact $contact = null)
     {
-        return $this->can('view', $org);
+        return $this->can('upsertContact', [$team, $contact]);
     }
 
     /**
@@ -43,11 +43,11 @@ class UseOrgContactsUpsert extends Action
      *
      * @return mixed
      */
-    public function handle(Organisation $org, ?TeamContact $contact = null)
+    public function handle(Team $team, ?TeamContact $contact = null)
     {
         return Inertia::render('Use/OrgContactsUpsert', [
-            'org' => new OrganisationResource($org),
-            'contact' => is_null($contact) ? null : new OrgContactResource($contact),
+            'org' => new TeamResource($team),
+            'contact' => is_null($contact) ? null : new TeamContactResource($contact),
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Actions\UsePositApp\Submit;
 
 use App\Models\Organisation;
+use App\Models\Team;
 use App\Models\TeamContact;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
@@ -15,15 +16,15 @@ class OrgContactUpsert extends Action
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth'])
-            ->post('/org/{org:uuid}/contacts/add', static::class)
-            ->where('org', Constant::PATTERN_UUID)
-            ->name('use.org.contacts.add-submit');
+            ->post('/team/{team:uuid}/contacts/add', static::class)
+            ->where('team', Constant::PATTERN_UUID)
+            ->name('use.team.contacts.add-submit');
 
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth'])
-            ->put('/org/{org:uuid}/contacts/{contact}', static::class)
-            ->where('org', Constant::PATTERN_UUID)
-            ->name('use.org.contacts.update');
+            ->put('/team/{team:uuid}/contacts/{contact}', static::class)
+            ->where('team', Constant::PATTERN_UUID)
+            ->name('use.team.contacts.update');
     }
 
     /**
@@ -31,9 +32,9 @@ class OrgContactUpsert extends Action
      *
      * @return bool
      */
-    public function authorize(Organisation $org, ?TeamContact $contact = null)
+    public function authorize(Team $team, ?TeamContact $contact = null)
     {
-        return $this->can('upsertContact', [$org, $contact]);
+        return $this->can('upsertContact', [$team, $contact]);
     }
 
     /**
@@ -53,17 +54,17 @@ class OrgContactUpsert extends Action
      *
      * @return mixed
      */
-    public function handle(Organisation $org, ?TeamContact $contact = null)
+    public function handle(Team $team, ?TeamContact $contact = null)
     {
         // TODO; tests + less naive e.g. saving directly on meta?
         if (is_null($contact)) {
-            $org->contacts()->create([
+            $team->contacts()->create([
                 'meta' => $this->validated()
             ]);
         } else {
             $contact->update(['meta' => $this->validated()]);
         }
 
-        return Redirect::route('use.team.contacts', $org);
+        return Redirect::route('use.team.contacts', $team);
     }
 }

@@ -37,11 +37,11 @@ export default class Organisation extends Model {
   }
 
   get route_contacts_add () {
-    return route('use.org.contacts.add', { org: this.uuid }).url()
+    return route('use.team.contacts.add', { team: this.uuid }).url()
   }
 
   get route_contacts_add_submit () {
-    return route('use.org.contacts.add-submit', { org: this.uuid }).url()
+    return route('use.team.contacts.add-submit', { team: this.uuid }).url()
   }
 
   get route_activity_logs () {
