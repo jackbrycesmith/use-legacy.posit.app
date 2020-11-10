@@ -28,8 +28,8 @@
             <button
               type="submit"
               :disabled="isSubmitting"
-              :class="{ 'cursor-not-allowed': isSubmitting }"
-              class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+              :class="{ 'cursor-wait': isSubmitting }"
+              class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150">
               <span v-if="isSubmitting" class="left-0 inset-y-0 flex items-center pr-3">
                 <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -37,7 +37,7 @@
                 </svg>
               </span>
 
-              Save
+              Save Contact
             </button>
           </span>
         </div>
