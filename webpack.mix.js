@@ -15,7 +15,7 @@ const path = require('path');
  */
 
 if (mix.inProduction()) {
-  require('del')(['public/js/*.worker.js', 'public/js/*.worker.js.LICENSE.txt'])
+  require('del')(['public/js/*.js', 'public/js/*.worker.js.LICENSE.txt'])
 } else {
   mix.sourceMaps()
 }
