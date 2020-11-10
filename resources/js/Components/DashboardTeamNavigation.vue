@@ -17,6 +17,7 @@
     </inertia-link>
 
     <!-- Contacts/Recipients -->
+    <!-- TODO: handle active when matches one of multiple routes -->
     <inertia-link
       :href="org.route_contacts"
       :class="routeIs('use.team.contacts') ? activeNavItemClass : inactiveNavItemClass"
