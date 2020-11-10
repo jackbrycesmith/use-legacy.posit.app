@@ -8,7 +8,7 @@
 
       <!-- Settings List -->
       <div class="lg:min-w-0 lg:flex-1">
-        <div class="pl-4 pr-6 pt-4 pb-4 border-b border-t border-gray-200 sm:pl-6 lg:pl-8 xl:pl-6 xl:pt-6 xl:border-t-0">
+        <div class="pl-4 pr-6 pt-4 pb-4 border-b border-t border-gray-200 sm:pl-6 lg:sticky lg:bg-primary-yellow-50 lg:top-16 lg:z-10 lg:pl-8 xl:pl-6 xl:pt-6 xl:border-t-0">
           <div class="flex items-center">
             <h1 class="flex-1 text-3xl leading-7 font-bold">Contacts</h1>
             <span class="inline-flex rounded-md shadow-sm">
@@ -27,6 +27,12 @@
             :org-uuid="org__.uuid"
             :org-contact="orgContact" />
         </ul>
+
+        <tailable-pagination
+          class="lg:sticky lg:bottom-0 bg-primary-yellow-50 mt-1"
+          :data="contacts"
+          :show-numbers="true"
+          @page-changed="handleTeamContactsPageChanged"/>
 
 
 <!--         <ul class="relative z-0 divide-y divide-gray-200 border-b border-gray-200">
@@ -49,6 +55,7 @@ import OrganisationContact from '@/models/OrganisationContact'
 import OrgContactListItem from '@/Lists/OrgContactListItem'
 import TeamDashboardSidebar from '@/Components/TeamDashboardSidebar'
 import { getPayloadData } from '@/utils/data'
+import { find } from 'lodash-es'
 
 export default {
   components: {
@@ -84,7 +91,17 @@ export default {
     },
   },
   methods: {
+    handleTeamContactsPageChanged (value) {
+      if (value === this.contacts.meta.current_page) return
+      const link = find(this.contacts?.meta?.links ?? [], { 'label': value })
+      if (!link) return
 
-  }
+      this.$inertia.visit(link.url, {
+        only: ['contacts'],
+        preserveState: true,
+        preserveScroll: true
+      })
+    }
+  },
 }
 </script>
