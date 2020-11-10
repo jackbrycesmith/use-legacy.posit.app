@@ -26,8 +26,9 @@ class ProposalPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Proposal  $proposal
+     * @param \App\Models\User  $user
+     * @param \App\Models\Proposal  $proposal
+     *
      * @return mixed
      */
     public function view(User $user, Proposal $proposal)
@@ -54,7 +55,7 @@ class ProposalPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Proposal  $proposal
+     * @param  \App\Models\Proposal  $proposal
      * @return mixed
      */
     public function update(User $user, Proposal $proposal)
@@ -77,7 +78,7 @@ class ProposalPolicy
      * Determine whether the user can publish the proposal.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Proposal  $proposal
+     * @param  \App\Models\Proposal  $proposal
      * @return mixed
      */
     public function publish(User $user, Proposal $proposal)
@@ -141,8 +142,9 @@ class ProposalPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Proposal  $proposal
+     * @param \App\Models\User $user
+     * @param \App\Models\Proposal $proposal
+     *
      * @return mixed
      */
     public function delete(User $user, Proposal $proposal)
@@ -154,7 +156,7 @@ class ProposalPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Proposal  $proposal
+     * @param  \App\Models\Proposal  $proposal
      * @return mixed
      */
     public function restore(User $user, Proposal $proposal)
@@ -166,7 +168,7 @@ class ProposalPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Proposal  $proposal
+     * @param  \App\Models\Proposal  $proposal
      * @return mixed
      */
     public function forceDelete(User $user, Proposal $proposal)
