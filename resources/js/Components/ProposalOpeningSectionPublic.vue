@@ -9,7 +9,7 @@
 
     <ProposalCreatorRecipientMeta :proposal="proposal" />
 
-    <VideoExpandablePlaybackOnly :proposal="proposal" />
+    <VideoExpandablePlaybackOnly v-if="hasReadyIntroVideo" :proposal="proposal" />
 
   </div>
 </template>
@@ -32,6 +32,11 @@ export default {
   data () {
     return {
       title: 'Proposal'
+    }
+  },
+  computed: {
+    hasReadyIntroVideo () {
+      return this.proposal?.intro_video?.has_converted_video ?? false
     }
   },
   watch: {
