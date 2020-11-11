@@ -7,7 +7,7 @@
       :model="title"
       :is-content-editable="false"/>
 
-    <ProposalCreatorRecipientMeta :proposal="proposal" />
+    <ProposalCreatorRecipientMeta :proposal="proposal" :editable="false" />
 
     <VideoExpandablePlaybackOnly v-if="hasReadyIntroVideo" :proposal="proposal" />
 

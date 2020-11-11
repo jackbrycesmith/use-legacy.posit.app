@@ -9,7 +9,7 @@
       @live-edit="handleLiveEditedName"
       @edit-done="handleEditTitleDone" />
 
-    <ProposalCreatorRecipientMeta :proposal.sync="proposal" />
+    <ProposalCreatorRecipientMeta :proposal.sync="proposal" :editable="editable" />
 
     <ProposalIntroVideoRecording :proposal.sync="proposal" />
 

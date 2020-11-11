@@ -20,9 +20,10 @@
           <dd class="order-1">
             <ProposalRecipientSelector
               :can-bounce="false"
+              :editable="editable"
               :proposal.sync="proposal"
               :options="proposal.recipient_options"
-              class="mx-2 h-11"
+              fragment-item-class="mx-2 h-11"
             />
           </dd>
         </div>
