@@ -49,7 +49,7 @@ class ConvertVideoForDownloading implements ShouldQueue
         $directoryToSaveTo = "converted_videos/{$this->video->uuid}";
         $videoPath = "{$directoryToSaveTo}/intro.mp4";
         $posterPath = "{$directoryToSaveTo}/poster.jpg";
-        $toDisk = 's3-local';
+        $toDisk = 's3-private';
 
         // open the uploaded video from the right disk...
         $uploadedVideo = FFMpeg::fromDisk($this->video->tmp_disk)->open($this->video->tmp_path);

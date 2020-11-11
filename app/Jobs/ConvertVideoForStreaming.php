@@ -42,7 +42,7 @@ class ConvertVideoForStreaming implements ShouldQueue
         $lowBitrateFormat  = (new X264('aac', 'libx264'))->setKiloBitrate(500);
 
         $toPath = "converted_videos/{$this->video->uuid}/hls.m3u8";
-        $toDisk = 's3-local';
+        $toDisk = 's3-private';
 
         FFMpeg::fromDisk($this->video->disk)
             ->open($this->video->path)
