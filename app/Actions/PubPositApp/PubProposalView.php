@@ -7,7 +7,6 @@ use App\Http\Resources\ProposalResource;
 use App\Models\Proposal;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
@@ -45,6 +44,8 @@ class PubProposalView extends Action
     /**
      * Execute the action and return a result.
      *
+     * @param \App\Models\Proposal $proposal The proposal
+     *
      * @return mixed
      */
     public function handle(Proposal $proposal)
@@ -70,6 +71,7 @@ class PubProposalView extends Action
 
         $proposal->loadMissing([
             'proposalContent',
+            'creator',
             'video',
             'depositPayment',
             'depositPayment.stripeCheckoutSession',
