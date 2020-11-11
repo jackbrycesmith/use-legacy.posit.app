@@ -15,7 +15,7 @@ export default {
     expandAnimation: { type: Function, default: async () => {} },
     collapseAnimation: { type: Function, default: async () => {} },
     uploadVideo: { type: Function, default: async (videoFileBlob) => {
-      console.log('uploadVideo asfsdfds sd.fsdf')
+      console.log('uploadVideo...')
     }},
 
     // Xstate Guards
@@ -42,7 +42,6 @@ export default {
       },
       actions: {
         setUploadingContext: assign((context, event) => {
-          console.log('setUploadingContext')
           context.isUploading = true
           context.uploadFailed = false
         }),
@@ -64,8 +63,6 @@ export default {
           context.recordedFile = event.payload
         }),
         uploadVideo: assign(async (context, event) => {
-          console.log('uploadVideo DO')
-
           try {
             await this.uploadVideo(context.recordedFile)
             this.sendEvent('UPLOAD_SUCCESS')
@@ -98,9 +95,6 @@ export default {
   methods: {
     sendEvent(event) {
       this.machineService.send(event)
-    },
-    test () {
-      console.log('testtyy')
     },
     async expandAnimation__ () {
       console.log('expandAnimation__')

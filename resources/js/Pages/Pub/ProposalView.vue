@@ -1,6 +1,6 @@
 <template>
   <fragment>
-    <ProposalOpeningSection
+    <ProposalOpeningSectionPublic
       class="mb-36"
       :editable="false"
       :proposal="proposal__" />
@@ -26,13 +26,13 @@ import { publicProposalMachine } from '@/machines/publicProposalMachine'
 import { isEmpty } from 'lodash-es'
 import Http from '@/services/Http'
 import Proposal from '@/models/Proposal'
-import ProposalOpeningSection from '@/Components/ProposalOpeningSection'
+import ProposalOpeningSectionPublic from '@/Components/ProposalOpeningSectionPublic'
 import ProposalContentSectionPublic from '@/Components/ProposalContentSectionPublic'
 import ProposalClosingSectionPublic from '@/Components/ProposalClosingSectionPublic'
 
 export default {
   components: {
-    ProposalOpeningSection,
+    ProposalOpeningSectionPublic,
     ProposalContentSectionPublic,
     ProposalClosingSectionPublic
   },
