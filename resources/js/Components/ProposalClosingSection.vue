@@ -20,26 +20,30 @@
       </div>
     </div>
 
-    <div class="mt-4 relative max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 lg:mt-5">
-        <div class="max-w-md mx-auto lg:max-w-5xl">
-            <div class="rounded-lg px-6 sm:p-10 lg:flex lg:items-center">
-                <div class="flex-1">
-                    <div class="mt-4 text-lg leading-7 text-gray-600 text-center">
-                      Please make a payment of <strong class="font-semibold text-gray-900">{{ proposal.deposit_amount_display_format }}</strong> to accept.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <template v-if="!proposal.is_accepted">
+      <div class="mt-4 relative max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 lg:mt-5">
+          <div class="max-w-md mx-auto lg:max-w-5xl">
+              <div class="rounded-lg px-6 sm:p-10 lg:flex lg:items-center">
+                  <div class="flex-1">
+                      <div class="mt-4 text-lg leading-7 text-gray-600 text-center">
+                        Please make a payment of <strong class="font-semibold text-gray-900">{{ proposal.deposit_amount_display_format }}</strong> to accept.
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
 
-    <span class="inline-flex rounded-md shadow-sm mt-4">
-      <button type="submit" class="bg-gray-800 border border-transparent rounded-md py-2 px-4 inline-flex justify-center text-sm leading-5 font-medium text-white hover:bg-gray-700 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray active:bg-gray-900 transition duration-150 ease-in-out">
+      <span class="inline-flex rounded-md shadow-sm mt-4">
+        <button type="submit" class="bg-gray-800 border border-transparent rounded-md py-2 px-4 inline-flex justify-center text-sm leading-5 font-medium text-white hover:bg-gray-700 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray active:bg-gray-900 transition duration-150 ease-in-out">
 
-        <IconHeroiconsSmallCheck class="h-5 w-5 mr-1.5" />
+          <IconHeroiconsSmallCheck class="h-5 w-5 mr-1.5" />
 
-        <span>Accept with Payment</span>
-      </button>
-    </span>
+          <span>Accept with Payment</span>
+        </button>
+      </span>
+    </template>
+
+    <ProposalAcceptedMeta v-if="proposal.is_accepted" />
 
   </div>
 </template>
@@ -48,6 +52,7 @@
 import Proposal from '@/models/Proposal'
 import ContentEditable from '@/Components/ContentEditable'
 import IconHeroiconsMediumArrowNarrowDown from '@/Icons/IconHeroiconsMediumArrowNarrowDown'
+import ProposalAcceptedMeta from '@/Components/ProposalAcceptedMeta'
 import IconHeroiconsSmallCheck from '@/Icons/IconHeroiconsSmallCheck'
 import { isNil } from 'lodash-es'
 
@@ -58,6 +63,7 @@ export default {
   components: {
     ContentEditable,
     IconHeroiconsMediumArrowNarrowDown,
+    ProposalAcceptedMeta,
     IconHeroiconsSmallCheck
   },
   data () {

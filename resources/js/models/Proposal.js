@@ -34,6 +34,10 @@ export default class Proposal extends Model {
     return ['proposal_draft'].includes(this.status)
   }
 
+  get is_accepted () {
+    return this.status === 'proposal_accepted'
+  }
+
   get creator_name () {
     return get(this.creator, 'name')
   }
