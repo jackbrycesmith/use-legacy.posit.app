@@ -52,6 +52,7 @@ class PubProposalView extends Action
     {
         return Inertia::render('Pub/ProposalView', [
             'proposal' => fn() => $this->proposalResource($proposal),
+            'is_limited_view' => fn() => $proposal->requiresLiteResource(),
             'stripe_pub_key' => fn() => config('services.stripe.key')
         ]);
     }

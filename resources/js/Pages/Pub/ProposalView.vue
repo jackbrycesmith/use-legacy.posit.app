@@ -1,18 +1,32 @@
 <template>
   <fragment>
-    <ProposalOpeningSectionPublic
-      class="mb-36"
-      :editable="false"
-      :proposal="proposal__" />
+    <template v-if="is_limited_view">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center h-screen">
+        <div class="max-w-3xl mx-auto my-auto">
+          <ApplicationLogo class="h-10 w-40 mx-auto" />
 
-    <ProposalContentSectionPublic
-      ref="content" />
+          <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
+            Please ask the creator to publish
+          </h2>
+        </div>
+      </div>
+    </template>
 
-    <ProposalClosingSectionPublic
-      class="mt-36"
-      :public-proposal-machine-state="publicProposalMachineCurrentState"
-      :proposal="proposal__"
-      @accept-with-payment="handleAcceptWithPayment"/>
+    <template v-if="!is_limited_view">
+      <ProposalOpeningSectionPublic
+        class="mb-36"
+        :editable="false"
+        :proposal="proposal__" />
+
+      <ProposalContentSectionPublic
+        ref="content" />
+
+      <ProposalClosingSectionPublic
+        class="mt-36"
+        :public-proposal-machine-state="publicProposalMachineCurrentState"
+        :proposal="proposal__"
+        @accept-with-payment="handleAcceptWithPayment"/>
+    </template>
 
     <!-- Modals -->
     <portal-target name="proposal-view-portal" />
@@ -26,6 +40,7 @@ import { publicProposalMachine } from '@/machines/publicProposalMachine'
 import { isEmpty } from 'lodash-es'
 import Http from '@/services/Http'
 import Proposal from '@/models/Proposal'
+import ApplicationLogo from '@/Jetstream/ApplicationLogo'
 import ProposalOpeningSectionPublic from '@/Components/ProposalOpeningSectionPublic'
 import ProposalContentSectionPublic from '@/Components/ProposalContentSectionPublic'
 import ProposalClosingSectionPublic from '@/Components/ProposalClosingSectionPublic'
@@ -34,12 +49,13 @@ export default {
   components: {
     ProposalOpeningSectionPublic,
     ProposalContentSectionPublic,
-    ProposalClosingSectionPublic
+    ProposalClosingSectionPublic,
+    ApplicationLogo
   },
   props: {
     status: { type: String },
     proposal: { type: Object },
-    is_draft: { type: Boolean, default: false },
+    is_limited_view: { type: Boolean, default: true },
     stripe_pub_key: {}
   },
   created () {
