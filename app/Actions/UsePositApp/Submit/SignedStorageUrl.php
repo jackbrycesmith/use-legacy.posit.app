@@ -42,6 +42,8 @@ class SignedStorageUrl extends Action
     /**
      * Execute the action and return a result.
      *
+     * @param \Illuminate\Http\Request $request The request
+     *
      * @return mixed
      */
     public function handle(Request $request)
@@ -49,7 +51,7 @@ class SignedStorageUrl extends Action
         $this->ensureEnvironmentVariablesAreAvailable($request);
 
         $client = $this->storageClient();
-        $bucket = $_ENV['AWS_BUCKET'];
+        $bucket = $_ENV['S3_PRIVATE_BUCKET'];
 
         $uuid = (string) Str::uuid();
 
@@ -74,6 +76,7 @@ class SignedStorageUrl extends Action
      * Ensure the required environment variables are available.
      *
      * @param \Illuminate\Http\Request $request
+     *
      * @return void
      *
      * @throws InvalidArgumentException
@@ -81,11 +84,11 @@ class SignedStorageUrl extends Action
     protected function ensureEnvironmentVariablesAreAvailable(Request $request)
     {
         $missing = array_diff_key(array_flip(array_filter([
-            'AWS_BUCKET',
+            'S3_PRIVATE_BUCKET',
             // $request->input('bucket') ? null : 'AWS_BUCKET',
-            'AWS_DEFAULT_REGION',
-            'AWS_ACCESS_KEY_ID',
-            'AWS_SECRET_ACCESS_KEY'
+            'S3_PRIVATE_DEFAULT_REGION',
+            'S3_PRIVATE_ACCESS_KEY_ID',
+            'S3_PRIVATE_SECRET_ACCESS_KEY'
         ])), $_ENV);
 
         if (empty($missing)) {
@@ -105,15 +108,15 @@ class SignedStorageUrl extends Action
     protected function storageClient()
     {
         return new S3Client([
-            'url' => $_ENV['AWS_URL'],
-            'endpoint' => $_ENV['AWS_URL'],
-            'region' => $_ENV['AWS_DEFAULT_REGION'],
+            'url' => $_ENV['S3_PRIVATE_URL'],
+            'endpoint' => $_ENV['S3_PRIVATE_URL'],
+            'region' => $_ENV['S3_PRIVATE_DEFAULT_REGION'],
             'version' => 'latest',
             'signature_version' => 'v4',
             'use_path_style_endpoint' => true,
             'credentials' => [
-                'key' => $_ENV['AWS_ACCESS_KEY_ID'],
-                'secret' => $_ENV['AWS_SECRET_ACCESS_KEY'],
+                'key' => $_ENV['S3_PRIVATE_ACCESS_KEY_ID'],
+                'secret' => $_ENV['S3_PRIVATE_SECRET_ACCESS_KEY'],
             ]
         ]);
 
@@ -154,7 +157,7 @@ class SignedStorageUrl extends Action
         return $client->getCommand('putObject', array_filter([
             'Bucket' => $bucket,
             'Key' => $key,
-            // TODO add this when using filebase, couldn't get minio to work with it included.
+            // TODO couldn't get minio to work with it included (this isn't needed with filebase as uploading to a private bucket).
             // 'ACL' => $request->input('visibility') ?: $this->defaultVisibility(),
             'ContentType' => $request->input('content_type') ?: 'application/octet-stream',
             'CacheControl' => $request->input('cache_control') ?: null,
