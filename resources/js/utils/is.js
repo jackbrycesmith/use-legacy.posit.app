@@ -9,3 +9,6 @@ import { isNil } from 'lodash-es'
 export function isWebkitSafari() {
   return isNil(navigator.permissions)
 }
+
+export const isDevEnv = process.env.NODE_ENV !== "production"
+
