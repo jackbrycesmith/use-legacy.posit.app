@@ -23,7 +23,7 @@ class CheckPublicProposalStatefulAccess
         $proposal = $this->resolveProposal($request);
 
         if ($param !== 'ignore-status-check') {
-            if (! in_array($proposal->status, Proposal::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES)) {
+            if (in_array($proposal->status, Proposal::PUBLIC_ACCESS_AUTH_BYPASS_STATUSES)) {
                 return $next($request);
             }
         }
@@ -51,7 +51,7 @@ class CheckPublicProposalStatefulAccess
             $request->route()->bindingFieldFor('proposal')
         );
 
-        if (is_null($proposal)) {
+        if (is_null($proposal) || empty($proposal->status)) {
             abort(404);
         }
 
