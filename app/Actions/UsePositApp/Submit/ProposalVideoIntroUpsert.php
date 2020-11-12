@@ -63,8 +63,8 @@ class ProposalVideoIntroUpsert extends Action
 
         $video = $proposal->video()->create([
             'tmp_path' => $tmpFilename,
-            'tmp_size' => Storage::disk('s3-local')->exists($tmpFilename),
-            'tmp_disk' => 's3-local',
+            'tmp_size' => Storage::disk('s3-private')->size($tmpFilename),
+            'tmp_disk' => 's3-private',
         ]);
 
         // TODO dispatch conversion jobs
@@ -87,7 +87,7 @@ class ProposalVideoIntroUpsert extends Action
      */
     protected function ensureTempFileExists(string $filename)
     {
-        if (! Storage::disk('s3-local')->exists($filename)) {
+        if (! Storage::disk('s3-private')->exists($filename)) {
             throw ValidationException::withMessages([
                 'uuid' => ['Temp file does not exist.'],
             ]);

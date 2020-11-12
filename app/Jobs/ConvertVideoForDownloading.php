@@ -13,6 +13,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class ConvertVideoForDownloading implements ShouldQueue
@@ -93,6 +94,7 @@ class ConvertVideoForDownloading implements ShouldQueue
             'path' => $videoPath,
             'poster_path' => $posterPath,
             'poster_disk' => $toDisk,
+            'size' => Storage::disk('s3-private')->size($videoPath),
             'seconds' => $durationSeconds,
             'mime_type' => 'video/mp4',
             'downloadable_at' => now(),
