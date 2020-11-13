@@ -45,9 +45,9 @@ class AppServiceProvider extends ServiceProvider
         $this->setModelObservers();
         $this->setRelationMorphMap();
 
-        if(config('app.env') === 'production') {
-            \URL::forceScheme('https');
-        }
+        // if(config('app.env') === 'production') {
+        //     \URL::forceScheme('https');
+        // }
     }
 
     /**
