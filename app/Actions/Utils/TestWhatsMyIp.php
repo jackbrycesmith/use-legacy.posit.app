@@ -47,7 +47,7 @@ class TestWhatsMyIp extends Action
      */
     public function handle(Request $request)
     {
-        dump($request->ip());
+        dump($request->ip(), $request->headers->all());
     }
 
     /**
