@@ -73,7 +73,7 @@ return [
             'bucket' => env('S3_PUBLIC_BUCKET'),
             'endpoint' => env('S3_PUBLIC_URL'),
             'visibility' => 'public',
-            'use_path_style_endpoint' => true
+            'use_path_style_endpoint' => false
         ],
 
         's3-private' => [
