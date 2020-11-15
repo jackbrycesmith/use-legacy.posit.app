@@ -72,6 +72,7 @@ return [
             'region' => env('S3_PUBLIC_DEFAULT_REGION'),
             'bucket' => env('S3_PUBLIC_BUCKET'),
             'endpoint' => env('S3_PUBLIC_URL'),
+            'proxy' => 'https://s3.fr-par.scw.cloud',
             'visibility' => 'public',
             'use_path_style_endpoint' => true
         ],
