@@ -5,6 +5,7 @@ namespace App\Actions\UsePositApp\Submit;
 use Aws\S3\S3Client;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Lorisleiva\Actions\Action;
@@ -48,10 +49,7 @@ class SignedStorageUrl extends Action
      */
     public function handle(Request $request)
     {
-        $this->ensureEnvironmentVariablesAreAvailable($request);
-
-        $client = $this->storageClient();
-        $bucket = $_ENV['S3_PRIVATE_BUCKET'];
+        [$client, $bucket] = $this->getS3ClientAndUploadBucket();
 
         $uuid = (string) Str::uuid();
 
@@ -66,7 +64,7 @@ class SignedStorageUrl extends Action
             'uuid' => $uuid,
             'bucket' => $bucket,
             'key' => $key,
-            'url' => 'https://'.$uri->getHost().$uri->getPath().'?'.$uri->getQuery(),
+            'url' => $uri->getScheme().'://'.$uri->getHost().$uri->getPath().'?'.$uri->getQuery(),
             'headers' => $this->headers($request, $signedRequest),
         ], 201);
     }
@@ -75,72 +73,63 @@ class SignedStorageUrl extends Action
     /**
      * Ensure the required environment variables are available.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param array $s3DiskConfig The S3 disk configuration
      *
      * @return void
      *
      * @throws InvalidArgumentException
      */
-    protected function ensureEnvironmentVariablesAreAvailable(Request $request)
+    protected function ensureDiskConfigIsCorrect(array $s3DiskConfig)
     {
+        if (Arr::get($s3DiskConfig, 'driver') !== 's3') {
+            throw new InvalidArgumentException("Specified disk is not using the s3 driver.");
+        }
+
         $missing = array_diff_key(array_flip(array_filter([
-            'S3_PRIVATE_BUCKET',
-            // $request->input('bucket') ? null : 'AWS_BUCKET',
-            'S3_PRIVATE_DEFAULT_REGION',
-            'S3_PRIVATE_ACCESS_KEY_ID',
-            'S3_PRIVATE_SECRET_ACCESS_KEY'
-        ])), $_ENV);
+            'endpoint',
+            'bucket',
+            'region',
+            'key',
+            'secret',
+            'bucket',
+        ])), $s3DiskConfig);
 
         if (empty($missing)) {
             return;
         }
 
         throw new InvalidArgumentException(
-            "Unable to issue signed URL. Missing environment variables: ".implode(', ', array_keys($missing))
+            "Unable to issue signed URL. Missing config values: ".implode(', ', array_keys($missing))
         );
     }
 
     /**
-     * Get the S3 storage client instance.
+     * Get the S3 storage client instance, and upload bucket.
      *
-     * @return \Aws\S3\S3Client
+     * @return [\Aws\S3\S3Client, string $bucketName]
+     *
+     * @throws InvalidArgumentException
      */
-    protected function storageClient()
+    protected function getS3ClientAndUploadBucket()
     {
-        return new S3Client([
-            'url' => $_ENV['S3_PRIVATE_URL'],
-            'endpoint' => $_ENV['S3_PRIVATE_URL'],
-            'region' => $_ENV['S3_PRIVATE_DEFAULT_REGION'],
+        $uploadDiskName = config('filesystems.s3_uploads_disk');
+        $s3DiskConfig = config("filesystems.disks.{$uploadDiskName}", []);
+        $this->ensureDiskConfigIsCorrect($s3DiskConfig);
+
+        $s3Client = new S3Client([
+            'url' => Arr::get($s3DiskConfig, 'endpoint'),
+            'endpoint' => Arr::get($s3DiskConfig, 'endpoint'),
+            'region' => Arr::get($s3DiskConfig, 'region'),
             'version' => 'latest',
             'signature_version' => 'v4',
-            'use_path_style_endpoint' => true,
+            'use_path_style_endpoint' => Arr::get($s3DiskConfig, 'use_path_style_endpoint'),
             'credentials' => [
-                'key' => $_ENV['S3_PRIVATE_ACCESS_KEY_ID'],
-                'secret' => $_ENV['S3_PRIVATE_SECRET_ACCESS_KEY'],
+                'key' => Arr::get($s3DiskConfig, 'key'),
+                'secret' => Arr::get($s3DiskConfig, 'secret'),
             ]
         ]);
 
-
-        // $config = [
-        //     'region' => $_ENV['AWS_DEFAULT_REGION'],
-        //     'version' => 'latest',
-        //     'signature_version' => 'v4',
-        // ];
-
-        // if (! isset($_ENV['AWS_LAMBDA_FUNCTION_VERSION'])) {
-        //     $config['credentials'] = array_filter([
-        //         'key' => $_ENV['AWS_ACCESS_KEY_ID'] ?? null,
-        //         'secret' => $_ENV['AWS_SECRET_ACCESS_KEY'] ?? null,
-        //         'token' => $_ENV['AWS_SESSION_TOKEN'] ?? null,
-        //     ]);
-
-        //     if (array_key_exists('AWS_URL', $_ENV) && ! is_null($_ENV['AWS_URL'])) {
-        //         $config['url'] = $_ENV['AWS_URL'];
-        //         $config['endpoint'] = $_ENV['AWS_URL'];
-        //     }
-        // }
-
-        // return S3Client::factory($config);
+        return [$s3Client, $bucket = Arr::get($s3DiskConfig, 'bucket')];
     }
 
     /**
@@ -158,7 +147,7 @@ class SignedStorageUrl extends Action
             'Bucket' => $bucket,
             'Key' => $key,
             // TODO couldn't get minio to work with it included (this isn't needed with filebase as uploading to a private bucket).
-            // 'ACL' => $request->input('visibility') ?: $this->defaultVisibility(),
+            'ACL' => $this->defaultVisibility(),
             'ContentType' => $request->input('content_type') ?: 'application/octet-stream',
             'CacheControl' => $request->input('cache_control') ?: null,
             'Expires' => $request->input('expires') ?: null,
