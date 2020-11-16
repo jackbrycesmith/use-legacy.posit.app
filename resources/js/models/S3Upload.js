@@ -27,6 +27,7 @@ export default class S3Upload extends Model {
     await Http.put(response.url, this.file, {
         cancelToken: cancelToken,
         headers: headers,
+        withCredentials: false,
         onUploadProgress: (progressEvent) => {
             options.progress(progressEvent.loaded / progressEvent.total)
         }
