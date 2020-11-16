@@ -78,7 +78,7 @@ test('ProposalVideoIntroUpsert disallowed if incorrect data passed', function ()
 });
 
 test('ProposalVideoIntroUpsert disallowed if temp file does not exist', function () {
-    Storage::fake('s3');
+    Storage::fake(config('filesystems.s3_uploads_disk'));
 
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
@@ -95,20 +95,20 @@ test('ProposalVideoIntroUpsert disallowed if temp file does not exist', function
             'uuid' => Str::uuid()
         ]
     );
-    $response->dump();
+
     Bus::assertNotDispatched(ConvertVideoForDownloading::class);
 
     $response->assertStatus(422);
     $response->assertJsonValidationErrors(['uuid' => 'Temp file does not exist.']);
-})->skip();
+});
 
 test('ProposalVideoIntroUpsert allowed', function () {
-    Storage::fake('s3');
+    Storage::fake(config('filesystems.s3_uploads_disk'));
 
     $alreadyUploadedUuid = Str::uuid();
     $tmpFile = UploadedFile::fake()
         ->image('test.jpg')
-        ->storeAs("tmp", $alreadyUploadedUuid, 's3');
+        ->storeAs("tmp", $alreadyUploadedUuid, config('filesystems.s3_uploads_disk'));
 
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
@@ -126,7 +126,6 @@ test('ProposalVideoIntroUpsert allowed', function () {
         ]
     );
 
-    $response->dump();
     $response->assertCreated();
     $response->assertJsonStructure(['data' => ['uuid']]);
 
@@ -138,10 +137,10 @@ test('ProposalVideoIntroUpsert allowed', function () {
     Bus::assertDispatched(ConvertVideoForDownloading::class);
 
     // Assert that the temp file is deleted
-    // Storage::disk('s3')->assertMissing("tmp/{$alreadyUploadedUuid}");
+    // Storage::disk(config('filesystems.s3_uploads_disk'))->assertMissing("tmp/{$alreadyUploadedUuid}");
 
     // TODO assert that it was added to the media library/new location
 
     // // Cleanup
-    Storage::fake('s3');
-})->skip();
+    Storage::fake(config('filesystems.s3_uploads_disk'));
+});

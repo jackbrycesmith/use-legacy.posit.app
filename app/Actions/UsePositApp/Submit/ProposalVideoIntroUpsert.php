@@ -60,11 +60,13 @@ class ProposalVideoIntroUpsert extends Action
 
         // TODO validate this file before moving? e.g. video type & e.g. size limits
         // TODO delete any previous video.
+        //
+        $tmpStorageDisk = $this->getStorageDiskName();
 
         $video = $proposal->video()->create([
             'tmp_path' => $tmpFilename,
-            'tmp_size' => Storage::disk('s3-private')->size($tmpFilename),
-            'tmp_disk' => 's3-private',
+            'tmp_size' => Storage::disk($tmpStorageDisk)->size($tmpFilename),
+            'tmp_disk' => $tmpStorageDisk,
         ]);
 
         // TODO dispatch conversion jobs
@@ -87,10 +89,20 @@ class ProposalVideoIntroUpsert extends Action
      */
     protected function ensureTempFileExists(string $filename)
     {
-        if (! Storage::disk('s3-private')->exists($filename)) {
+        if (! Storage::disk($this->getStorageDiskName())->exists($filename)) {
             throw ValidationException::withMessages([
                 'uuid' => ['Temp file does not exist.'],
             ]);
         }
+    }
+
+    /**
+     * Gets the storage disk name.
+     *
+     * @return string The storage disk name.
+     */
+    protected static function getStorageDiskName(): string
+    {
+        return config('filesystems.s3_uploads_disk');
     }
 }

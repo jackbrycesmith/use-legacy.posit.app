@@ -13,6 +13,7 @@ test('can upload to s3 from created presigned url', function () {
     $response = actingAs($user)->postJson(route('use.submit.signed-storage-url', [
         'content_type' => 'text/plain',
     ]));
+
     $response->assertStatus(201);
     $response->assertJsonStructure([
         'uuid',
