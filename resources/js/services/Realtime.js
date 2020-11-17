@@ -17,6 +17,8 @@ const echo = new Echo({
     enabledTransports: isDevEnv ? ['ws'] : ['wss'],
     wsHost: isDevEnv ? '127.0.0.1' : window.location.hostname,
     wsPort: isDevEnv ? 6001 : 443,
+    wssHost: isDevEnv ? '127.0.0.1' : window.location.hostname,
+    wssPort: isDevEnv ? 6001 : 443,
     forceTLS: !isDevEnv,
     // namespace: '',
 })
