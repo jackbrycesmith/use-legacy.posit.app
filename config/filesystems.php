@@ -96,16 +96,6 @@ return [
             'use_path_style_endpoint' => env('S3_UPLOADS_USE_PATH_STYLE_ENDPOINT', true)
         ],
 
-        's3-private' => [
-            'driver' => 's3',
-            'key' => env('S3_PRIVATE_ACCESS_KEY_ID'),
-            'secret' => env('S3_PRIVATE_SECRET_ACCESS_KEY'),
-            'region' => env('S3_PRIVATE_DEFAULT_REGION'),
-            'bucket' => env('S3_PRIVATE_BUCKET'),
-            'endpoint' => env('S3_PRIVATE_URL'),
-            'use_path_style_endpoint' => true
-        ],
-
     ],
 
     /*
