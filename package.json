@@ -44,7 +44,7 @@
         "postcss-import": "^12.0.1",
         "postcss-loader": "^4.0.3",
         "postcss-preset-env": "^6.7.0",
-        "pusher-js": "^7.0.1",
+        "pusher-js": "git+https://github.com/findmate/pusher-js-websocket-only.git",
         "tailable-pagination": "^0.1.18",
         "tailwindcss": "^1.9.2",
         "tiptap": "^1.30.0",

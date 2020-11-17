@@ -21,6 +21,8 @@ const echo = new Echo({
     // namespace: '',
 })
 
+console.log('echo: ', echo)
+
 export default {
     subscribe (channel, listeners, publicChannel = false) {
         channel = publicChannel
