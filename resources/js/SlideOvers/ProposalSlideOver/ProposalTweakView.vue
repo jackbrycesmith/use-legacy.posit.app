@@ -97,9 +97,6 @@ export default {
       return IconHeroiconsSmallAdjustments
     }
   },
-  created () {
-    console.log('created ProposalTweakView')
-  },
   methods: {
     async handleUpdateProjectValue () {
       if (!this.proposalEditorMachineState.context.canEdit) return
