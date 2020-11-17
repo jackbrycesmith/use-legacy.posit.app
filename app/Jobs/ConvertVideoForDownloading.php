@@ -47,10 +47,13 @@ class ConvertVideoForDownloading implements ShouldQueue
 
         // create a video format...
         $lowBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(500);
-        $directoryToSaveTo = "converted_videos/{$this->video->uuid}";
+
+        $storageDiskName = config('filesystems.s3_converted_video_disk');
+        $bucketName = config("filesystems.disks.{$storageDiskName}.bucket");
+        $directoryToSaveTo = "{$bucketName}/converted/{$this->video->uuid}";
+
         $videoPath = "{$directoryToSaveTo}/intro.mp4";
         $posterPath = "{$directoryToSaveTo}/poster.jpg";
-        $toDisk = 's3-private';
 
         // open the uploaded video from the right disk...
         $uploadedVideo = FFMpeg::fromDisk($this->video->tmp_disk)->open($this->video->tmp_path);
@@ -71,13 +74,13 @@ class ConvertVideoForDownloading implements ShouldQueue
         })
 
         // tell the MediaExporter to which disk and in which format we want to export...
-        ->toDisk($toDisk)
+        ->toDisk($storageDiskName)
         ->inFormat($lowBitrateFormat)
 
         // call the 'save' method with a filename...
         ->save($videoPath);
 
-        $convertedVideo = FFMpeg::fromDisk($toDisk)->open($videoPath);
+        $convertedVideo = FFMpeg::fromDisk($storageDiskName)->open($videoPath);
 
         $durationSeconds = $convertedVideo->getDurationInSeconds();
 
@@ -85,16 +88,16 @@ class ConvertVideoForDownloading implements ShouldQueue
         $uploadedVideo
             ->getFrameFromSeconds(0)
             ->export()
-            ->toDisk($toDisk)
+            ->toDisk($storageDiskName)
             ->save($posterPath);
 
         // update the database so we know the convertion is done!
         $this->video->update([
-            'disk' => $toDisk,
+            'disk' => $storageDiskName,
             'path' => $videoPath,
             'poster_path' => $posterPath,
-            'poster_disk' => $toDisk,
-            'size' => Storage::disk('s3-private')->size($videoPath),
+            'poster_disk' => $storageDiskName,
+            'size' => Storage::disk($storageDiskName)->size($videoPath),
             'seconds' => $durationSeconds,
             'mime_type' => 'video/mp4',
             'downloadable_at' => now(),
@@ -102,7 +105,7 @@ class ConvertVideoForDownloading implements ShouldQueue
 
         $this->broadcastConvertedVideoToUser();
 
-        ConvertVideoForStreaming::dispatch($this->video);
+        // ConvertVideoForStreaming::dispatch($this->video);
     }
 
     /**

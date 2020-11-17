@@ -135,4 +135,16 @@ return [
 
     's3_uploads_disk' => env('S3_UPLOADS_DISK', 's3-uploads'),
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | S3 Converted Videos Disk (custom)
+    |--------------------------------------------------------------------------
+    |
+    | The filesystem S3 disk that is used for placing converted videos.
+    |
+    */
+
+    's3_converted_video_disk' => env('S3_CONVERTED_VIDEO_DISK', 's3-video'),
+
 ];
