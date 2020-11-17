@@ -76,7 +76,7 @@ class Video extends Model
             return null;
         }
 
-        return Storage::disk('s3')->temporaryUrl($this->path, now()->addDays(1));
+        return Storage::disk($this->disk)->temporaryUrl($this->path, now()->addDays(1));
     }
 
     public function getHlsUrlAttribute(): ?string
@@ -87,7 +87,7 @@ class Video extends Model
 
         return null;
 
-        // return Storage::disk('s3')->url($this-> . '.m3u8')
+        // return Storage::disk($this->disk)->url($this-> . '.m3u8')
     }
 
     /**
@@ -101,6 +101,6 @@ class Video extends Model
             return null;
         }
 
-        return Storage::disk('s3')->temporaryUrl($this->poster_path, now()->addDays(7));
+        return Storage::disk($this->disk)->temporaryUrl($this->poster_path, now()->addDays(7));
     }
 }
