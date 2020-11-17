@@ -49,8 +49,7 @@ class ConvertVideoForDownloading implements ShouldQueue
         $lowBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(500);
 
         $storageDiskName = config('filesystems.s3_converted_video_disk');
-        $bucketName = config("filesystems.disks.{$storageDiskName}.bucket");
-        $directoryToSaveTo = "{$bucketName}/converted/{$this->video->uuid}";
+        $directoryToSaveTo = "converted/{$this->video->uuid}";
 
         $videoPath = "{$directoryToSaveTo}/intro.mp4";
         $posterPath = "{$directoryToSaveTo}/poster.jpg";
