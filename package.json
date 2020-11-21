@@ -9,8 +9,8 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@inertiajs/inertia": "^0.6.1",
-        "@inertiajs/inertia-vue": "^0.4.1",
+        "@inertiajs/inertia": "^0.6.3",
+        "@inertiajs/inertia-vue": "^0.4.2",
         "@inertiajs/progress": "^0.2.2",
         "@stripe/stripe-js": "^1.11.0",
         "@tailwindcss/typography": "^0.2.0",
@@ -44,7 +44,7 @@
         "postcss-import": "^12.0.1",
         "postcss-loader": "^4.0.3",
         "postcss-preset-env": "^6.7.0",
-        "pusher-js": "git+https://github.com/findmate/pusher-js-websocket-only.git",
+        "pusher-js": "github:findmate/pusher-js-websocket-only#eb5e223",
         "tailable-pagination": "^0.1.18",
         "tailwindcss": "^1.9.2",
         "tiptap": "^1.30.0",
