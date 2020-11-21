@@ -1,9 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
-  future: {
-    removeDeprecatedGapUtilities: true,
-  },
   theme: {
     screens: {
       xs: '320px',
@@ -64,7 +61,8 @@ module.exports = {
     },
   },
   plugins: [
+    require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    require('@tailwindcss/ui'),
+    require('@tailwindcss/aspect-ratio'),
   ]
 }
