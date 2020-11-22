@@ -7,7 +7,7 @@
 
     <span class="absolute inset-auto">
       <LogoCoinbase
-        class="inline h-15 w-32 text-blue-700 opacity-50" />
+        class="inline h-16 w-32 text-blue-700 opacity-50" />
     </span>
 
   </div>

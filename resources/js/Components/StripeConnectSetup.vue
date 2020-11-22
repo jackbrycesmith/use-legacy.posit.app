@@ -4,7 +4,7 @@
     tag="div"
     class="bg-white shadow sm:rounded-lg">
     <div class="px-4 py-5 sm:p-6 relative">
-      <LogoStripe class="h-15 text-indigo-600 absolute top-1" />
+      <LogoStripe class="h-16 text-indigo-600 absolute top-1" />
 
       <div class="sm:flex sm:items-start sm:justify-between">
         <div>
@@ -31,11 +31,11 @@
                     :disabled="form.processing"
                     :options="{ property: 'width', transition: 'width .2s ease-in' }"
                     :class="{ 'cursor-wait': form.processing }"
-                    class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 cursor-pointer relative pr-15 whitespace-no-wrap">
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 cursor-pointer relative pr-15 whitespace-nowrap">
                       <IconHeroiconsSpinner v-if="form.processing" class="h-5 w-5 text-primary-yellow-400 absolute inset-y-auto left-4" />
                       <span
                       :class="{ 'ml-7': form.processing }"
-                      class="whitespace-no-wrap">
+                      class="whitespace-nowrap">
                         Connect with
                       </span>
                       <LogoStripe
@@ -131,11 +131,11 @@
                       :disabled="form.processing"
                       :options="{ property: 'width', transition: 'width .2s ease-in' }"
                       :class="{ 'cursor-wait': form.processing }"
-                      class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 cursor-pointer relative whitespace-no-wrap">
+                      class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 cursor-pointer relative whitespace-nowrap">
                         <IconHeroiconsSpinner v-if="form.processing" class="h-5 w-5 text-primary-yellow-400 absolute inset-y-auto left-4" />
                         <span
                         :class="{ 'ml-7': form.processing }"
-                        class="whitespace-no-wrap">
+                        class="whitespace-nowrap">
                           {{ stripeAccount__.account_link_text }}
                         </span>
                     </SmoothReflow>

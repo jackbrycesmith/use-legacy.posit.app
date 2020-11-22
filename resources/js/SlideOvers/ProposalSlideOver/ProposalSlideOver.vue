@@ -50,9 +50,7 @@
           <div class="h-10" />
 
           <!-- Creator / Recipient overlap -->
-          <div
-            class="absolute h-15 left-0 right-0 grid grid-cols-3 items-center justify-evenly z-10"
-            style="bottom: -1.875rem;">
+          <div class="absolute h-16 left-0 right-0 grid grid-cols-3 items-center justify-evenly z-10 -bottom-8">
 
             <!-- Creator -->
             <div class="relative col-span-1">
