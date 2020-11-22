@@ -14,7 +14,7 @@ it('404s if team is not in a valid uuid format', function ($teamUuid) {
     $response->assertStatus(404);
 })->with([
     'blah',
-])->only();
+]);
 
 it('redirects to login if valid uuid, but not logged in', function ($teamUuid) {
     $response = $this->get(route('use.team.credits', [
@@ -24,7 +24,7 @@ it('redirects to login if valid uuid, but not logged in', function ($teamUuid) {
     $response->assertRedirect(route('login'));
 })->with([
     Str::uuid()->toString(),
-])->only();
+]);
 
 it('403s if user is not a team member', function () {
     $user = User::factory()->create();
@@ -36,7 +36,7 @@ it('403s if user is not a team member', function () {
     ]));
 
     $response->assertStatus(403);
-})->only();
+});
 
 it('allows access if user is a team member', function () {
     $user = User::factory()->create();
@@ -47,4 +47,4 @@ it('allows access if user is a team member', function () {
     ]));
 
     assertInertiaComponent($response, 'Use/TeamCredits');
-})->only();
+});

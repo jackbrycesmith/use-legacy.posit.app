@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Casts\StrLimitCast;
+use App\Models\Concerns\HasInAppCreditBalance;
 use App\Models\Concerns\HasLogo;
 use App\Models\Concerns\HasUuid;
 use CloudCreativity\LaravelStripe\Connect\OwnsStripeAccounts;
@@ -24,6 +25,7 @@ class Team extends JetstreamTeam implements AccountOwnerInterface, HasMedia
         registerMediaCollections as protected registerLogoMediaCollections;
     }
     use HasUuid;
+    use HasInAppCreditBalance;
     use InteractsWithMedia;
     use OwnsStripeAccounts;
 
