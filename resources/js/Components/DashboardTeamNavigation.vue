@@ -2,10 +2,13 @@
   <nav class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-8 xl:flex-col xl:space-x-0 xl:space-y-2">
 
     <!-- Credits -->
-    <div class="group flex items-center rounded-md px-2 py-2 space-x-2">
+    <inertia-link
+      :href="org.route_credits"
+      :class="routeIs('use.team.credits') ? activeNavItemClass : inactiveNavItemClass"
+      class="group flex items-center rounded-md px-2 py-2 space-x-2">
       <IconCredits class="h-5 w-5 text-gray-400" />
       <span class="text-sm text-gray-500 leading-5 font-medium">&infin; Credits</span>
-    </div>
+    </inertia-link>
 
     <!-- Proposals -->
     <inertia-link

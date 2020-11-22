@@ -36,6 +36,10 @@ export default class Organisation extends Model {
     return route('use.team.contacts', { team: this.uuid }).url()
   }
 
+  get route_credits () {
+    return route('use.team.credits', { team: this.uuid }).url()
+  }
+
   get route_contacts_add () {
     return route('use.team.contacts.add', { team: this.uuid }).url()
   }
