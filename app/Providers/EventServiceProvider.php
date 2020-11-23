@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Actions\Integrations\Paddle\HandlePaddlePaymentSucceeded;
 use App\Actions\Integrations\Stripe\HandleStripeConnectFetchedUserCredentials;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectAccountUpdated;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectCheckoutSessionAsyncPaymentFailed;
@@ -15,6 +16,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Laravel\Paddle\Events\PaymentSucceeded as PaddlePaymentSucceeded;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -38,7 +40,22 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
+        $this->handleCashierPaddleEvents();
+
         $this->handleStripeConnectEvents();
+    }
+
+    /**
+     * Handle events from Paddle integration.
+     *
+     * @return void
+     */
+    protected function handleCashierPaddleEvents()
+    {
+        Event::listen(
+            PaddlePaymentSucceeded::class,
+            HandlePaddlePaymentSucceeded::class
+        );
     }
 
     /**

@@ -22,6 +22,7 @@ use CloudCreativity\LaravelStripe\LaravelStripe;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Paddle\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerLaravelStripeConnect();
+        $this->registerCashierPaddle();
     }
 
     /**
@@ -106,6 +108,21 @@ class AppServiceProvider extends ServiceProvider
         LaravelStripe::currentOwnerResolver(function (Request $request) {
             return $request->stripeConnectOauthTeam();
         });
+
+        return $this;
+    }
+
+    /**
+     * Setup laravel/cashier-paddle
+     *
+     * @see https://github.com/laravel/cashier-paddle
+     * @return self
+     */
+    protected function registerCashierPaddle()
+    {
+        Cashier::ignoreMigrations();
+
+        Cashier::ignoreRoutes();
 
         return $this;
     }
