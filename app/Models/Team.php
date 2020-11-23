@@ -15,11 +15,13 @@ use Laravel\Jetstream\Events\TeamCreated;
 use Laravel\Jetstream\Events\TeamDeleted;
 use Laravel\Jetstream\Events\TeamUpdated;
 use Laravel\Jetstream\Team as JetstreamTeam;
+use Laravel\Paddle\Billable as PaddleBillable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Team extends JetstreamTeam implements AccountOwnerInterface, HasMedia
 {
+    use PaddleBillable;
     use HasFactory;
     use HasLogo {
         registerMediaCollections as protected registerLogoMediaCollections;
