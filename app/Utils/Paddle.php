@@ -16,9 +16,9 @@ class Paddle
     /**
      * Define a feature flag.
      *
-     * @param array $featureConfig The feature configuration
+     * @param array $productConfig The feature configuration
      *
-     * @return \Featica\Feature
+     * @return PaddleProduct
      */
     public static function product(array $productConfig)
     {
@@ -27,4 +27,17 @@ class Paddle
         });
     }
 
+    /**
+     * Get the credit amount for the given paddle product id.
+     *
+     * @param integer $productId The product identifier
+     *
+     * @return int
+     */
+    public static function creditsForProduct(int $productId): int
+    {
+        return optional(static::$products[$productId], function ($product) {
+            return $product->credits;
+        });
+    }
 }
