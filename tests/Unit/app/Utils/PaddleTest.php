@@ -19,3 +19,12 @@ test('sets credit to product & returns correct credit amount', function () {
     assertEquals($product, Paddle::$products[1]);
     assertEquals(30, Paddle::creditsForProduct(1));
 });
+
+test('returns zero credit amount if not set', function () {
+    $product = Paddle::product(['product_id' => 1]);
+
+    assertInstanceOf(PaddleProduct::class, $product);
+    assertContains(1, array_keys(Paddle::$products));
+    assertEquals($product, Paddle::$products[1]);
+    assertEquals(0, Paddle::creditsForProduct(1));
+});

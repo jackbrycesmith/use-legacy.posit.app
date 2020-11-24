@@ -36,7 +36,7 @@ class Paddle
      */
     public static function creditsForProduct(int $productId): int
     {
-        return optional(static::$products[$productId], function ($product) {
+        return (int) optional(static::$products[$productId], function ($product) {
             return $product->credits;
         });
     }
