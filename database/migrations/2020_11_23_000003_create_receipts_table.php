@@ -19,6 +19,7 @@ class CreateReceiptsTable extends Migration
             $table->string('billable_type');
             $table->unsignedBigInteger('paddle_subscription_id')->nullable()->index();
             $table->string('checkout_id');
+            $table->string('product_id')->nullable();
             $table->string('order_id')->unique();
             $table->string('amount');
             $table->string('tax');
