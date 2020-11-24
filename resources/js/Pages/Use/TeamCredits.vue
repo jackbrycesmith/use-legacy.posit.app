@@ -51,9 +51,22 @@ export default {
     team: { type: Object },
   },
   layout: Dashboard,
+  metaInfo () {
+    return {
+      script: [
+        {
+          src: 'https://cdn.paddle.com/paddle/paddle.js',
+          'async': true,
+          defer: true,
+          callback: this.handlePaddleJsLoaded
+        }
+      ]
+    }
+  },
   data () {
     return {
       team__: Organisation.make(),
+      paddleLoaded: false
     }
   },
   watch: {
@@ -64,5 +77,14 @@ export default {
       }
     },
   },
+  methods: {
+    handlePaddleJsLoaded () {
+      window.Paddle.Setup({
+        vendor: this.paddle_vendor_id
+      })
+
+      this.paddleLoaded = true
+    }
+  }
 }
 </script>
