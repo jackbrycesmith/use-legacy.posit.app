@@ -2,6 +2,7 @@
 
 namespace App\Actions\Integrations\Paddle;
 
+use App\Actions\InAppCredit\ApplyCreditsFromPaddlePurchase;
 use Laravel\Paddle\Events\PaymentSucceeded;
 use Lorisleiva\Actions\Action;
 
@@ -23,6 +24,9 @@ class HandlePaddlePaymentSucceeded extends Action
      */
     public function handle()
     {
-        // TODO increase the amount of credits for a given user.
+        ApplyCreditsFromPaddlePurchase::dispatch(
+            $this->receipt,
+            $this->billable
+        );
     }
 }

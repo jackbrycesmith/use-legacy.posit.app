@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Paddle\Cashier;
+use Laravel\Paddle\Receipt;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -67,6 +68,7 @@ class AppServiceProvider extends ServiceProvider
             'team' => Team::class,
             'team_contact' => TeamContact::class,
             'team_member' => TeamMember::class,
+            'paddle_receipt' => Receipt::class,
             'proposal' => Proposal::class,
             'proposal_content' => ProposalContent::class,
             'proposal_payment' => ProposalPayment::class,
