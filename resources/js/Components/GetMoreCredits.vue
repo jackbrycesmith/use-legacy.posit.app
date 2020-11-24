@@ -26,7 +26,10 @@
           </div>
         </TabPane> -->
 
-        <TabPane title="50 Credits">
+        <TabPane
+          v-for="paddleProduct in paddleProducts"
+          :key="paddleProduct.product_id"
+          :title="`${paddleProduct.credits} Credits`">
           <div class="">
 
 
@@ -35,6 +38,21 @@
       </Tabs>
 
       <!-- TODO Localised Price amount -->
+      <div class="flex flex-col mt-2">
+        <span class="text-xs leading-6 font-medium text-center text-gray-500 uppercase">
+          Price includes tax <EmojiFlag
+              v-if="paddleCustomerCountryCode"
+              :code="paddleCustomerCountryCode"/>
+        </span>
+        <div class="flex items-center justify-center text-5xl leading-none font-extrabold text-gray-900">
+          <span>
+            {{ selectPaddlePriceFormatted }}
+          </span>
+          <span class="ml-3 text-xl leading-7 font-medium text-gray-500">
+            {{ selectedPaddleProductCurrencyCode }}
+          </span>
+        </div>
+      </div>
 
       <!-- What the credits purchase will allow you to do -->
       <div class="mt-6 w-full inline-flex justify-center">
@@ -42,7 +60,7 @@
           <li class="flex space-x-3">
             <IconHeroiconsMediumCheck class="flex-shrink-0 h-5 w-5 text-green-500" />
             <!-- TODO custom amount -->
-            <span class="text-sm text-gray-500">Publish X proposals</span>
+            <span class="text-sm text-gray-500">Publish {{ selectedPaddleProduct.credits }} proposals</span>
           </li>
 
           <li class="flex space-x-3">
@@ -59,7 +77,7 @@
 
       <div class="mt-8 flex justify-center items-center">
         <button type="button" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Get X Credits
+          Get {{ selectedPaddleProduct.credits }} Credits
         </button>
       </div>
 
@@ -73,6 +91,10 @@ import TabPane from '@/Components/TabPane'
 import IconCredits from '@/Icons/IconCredits'
 import IconHeroiconsMediumCheck from '@/Icons/IconHeroiconsMediumCheck'
 import ApplicationLogo from '@/Jetstream/ApplicationLogo'
+import EmojiFlag from '@/Components/EmojiFlag'
+import { join, map, nth, isEmpty, get, find } from 'lodash-es'
+import { jsonp } from 'vue-jsonp'
+import { formatCurrency } from '@/utils/strings'
 
 export default {
   name: 'GetMoreCredits',
@@ -81,11 +103,74 @@ export default {
     TabPane,
     IconCredits,
     IconHeroiconsMediumCheck,
-    ApplicationLogo
+    ApplicationLogo,
+    EmojiFlag
+  },
+  props: {
+    paddleProducts: {
+      type: Array
+    }
+  },
+  computed: {
+    selectedPaddleProduct () {
+      return nth(this.paddleProducts, this.tabIndex) ?? {}
+    },
+    paddleProductIds () {
+      return map(this.paddleProducts, 'product_id')
+    },
+    selectedPaddleProductPriceData () {
+      if (isEmpty(this.selectedPaddleProduct) || isEmpty(this.paddleProductPrices)) {
+        return null
+      }
+
+      return find(this.paddleProductPrices['products'], { product_id: this.selectedPaddleProduct?.product_id })
+    },
+    paddleCustomerCountryCode () {
+      return get(this.paddleProductPrices, 'customer_country')
+    },
+    selectedPaddleProductCurrencyCode () {
+      return this.selectedPaddleProductPriceData?.currency
+    },
+    selectPaddlePriceFormatted () {
+      if (isEmpty(this.selectedPaddleProductPriceData)) {
+        return null
+      }
+
+      const amount = get(this.selectedPaddleProductPriceData, 'price.gross')
+
+      return formatCurrency(amount, this.selectedPaddleProductCurrencyCode)
+    }
+  },
+  mounted () {
+    this.fetchPaddleProductPrices()
   },
   data () {
     return {
-      tabIndex: 0
+      tabIndex: 0,
+      paddleProductPrices: null,
+      fetchingPaddleProductPrices: false,
+      errorFetchingPaddleProductPrices: false
+    }
+  },
+  methods: {
+    async fetchPaddleProductPrices () {
+      if (this.fetchingPaddleProductPrices) {
+        return
+      }
+
+      this.isFetchingPaddleProductPrices = true
+      this.errorFetchingPaddleProductPrices = false
+
+      try {
+        const response = await jsonp('https://checkout.paddle.com/api/2.0/prices', {
+          product_ids: join(this.paddleProductIds, ', ')
+        })
+        this.paddleProductPrices = response.response
+      } catch (e) {
+        this.errorFetchingPaddleProductPrices = true
+      } finally {
+        this.isFetchingPaddleProductPrices = false
+      }
     }
   }
 }
