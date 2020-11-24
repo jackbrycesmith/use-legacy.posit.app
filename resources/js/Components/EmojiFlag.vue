@@ -1,19 +1,22 @@
 <template>
-  <span :title="flag(code).name">
-    {{ flag(code).emoji }}
+  <span :title="name">
+    {{ emoji }}
   </span>
 </template>
 
 <script>
-import countryFlagEmoji from "country-flag-emoji"
+import { flag, name } from 'country-emoji'
 
 export default {
   props: {
     code: { type: String }
   },
-  methods: {
-    flag (code) {
-      return countryFlagEmoji.get(code) ?? {}
+  computed: {
+    emoji () {
+      return flag(this.code)
+    },
+    name () {
+      return name(this.code)
     }
   }
 }
