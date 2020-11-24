@@ -5,6 +5,7 @@ namespace App\Actions\UsePositApp;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use App\Utils\Constant;
+use App\Utils\Paddle;
 use Illuminate\Routing\Router;
 use Lorisleiva\Actions\Action;
 
@@ -59,6 +60,8 @@ class UseTeamCredits extends Action
     {
         return response()->inertiable('Use/TeamCredits', [
             'team' => fn() => $this->teamResource($team),
+            'paddle_vendor_id' => fn() => (int) config('cashier.vendor_id'),
+            'paddle_products' => fn() => array_values(Paddle::$products),
         ]);
     }
 
