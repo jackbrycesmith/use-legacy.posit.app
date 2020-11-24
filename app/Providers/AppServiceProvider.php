@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Observers\ProposalObserver;
 use App\Observers\TeamContactObserver;
 use App\Observers\UserObserver;
+use App\Utils\Paddle;
 use CloudCreativity\LaravelStripe\LaravelStripe;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
@@ -46,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->setModelObservers();
         $this->setRelationMorphMap();
+        $this->setPaddleProducts();
 
         // if(config('app.env') === 'production') {
         //     \URL::forceScheme('https');
@@ -90,6 +92,20 @@ class AppServiceProvider extends ServiceProvider
         Proposal::observe(ProposalObserver::class);
         User::observe(UserObserver::class);
         TeamContact::observe(TeamContactObserver::class);
+
+        return $this;
+    }
+
+    /**
+     * Sets the paddle products.
+     *
+     * @return self
+     */
+    protected function setPaddleProducts()
+    {
+        Paddle::product([
+            'product_id' => 637680
+        ])->credits(50);
 
         return $this;
     }
