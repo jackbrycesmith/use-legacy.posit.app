@@ -15,7 +15,9 @@
           </div>
         </div>
 
-        <GetMoreCredits class="m-10" />
+        <GetMoreCredits
+          :paddle-products="paddle_products"
+          class="m-10" />
 
       </div>
     </div>
@@ -49,6 +51,8 @@ export default {
   },
   props: {
     team: { type: Object },
+    paddle_vendor_id: { type: Number },
+    paddle_products: { },
   },
   layout: Dashboard,
   metaInfo () {
