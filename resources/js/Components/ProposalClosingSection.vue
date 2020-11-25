@@ -1,8 +1,8 @@
 <template>
-  <div class="relative bg-cool-gray-300 flex flex-col items-center" style="height: 65vh; border-top-left-radius: 50% 20%; border-top-right-radius: 50% 20%;">
+  <div class="relative bg-blue-gray-200 flex flex-col items-center" style="height: 65vh; border-top-left-radius: 50% 20%; border-top-right-radius: 50% 20%;">
 
     <!-- Reiterate proposal name... -->
-    <span class="max-w-xs px-5 -mt-7">
+    <span class="max-w-xs px-5 mt-7">
       <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium leading-5 bg-yellow-100 text-yellow-800 mt-15 max-w-full">
         <span class="truncate">{{ proposalTitleBadgeText }}</span>
       </span>

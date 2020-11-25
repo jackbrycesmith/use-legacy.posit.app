@@ -7,7 +7,7 @@
     :on-background-hit="handleBackgroundHit"
     :on-close-button-hit="handleCloseButtonHit"
     :on-escape-key-hit="handleEscapeKeyHit"
-    hint-icon-background-color="bg-cool-gray-50"
+    hint-icon-background-color="bg-gray-50"
     @opened="handleWhenOpened"
   >
     <template #hint-icon>

@@ -18,7 +18,7 @@
     <!-- Color swatches -->
     <div class="flex overflow-hidden">
 
-      <div class="inline-block h-6 w-6 rounded-full text-white shadow-solid | bg-cool-gray-300"/>
+      <div class="inline-block h-6 w-6 rounded-full text-white shadow-solid | bg-blue-gray-200"/>
       <div class="-ml-1 inline-block h-6 w-6 rounded-full text-white shadow-solid | bg-gray-50 "/>
     </div>
 

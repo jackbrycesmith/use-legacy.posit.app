@@ -4,13 +4,13 @@
     <div class="sm:max-w-sm xl:mt-6 relative text-left">
       <!-- Dropdown menu toggle, controlling the show/hide state of dropdown menu. -->
       <div>
-        <button ref="menuTriggerButton" @click="handleDropdownButtonClick" type="button" class="group w-full rounded-md px-3.5 py-2 text-sm leading-5 font-medium text-gray-700 hover:bg-cool-gray-50 hover:text-gray-500 focus:outline-none focus:bg-cool-gray-100 focus:border-blue-300 active:bg-cool-gray-50 active:text-gray-800 transition ease-in-out duration-150" id="options-menu" aria-haspopup="true" :aria-expanded="isOpen">
+        <button ref="menuTriggerButton" @click="handleDropdownButtonClick" type="button" class="group w-full rounded-md px-3.5 py-2 text-sm leading-5 font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-500 focus:outline-none focus:bg-gray-100 focus:border-blue-300 active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150" id="options-menu" aria-haspopup="true" :aria-expanded="isOpen">
           <div class="flex w-full justify-between items-center">
             <div class="flex min-w-0 items-center justify-between space-x-3">
               <template>
                 <img v-if="teamLogoUrl" :src="teamLogoUrl" alt="Current Team Logo" class="w-10 h-10 object-cover rounded-full flex-shrink-0">
 
-                <div v-else class="w-10 h-10 bg-cool-gray-200 rounded-full flex-shrink-0 flex items-center justify-center">
+                <div v-else class="w-10 h-10 bg-gray-200 rounded-full flex-shrink-0 flex items-center justify-center">
                   {{ org__.avatar_letter_initial }}
                 </div>
 
