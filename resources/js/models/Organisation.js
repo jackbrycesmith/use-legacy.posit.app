@@ -32,6 +32,10 @@ export default class Organisation extends Model {
     return route('use.org.members', { org: this.uuid }).url()
   }
 
+  get route_credits_paddle_pay_link () {
+    return route('use.team.credits-paddle-pay-link', { team: this.uuid }).url()
+  }
+
   get route_contacts () {
     return route('use.team.contacts', { team: this.uuid }).url()
   }

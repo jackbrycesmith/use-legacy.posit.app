@@ -16,6 +16,7 @@
         </div>
 
         <GetMoreCredits
+          :paddle-pay-link-route="team__.route_credits_paddle_pay_link"
           :paddle-products="paddle_products"
           class="m-10" />
 

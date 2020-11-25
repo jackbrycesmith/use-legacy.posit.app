@@ -12,26 +12,11 @@
         active-tab-icon-class="text-primary-yellow-500 group-focus:text-primary-yellow-600"
         tabs-class="mt-4">
 
-<!--         <TabPane title="10 Credits">
-          <div class="">
-
-
-          </div>
-        </TabPane> -->
-<!--
-        <TabPane title="25 Credits">
-          <div class="">
-
-
-          </div>
-        </TabPane> -->
-
         <TabPane
           v-for="paddleProduct in paddleProducts"
           :key="paddleProduct.product_id"
           :title="`${paddleProduct.credits} Credits`">
           <div class="">
-
 
           </div>
         </TabPane>
@@ -76,9 +61,28 @@
       </div>
 
       <div class="mt-8 flex justify-center items-center">
-        <button type="button" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Get {{ selectedPaddleProduct.credits }} Credits
-        </button>
+        <AjaxSingleButtonForm
+          :route="paddlePayLinkRoute"
+          :request-data="payLinkRequestData"
+          button-class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          request-method="put"
+          @success="handleFetchPayLinkSuccess"
+          @error="handleFetchPayLinkError"
+        >
+          <template #button="{ isFormProcessing }">
+            <button
+              type="submit"
+              :disabled="isFormProcessing"
+              :class="{ 'cursor-wait': isFormProcessing }"
+              class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 relative"
+              style="min-width: 200px;">
+
+              Get {{ selectedPaddleProduct.credits }} Credits
+
+            </button>
+          </template>
+
+        </AjaxSingleButtonForm>
       </div>
 
     </div>
@@ -89,9 +93,11 @@
 import Tabs from '@/Components/Tabs'
 import TabPane from '@/Components/TabPane'
 import IconCredits from '@/Icons/IconCredits'
+import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
 import IconHeroiconsMediumCheck from '@/Icons/IconHeroiconsMediumCheck'
 import ApplicationLogo from '@/Jetstream/ApplicationLogo'
 import EmojiFlag from '@/Components/EmojiFlag'
+import AjaxSingleButtonForm from '@/Components/AjaxSingleButtonForm'
 import { join, map, nth, isEmpty, get, find } from 'lodash-es'
 import { jsonp } from 'vue-jsonp'
 import { formatCurrency } from '@/utils/strings'
@@ -102,18 +108,28 @@ export default {
     Tabs,
     TabPane,
     IconCredits,
+    IconHeroiconsSpinner,
     IconHeroiconsMediumCheck,
     ApplicationLogo,
+    AjaxSingleButtonForm,
     EmojiFlag
   },
   props: {
     paddleProducts: {
       type: Array
+    },
+    paddlePayLinkRoute: {
+      type: String
     }
   },
   computed: {
     selectedPaddleProduct () {
       return nth(this.paddleProducts, this.tabIndex) ?? {}
+    },
+    payLinkRequestData () {
+      return {
+        product_id: this.selectedPaddleProduct?.product_id
+      }
     },
     paddleProductIds () {
       return map(this.paddleProducts, 'product_id')
@@ -153,6 +169,14 @@ export default {
     }
   },
   methods: {
+    handleFetchPayLinkSuccess (response) {
+      window.Paddle.Checkout.open({
+        override: response.pay_link
+      })
+    },
+    handleFetchPayLinkError (error) {
+      console.log('handleFetchPayLinkError: ', error)
+    },
     async fetchPaddleProductPrices () {
       if (this.fetchingPaddleProductPrices) {
         return
