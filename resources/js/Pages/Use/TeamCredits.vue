@@ -11,7 +11,9 @@
         <div class="pl-4 pr-6 pt-4 pb-4 border-b border-t border-gray-200 sm:pl-6 lg:sticky lg:bg-primary-yellow-50 lg:top-16 lg:z-10 lg:pl-8 xl:pl-6 xl:pt-6 xl:border-t-0">
           <div class="flex items-center">
             <h1 class="flex-1 text-3xl leading-7 font-bold">Credits</h1>
-            <!-- TODO Show current remaining balance -->
+
+            <DisplayCreditBalance
+              :amount="team__.in_app_credit_balance"/>
           </div>
         </div>
 
@@ -39,6 +41,7 @@
 <script>
 import TeamDashboardSidebar from '@/Components/TeamDashboardSidebar'
 import CreditsHistorySnippet from '@/Components/CreditsHistorySnippet'
+import DisplayCreditBalance from '@/Components/DisplayCreditBalance'
 import GetMoreCredits from '@/Components/GetMoreCredits'
 import Organisation from '@/models/Organisation'
 import Dashboard from '@/Layouts/Dashboard'
@@ -48,6 +51,7 @@ export default {
   components: {
     TeamDashboardSidebar,
     CreditsHistorySnippet,
+    DisplayCreditBalance,
     GetMoreCredits
   },
   props: {
