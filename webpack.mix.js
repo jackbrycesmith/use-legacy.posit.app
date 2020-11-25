@@ -34,7 +34,7 @@ mix.js('resources/js/app.js', 'public/js').vue({
 .webpackConfig(webpack => {
   return {
     output: {
-      chunkFilename: '[name].[chunkhash].js',
+      chunkFilename: mix.inProduction() ? '[name].[chunkhash].js' : '[name].js',
     },
     plugins: [
       // new LiveReloadPlugin()
