@@ -23,8 +23,9 @@
       </Tabs>
 
       <!-- TODO Localised Price amount -->
-      <div class="flex flex-col mt-2">
-        <span class="text-xs leading-6 font-medium text-center text-gray-500 uppercase">
+      <div class="flex flex-col mt-2 h-20 relative">
+
+        <span v-if="paddleProductPrices" class="text-xs leading-6 font-medium text-center text-gray-500 uppercase">
           Price includes tax <EmojiFlag
               v-if="paddleCustomerCountryCode"
               :code="paddleCustomerCountryCode"/>
@@ -36,6 +37,14 @@
           <span class="ml-3 text-xl leading-7 font-medium text-gray-500">
             {{ selectedPaddleProductCurrencyCode }}
           </span>
+        </div>
+
+        <div
+          v-if="fetchingPaddleProductPrices"
+          class="absolute h-full w-full flex items-center justify-center">
+          <IconHeroiconsSpinner
+            v-if="fetchingPaddleProductPrices"
+            class="inline-block h-7 w-7 text-gray-600" />
         </div>
       </div>
 
@@ -100,6 +109,7 @@ import AjaxSingleButtonForm from '@/Components/AjaxSingleButtonForm'
 import { join, map, nth, isEmpty, get, find } from 'lodash-es'
 import { jsonp } from 'vue-jsonp'
 import { formatCurrency } from '@/utils/strings'
+import { sleep } from '@/utils/sleep'
 
 export default {
   name: 'GetMoreCredits',
@@ -185,18 +195,28 @@ export default {
         return
       }
 
-      this.isFetchingPaddleProductPrices = true
+      this.fetchingPaddleProductPrices = true
       this.errorFetchingPaddleProductPrices = false
 
+      await this.$nextTick()
+
       try {
+        const timeBefore = performance.now()
         const response = await jsonp('https://checkout.paddle.com/api/2.0/prices', {
           product_ids: join(this.paddleProductIds, ', ')
         })
+
+        const minProcessingTimeMs = 400
+        const timeTakenMs = performance.now() - timeBefore
+        if (timeTakenMs < minProcessingTimeMs) {
+          await sleep(minProcessingTimeMs - timeTakenMs)
+        }
+
         this.paddleProductPrices = response.response
       } catch (e) {
         this.errorFetchingPaddleProductPrices = true
       } finally {
-        this.isFetchingPaddleProductPrices = false
+        this.fetchingPaddleProductPrices = false
       }
     }
   }
