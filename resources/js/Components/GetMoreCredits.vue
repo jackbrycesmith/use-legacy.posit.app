@@ -72,7 +72,7 @@
 
           <li class="flex space-x-3">
             <IconHeroiconsMediumCheck class="flex-shrink-0 h-5 w-5 text-green-500" />
-            <span class="text-sm text-gray-500">No expiry</span>
+            <span class="text-sm text-gray-500">No expiry date</span>
           </li>
 
           <li class="flex space-x-3">
@@ -95,7 +95,7 @@
               type="submit"
               :disabled="isFormProcessing"
               :class="{ 'cursor-wait': isFormProcessing }"
-              class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 relative"
+              class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md bg-primary-yellow-400 hover:bg-primary-yellow-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-yellow-500 relative"
               style="min-width: 200px;">
 
               Get {{ selectedPaddleProduct.credits }} Credits
