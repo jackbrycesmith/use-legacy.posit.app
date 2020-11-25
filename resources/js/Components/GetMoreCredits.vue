@@ -64,7 +64,6 @@
         <AjaxSingleButtonForm
           :route="paddlePayLinkRoute"
           :request-data="payLinkRequestData"
-          button-class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           request-method="put"
           @success="handleFetchPayLinkSuccess"
           @error="handleFetchPayLinkError"
@@ -171,8 +170,12 @@ export default {
   methods: {
     handleFetchPayLinkSuccess (response) {
       window.Paddle.Checkout.open({
-        override: response.pay_link
+        override: response.pay_link,
+        successCallback: this.handlePaddleSuccessfulCheckout
       })
+    },
+    handlePaddleSuccessfulCheckout () {
+      console.log('handlePaddleSuccessfulCheckout')
     },
     handleFetchPayLinkError (error) {
       console.log('handleFetchPayLinkError: ', error)
