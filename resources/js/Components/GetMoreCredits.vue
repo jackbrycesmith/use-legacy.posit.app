@@ -40,11 +40,27 @@
         </div>
 
         <div
-          v-if="fetchingPaddleProductPrices"
-          class="absolute h-full w-full flex items-center justify-center">
+          v-if="fetchingPaddleProductPrices || errorFetchingPaddleProductPrices"
+          class="absolute h-full w-full flex flex-col items-center justify-center">
           <IconHeroiconsSpinner
             v-if="fetchingPaddleProductPrices"
             class="inline-block h-7 w-7 text-gray-600" />
+
+          <span
+            v-if="errorFetchingPaddleProductPrices"
+            class="text-xs leading-6 font-medium text-center text-red-500 uppercase">
+            Error fetching price
+          </span>
+
+          <button
+            v-if="errorFetchingPaddleProductPrices"
+            type="button"
+            @click.prevent="fetchPaddleProductPrices"
+            class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+            <span class="sr-only">Retry</span>
+            <IconHeroiconsSmallRefresh class="h-4 w-4" />
+          </button>
+
         </div>
       </div>
 
@@ -103,13 +119,14 @@ import TabPane from '@/Components/TabPane'
 import IconCredits from '@/Icons/IconCredits'
 import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
 import IconHeroiconsMediumCheck from '@/Icons/IconHeroiconsMediumCheck'
+import IconHeroiconsSmallRefresh from '@/Icons/IconHeroiconsSmallRefresh'
 import ApplicationLogo from '@/Jetstream/ApplicationLogo'
 import EmojiFlag from '@/Components/EmojiFlag'
 import AjaxSingleButtonForm from '@/Components/AjaxSingleButtonForm'
 import { join, map, nth, isEmpty, get, find } from 'lodash-es'
 import { jsonp } from 'vue-jsonp'
 import { formatCurrency } from '@/utils/strings'
-import { sleep } from '@/utils/sleep'
+import { sleepToEnsureMinTimeSpent } from '@/utils/sleep'
 
 export default {
   name: 'GetMoreCredits',
@@ -119,6 +136,7 @@ export default {
     IconCredits,
     IconHeroiconsSpinner,
     IconHeroiconsMediumCheck,
+    IconHeroiconsSmallRefresh,
     ApplicationLogo,
     AjaxSingleButtonForm,
     EmojiFlag
@@ -129,6 +147,14 @@ export default {
     },
     paddlePayLinkRoute: {
       type: String
+    },
+    minTimeSpentFetchingPaddlePricesMs: {
+      type: Number,
+      default: 750
+    },
+    paddleCheckoutPricesApiUrl: {
+      type: String,
+      default: 'https://checkout.paddle.com/api/2.0/prices'
     }
   },
   computed: {
@@ -200,20 +226,16 @@ export default {
 
       await this.$nextTick()
 
+      const timeBefore = performance.now()
       try {
-        const timeBefore = performance.now()
-        const response = await jsonp('https://checkout.paddle.com/api/2.0/prices', {
+        const response = await jsonp(this.paddleCheckoutPricesApiUrl, {
           product_ids: join(this.paddleProductIds, ', ')
         })
 
-        const minProcessingTimeMs = 400
-        const timeTakenMs = performance.now() - timeBefore
-        if (timeTakenMs < minProcessingTimeMs) {
-          await sleep(minProcessingTimeMs - timeTakenMs)
-        }
-
+        await sleepToEnsureMinTimeSpent(timeBefore, this.minTimeSpentFetchingPaddlePricesMs)
         this.paddleProductPrices = response.response
       } catch (e) {
+        await sleepToEnsureMinTimeSpent(timeBefore, this.minTimeSpentFetchingPaddlePricesMs)
         this.errorFetchingPaddleProductPrices = true
       } finally {
         this.fetchingPaddleProductPrices = false
