@@ -87,6 +87,7 @@
               <div class="flex space-x-2 justify-center">
                 <ProposalRecipientSelector
                   :proposal.sync="proposal"
+                  :editable="proposalEditorMachineState.context.canEdit"
                   :options="proposal.recipient_options"
                 />
 
