@@ -29,7 +29,10 @@
     <div class="pr-4 sm:pr-6 lg:pr-8 lg:flex-shrink-0 lg:border-l lg:border-gray-200 xl:pr-0">
       <div class="pl-6 mb-3 lg:w-80 lg:sticky lg:top-24">
 
-        <CreditsHistorySnippet
+        <!-- <CreditsHistorySnippet class="mt-6" /> -->
+
+        <GettingStartedWelcome
+          :team="team__"
           class="mt-6" />
 
       </div>
@@ -41,6 +44,7 @@
 <script>
 import TeamDashboardSidebar from '@/Components/TeamDashboardSidebar'
 import CreditsHistorySnippet from '@/Components/CreditsHistorySnippet'
+import GettingStartedWelcome from '@/Components/GettingStartedWelcome'
 import DisplayCreditBalance from '@/Components/DisplayCreditBalance'
 import GetMoreCredits from '@/Components/GetMoreCredits'
 import Organisation from '@/models/Organisation'
@@ -50,7 +54,7 @@ export default {
   name: 'TeamCredits',
   components: {
     TeamDashboardSidebar,
-    CreditsHistorySnippet,
+    GettingStartedWelcome,
     DisplayCreditBalance,
     GetMoreCredits
   },
