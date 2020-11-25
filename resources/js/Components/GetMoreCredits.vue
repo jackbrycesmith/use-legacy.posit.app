@@ -22,13 +22,10 @@
         </TabPane>
       </Tabs>
 
-      <!-- TODO Localised Price amount -->
       <div class="flex flex-col mt-2 h-20 relative">
 
         <span v-if="paddleProductPrices" class="text-xs leading-6 font-medium text-center text-gray-500 uppercase">
-          Price includes tax <EmojiFlag
-              v-if="paddleCustomerCountryCode"
-              :code="paddleCustomerCountryCode"/>
+          Price
         </span>
         <div class="flex items-center justify-center text-5xl leading-none font-extrabold text-gray-900">
           <span>
@@ -187,7 +184,7 @@ export default {
         return null
       }
 
-      const amount = get(this.selectedPaddleProductPriceData, 'price.gross')
+      const amount = get(this.selectedPaddleProductPriceData, 'price.net')
 
       return formatCurrency(amount, this.selectedPaddleProductCurrencyCode)
     }
