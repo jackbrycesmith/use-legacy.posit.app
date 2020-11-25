@@ -24,6 +24,7 @@ class TeamResource extends JsonResource
             'logo_url' => $this->whenLoaded('media', function () {
                 return $this->logo_url;
             }),
+            'in_app_credit_balance' => $this->inAppCreditBalance(),
             'users' => UserResource::collection($this->whenLoaded('users')),
             'proposals' => ProposalResource::collection($this->whenLoaded('proposals')),
             'contacts' => TeamContactResource::collection($this->whenLoaded('contacts')),

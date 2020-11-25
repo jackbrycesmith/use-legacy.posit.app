@@ -7,7 +7,7 @@
       :class="routeIs('use.team.credits') ? activeNavItemClass : inactiveNavItemClass"
       class="group flex items-center rounded-md px-2 py-2 space-x-2">
       <IconCredits class="h-5 w-5 text-gray-400" />
-      <span class="text-sm text-gray-500 leading-5 font-medium">&infin; Credits</span>
+      <span class="text-sm text-gray-500 leading-5 font-medium">{{ org.in_app_credit_balance }} Credits</span>
     </inertia-link>
 
     <!-- Proposals -->
