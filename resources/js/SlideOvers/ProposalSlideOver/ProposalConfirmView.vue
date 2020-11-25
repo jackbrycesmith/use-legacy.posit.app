@@ -174,11 +174,15 @@
 
               <input
                 v-model="proposal.route_pub_proposal_view_link"
+                type="text"
                 id="public_link"
-                class="form-input block w-full rounded-none rounded-l-md pl-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                class="focus:ring-primary-yellow-500 focus:border-primary-yellow-500 block w-full rounded-none rounded-l-md pl-10 sm:text-sm border-gray-300"
                 disabled>
             </div>
-            <button ref="copyButton" @click.prevent="handleCopyPublicLinkHit" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-yellow focus:border-primary-yellow-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+            <button
+              ref="copyButton"
+              @click.prevent="handleCopyPublicLinkHit"
+              class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-primary-yellow-500 focus:border-primary-yellow-500">
 
               <SuccessFlashSwitcher
                 ref="copyIcon"
@@ -211,10 +215,14 @@
               <input
                 v-model="proposal.recipient_access_code"
                 id="access_code_link"
-                class="form-input block w-full rounded-none rounded-l-md transition ease-in-out duration-150 sm:text-sm sm:leading-5 font-mono"
+                type="text"
+                class="focus:ring-primary-yellow-500 focus:border-primary-yellow-500 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300 font-mono"
                 disabled>
             </div>
-            <button ref="copyAccessCodeButton" @click.prevent="handleCopyAccessCodeHit" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-yellow focus:border-primary-yellow-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+            <button
+              ref="copyAccessCodeButton"
+              @click.prevent="handleCopyAccessCodeHit"
+              class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-white focus:outline-none focus:ring-1 focus:ring-primary-yellow-500 focus:border-primary-yellow-500">
 
               <SuccessFlashSwitcher
                 ref="copyAccessCodeIcon"
@@ -246,10 +254,13 @@
             <textarea
               v-model="proposal.convenient_copyable_recipient_access_message"
               readonly disabled rows="7"
-              class="form-textarea resize-none block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
+              class="max-w-lg shadow-sm block w-full focus:ring-primary-yellow-500 focus:border-primary-yellow-500 sm:text-sm border-gray-300 rounded-md resize-none" />
 
             <div class="absolute bottom-0 right-0">
-              <button ref="copyMessageButton" @click.prevent="handleCopyMessageHit" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-tl-md rounded-tr-none rounded-br-md rounded-bl-none text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-yellow focus:border-primary-yellow-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+              <button
+                ref="copyMessageButton"
+                @click.prevent="handleCopyMessageHit"
+                class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-tl-md rounded-tr-none rounded-br-md rounded-bl-none text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:ring-1 focus:ring-primary-yellow-500 focus:border-primary-yellow-500">
 
                 <SuccessFlashSwitcher
                   ref="copyMessageIcon"

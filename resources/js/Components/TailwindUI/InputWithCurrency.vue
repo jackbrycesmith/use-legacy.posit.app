@@ -22,7 +22,7 @@
           numeralThousandsGroupStyle: 'thousand'
         }"
         :class="{ 'cursor-not-allowed': !editable }"
-        class="form-input block w-full pl-7 pr-12 sm:text-sm sm:leading-5"
+        class="focus:ring-primary-yellow-500 focus:border-primary-yellow-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
         placeholder="0.00"
         />
 
@@ -33,7 +33,7 @@
           :disabled="isCurrencySwitchDisabled"
           :style="selectCurrencyStyleObject"
           :class="isCurrencySwitchDisabled ? `pr-2` : `pr-7 cursor-pointer`"
-          class="form-select h-full py-0 pl-2 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
+          class="focus:ring-primary-yellow-500 focus:border-primary-yellow-500 h-full py-0 pl-2 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md">
 
           <option
             v-for="currency in currencies"

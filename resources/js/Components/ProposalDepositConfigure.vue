@@ -70,26 +70,6 @@
       </ul>
     </nav>
 
-
-
-
-
-<!--     <div class="mt-1 relative rounded-md shadow-sm">
-      <input
-        id="deposit"
-        type="number"
-        step="1"
-        min="0"
-        max="100"
-        placeholder=""
-        class="form-input block w-full pr-10 sm:text-sm sm:leading-5">
-
-      <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-        <span class="text-gray-500 sm:text-sm sm:leading-5">
-          %
-        </span>
-      </div>
-    </div> -->
   </div>
 </template>
 

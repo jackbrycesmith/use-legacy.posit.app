@@ -41,12 +41,13 @@
                     <div class="relative flex-grow focus-within:z-10">
                       <input
                         ref="input"
+                        type="text"
                         v-model="input"
-                        class="form-input border-gray-200 shadow-inner block w-full rounded-none rounded-l-md transition ease-in-out duration-150 sm:text-sm sm:leading-5 focus:shadow-inner"
+                        class="focus:ring-primary-yellow-500 focus:border-primary-yellow-500 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300 shadow-inner"
                         placeholder="Enter Name…">
                     </div>
                     <button
-                      class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-200 shadow-inner text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-inner focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
+                      class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-200 shadow-inner text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-inner focus:border-blue-300 active:bg-gray-100 active:text-gray-700 focus:ring-1 focus:ring-primary-yellow-500 focus:border-primary-yellow-500"
                       :class="{ 'cursor-not-allowed': !canAddNewRecipient }"
                       :disabled="!canAddNewRecipient"
                       @click="handleAddNewRecipient">

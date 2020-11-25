@@ -10,10 +10,13 @@
         <input
           v-model="code"
           :type="isTypePassword ? `password` : `text`"
-          class="form-input block w-full rounded-none rounded-l-md transition ease-in-out duration-150 sm:text-sm sm:leading-5 font-mono"
+          class="focus:ring-primary-yellow-500 focus:border-primary-yellow-500 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300 font-mono"
           disabled>
       </div>
-      <button ref="copyAccessCodeButton" @click.prevent="handleCopyAccessCodeHit" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:text-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-yellow focus:border-primary-yellow-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+      <button
+        ref="copyAccessCodeButton"
+        @click.prevent="handleCopyAccessCodeHit"
+        class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-yellow-500 focus:border-primary-yellow-500">
 
         <SuccessFlashSwitcher
           ref="copyAccessCodeIcon"

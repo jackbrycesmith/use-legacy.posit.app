@@ -12,10 +12,11 @@
               <label for="name" class="block text-sm font-medium leading-5 text-gray-700">Name</label>
               <input
                 id="name"
+                type="text"
                 v-model="contact__.name"
                 :disabled="isSubmitting"
                 required
-                class="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
+                class="mt-1 max-w-lg block w-full shadow-sm focus:ring-primary-yellow-500 focus:border-primary-yellow-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
             </div>
 
           </div>
