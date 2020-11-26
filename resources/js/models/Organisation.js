@@ -25,35 +25,35 @@ export default class Organisation extends Model {
   }
 
   get route_settings () {
-    return route('use.team.settings', { team: this.uuid }).url()
+    return route('use.team.settings', { team: this.uuid })
   }
 
   get route_members () {
-    return route('use.org.members', { org: this.uuid }).url()
+    return route('use.org.members', { org: this.uuid })
   }
 
   get route_credits_paddle_pay_link () {
-    return route('use.team.credits-paddle-pay-link', { team: this.uuid }).url()
+    return route('use.team.credits-paddle-pay-link', { team: this.uuid })
   }
 
   get route_contacts () {
-    return route('use.team.contacts', { team: this.uuid }).url()
+    return route('use.team.contacts', { team: this.uuid })
   }
 
   get route_credits () {
-    return route('use.team.credits', { team: this.uuid }).url()
+    return route('use.team.credits', { team: this.uuid })
   }
 
   get route_contacts_add () {
-    return route('use.team.contacts.add', { team: this.uuid }).url()
+    return route('use.team.contacts.add', { team: this.uuid })
   }
 
   get route_contacts_add_submit () {
-    return route('use.team.contacts.add-submit', { team: this.uuid }).url()
+    return route('use.team.contacts.add-submit', { team: this.uuid })
   }
 
   get route_activity_logs () {
-    return route('use.org.activity-logs', { org: this.uuid }).url()
+    return route('use.org.activity-logs', { org: this.uuid })
   }
 
   getRelationships() {

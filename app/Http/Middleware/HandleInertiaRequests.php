@@ -13,7 +13,7 @@ class HandleInertiaRequests extends Middleware
      * @see https://inertiajs.com/server-side-setup#root-template
      * @var string
      */
-    protected $rootView = 'app';
+    protected $rootView = 'use-posit-app';
 
     /**
      * Sets the root template that's loaded on the first page visit.
@@ -24,6 +24,10 @@ class HandleInertiaRequests extends Middleware
      */
     public function rootView(Request $request)
     {
+        if ($request->routeIs('pub.*')) {
+            return 'pub-posit-app';
+        }
+
         return $this->rootView;
     }
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "948b0bc4075699140789bfd3cb6b81a9",
+    "content-hash": "4c21593209fd7f15b108bc05b58d1347",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -9095,23 +9095,24 @@
         },
         {
             "name": "tightenco/ziggy",
-            "version": "0.9.4",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/ziggy.git",
-                "reference": "82ea6ec6cb6ab3545b0245310b2a424316fe48d8"
+                "reference": "aa8a5bbcea064f225870d0924fdb3fbbebaa2735"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/ziggy/zipball/82ea6ec6cb6ab3545b0245310b2a424316fe48d8",
-                "reference": "82ea6ec6cb6ab3545b0245310b2a424316fe48d8",
+                "url": "https://api.github.com/repos/tighten/ziggy/zipball/aa8a5bbcea064f225870d0924fdb3fbbebaa2735",
+                "reference": "aa8a5bbcea064f225870d0924fdb3fbbebaa2735",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": ">=5.4@dev"
             },
             "require-dev": {
-                "orchestra/testbench": "^5.0"
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.2"
             },
             "type": "library",
             "extra": {
@@ -9138,10 +9139,14 @@
                 {
                     "name": "Jake Bathman",
                     "email": "jake@tighten.co"
+                },
+                {
+                    "name": "Jacob Baker-Kretzmar",
+                    "email": "jacob@tighten.co"
                 }
             ],
             "description": "Generates a Blade directive exporting all of your named Laravel routes. Also provides a nice route() helper function in JavaScript.",
-            "homepage": "https://github.com/tightenco/ziggy",
+            "homepage": "https://github.com/tighten/ziggy",
             "keywords": [
                 "Ziggy",
                 "javascript",
@@ -9150,9 +9155,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tighten/ziggy/issues",
-                "source": "https://github.com/tighten/ziggy/tree/0.9.4"
+                "source": "https://github.com/tighten/ziggy/tree/v1.0.3"
             },
-            "time": "2020-06-05T14:42:41+00:00"
+            "time": "2020-11-21T01:26:55+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

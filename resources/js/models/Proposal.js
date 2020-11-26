@@ -62,15 +62,15 @@ export default class Proposal extends Model {
   }
 
   get route_proposal_view () {
-    return route('use.proposal.view', { proposal: this.uuid }).url()
+    return route('use.proposal.view', { proposal: this.uuid })
   }
 
   get route_pub_proposal_view_link () {
-    return route('pub.proposal.view', { proposal: this.uuid }).url()
+    return route('pub.proposal.view', { proposal: this.uuid })
   }
 
   get route_pub_accept_with_payment () {
-     return route('pub.proposal.accept-with-payment', { proposal: this.uuid }).url()
+     return route('pub.proposal.accept-with-payment', { proposal: this.uuid })
   }
 
   get has_recipient () {

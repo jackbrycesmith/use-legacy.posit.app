@@ -11,6 +11,7 @@ import vClickOutside from 'v-click-outside'
 import { inspect } from "@xstate/inspect"
 import { InertiaForm } from 'laravel-jetstream'
 import { InertiaProgress } from '@inertiajs/progress'
+import route from 'ziggy-js'
 
 InertiaProgress.init({
   // The delay after which the progress bar will
@@ -31,6 +32,10 @@ InertiaProgress.init({
 import registerPlugins from '@/plugins'
 registerPlugins(Vue)
 
+window.route = (...args) => {
+  return route(args[0], args[1], args[2], Ziggy)
+}
+
 Vue.use(InertiaPlugin)
 Vue.use(PortalVue)
 Vue.use(InertiaForm)
@@ -38,7 +43,7 @@ Vue.use(VueMeta)
 Vue.use(vClickOutside)
 Vue.use(Fragment.Plugin)
 Vue.component('FocusTrap', FocusTrap)
-Vue.prototype.$route = (...args) => route(...args).url()
+Vue.prototype.$route = (...args) => route(args[0], args[1], args[2], Ziggy)
 Vue.prototype.$http = axios.create()
 
 const isDev = process.env.NODE_ENV !== "production"
