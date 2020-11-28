@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2298c44f2ff6a6730f3432803aae7e79",
+    "content-hash": "4ce2d749d97a21309949ec62cd1c66c2",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -1966,16 +1966,16 @@
         },
         {
             "name": "jackbrycesmith/featica",
-            "version": "v0.0.2",
+            "version": "v0.0.3",
             "source": {
                 "type": "git",
                 "url": "git@github.com:jackbrycesmith/featica.git",
-                "reference": "73d1fe6043a6e92dcde2066de1013ad315978945"
+                "reference": "479dece02f2de418f8fdafa5b59d2ec61e62248a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jackbrycesmith/featica/zipball/73d1fe6043a6e92dcde2066de1013ad315978945",
-                "reference": "73d1fe6043a6e92dcde2066de1013ad315978945",
+                "url": "https://api.github.com/repos/jackbrycesmith/featica/zipball/479dece02f2de418f8fdafa5b59d2ec61e62248a",
+                "reference": "479dece02f2de418f8fdafa5b59d2ec61e62248a",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2042,10 +2042,10 @@
                 "jackbrycesmith"
             ],
             "support": {
-                "source": "https://github.com/jackbrycesmith/featica/tree/v0.0.2",
+                "source": "https://github.com/jackbrycesmith/featica/tree/v0.0.3",
                 "issues": "https://github.com/jackbrycesmith/featica/issues"
             },
-            "time": "2020-11-28T00:33:13+00:00"
+            "time": "2020-11-28T01:40:11+00:00"
         },
         {
             "name": "jackbrycesmith/laravel-stripe-connect",
