@@ -14,6 +14,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.3.3",
+        "jackbrycesmith/featica": "^0.0.2",
         "jackbrycesmith/laravel-stripe-connect": "1.x-dev",
         "laravel/cashier-paddle": "^1.3",
         "laravel/framework": "^8.0",
