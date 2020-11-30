@@ -11,12 +11,14 @@ use App\Actions\Integrations\Stripe\Webhooks\HandleConnectCheckoutSessionComplet
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectPaymentIntentPaymentFailed;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectPaymentIntentProcessing;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectPaymentIntentSucceeded;
+use App\Actions\Mail\AddSesConfigurationSet;
 use App\Actions\Webhooks\HandleSetWebhookCallProcessed;
 use App\Events\WebhookCallProcessedEvent;
 use CloudCreativity\LaravelStripe\Events\FetchedUserCredentials;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\Event;
 use Laravel\Paddle\Events\PaymentSucceeded as PaddlePaymentSucceeded;
 
@@ -47,6 +49,8 @@ class EventServiceProvider extends ServiceProvider
         $this->handleStripeConnectEvents();
 
         $this->handleWebhookCallProcessedEvent();
+
+        $this->handleMailMessageEvents();
     }
 
     /**
@@ -122,5 +126,15 @@ class EventServiceProvider extends ServiceProvider
             WebhookCallProcessedEvent::class,
             HandleSetWebhookCallProcessed::class
         );
+    }
+
+    /**
+     * Handle mail events.
+     *
+     * @return void
+     */
+    protected function handleMailMessageEvents()
+    {
+        Event::listen(MessageSending::class, AddSesConfigurationSet::class);
     }
 }
