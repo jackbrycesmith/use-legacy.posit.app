@@ -14,7 +14,7 @@
 
     {{-- TODO add inter font (maybe even selfhost) --}}
     {{-- <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
-    @routes(['use-posit-app'])
+    @routes_with_url(['use-posit-app'])
 </head>
 <body class="font-sans antialiased">
 @inertia

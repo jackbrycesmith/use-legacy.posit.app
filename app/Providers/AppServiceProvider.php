@@ -18,10 +18,12 @@ use App\Models\User;
 use App\Observers\ProposalObserver;
 use App\Observers\TeamContactObserver;
 use App\Observers\UserObserver;
+use App\Utils\BladeRouteGenerator;
 use App\Utils\Paddle;
 use CloudCreativity\LaravelStripe\LaravelStripe;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Paddle\Cashier;
 use Laravel\Paddle\Receipt;
@@ -49,6 +51,7 @@ class AppServiceProvider extends ServiceProvider
         $this->setModelObservers();
         $this->setRelationMorphMap();
         $this->setPaddleProducts();
+        $this->bootBlade();
 
         // if(config('app.env') === 'production') {
         //     \URL::forceScheme('https');
@@ -141,6 +144,20 @@ class AppServiceProvider extends ServiceProvider
         Cashier::ignoreMigrations();
 
         Cashier::ignoreRoutes();
+
+        return $this;
+    }
+
+    /**
+     * Boot any custom blade helpers
+     *
+     * @return self
+     */
+    protected function bootBlade()
+    {
+        Blade::directive('routes_with_url', function ($group) {
+            return "<?php echo app('" . BladeRouteGenerator::class . "')->generate({$group}); ?>";
+        });
 
         return $this;
     }
