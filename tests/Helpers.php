@@ -8,6 +8,18 @@ use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 
 /**
+ * Gets the test stub data.
+ *
+ * @param string $name The name
+ *
+ * @return array The stub.
+ */
+function getStub(string $name): array
+{
+    return json_decode(file_get_contents(__DIR__ . "/stubs/{$name}.json"), true);
+}
+
+/**
  * Dump the content of database table.
  *
  * @param  string|array $tables

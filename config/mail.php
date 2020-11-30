@@ -52,6 +52,9 @@ return [
             'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
             'version' => 'latest',
             'service' => 'email',
+            'options' => [
+                'ConfigurationSetName' => env('MAILER_SES_CONFIGURATION_SET', 'posit-app'),
+            ],
         ],
 
         'mailgun' => [

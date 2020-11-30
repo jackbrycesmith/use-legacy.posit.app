@@ -11,6 +11,8 @@ use App\Actions\Integrations\Stripe\Webhooks\HandleConnectCheckoutSessionComplet
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectPaymentIntentPaymentFailed;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectPaymentIntentProcessing;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectPaymentIntentSucceeded;
+use App\Actions\Webhooks\HandleSetWebhookCallProcessed;
+use App\Events\WebhookCallProcessedEvent;
 use CloudCreativity\LaravelStripe\Events\FetchedUserCredentials;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -43,6 +45,8 @@ class EventServiceProvider extends ServiceProvider
         $this->handleCashierPaddleEvents();
 
         $this->handleStripeConnectEvents();
+
+        $this->handleWebhookCallProcessedEvent();
     }
 
     /**
@@ -105,5 +109,18 @@ class EventServiceProvider extends ServiceProvider
             HandleConnectCheckoutSessionAsyncPaymentFailed::class
         );
 
+    }
+
+    /**
+     * Handle events from spatie/laravel-webhook-client integration.
+     *
+     * @return void
+     */
+    protected function handleWebhookCallProcessedEvent()
+    {
+        Event::listen(
+            WebhookCallProcessedEvent::class,
+            HandleSetWebhookCallProcessed::class
+        );
     }
 }
