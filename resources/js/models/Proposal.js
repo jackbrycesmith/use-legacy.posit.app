@@ -30,6 +30,10 @@ export default class Proposal extends Model {
     return ['proposal_published', 'proposal_accepted', 'proposal_expired'].includes(this.status)
   }
 
+  get owner_credits_amount_available ()  {
+    return this.org?.in_app_credit_balance ?? 0
+  }
+
   get is_editable () {
     return ['proposal_draft'].includes(this.status)
   }

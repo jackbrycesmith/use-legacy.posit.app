@@ -78,7 +78,7 @@
 
               <!-- Credits Now -->
               <div class="flex flex-col items-center justify-center">
-                <span class="text-2xl">&infin;</span>
+                <span class="text-2xl">{{ proposal.owner_credits_amount_available }}</span>
                 <span class="text-sm text-gray-500 uppercase">Now</span>
               </div>
 
@@ -89,7 +89,7 @@
 
               <!-- Credits After -->
               <div class="flex flex-col items-center justify-center">
-                <span class="text-2xl">&infin;</span>
+                <span class="text-2xl">{{ proposal.owner_credits_amount_available - 1 }}</span>
                 <span class="text-sm text-gray-500 uppercase">After</span>
               </div>
 
