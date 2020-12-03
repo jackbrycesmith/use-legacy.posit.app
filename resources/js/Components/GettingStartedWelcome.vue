@@ -83,7 +83,7 @@
                 <p
                   :class="(!hasSetupPaymentProvider || hasSentFirstProposal ) ? 'text-gray-500' : 'text-primary-yellow-600'"
                   class="text-sm leading-5 font-medium text-gray-500 group-hover:text-gray-900 group-focus:text-gray-900 transition ease-in-out duration-150">
-                  Send your 1<sup>st</sup> proposal
+                  Send your 1<sup>st</sup> posit
                 </p>
               </div>
             <!-- </a> -->

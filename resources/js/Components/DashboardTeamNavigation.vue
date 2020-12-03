@@ -16,7 +16,7 @@
       :class="routeIs('use.index') ? activeNavItemClass : inactiveNavItemClass"
       class="group flex items-center rounded-md px-2 py-2 space-x-2 focus:outline-none focus:bg-primary-yellow-100 transition ease-in-out duration-150">
       <IconHeroiconsSmallLightBulb class="h-5 w-5 text-gray-400" />
-      <span class="text-sm text-gray-500 leading-5 font-medium">Proposals</span>
+      <span class="text-sm text-gray-500 leading-5 font-medium">Posits</span>
     </inertia-link>
 
     <!-- Contacts/Recipients -->
