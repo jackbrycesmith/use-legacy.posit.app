@@ -26,5 +26,8 @@ class ApplyCreditsFromPaddlePurchase extends Action implements ShouldQueue
         $creditAmount = Paddle::creditsForProduct((int) $this->receipt->product_id);
 
         InAppCredit::increase($creditAmount, $this->billable, $this->receipt);
+
+        // TODO broadcast to frontend that this is done
+        // TODO notify user via email saying successful etc.
     }
 }
