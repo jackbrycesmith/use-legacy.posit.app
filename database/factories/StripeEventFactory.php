@@ -38,6 +38,6 @@ $factory->define(StripeEvent::class, function (Faker $faker) {
 
 $factory->state(StripeEvent::class, 'connect', function () {
     return [
-        'account_id' => factory(StripeAccount::class)->create()->getKey(),
+        'account_id' => StripeAccount::factory()->create()->getKey(),
     ];
 });
