@@ -8,7 +8,7 @@ use function Tests\actingAs;
 
 // Adding Proposal...
 test('adding proposal recipient, proposal must exist', function () {
-    $response = $this->post(route('use.proposal.recipients.add-submit', ['proposal' => 'blah']));
+    $response = $this->post(route('use.posit.recipients.add-submit', ['proposal' => 'blah']));
     $response->assertStatus(404);
 });
 
@@ -19,7 +19,7 @@ test('adding proposal recipient requires login', function () {
         'team' => $team
     ]);
 
-    $response = $this->post(route('use.proposal.recipients.add-submit', ['proposal' => $proposal]));
+    $response = $this->post(route('use.posit.recipients.add-submit', ['proposal' => $proposal]));
 
     $response->assertRedirect(route('login'));
 });
@@ -32,7 +32,7 @@ test('user cannot add proposal recipient if no name supplied', function () {
     ]);
 
     $response = actingAs($user)->postJson(
-        route('use.proposal.recipients.add-submit', ['proposal' => $proposal])
+        route('use.posit.recipients.add-submit', ['proposal' => $proposal])
     );
 
     $response->assertStatus(422);
@@ -48,7 +48,7 @@ test('user cannot add proposal recipient if not a member of team owning the prop
 
     $otherUser = User::factory()->create();
 
-    $response = actingAs($otherUser)->post(route('use.proposal.recipients.add-submit', ['proposal' => $proposal]), ['name' => 'Test Name']);
+    $response = actingAs($otherUser)->post(route('use.posit.recipients.add-submit', ['proposal' => $proposal]), ['name' => 'Test Name']);
 
     $response->assertStatus(403);
     assertEquals(0, $proposal->recipients()->count());
@@ -62,7 +62,7 @@ test('user can add proposal recipient', function () {
     ]);
 
     $response = actingAs($user)->post(
-        route('use.proposal.recipients.add-submit', ['proposal' => $proposal]),
+        route('use.posit.recipients.add-submit', ['proposal' => $proposal]),
         ['name' => 'Recipient Name']
     );
 
@@ -73,7 +73,7 @@ test('user can add proposal recipient', function () {
 // Updating proposal...
 
 test('updating proposal recipient, proposal & recipient must exist', function () {
-    $response = $this->put(route('use.proposal.recipients.update', ['proposal' => 'blah', 'recipient' => 'blah']));
+    $response = $this->put(route('use.posit.recipients.update', ['proposal' => 'blah', 'recipient' => 'blah']));
 
     $response->assertStatus(404);
 });
@@ -86,7 +86,7 @@ test('updating proposal recipient requires login', function () {
         'team' => $team
     ]);
 
-    $response = $this->put(route('use.proposal.recipients.update', [
+    $response = $this->put(route('use.posit.recipients.update', [
         'proposal' => $proposal, 'recipient' => $contact
     ]));
 
@@ -104,7 +104,7 @@ test('user cannot update the proposal recipient if not a member of team owning t
     $otherUser = User::factory()->create();
 
     $response = actingAs($otherUser)->put(
-        route('use.proposal.recipients.update', ['proposal' => $proposal, 'recipient' => $contact->id])
+        route('use.posit.recipients.update', ['proposal' => $proposal, 'recipient' => $contact->id])
     );
 
     $response->assertStatus(403);
@@ -123,7 +123,7 @@ test('user cannot update the proposal recipient if contact is not from the propo
     ]);
 
     $response = actingAs($user)->put(
-        route('use.proposal.recipients.update', ['proposal' => $proposal, 'recipient' => $otherTeam->id])
+        route('use.posit.recipients.update', ['proposal' => $proposal, 'recipient' => $otherTeam->id])
     );
 
     $response->assertStatus(403);
@@ -139,7 +139,7 @@ test('user can update the proposal recipient', function () {
     ]);
 
     $response = actingAs($user)->put(
-        route('use.proposal.recipients.update', ['proposal' => $proposal, 'recipient' => $contact->id])
+        route('use.posit.recipients.update', ['proposal' => $proposal, 'recipient' => $contact->id])
     );
 
     $response->assertStatus(200);

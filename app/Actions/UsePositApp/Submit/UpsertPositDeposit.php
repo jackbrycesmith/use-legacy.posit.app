@@ -3,12 +3,12 @@
 namespace App\Actions\UsePositApp\Submit;
 
 use App\Models\Proposal;
+use App\Models\ProposalPayment;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
-use Illuminate\Validation\Rule;
 use Lorisleiva\Actions\Action;
 
-class UpdateProposalValue extends Action
+class UpsertPositDeposit extends Action
 {
     /**
      * Specify routes for this action.
@@ -21,9 +21,9 @@ class UpdateProposalValue extends Action
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->put('/proposal/{proposal:uuid}/upsert-value', static::class)
+            ->put('/proposal/{proposal:uuid}/upsert-deposit', static::class)
             ->where('proposal', Constant::PATTERN_UUID)
-            ->name('use.submit.upsert-proposal-value');
+            ->name('use.submit.upsert-posit-deposit');
     }
 
     /**
@@ -48,18 +48,13 @@ class UpdateProposalValue extends Action
         $maxValue = (float) ("1" . str_repeat("0", config('posit-settings.proposal.value_max_digits'))) - 0.01;
 
         return [
-            'value_amount' => [
+            'amount' => [
                 'bail',
                 'nullable',
                 'numeric',
                 'gte:0',
                 'regex:/^\d+(\.\d{1,2})?$/', // Max 2 decimal places
                 "max:$maxValue"
-            ],
-            'value_currency_code' => [
-                'bail',
-                'required',
-                Rule::in(Proposal::ALLOWED_VALUE_CURRENCIES)
             ]
         ];
     }
@@ -71,7 +66,15 @@ class UpdateProposalValue extends Action
      */
     public function handle(Proposal $proposal)
     {
-        $proposal->update($this->validated());
+        // TODO disallow update if its already been paid/locked/whatever (maybe in policy...)
+
+        // TODO probably add some race condition here so that duplicates aren't created...
+
+        $proposalDeposit = $proposal->depositPayment()->firstOrCreate([
+            'type' => ProposalPayment::TYPE_DEPOSIT
+        ]);
+
+        $proposalDeposit->update($this->validated());
     }
 
     /**

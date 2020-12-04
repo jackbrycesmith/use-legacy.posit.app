@@ -7,7 +7,7 @@ use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Lorisleiva\Actions\Action;
 
-class UpsertProposalName extends Action
+class UpsertPositName extends Action
 {
     /**
      * Specify routes for this action.
@@ -22,7 +22,7 @@ class UpsertProposalName extends Action
             ->middleware(['web', 'auth:sanctum', 'verified'])
             ->put('/proposal/{proposal:uuid}/upsert-name', static::class)
             ->where('proposal', Constant::PATTERN_UUID)
-            ->name('use.submit.upsert-proposal-name');
+            ->name('use.submit.upsert-posit-name');
     }
 
     /**

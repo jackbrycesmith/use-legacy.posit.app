@@ -11,6 +11,13 @@ class UpdateTeamInfo extends Action
 {
     protected $errorBag = 'updateTeamInfo';
 
+    /**
+     * Specify routes for this action.
+     *
+     * @param \Illuminate\Routing\Router $router The router
+     *
+     * @return void
+     */
     public static function routes(Router $router)
     {
         $router->domain(use_posit_domain())

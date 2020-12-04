@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Event;
 use function Tests\actingAs;
 
 test('updating proposal deposit requires proposal exist', function () {
-    $response = $this->put(route('use.submit.upsert-proposal-deposit', ['proposal' => 'blah']));
+    $response = $this->put(route('use.submit.upsert-posit-deposit', ['proposal' => 'blah']));
     $response->assertStatus(404);
 });
 
@@ -20,7 +20,7 @@ test('updating proposal deposit requires login', function () {
         'team' => $team
     ]);
 
-    $response = $this->put(route('use.submit.upsert-proposal-deposit', ['proposal' => $proposal]));
+    $response = $this->put(route('use.submit.upsert-posit-deposit', ['proposal' => $proposal]));
     $response->assertRedirect(route('login'));
 });
 
@@ -32,7 +32,7 @@ test('user cannot update proposal deposit if not a team member', function () {
     ]);
 
     $otherUser = User::factory()->create();
-    $response = actingAs($otherUser)->put(route('use.submit.upsert-proposal-deposit', ['proposal' => $proposal]));
+    $response = actingAs($otherUser)->put(route('use.submit.upsert-posit-deposit', ['proposal' => $proposal]));
 
     $response->assertStatus(403);
 });
@@ -51,7 +51,7 @@ test('user cannot upsert proposal deposit in certain statuses', function ($statu
     $proposal->setStatus($status);
 
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-deposit', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-deposit', ['proposal' => $proposal]),
         [
             //
         ]
@@ -62,7 +62,7 @@ test('user cannot upsert proposal deposit in certain statuses', function ($statu
     assertNull($proposal->depositPayment);
 
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-value', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-value', ['proposal' => $proposal]),
         [
             'value_amount' => 1,
             'value_currency_code' => 'GBP',
@@ -84,7 +84,7 @@ test('it creates proposal deposit payment if non-existant', function () {
     $proposal->refresh();
     assertNull($proposal->depositPayment);
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-deposit', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-deposit', ['proposal' => $proposal]),
         [
             //
         ]
@@ -107,7 +107,7 @@ test('user can update proposal deposit payment amount', function ($amount) {
     ]);
 
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-deposit', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-deposit', ['proposal' => $proposal]),
         [
             'amount' => $amount
         ]

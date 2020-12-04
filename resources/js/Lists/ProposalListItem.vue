@@ -38,7 +38,7 @@ export default {
       return this.proposal.uuid
     },
     proposalViewRoute () {
-      return route('use.proposal.view', { proposal: this.proposalUuid ?? '' })
+      return route('use.posit.view', { proposal: this.proposalUuid ?? '' })
     }
   },
   data () {

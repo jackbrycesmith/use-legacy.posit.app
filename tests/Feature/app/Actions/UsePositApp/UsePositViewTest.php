@@ -6,15 +6,15 @@ use App\Models\User;
 use function Tests\actingAs;
 use function Tests\assertInertiaComponent;
 
-test('user cannot get UseProposalView page if proposal does not exist', function () {
+test('user cannot get UsePositView page if proposal does not exist', function () {
     $user = User::factory()->create();
 
-    $response = actingAs($user)->get(route('use.proposal.view', ['proposal' => 'non-existant-proposal']));
+    $response = actingAs($user)->get(route('use.posit.view', ['proposal' => 'non-existant-proposal']));
 
     $response->assertStatus(404);
 });
 
-test('user who is not a team member cannot get UseProposalView page', function () {
+test('user who is not a team member cannot get UsePositView page', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $proposal = (new CreateDraftProposal)->actingAs($user)->run([
@@ -22,12 +22,12 @@ test('user who is not a team member cannot get UseProposalView page', function (
     ]);
 
     $otherUser = User::factory()->create();
-    $response = actingAs($otherUser)->get(route('use.proposal.view', ['proposal' => $proposal]));
+    $response = actingAs($otherUser)->get(route('use.posit.view', ['proposal' => $proposal]));
 
     $response->assertStatus(403);
 });
 
-test('user who is a team member can get UseProposalView page', function () {
+test('user who is a team member can get UsePositView page', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
 
@@ -35,7 +35,7 @@ test('user who is a team member can get UseProposalView page', function () {
         'team' => $team
     ]);
 
-    $response = actingAs($user)->get(route('use.proposal.view', ['proposal' => $proposal]));
+    $response = actingAs($user)->get(route('use.posit.view', ['proposal' => $proposal]));
 
     $response->assertStatus(200);
     assertInertiaComponent($response, 'Use/ProposalView');

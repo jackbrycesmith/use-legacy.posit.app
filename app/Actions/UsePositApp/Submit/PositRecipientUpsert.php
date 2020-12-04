@@ -10,21 +10,28 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Request;
 use Lorisleiva\Actions\Action;
 
-class ProposalRecipientUpsert extends Action
+class PositRecipientUpsert extends Action
 {
+    /**
+     * Specify routes for this action.
+     *
+     * @param \Illuminate\Routing\Router $router The router
+     *
+     * @return void
+     */
     public static function routes(Router $router)
     {
         $router->domain(use_posit_domain())
-            ->middleware(['web', 'auth'])
+            ->middleware(['web', 'auth:sanctum', 'verified'])
             ->post('/proposal/{proposal:uuid}/recipients/add', static::class)
             ->where('proposal', Constant::PATTERN_UUID)
-            ->name('use.proposal.recipients.add-submit');
+            ->name('use.posit.recipients.add-submit');
 
         $router->domain(use_posit_domain())
-            ->middleware(['web', 'auth'])
+            ->middleware(['web', 'auth:sanctum', 'verified'])
             ->put('/proposal/{proposal:uuid}/recipients/{recipient}', static::class)
             ->where('proposal', Constant::PATTERN_UUID)
-            ->name('use.proposal.recipients.update');
+            ->name('use.posit.recipients.update');
     }
 
     /**
@@ -44,7 +51,7 @@ class ProposalRecipientUpsert extends Action
      */
     public function rules()
     {
-        if (Request::routeIs('use.proposal.recipients.add-submit')) {
+        if (Request::routeIs('use.posit.recipients.add-submit')) {
             return [
                 'name' => ['required', 'max:255'],
             ];

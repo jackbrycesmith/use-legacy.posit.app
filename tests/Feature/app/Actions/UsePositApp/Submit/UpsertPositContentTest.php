@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Event;
 use function Tests\actingAs;
 
 test('updating proposal content requires proposal exist', function () {
-    $response = $this->put(route('use.submit.upsert-proposal-content', ['proposal' => 'blah']));
+    $response = $this->put(route('use.submit.upsert-posit-content', ['proposal' => 'blah']));
     $response->assertStatus(404);
 });
 
@@ -19,7 +19,7 @@ test('updating proposal content requires login', function () {
         'team' => $team
     ]);
 
-    $response = $this->put(route('use.submit.upsert-proposal-content', ['proposal' => $proposal]));
+    $response = $this->put(route('use.submit.upsert-posit-content', ['proposal' => $proposal]));
     $response->assertRedirect(route('login'));
 });
 
@@ -31,7 +31,7 @@ test('user cannot update proposal content if not a team member', function () {
     ]);
 
     $otherUser = User::factory()->create();
-    $response = actingAs($otherUser)->put(route('use.submit.upsert-proposal-content', ['proposal' => $proposal]));
+    $response = actingAs($otherUser)->put(route('use.submit.upsert-posit-content', ['proposal' => $proposal]));
 
     $response->assertStatus(403);
 });
@@ -51,7 +51,7 @@ test('user cannot update proposal content in certain statuses', function ($statu
     ];
 
     $response = actingAs($user)->put(
-        route('use.submit.upsert-proposal-content', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-content', ['proposal' => $proposal]),
         $proposalContent
     );
 
@@ -73,7 +73,7 @@ test('user can update proposal content if a team member', function () {
     ];
 
     $response = actingAs($user)->put(
-        route('use.submit.upsert-proposal-content', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-content', ['proposal' => $proposal]),
         $proposalContent
     );
 

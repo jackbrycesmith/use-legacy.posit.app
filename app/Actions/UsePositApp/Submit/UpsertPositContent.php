@@ -8,15 +8,22 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Lorisleiva\Actions\Action;
 
-class UpsertProposalContent extends Action
+class UpsertPositContent extends Action
 {
+    /**
+     * Specify routes for this action.
+     *
+     * @param \Illuminate\Routing\Router $router The router
+     *
+     * @return void
+     */
     public static function routes(Router $router)
     {
         $router->domain(use_posit_domain())
-            ->middleware(['web', 'auth'])
+            ->middleware(['web', 'auth:sanctum', 'verified'])
             ->put('/proposal/{proposal:uuid}/upsert-content', static::class)
             ->where('proposal', Constant::PATTERN_UUID)
-            ->name('use.submit.upsert-proposal-content');
+            ->name('use.submit.upsert-posit-content');
     }
 
     /**

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Event;
 use function Tests\actingAs;
 
 test('updating proposal value requires proposal exist', function () {
-    $response = $this->put(route('use.submit.upsert-proposal-value', ['proposal' => 'blah']));
+    $response = $this->put(route('use.submit.upsert-posit-value', ['proposal' => 'blah']));
     $response->assertStatus(404);
 });
 
@@ -19,7 +19,7 @@ test('updating proposal value requires login', function () {
         'team' => $team
     ]);
 
-    $response = $this->put(route('use.submit.upsert-proposal-value', ['proposal' => $proposal]));
+    $response = $this->put(route('use.submit.upsert-posit-value', ['proposal' => $proposal]));
     $response->assertRedirect(route('login'));
 });
 
@@ -31,7 +31,7 @@ test('user cannot update proposal value if not a team member', function () {
     ]);
 
     $otherUser = User::factory()->create();
-    $response = actingAs($otherUser)->put(route('use.submit.upsert-proposal-value', ['proposal' => $proposal]));
+    $response = actingAs($otherUser)->put(route('use.submit.upsert-posit-value', ['proposal' => $proposal]));
 
     $response->assertStatus(403);
 });
@@ -47,7 +47,7 @@ test('user cannot update proposal value in certain statuses', function ($status)
     $proposal->setStatus($status);
 
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-value', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-value', ['proposal' => $proposal]),
         [
             'value_amount' => 1,
             'value_currency_code' => 'GBP',
@@ -67,7 +67,7 @@ test('user cannot update proposal value if missing params', function () {
     ]);
 
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-value', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-value', ['proposal' => $proposal]),
         [
             //
         ]
@@ -91,7 +91,7 @@ test('user cannot update proposal value if not allowed currency code', function 
     ]);
 
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-value', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-value', ['proposal' => $proposal]),
         [
             'value_currency_code' => $currencyCode
         ]
@@ -114,7 +114,7 @@ test('user cannot update proposal value if negative amount', function ($amount) 
     ]);
 
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-value', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-value', ['proposal' => $proposal]),
         [
             'value_amount' => $amount,
         ]
@@ -138,7 +138,7 @@ test('user cannot update proposal value if too many decimal places', function ($
     ]);
 
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-value', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-value', ['proposal' => $proposal]),
         [
             'value_amount' => $amount,
         ]
@@ -162,7 +162,7 @@ test('user cannot update proposal value if amount too high', function ($amount) 
     ]);
 
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-value', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-value', ['proposal' => $proposal]),
         [
             'value_amount' => $amount,
         ]
@@ -185,7 +185,7 @@ test('user can update proposal value if team member & valid params', function ($
     ]);
 
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-value', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-value', ['proposal' => $proposal]),
         [
             'value_amount' => $amount,
             'value_currency_code' => $currencyCode,

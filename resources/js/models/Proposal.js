@@ -66,7 +66,7 @@ export default class Proposal extends Model {
   }
 
   get route_proposal_view () {
-    return route('use.proposal.view', { proposal: this.uuid })
+    return route('use.posit.view', { proposal: this.uuid })
   }
 
   get route_pub_proposal_view_link () {
@@ -224,12 +224,12 @@ export default class Proposal extends Model {
     const contactId = this.recipient?.id
     if (isNil(contactId)) return
 
-    await Http.put(route('use.proposal.recipients.update', { proposal: this.uuid, recipient: contactId }))
+    await Http.put(route('use.posit.recipients.update', { proposal: this.uuid, recipient: contactId }))
   }
 
   async updateProjectValue () {
     const response = await Http.put(
-      route('use.submit.upsert-proposal-value', { proposal: this.uuid }),
+      route('use.submit.upsert-posit-value', { proposal: this.uuid }),
       {
         value_amount: this.value_amount,
         value_currency_code: this.value_currency_code,
@@ -241,7 +241,7 @@ export default class Proposal extends Model {
 
   async updateDepositAmount () {
     const response = await Http.put(
-      route('use.submit.upsert-proposal-deposit', { proposal: this.uuid }),
+      route('use.submit.upsert-posit-deposit', { proposal: this.uuid }),
       {
         amount: this.deposit_amount,
       }
@@ -252,7 +252,7 @@ export default class Proposal extends Model {
 
   async publish () {
     const response = await Http.put(
-      route('use.submit.publish-proposal', { proposal: this.uuid })
+      route('use.submit.publish-posit', { proposal: this.uuid })
     )
 
     this.status = 'proposal_published'
@@ -262,7 +262,7 @@ export default class Proposal extends Model {
 
   async addRecipient (payload) {
     const response = await Http.post(
-      route('use.proposal.recipients.add-submit', { proposal: this.uuid }),
+      route('use.posit.recipients.add-submit', { proposal: this.uuid }),
       payload
     )
 
@@ -274,7 +274,7 @@ export default class Proposal extends Model {
 
   async videoIntroUpsert (uploadedUuid) {
     const response = await Http.post(
-      route('use.proposal.video-intro', { proposal: this.uuid }),
+      route('use.posit.video-intro', { proposal: this.uuid }),
       {
         uuid: uploadedUuid
       }

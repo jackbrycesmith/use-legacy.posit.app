@@ -13,7 +13,7 @@ use function Tests\actingAs;
 
 test('ProposalVideoIntroUpsert 404s with proposal invalid uuid', function () {
     Bus::fake();
-    $response = $this->post(route('use.proposal.video-intro', 'blah'));
+    $response = $this->post(route('use.posit.video-intro', 'blah'));
     Bus::assertNotDispatched(ConvertVideoForDownloading::class);
 
     $response->assertStatus(404);
@@ -21,7 +21,7 @@ test('ProposalVideoIntroUpsert 404s with proposal invalid uuid', function () {
 
 test('ProposalVideoIntroUpsert requires login', function () {
     Bus::fake();
-    $response = $this->post(route('use.proposal.video-intro', Str::uuid()));
+    $response = $this->post(route('use.posit.video-intro', Str::uuid()));
     Bus::assertNotDispatched(ConvertVideoForDownloading::class);
 
     $response->assertRedirect(route('login'));
@@ -38,7 +38,7 @@ test('ProposalVideoIntroUpsert disallowed if not a proposal user', function () {
 
     Bus::fake();
     $response = actingAs($otherUser)->post(
-        route('use.proposal.video-intro', [
+        route('use.posit.video-intro', [
             'proposal' => $proposal
         ])
     );
@@ -56,7 +56,7 @@ test('ProposalVideoIntroUpsert disallowed if incorrect data passed', function ()
 
     Bus::fake();
     $response = actingAs($user)->postJson(
-        route('use.proposal.video-intro', [
+        route('use.posit.video-intro', [
             'proposal' => $proposal
         ])
     );
@@ -66,7 +66,7 @@ test('ProposalVideoIntroUpsert disallowed if incorrect data passed', function ()
 
     Bus::fake();
     $response = actingAs($user)->postJson(
-        route('use.proposal.video-intro', [
+        route('use.posit.video-intro', [
             'proposal' => $proposal
         ]), [
             'uuid' => 'not a uuid'
@@ -88,7 +88,7 @@ test('ProposalVideoIntroUpsert disallowed if temp file does not exist', function
 
     Bus::fake();
     $response = actingAs($user)->postJson(
-        route('use.proposal.video-intro', [
+        route('use.posit.video-intro', [
             'proposal' => $proposal
         ]),
         [
@@ -118,7 +118,7 @@ test('ProposalVideoIntroUpsert allowed', function () {
 
     Bus::fake();
     $response = actingAs($user)->postJson(
-        route('use.proposal.video-intro', [
+        route('use.posit.video-intro', [
             'proposal' => $proposal
         ]),
         [

@@ -132,7 +132,7 @@ export default {
     },
     updateContentOnServer: debounce(async ({ payload, vm }) => {
       const response = await vm.$http.put(
-        vm.$route('use.submit.upsert-proposal-content', { proposal: vm.proposalUuid }),
+        vm.$route('use.submit.upsert-posit-content', { proposal: vm.proposalUuid }),
         payload
       )
       console.log('updateContentOnServer response: ', response)
@@ -149,7 +149,7 @@ export default {
     },
     updateNameOnServer: debounce(async ({ payload, vm }) => {
       const response = await vm.$http.put(
-        vm.$route('use.submit.upsert-proposal-name', { proposal: vm.proposalUuid }),
+        vm.$route('use.submit.upsert-posit-name', { proposal: vm.proposalUuid }),
         payload
       )
     }, 1000)

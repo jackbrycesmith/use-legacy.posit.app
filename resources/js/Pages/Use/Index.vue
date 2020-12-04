@@ -44,7 +44,6 @@
 <script>
 import TeamDashboardSidebar from '@/Components/TeamDashboardSidebar'
 import ProposalList from '@/Lists/ProposalList'
-import OrganisationList from '@/Lists/OrganisationList'
 import Dashboard from '@/Layouts/Dashboard'
 import Organisation from '@/models/Organisation'
 import Proposal from '@/models/Proposal'
@@ -55,7 +54,6 @@ import { getPayloadData } from '@/utils/data'
 
 export default {
   components: {
-    OrganisationList,
     ProposalList,
     ProposalDashboardListItem,
     TeamDashboardSidebar,

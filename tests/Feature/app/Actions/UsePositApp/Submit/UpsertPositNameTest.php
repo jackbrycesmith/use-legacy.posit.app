@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Event;
 use function Tests\actingAs;
 
 test('proposal must exist to update the name', function () {
-    $response = $this->put(route('use.submit.upsert-proposal-name', [
+    $response = $this->put(route('use.submit.upsert-posit-name', [
         'proposal' => 'blah'
     ]));
 
@@ -22,7 +22,7 @@ test('updating proposal name requires login', function () {
         'team' => $team
     ]);
 
-    $response = $this->put(route('use.submit.upsert-proposal-name', [
+    $response = $this->put(route('use.submit.upsert-posit-name', [
         'proposal' => $proposal
     ]));
 
@@ -37,7 +37,7 @@ test('user cannot update proposal name if not a team member', function () {
     ]);
 
     $otherUser = User::factory()->create();
-    $response = actingAs($otherUser)->put(route('use.submit.upsert-proposal-name', ['proposal' => $proposal]));
+    $response = actingAs($otherUser)->put(route('use.submit.upsert-posit-name', ['proposal' => $proposal]));
 
     $response->assertStatus(403);
 });
@@ -53,7 +53,7 @@ test('user cannot update proposal name in certain statuses', function ($status) 
     $proposal->setStatus($status);
 
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-name', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-name', ['proposal' => $proposal]),
         [
             'name' => 'Name'
         ]
@@ -72,7 +72,7 @@ test('user cann update proposal name', function () {
     ]);
 
     $response = actingAs($user)->putJson(
-        route('use.submit.upsert-proposal-name', ['proposal' => $proposal]),
+        route('use.submit.upsert-posit-name', ['proposal' => $proposal]),
         [
             'name' => 'Name'
         ]

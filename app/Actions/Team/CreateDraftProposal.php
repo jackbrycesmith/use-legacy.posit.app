@@ -81,6 +81,6 @@ class CreateDraftProposal extends Action
      */
     public function response(Proposal $proposal)
     {
-        return Redirect::route('use.proposal.view', ['proposal' => $proposal->uuid]);
+        return Redirect::route('use.posit.view', ['proposal' => $proposal->uuid]);
     }
 }

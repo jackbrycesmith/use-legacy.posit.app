@@ -1,35 +1,38 @@
 <?php
 
-namespace App\Actions\UsePositApp;
+namespace App\Actions\UsePositApp\Submit;
 
-use App\Http\Resources\ProposalResource;
 use App\Models\Proposal;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
-use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
-class UseProposalView extends Action
+class PublishPosit extends Action
 {
+    /**
+     * Specify routes for this action.
+     *
+     * @param \Illuminate\Routing\Router $router The router
+     *
+     * @return void
+     */
     public static function routes(Router $router)
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->get('/proposal/{proposal:uuid}', static::class)
+            ->put('/proposal/{proposal:uuid}/publish', static::class)
             ->where('proposal', Constant::PATTERN_UUID)
-            ->name('use.proposal.view');
+            ->name('use.submit.publish-posit');
     }
 
     /**
      * Determine if the user is authorized to make this action.
      *
-     * @param \App\Models\Proposal $proposal The proposal
-     *
      * @return bool
      */
     public function authorize(Proposal $proposal)
     {
-        return $this->can('view', $proposal);
+        return $this->can('publish', $proposal);
     }
 
     /**
@@ -51,24 +54,20 @@ class UseProposalView extends Action
      */
     public function handle(Proposal $proposal)
     {
-        return Inertia::render('Use/ProposalView', [
-            'proposal' => fn() => $this->getProposalResource($proposal)
-        ]);
+        // TODO validate whether proposal is in a state that can be published.
+        $proposal->setStatus(Proposal::STATUS_PUBLISHED);
+        $proposal->save();
+
+        return $proposal;
     }
 
     /**
-     * Returns the proposal resource
+     * The action HTTP response.
      *
-     * @param \App\Models\Proposal $proposal The proposal
-     *
-     * @return ProposalResource
+     * @return \Illuminate\Http\Response
      */
-    protected function getProposalResource(Proposal $proposal)
+    public function response(Proposal $proposal)
     {
-        $proposal->loadMissing([
-            'team', 'creator', 'team.contacts', 'team.stripeAccount', 'proposalContent', 'depositPayment', 'recipient', 'video'
-        ]);
-
-        return new ProposalResource($proposal);
+        return response()->noContent();
     }
 }

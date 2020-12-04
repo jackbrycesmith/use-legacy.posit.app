@@ -13,15 +13,22 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\Action;
 
-class ProposalVideoIntroUpsert extends Action
+class PositVideoIntroUpsert extends Action
 {
+    /**
+     * Specify routes for this action.
+     *
+     * @param \Illuminate\Routing\Router $router The router
+     *
+     * @return void
+     */
     public static function routes(Router $router)
     {
         $router->domain(use_posit_domain())
-            ->middleware(['web', 'auth'])
+            ->middleware(['web', 'auth:sanctum', 'verified'])
             ->post('/proposal/{proposal:uuid}/video-intro', static::class)
             ->where('proposal', Constant::PATTERN_UUID)
-            ->name('use.proposal.video-intro');
+            ->name('use.posit.video-intro');
     }
 
     /**

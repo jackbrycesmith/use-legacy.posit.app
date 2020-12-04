@@ -1,6 +1,6 @@
 <?php
 
-use App\Broadcasting\ProposalIntroVideoChannel;
+use App\Broadcasting\PositIntroVideoChannel;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -20,5 +20,5 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 
 Broadcast::channel(
     'proposal.{proposalUuid}.intro_video',
-    ProposalIntroVideoChannel::class
+    PositIntroVideoChannel::class
 );

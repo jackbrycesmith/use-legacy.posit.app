@@ -6,7 +6,7 @@ use App\Models\Proposal;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
-class ProposalIntroVideoChannel
+class PositIntroVideoChannel
 {
     /**
      * Create a new channel instance.

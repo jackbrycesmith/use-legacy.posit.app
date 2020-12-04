@@ -7,7 +7,7 @@ use App\Models\User;
 use function Tests\actingAs;
 
 test('to publish proposal it must exist', function () {
-    $response = $this->put(route('use.submit.publish-proposal', ['proposal' => 'blah']));
+    $response = $this->put(route('use.submit.publish-posit', ['proposal' => 'blah']));
     $response->assertStatus(404);
 });
 
@@ -18,7 +18,7 @@ test('to publish proposal it requires login', function () {
         'team' => $team
     ]);
 
-    $response = $this->put(route('use.submit.publish-proposal', ['proposal' => $proposal]));
+    $response = $this->put(route('use.submit.publish-posit', ['proposal' => $proposal]));
     $response->assertRedirect(route('login'));
     assertFalse($proposal->hasEverHadStatus(Proposal::STATUS_PUBLISHED));
 });
@@ -31,7 +31,7 @@ test('to publish proposal, user must be a team member', function () {
     ]);
 
     $otherUser = User::factory()->create();
-    $response = actingAs($otherUser)->put(route('use.submit.publish-proposal', ['proposal' => $proposal]));
+    $response = actingAs($otherUser)->put(route('use.submit.publish-posit', ['proposal' => $proposal]));
 
     $response->assertStatus(403);
     assertFalse($proposal->hasEverHadStatus(Proposal::STATUS_PUBLISHED));
@@ -46,7 +46,7 @@ test('to publish proposal, it must not have already been published', function ()
     $proposal->setStatus(Proposal::STATUS_PUBLISHED);
     $proposal->save();
 
-    $response = actingAs($user)->putJson(route('use.submit.publish-proposal', ['proposal' => $proposal]));
+    $response = actingAs($user)->putJson(route('use.submit.publish-posit', ['proposal' => $proposal]));
 
     $response->assertStatus(403);
     // TODO why this isn't working?!
@@ -63,7 +63,7 @@ test('can publish proposal', function () {
         'team' => $team
     ]);
 
-    $response = actingAs($user)->putJson(route('use.submit.publish-proposal', ['proposal' => $proposal]));
+    $response = actingAs($user)->putJson(route('use.submit.publish-posit', ['proposal' => $proposal]));
     $response->assertStatus(204);
 
     // $proposal->refresh();
