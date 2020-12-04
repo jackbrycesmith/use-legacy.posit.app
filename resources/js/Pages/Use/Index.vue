@@ -13,8 +13,8 @@
           </div>
         </div>
         <ul class="relative z-0 divide-y divide-gray-200 border-b border-gray-200 bg-white">
-          <ProposalDashboardListItem
-            v-for="proposal in proposals__"
+          <PositDashboardListItem
+            v-for="proposal in posits__"
             :key="proposal.id"
             :proposal="proposal"
           />
@@ -22,9 +22,9 @@
 
         <tailable-pagination
           class="lg:sticky lg:bottom-0 bg-primary-yellow-50"
-          :data="proposals"
+          :data="posits"
           :show-numbers="true"
-          @page-changed="handleProposalPageChanged"/>
+          @page-changed="handlePositPageChanged"/>
       </div>
     </div>
 
@@ -43,41 +43,41 @@
 
 <script>
 import TeamDashboardSidebar from '@/Components/TeamDashboardSidebar'
-import ProposalList from '@/Lists/ProposalList'
+import PositList from '@/Lists/PositList'
 import Dashboard from '@/Layouts/Dashboard'
-import Organisation from '@/models/Organisation'
-import Proposal from '@/models/Proposal'
-import ProposalDashboardListItem from '@/Lists/ProposalDashboardListItem'
+import Team from '@/models/Team'
+import Posit from '@/models/Posit'
+import PositDashboardListItem from '@/Lists/PositDashboardListItem'
 import GettingStartedWelcome from '@/Components/GettingStartedWelcome'
 import { find } from 'lodash-es'
 import { getPayloadData } from '@/utils/data'
 
 export default {
   components: {
-    ProposalList,
-    ProposalDashboardListItem,
+    PositList,
+    PositDashboardListItem,
     TeamDashboardSidebar,
     GettingStartedWelcome
   },
   props: {
     team: { type: Object, default: () => {} },
-    proposals: {},
+    posits: {},
   },
   layout: Dashboard,
   data () {
     return {
-      team__: Organisation.make(),
-      proposals__: []
+      team__: Team.make(),
+      posits__: []
     }
   },
   methods: {
-    handleProposalPageChanged (value) {
-      if (value === this.proposals.meta.current_page) return
-      const link = find(this.proposals?.meta?.links ?? [], { 'label': value })
+    handlePositPageChanged (value) {
+      if (value === this.posits.meta.current_page) return
+      const link = find(this.posits?.meta?.links ?? [], { 'label': value })
       if (!link) return
 
       this.$inertia.visit(link.url, {
-        only: ['proposals'],
+        only: ['posits'],
         preserveState: true,
         preserveScroll: true
       })
@@ -87,13 +87,13 @@ export default {
     team: {
       immediate: true,
       handler (value) {
-        this.team__ = Organisation.make(value)
+        this.team__ = Team.make(value)
       }
     },
-    proposals: {
+    posits: {
       immediate: true,
       handler (value) {
-        this.proposals__ = Proposal.make(getPayloadData(value))
+        this.posits__ = Posit.make(getPayloadData(value))
       }
     },
   },

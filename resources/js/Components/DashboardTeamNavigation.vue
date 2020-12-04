@@ -10,7 +10,7 @@
       <span class="text-sm text-gray-500 leading-5 font-medium">{{ org.in_app_credit_balance }} Credits</span>
     </inertia-link>
 
-    <!-- Proposals -->
+    <!-- Posits -->
     <inertia-link
       :href="$route('use.index')"
       :class="routeIs('use.index') ? activeNavItemClass : inactiveNavItemClass"

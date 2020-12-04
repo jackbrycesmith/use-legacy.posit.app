@@ -34,7 +34,7 @@
     </div>
 
     <!-- Expanded state... -->
-    <portal to="proposal-view-portal">
+    <portal to="posit-view-portal">
 
       <BaseModal
         ref="modal"
@@ -87,7 +87,7 @@ import IconVideoMessage from '@/Components/IconVideoMessage'
 import IconHeroiconsMediumCog from '@/Icons/IconHeroiconsMediumCog'
 import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
 import BaseModal from '@/Modals/BaseModal'
-import ProposalIntroVideoExpanded from '@/Components/ProposalIntroVideoExpanded'
+import PositIntroVideoExpanded from '@/Components/PositIntroVideoExpanded'
 import VideoJs from '@/Components/VideoJs'
 import { get, set } from 'lodash-es'
 
@@ -97,7 +97,7 @@ export default {
     IconVideoMessage,
     IconHeroiconsMediumCog,
     IconHeroiconsSpinner,
-    ProposalIntroVideoExpanded,
+    PositIntroVideoExpanded,
     BaseModal,
     VideoJs
   },

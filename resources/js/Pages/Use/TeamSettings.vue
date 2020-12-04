@@ -4,7 +4,7 @@
     <!-- Left sidebar & main wrapper -->
     <div class="flex-1 min-w-0 xl:flex">
 
-      <TeamDashboardSidebar :team="org__" />
+      <TeamDashboardSidebar :team="team__" />
 
       <!-- Settings List -->
       <div class="lg:min-w-0 lg:flex-1">
@@ -29,7 +29,7 @@
           </div>
 
           <div class="mt-5 md:col-span-2">
-            <UpdateTeamInformationForm :team="org__" :permissions="permissions" />
+            <UpdateTeamInformationForm :team="team__" :permissions="permissions" />
           </div>
 
         </div>
@@ -53,14 +53,14 @@
           <div class="mt-5 md:mt-0 md:col-span-2">
             <!-- Payments... -->
             <StripeConnectSetup
-              :stripe-account="org__.stripeAccount"
-              :team-uuid="org__.uuid"
+              :stripe-account="team__.stripeAccount"
+              :team-uuid="team__.uuid"
               :permissions="permissions"
               @disconnected="handleStripeAccountDisconnected"/>
 
             <CoinbaseCommerceSetup
-              :coinbase-commerce-account="org__.coinbaseCommerceAccount"
-              :org-uuid="org__.uuid"
+              :coinbase-commerce-account="team__.coinbaseCommerceAccount"
+              :org-uuid="team__.uuid"
               class="mt-10"/>
           </div>
 
@@ -76,7 +76,7 @@
 
 <script>
 import Dashboard from '@/Layouts/Dashboard'
-import Organisation from '@/models/Organisation'
+import Team from '@/models/Team'
 import JetSectionBorder from '@/Jetstream/SectionBorder'
 import StripeConnectSetup from '@/Components/StripeConnectSetup'
 import TeamDashboardSidebar from '@/Components/TeamDashboardSidebar'
@@ -99,20 +99,20 @@ export default {
   layout: Dashboard,
   data () {
     return {
-      org__: Organisation.make()
+      team__: Team.make()
     }
   },
   watch: {
     team: {
       immediate: true,
       handler (value) {
-        this.org__ = Organisation.make(value)
+        this.team__ = Team.make(value)
       }
     }
   },
   methods: {
     handleStripeAccountDisconnected () {
-      this.org__.stripeAccount = null
+      this.team__.stripeAccount = null
     }
   }
 }

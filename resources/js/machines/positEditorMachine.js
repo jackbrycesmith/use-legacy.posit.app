@@ -1,7 +1,7 @@
 import { Machine, assign } from 'xstate'
 
-export const proposalEditorMachine = Machine({
-  id: 'proposalEditor',
+export const positEditorMachine = Machine({
+  id: 'positEditor',
   context: {
     canEdit: false
   },

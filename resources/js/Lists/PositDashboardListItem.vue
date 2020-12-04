@@ -21,7 +21,7 @@
       </div>
 
 
-      <!-- Proposal meta info -->
+      <!-- Posit meta info -->
       <div class="flex items-center justify-end">
         <div v-if="proposal.has_recipient" class="flex flex-shrink-0 shadow-inner rounded-md mr-2">
           <div class="flex-shrink-0 flex items-center justify-center w-14 h-12 border-t border-l border-b border-white rounded-l-md">

@@ -55,8 +55,8 @@
 
               <!-- Amount -->
               <InputWithCurrency
-                :currency-model="proposal.value_currency_code"
-                :amount-model.sync="proposal.deposit_amount"
+                :currency-model="posit.value_currency_code"
+                :amount-model.sync="posit.deposit_amount"
                 :max="999999999"
                 :editable="editable"
                 :can-switch-currency="false"
@@ -87,7 +87,7 @@ export default {
     InputWithCurrency
   },
   props: {
-    proposal: { type: Object },
+    posit: { type: Object },
     editable: {
       type: Boolean,
       default: true
@@ -100,10 +100,10 @@ export default {
   },
   computed: {
     settingsRoute () {
-      return this.proposal.org.route_settings
+      return this.posit.org.route_settings
     },
     isSelectedProviderReady () {
-      return this.proposal.is_selected_payment_provider_ready ?? false
+      return this.posit.is_selected_payment_provider_ready ?? false
     }
   },
   methods: {
@@ -111,7 +111,7 @@ export default {
       if (!this.editable) return
 
       try {
-        await this.proposal.updateDepositAmount()
+        await this.posit.updateDepositAmount()
       } catch (e) {
         // TODO handle update project value error...
       }

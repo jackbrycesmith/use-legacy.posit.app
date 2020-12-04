@@ -47,7 +47,7 @@ import CreditsHistorySnippet from '@/Components/CreditsHistorySnippet'
 import GettingStartedWelcome from '@/Components/GettingStartedWelcome'
 import DisplayCreditBalance from '@/Components/DisplayCreditBalance'
 import GetMoreCredits from '@/Components/GetMoreCredits'
-import Organisation from '@/models/Organisation'
+import Team from '@/models/Team'
 import Dashboard from '@/Layouts/Dashboard'
 
 export default {
@@ -78,7 +78,7 @@ export default {
   },
   data () {
     return {
-      team__: Organisation.make(),
+      team__: Team.make(),
       paddleLoaded: false
     }
   },
@@ -86,7 +86,7 @@ export default {
     team: {
       immediate: true,
       handler (value) {
-        this.team__ = Organisation.make(value)
+        this.team__ = Team.make(value)
       }
     },
   },

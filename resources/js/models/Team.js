@@ -1,12 +1,11 @@
 import Model from './Model'
 import User from './User'
-import Proposal from './Proposal'
+import Posit from './Posit'
 import StripeAccount from './StripeAccount'
-import OrganisationContact from './OrganisationContact'
-import Http from '@/services/Http'
+import TeamContact from './TeamContact'
 import { initials } from '@/utils/strings'
 
-export default class Organisation extends Model {
+export default class Team extends Model {
   exists() {
     return this.uuid !== null
   }
@@ -26,10 +25,6 @@ export default class Organisation extends Model {
 
   get route_settings () {
     return route('use.team.settings', { team: this.uuid })
-  }
-
-  get route_members () {
-    return route('use.org.members', { org: this.uuid })
   }
 
   get route_credits_paddle_pay_link () {
@@ -59,9 +54,9 @@ export default class Organisation extends Model {
   getRelationships() {
     return {
       users: User,
-      proposals: Proposal,
+      posits: Posit,
       stripeAccount: StripeAccount,
-      contacts: OrganisationContact
+      contacts: TeamContact
     }
   }
 }

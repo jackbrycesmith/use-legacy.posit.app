@@ -61,11 +61,11 @@
               <div class="flex items-start space-x-3">
                 <div class="flex-shrink-0 h-5 w-5 relative flex items-center justify-center">
 
-                  <template v-if="!hasSetupPaymentProvider && !hasSentFirstProposal">
+                  <template v-if="!hasSetupPaymentProvider && !hasSentFirstPosit">
                     <span class="block h-2 w-2 bg-gray-300 rounded-full group-hover:bg-gray-400 group-focus:bg-gray-400 transition ease-in-out duration-150"></span>
                   </template>
 
-                  <template v-if="hasSetupPaymentProvider && !hasSentFirstProposal">
+                  <template v-if="hasSetupPaymentProvider && !hasSentFirstPosit">
                     <!-- Current one... -->
                     <span
                       :class="{ 'animate-ping': animateCurrentActiveStep }"
@@ -73,7 +73,7 @@
                     <span class="relative block w-2 h-2 bg-primary-yellow-600 rounded-full"></span>
                   </template>
 
-                  <template v-if="hasSentFirstProposal">
+                  <template v-if="hasSentFirstPosit">
                     <IconHeroiconsSmallCheckCircle
                       class="h-full w-full text-primary-yellow-600 group-hover:text-primary-yellow-800 group-focus:text-primary-yellow-800 transition ease-in-out duration-150"
                     />
@@ -81,7 +81,7 @@
 
                 </div>
                 <p
-                  :class="(!hasSetupPaymentProvider || hasSentFirstProposal ) ? 'text-gray-500' : 'text-primary-yellow-600'"
+                  :class="(!hasSetupPaymentProvider || hasSentFirstPosit ) ? 'text-gray-500' : 'text-primary-yellow-600'"
                   class="text-sm leading-5 font-medium text-gray-500 group-hover:text-gray-900 group-focus:text-gray-900 transition ease-in-out duration-150">
                   Send your 1<sup>st</sup> posit
                 </p>
@@ -126,7 +126,7 @@ export default {
     hasSetupPaymentProvider () {
       return this.team?.has_setup_payment_provider ?? false
     },
-    hasSentFirstProposal () {
+    hasSentFirstPosit () {
       return this.team?.has_sent_first_proposal ?? false
     }
   },

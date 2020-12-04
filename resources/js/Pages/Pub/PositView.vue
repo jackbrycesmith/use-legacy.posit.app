@@ -16,20 +16,20 @@
       <PositOpeningSectionPublic
         class="mb-36"
         :editable="false"
-        :proposal="proposal__" />
+        :posit="posit__" />
 
       <PositContentSectionPublic
         ref="content" />
 
       <PositClosingSectionPublic
         class="mt-36"
-        :public-proposal-machine-state="publicPositMachineCurrentState"
-        :proposal="proposal__"
+        :public-posit-machine-state="publicPositMachineCurrentState"
+        :posit="posit__"
         @accept-with-payment="handleAcceptWithPayment"/>
     </template>
 
     <!-- Modals -->
-    <portal-target name="proposal-view-portal" />
+    <portal-target name="posit-view-portal" />
   </fragment>
 </template>
 
@@ -54,7 +54,7 @@ export default {
   },
   props: {
     status: { type: String },
-    proposal: { type: Object },
+    posit: { type: Object },
     is_limited_view: { type: Boolean, default: true },
     stripe_pub_key: {}
   },
@@ -69,7 +69,7 @@ export default {
     this.setupInitialMachineContext()
   },
   data () {
-    const status = this.proposal?.data?.status
+    const status = this.posit?.data?.status
 
     const machine = publicPositMachine.withContext({
       ...publicPositMachine.context,
@@ -85,7 +85,7 @@ export default {
       publicPositMachineCurrentState: machine.initialState,
       publicPositMachineContext: machine.context,
       stripe: null,
-      proposal__: Posit.make()
+      posit__: Posit.make()
     }
   },
   metaInfo () {
@@ -93,7 +93,7 @@ export default {
       htmlAttrs: {
         class: ['h-full', this.htmlBgColorClass]
       },
-      title: this.proposal__.name
+      title: this.posit__.name
     }
   },
   computed: {
@@ -102,14 +102,14 @@ export default {
     }
   },
   watch: {
-    proposal: {
+    posit: {
       immediate: true,
       handler (value) {
-        this.proposal__ = Posit.make(value)
+        this.posit__ = Posit.make(value)
 
         this.$nextTick(() => {
           this.$refs.content.editor.setContent(
-            this.proposal__.content?.content
+            this.posit__.content?.content
           )
         })
       }
@@ -119,23 +119,23 @@ export default {
     loadStripe.setLoadParameters({ advancedFraudSignals: false })
     // setTimeout(async () => {
     //   let stripe = await loadStripe(this.stripe_pub_key, {
-    //     stripeAccount: this.proposal.data.stripe_account_id
+    //     stripeAccount: this.posit.data.stripe_account_id
     //   })
     //   this.stripe = stripe
     //   // (async function(thing =) {
     //   // })()
-    //   console.log(this.proposal, this.stripe_pub_key)
+    //   console.log(this.posit, this.stripe_pub_key)
     // }, 1000)
   },
   methods: {
     async acceptWithPaymentAction () {
       try {
-        let stripeAccountId = this.proposal__?.deposit_payment?.stripe_account_id
-        let stripeCheckoutSessionId = this.proposal__?.deposit_payment?.stripe_checkout_session_id
+        let stripeAccountId = this.posit__?.deposit_payment?.stripe_account_id
+        let stripeCheckoutSessionId = this.posit__?.deposit_payment?.stripe_checkout_session_id
 
         if (isEmpty(stripeAccountId) || isEmpty(stripeCheckoutSessionId)) {
           // Do accept
-          const acceptWithPaymentResponse = await Http.put(this.proposal__.route_pub_accept_with_payment)
+          const acceptWithPaymentResponse = await Http.put(this.posit__.route_pub_accept_with_payment)
           stripeAccountId = acceptWithPaymentResponse?.stripe_account_id
           stripeCheckoutSessionId = acceptWithPaymentResponse?.stripe_checkout_session_id
         }
@@ -165,7 +165,7 @@ export default {
         // Make the id field from the Checkout Session creation API response
         // available to this file, so you can provide it as argument here
         // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-        sessionId: this.proposal.data.stripe_checkout_session_id
+        sessionId: this.posit.data.stripe_checkout_session_id
       })
     }
   }

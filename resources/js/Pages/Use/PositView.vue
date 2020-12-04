@@ -3,7 +3,7 @@
     <PositOpeningSection
       class="mb-36"
       :editable="editorMachineContext.canEdit"
-      :proposal.sync="proposal__"
+      :posit.sync="posit__"
       @live-edit-name="handleLiveEditedName"
       @edit-title-done="handleEditTitleDone"/>
 
@@ -14,7 +14,7 @@
 
     <PositClosingSection
       class="mt-36"
-      :proposal="proposal__" />
+      :posit="posit__" />
 
     <PositBackHome
       class="fixed top-5 left-5"/>
@@ -22,12 +22,12 @@
     <PositSlideOver
       ref="positSlideOver"
       :posit-editor-machine-state="editorMachineCurrentState"
-      :proposal.sync="proposal__"/>
+      :posit.sync="posit__"/>
 
     <!-- Modals -->
     <FirstWelcomeModal ref="firstWelcomeModal"/>
     <LoginModal ref="loginModal"/>
-    <portal-target name="proposal-view-portal" />
+    <portal-target name="posit-view-portal" />
   </fragment>
 </template>
 
@@ -41,7 +41,7 @@ import PositClosingSection from '@/Components/PositClosingSection'
 import LoginModal from '@/Modals/LoginModal'
 import Posit from '@/models/Posit'
 import PositBackHome from '@/Components/PositBackHome'
-import { proposalEditorMachine } from '@/machines/proposalEditorMachine'
+import { positEditorMachine } from '@/machines/positEditorMachine'
 import { debounce } from 'lodash-es'
 
 export default {
@@ -55,7 +55,7 @@ export default {
     PositBackHome
   },
   props: {
-    proposal: { type: Object }
+    posit: { type: Object }
   },
   metaInfo () {
     return {
@@ -75,19 +75,16 @@ export default {
     this.setupInitialMachineContext()
   },
   data () {
-    const machine = proposalEditorMachine.withConfig({})
+    const machine = positEditorMachine.withConfig({})
 
     return {
       editorMachineService: interpret(machine, { devTools: true }),
       editorMachineCurrentState: machine.initialState,
       editorMachineContext: machine.context,
-      proposal__: Posit.make(),
+      posit__: Posit.make(),
     }
   },
   computed: {
-    proposalUuid () {
-      return this.proposal.data.uuid
-    },
     htmlBgColorClass () {
       return 'bg-gray-50'
     }
@@ -99,19 +96,19 @@ export default {
     }, 1200)
   },
   watch: {
-    proposal: {
+    posit: {
       immediate: true,
       handler (value) {
-        this.proposal__ = Posit.make(value)
+        this.posit__ = Posit.make(value)
 
         this.$nextTick(() => {
           this.$refs.content.editor.setContent(
-            this.proposal__.content?.content
+            this.posit__.content?.content
           )
         })
       }
     },
-    'proposal__.is_editable': {
+    'posit__.is_editable': {
       handler (value) {
         this.handleEditableEventSend(value)
       }
@@ -119,7 +116,7 @@ export default {
   },
   methods: {
     setupInitialMachineContext () {
-      this.handleEditableEventSend(this.proposal__.is_editable)
+      this.handleEditableEventSend(this.posit__.is_editable)
     },
     handleEditableEventSend (value) {
       const event = value ? 'CAN_EDIT' : 'CANNOT_EDIT'
@@ -132,7 +129,7 @@ export default {
     },
     updateContentOnServer: debounce(async ({ payload, vm }) => {
       const response = await vm.$http.put(
-        vm.$route('use.submit.upsert-posit-content', { proposal: vm.proposalUuid }),
+        vm.$route('use.submit.upsert-posit-content', { posit: vm.posit__.uuid }),
         payload
       )
       console.log('updateContentOnServer response: ', response)
@@ -149,7 +146,7 @@ export default {
     },
     updateNameOnServer: debounce(async ({ payload, vm }) => {
       const response = await vm.$http.put(
-        vm.$route('use.submit.upsert-posit-name', { proposal: vm.proposalUuid }),
+        vm.$route('use.submit.upsert-posit-name', { posit: vm.posit__.uuid }),
         payload
       )
     }, 1000)

@@ -8,7 +8,7 @@
 
             <!-- Action buttons -->
             <div class="flex-shrink-0 flex flex-col space-y-3 sm:space-y-0 sm:space-x-3 sm:flex-row xl:flex-col xl:space-x-0 xl:space-y-3">
-              <NewProposalButton />
+              <NewPositButton />
             </div>
           </div>
 
@@ -22,13 +22,13 @@
 
 <script>
 import TeamDropdown from '@/Components/TeamDropdown'
-import NewProposalButton from '@/Components/NewProposalButton'
+import NewPositButton from '@/Components/NewPositButton'
 import DashboardTeamNavigation from '@/Components/DashboardTeamNavigation'
 
 export default {
   components: {
     DashboardTeamNavigation,
-    NewProposalButton,
+    NewPositButton,
     TeamDropdown,
   },
   props: {

@@ -50,7 +50,7 @@
 
 <script>
 import BaseForm from '@/Forms/BaseForm'
-import OrganisationContact from '@/models/OrganisationContact'
+import TeamContact from '@/models/TeamContact'
 import { isNil } from 'lodash-es'
 
 export default {
@@ -63,7 +63,7 @@ export default {
   },
   data () {
     return {
-      contact__: OrganisationContact.make()
+      contact__: TeamContact.make()
     }
   },
   computed: {
@@ -85,7 +85,7 @@ export default {
     contact: {
       immediate: true,
       handler (value) {
-        this.contact__ = OrganisationContact.make(value)
+        this.contact__ = TeamContact.make(value)
       }
     }
   },

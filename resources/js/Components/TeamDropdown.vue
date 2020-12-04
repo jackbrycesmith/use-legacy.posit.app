@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import Organisation from '@/models/Organisation'
+import Team from '@/models/Team'
 import BadgeWithDot from '@/Components/TailwindUI/BadgeWithDot'
 import IconHeroiconsMediumCheck from '@/Icons/IconHeroiconsMediumCheck'
 
@@ -85,7 +85,7 @@ export default {
   },
   data () {
     return {
-      org__: Organisation.make(),
+      org__: Team.make(),
       isOpen: false,
       vcoConfig: {
         handler: this.onClickOutside,
@@ -106,7 +106,7 @@ export default {
     org: {
       immediate: true,
       handler (value) {
-        this.org__ = Organisation.make(value)
+        this.org__ = Team.make(value)
       }
     }
   },

@@ -13,7 +13,7 @@
 
             <!-- Posit Theme -->
             <div class="space-y-1">
-              <label for="proposal_theme" class="block text-sm font-medium leading-5 text-gray-600">
+              <label for="posit_theme" class="block text-sm font-medium leading-5 text-gray-600">
                 Theme
               </label>
 
@@ -36,8 +36,8 @@
 
               <!-- Project Value -->
               <InputWithCurrency
-                :currency-model.sync="proposal.value_currency_code"
-                :amount-model.sync="proposal.value_amount"
+                :currency-model.sync="posit.value_currency_code"
+                :amount-model.sync="posit.value_amount"
                 :editable="positEditorMachineState.context.canEdit"
                 :max="999999999"
                 label="Project Value"
@@ -46,7 +46,7 @@
 
               <!-- Deposit -->
               <PositDepositConfigure
-                :proposal="proposal"
+                :posit="posit"
                 :editable="positEditorMachineState.context.canEdit"
                 class="space-y-1"
               />
@@ -81,7 +81,7 @@ export default {
     TabPane
   },
   props: {
-    proposal: { type: Object },
+    posit: { type: Object },
     positEditorMachineState: {}
   },
   data () {
@@ -102,7 +102,7 @@ export default {
       if (!this.positEditorMachineState.context.canEdit) return
 
       try {
-        await this.proposal.updateProjectValue()
+        await this.posit.updateProjectValue()
       } catch (e) {
         // TODO handle update project value error...
       }

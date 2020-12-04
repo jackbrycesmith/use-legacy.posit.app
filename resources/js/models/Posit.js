@@ -1,8 +1,8 @@
 import Model from './Model'
 import Http from '@/services/Http'
 import User from './User'
-import ProposalContent from './ProposalContent'
-import ProposalPayment from './ProposalPayment'
+import PositContent from './PositContent'
+import PositPayment from './PositPayment'
 import Team from './Team'
 import TeamContact from './TeamContact'
 import Video from './Video'
@@ -12,7 +12,7 @@ import { defaultCurrencies } from '@/data/currencies'
 import { mapProposalStatusHuman, mapProposalStatusColor } from '@/data/proposal'
 import { get, set, head, omitBy, find, isNil, isEmpty, toArray, words, trim } from 'lodash-es'
 
-export default class Proposal extends Model {
+export default class Posit extends Model {
 
   exists () {
     return this.uuid !== null
@@ -213,7 +213,7 @@ export default class Proposal extends Model {
 
   set deposit_amount (amount) {
     if (isNil(this.deposit_payment)) {
-      this.deposit_payment = ProposalPayment.make({ amount })
+      this.deposit_payment = PositPayment.make({ amount })
       return
     }
 
@@ -289,9 +289,9 @@ export default class Proposal extends Model {
       org: Team,
       creator: User,
       recipient: TeamContact,
-      content: ProposalContent,
+      content: PositContent,
       intro_video: Video,
-      deposit_payment: ProposalPayment
+      deposit_payment: PositPayment
     }
   }
 }

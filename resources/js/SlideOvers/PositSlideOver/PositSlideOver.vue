@@ -62,7 +62,7 @@
 
               <div class="flex space-x-2 justify-center">
                 <!-- <span :title="proposal.creator_name"> -->
-                  <ProposalCreatorAvatar :proposal="proposal" />
+                  <PositCreatorAvatar :proposal="proposal" />
                 <!-- </span> -->
               </div>
             </div>
@@ -85,9 +85,9 @@
               </div>
 
               <div class="flex space-x-2 justify-center">
-                <ProposalRecipientSelector
+                <PositRecipientSelector
                   :proposal.sync="proposal"
-                  :editable="proposalEditorMachineState.context.canEdit"
+                  :editable="positEditorMachineState.context.canEdit"
                   :options="proposal.recipient_options"
                 />
 
@@ -108,12 +108,12 @@
             :leave-class="leaveClass"
             :leave-to-class="leaveToClass"
           >
-            <keep-alive include="ProposalTweakView">
+            <keep-alive include="PositTweakView">
               <component
                 :is="bodyComponent"
                 :proposal="proposal"
                 :state="contentCurrentState"
-                :proposal-editor-machine-state="proposalEditorMachineState"
+                :posit-editor-machine-state="positEditorMachineState"
                 class="absolute inset-0"
                 @back-to-default-view="contentMachineService.send('BACK_TO_DEFAULT_VIEW')"
                 @publish="contentMachineService.send('PUBLISH')" />
@@ -172,30 +172,30 @@
 import { interpret, assign } from 'xstate'
 import ApplicationLogo from '@/Jetstream/ApplicationLogo'
 import BaseSlideOver from '@/SlideOvers/BaseSlideOver'
-import ProposalRecipientSelector from '@/Components/ProposalRecipientSelector'
-import ProposalCreatorAvatar from '@/Components/ProposalCreatorAvatar'
+import PositRecipientSelector from '@/Components/PositRecipientSelector'
+import PositCreatorAvatar from '@/Components/PositCreatorAvatar'
 import BadgeWithDot from '@/Components/TailwindUI/BadgeWithDot'
 import {
-  proposalSlideOverContentMachine,
-  // ProposalConfirmView, // IDK why this isn't working; throwing some error in the console so will import manually
-  // ProposalTweakView
+  positSlideOverContentMachine,
+  // PositConfirmView, // IDK why this isn't working; throwing some error in the console so will import manually
+  // PositTweakView
 } from '@/SlideOvers/PositSlideOver'
-import ProposalConfirmView from '@/SlideOvers/PositSlideOver/ProposalConfirmView'
-import ProposalTweakView from '@/SlideOvers/PositSlideOver/ProposalTweakView'
+import PositConfirmView from '@/SlideOvers/PositSlideOver/PositConfirmView'
+import PositTweakView from '@/SlideOvers/PositSlideOver/PositTweakView'
 
 export default {
   components: {
     ApplicationLogo,
     BadgeWithDot,
     BaseSlideOver,
-    ProposalRecipientSelector,
-    ProposalCreatorAvatar,
-    ProposalTweakView,
-    ProposalConfirmView,
+    PositRecipientSelector,
+    PositCreatorAvatar,
+    PositTweakView,
+    PositConfirmView,
   },
   props: {
     proposal: { type: Object },
-    proposalEditorMachineState: {}
+    positEditorMachineState: {}
   },
   created () {
     this.contentMachineService
@@ -210,7 +210,7 @@ export default {
     this.setupInitialMachineContext()
   },
   data () {
-    const machine = proposalSlideOverContentMachine.withConfig({
+    const machine = positSlideOverContentMachine.withConfig({
       services: {
         'publishAction': this.publishAction
       }
@@ -231,7 +231,7 @@ export default {
       return this.contentCurrentState.matches('confirmPublishView.publishSuccess')
     },
     bodyComponent () {
-      return this.isDefaultView ? ProposalTweakView : ProposalConfirmView
+      return this.isDefaultView ? PositTweakView : PositConfirmView
     },
     leaveClass () {
       return !this.isDefaultView ? 'translate-x-0' : 'translate-x-0'

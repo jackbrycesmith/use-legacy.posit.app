@@ -11,8 +11,8 @@
         </p>
       </div>
 
-      <ProposalAuthForm
-        :proposal-uuid="proposal__.uuid"
+      <PositAuthForm
+        :posit-uuid="posit__.uuid"
         class="mt-8"/>
 
     </div>
@@ -20,24 +20,24 @@
 </template>
 
 <script>
-import Proposal from '@/models/Proposal'
-import ProposalAuthForm from '@/Forms/ProposalAuthForm'
+import Posit from '@/models/Posit'
+import PositAuthForm from '@/Forms/PositAuthForm'
 
 export default {
-  components: { ProposalAuthForm },
+  components: { PositAuthForm },
   props: {
-    proposal: { type: Object }
+    posit: { type: Object }
   },
   data () {
     return {
-      proposal__: Proposal.make()
+      posit__: Posit.make()
     }
   },
   watch: {
-    proposal: {
+    posit: {
       immediate: true,
       handler (value) {
-        this.proposal__ = Proposal.make(value)
+        this.posit__ = Posit.make(value)
       }
     }
   }

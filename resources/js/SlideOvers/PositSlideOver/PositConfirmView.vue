@@ -19,11 +19,11 @@
 
         <!-- Points to fix before publishing... -->
         <div
-          v-if="proposal.has_things_to_fix_before_publish"
+          v-if="posit.has_things_to_fix_before_publish"
           class="mt-5 text-sm leading-5 text-gray-600 sm:flex sm:items-center justify-center">
           <ul>
             <li
-              v-for="(point, i) in proposal.to_fix_before_publish"
+              v-for="(point, i) in posit.to_fix_before_publish"
               :key="point.text"
               class="flex gap-1"
               :class="{ 'mt-0.5': i > 0 }">
@@ -78,7 +78,7 @@
 
               <!-- Credits Now -->
               <div class="flex flex-col items-center justify-center">
-                <span class="text-2xl">{{ proposal.owner_credits_amount_available }}</span>
+                <span class="text-2xl">{{ posit.owner_credits_amount_available }}</span>
                 <span class="text-sm text-gray-500 uppercase">Now</span>
               </div>
 
@@ -89,7 +89,7 @@
 
               <!-- Credits After -->
               <div class="flex flex-col items-center justify-center">
-                <span class="text-2xl">{{ proposal.owner_credits_amount_available - 1 }}</span>
+                <span class="text-2xl">{{ posit.owner_credits_amount_available - 1 }}</span>
                 <span class="text-sm text-gray-500 uppercase">After</span>
               </div>
 
@@ -164,7 +164,7 @@
           <div class="mt-1 flex rounded-md shadow-sm">
             <div class="relative flex-grow focus-within:z-10">
               <a
-                :href="proposal.route_pub_proposal_view_link"
+                :href="posit.route_pub_proposal_view_link"
                 title="Visit Public Link Now"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -173,7 +173,7 @@
               </a>
 
               <input
-                v-model="proposal.route_pub_proposal_view_link"
+                v-model="posit.route_pub_proposal_view_link"
                 type="text"
                 id="public_link"
                 class="focus:ring-primary-yellow-500 focus:border-primary-yellow-500 block w-full rounded-none rounded-l-md pl-10 sm:text-sm border-gray-300"
@@ -207,13 +207,13 @@
         <!-- Access Code  -->
         <div class="space-y-1 mt-8">
           <label for="access_code_link" class="block text-sm font-medium leading-5 text-gray-600 truncate">
-            Access Code for {{ proposal.recipient_name }}
+            Access Code for {{ posit.recipient_name }}
           </label>
 
           <div class="mt-1 flex rounded-md shadow-sm">
             <div class="relative flex-grow focus-within:z-10">
               <input
-                v-model="proposal.recipient_access_code"
+                v-model="posit.recipient_access_code"
                 id="access_code_link"
                 type="text"
                 class="focus:ring-primary-yellow-500 focus:border-primary-yellow-500 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300 font-mono"
@@ -252,7 +252,7 @@
 
           <div class="relative">
             <textarea
-              v-model="proposal.convenient_copyable_recipient_access_message"
+              v-model="posit.convenient_copyable_recipient_access_message"
               readonly disabled rows="7"
               class="max-w-lg shadow-sm block w-full focus:ring-primary-yellow-500 focus:border-primary-yellow-500 sm:text-sm border-gray-300 rounded-md resize-none" />
 
@@ -317,20 +317,20 @@ export default {
     SuccessFlashSwitcher,
   },
   props: {
-    proposal: { type: Object },
+    posit: { type: Object },
     state: { type: Object }
   },
   methods: {
     async handleCopyPublicLinkHit () {
-      await copy(this.proposal.route_pub_proposal_view_link)
+      await copy(this.posit.route_pub_proposal_view_link)
       this.$refs.copyIcon.success()
     },
     async handleCopyAccessCodeHit () {
-      await copy(this.proposal.recipient_access_code)
+      await copy(this.posit.recipient_access_code)
       this.$refs.copyAccessCodeIcon.success()
     },
     async handleCopyMessageHit () {
-      await copy(this.proposal.convenient_copyable_recipient_access_message)
+      await copy(this.posit.convenient_copyable_recipient_access_message)
       this.$refs.copyMessageIcon.success()
     },
   },

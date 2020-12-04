@@ -57,7 +57,7 @@ export default {
     // hasSetupPaymentProvider () {
     //   return this.team?.has_setup_payment_provider ?? false
     // },
-    // hasSentFirstProposal () {
+    // hasSentFirstPosit () {
     //   return this.team?.has_sent_first_proposal ?? false
     // }
   },

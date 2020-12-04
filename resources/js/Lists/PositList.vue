@@ -1,6 +1,6 @@
 <template>
   <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    <ProposalListItem
+    <PositListItem
       v-for="proposal in proposals"
       :key="proposal.uuid"
       :proposal="proposal"
@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import ProposalListItem from '@/Lists/ProposalListItem'
+import PositListItem from '@/Lists/PositListItem'
 
 export default {
   components: {
-    ProposalListItem
+    PositListItem
   },
   props: {
     proposals: { type: Array, default: () => [] }
