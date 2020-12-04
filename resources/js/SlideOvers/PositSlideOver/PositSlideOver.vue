@@ -1,6 +1,6 @@
 <template>
   <fragment>
-    <!-- Reveal hidden proposal slide over trigger... -->
+    <!-- Reveal hidden posit slide over trigger... -->
     <transition
       enter-active-class="ease-in-out duration-300"
       enter-class="opacity-0"
@@ -43,7 +43,7 @@
           </div>
 
           <h2 class="text-lg leading-7 font-medium text-primary-yellow-800 truncate mt-0.5">
-            » {{ proposal.name }}
+            » {{ posit.name }}
           </h2>
 
           <!-- height increase -->
@@ -61,8 +61,8 @@
               </div>
 
               <div class="flex space-x-2 justify-center">
-                <!-- <span :title="proposal.creator_name"> -->
-                  <PositCreatorAvatar :proposal="proposal" />
+                <!-- <span :title="posit.creator_name"> -->
+                  <PositCreatorAvatar :posit="posit" />
                 <!-- </span> -->
               </div>
             </div>
@@ -72,7 +72,7 @@
               <BadgeWithDot
                 custom-badge-class="bg-white text-primary-yellow-800 shadow-md"
                 custom-dot-class="text-primary-yellow-400">
-                {{ proposal.status_name | titleCase }}
+                {{ posit.status_name | titleCase }}
               </BadgeWithDot>
             </div>
 
@@ -86,9 +86,9 @@
 
               <div class="flex space-x-2 justify-center">
                 <PositRecipientSelector
-                  :proposal.sync="proposal"
+                  :posit.sync="posit"
                   :editable="positEditorMachineState.context.canEdit"
-                  :options="proposal.recipient_options"
+                  :options="posit.recipient_options"
                 />
 
               </div>
@@ -111,7 +111,7 @@
             <keep-alive include="PositTweakView">
               <component
                 :is="bodyComponent"
-                :proposal="proposal"
+                :posit="posit"
                 :state="contentCurrentState"
                 :posit-editor-machine-state="positEditorMachineState"
                 class="absolute inset-0"
@@ -194,7 +194,7 @@ export default {
     PositConfirmView,
   },
   props: {
-    proposal: { type: Object },
+    posit: { type: Object },
     positEditorMachineState: {}
   },
   created () {
@@ -269,8 +269,8 @@ export default {
       this.isVisible = false
     },
     setupInitialMachineContext () {
-      this.handleHasThingsToPublishEvent(this.proposal.has_things_to_fix_before_publish)
-      this.handleHasBeenPublishedEvent(this.proposal.has_been_published)
+      this.handleHasThingsToPublishEvent(this.posit.has_things_to_fix_before_publish)
+      this.handleHasBeenPublishedEvent(this.posit.has_been_published)
     },
     handleHasThingsToPublishEvent (value) {
       const event = value ? 'CANNOT_PUBLISH' : 'CAN_PUBLISH'
@@ -281,11 +281,11 @@ export default {
       this.contentMachineService.send(event)
     },
     async publishAction () {
-      await this.proposal.publish()
+      await this.posit.publish()
     }
   },
   watch: {
-    'proposal.has_things_to_fix_before_publish': {
+    'posit.has_things_to_fix_before_publish': {
       handler (value) {
         this.handleHasThingsToPublishEvent(value)
       }

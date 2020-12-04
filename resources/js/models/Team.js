@@ -19,7 +19,7 @@ export default class Team extends Model {
     return this.stripeAccount?.has_card_payments_capability ?? false
   }
 
-  get has_sent_first_proposal () {
+  get has_sent_first_posit () {
     return this.published_posits_count >= 1
   }
 

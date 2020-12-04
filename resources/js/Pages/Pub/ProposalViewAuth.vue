@@ -7,7 +7,7 @@
           Enter Access Code
         </h2>
         <p class="mt-2 text-center text-sm leading-5 text-gray-600">
-          for: <span class="italic"></span>
+          <!--          -->
         </p>
       </div>
 

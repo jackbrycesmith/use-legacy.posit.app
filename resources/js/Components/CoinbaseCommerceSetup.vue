@@ -7,7 +7,7 @@
         <div>
           <div class="mt-10 max-w-xl text-sm leading-5 text-gray-500">
             <p>
-              Start accepting crypto payments from your proposals with Coinbase Commerce.
+              Start accepting crypto payments from your posits with Coinbase Commerce.
             </p>
           </div>
         </div>

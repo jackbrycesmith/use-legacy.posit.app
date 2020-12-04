@@ -81,7 +81,7 @@ export default {
           </h2>
           <p></p>
           <p>
-            Here is my proposal...
+            Here is my posit...
           </p>
           <p></p>
           <ul>

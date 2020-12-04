@@ -14,9 +14,9 @@
         </div>
         <ul class="relative z-0 divide-y divide-gray-200 border-b border-gray-200 bg-white">
           <PositDashboardListItem
-            v-for="proposal in posits__"
-            :key="proposal.id"
-            :proposal="proposal"
+            v-for="posit in posits__"
+            :key="posit.id"
+            :posit="posit"
           />
         </ul>
 

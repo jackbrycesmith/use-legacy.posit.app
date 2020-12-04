@@ -58,7 +58,7 @@ export default {
     //   return this.team?.has_setup_payment_provider ?? false
     // },
     // hasSentFirstPosit () {
-    //   return this.team?.has_sent_first_proposal ?? false
+    //   return this.team?.has_sent_first_posit ?? false
     // }
   },
   data () {

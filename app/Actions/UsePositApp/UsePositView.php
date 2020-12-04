@@ -6,11 +6,17 @@ use App\Http\Resources\PositResource;
 use App\Models\Posit;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
-use Inertia\Inertia;
 use Lorisleiva\Actions\Action;
 
 class UsePositView extends Action
 {
+    /**
+     * Specify routes for this action.
+     *
+     * @param \Illuminate\Routing\Router $router The router
+     *
+     * @return void
+     */
     public static function routes(Router $router)
     {
         $router->domain(use_posit_domain())
@@ -51,8 +57,8 @@ class UsePositView extends Action
      */
     public function handle(Posit $posit)
     {
-        return Inertia::render('Use/ProposalView', [
-            'proposal' => fn() => $this->getProposalResource($posit)
+        return response()->inertiable('Use/PositView', [
+            'posit' => fn() => $this->getPositResource($posit)
         ]);
     }
 
@@ -63,7 +69,7 @@ class UsePositView extends Action
      *
      * @return PositResource
      */
-    protected function getProposalResource(Posit $posit)
+    protected function getPositResource(Posit $posit)
     {
         $posit->loadMissing([
             'team', 'creator', 'team.contacts', 'team.stripeAccount', 'positContent', 'depositPayment', 'recipient', 'video'

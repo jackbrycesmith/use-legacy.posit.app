@@ -37,9 +37,9 @@
 
 <!--         <ul class="relative z-0 divide-y divide-gray-200 border-b border-gray-200">
           <PositDashboardListItem
-            v-for="proposal in team__.proposals"
-            :key="proposal.id"
-            :proposal="proposal"
+            v-for="posit in team__.posits"
+            :key="posit.id"
+            :posit="posit"
           />
         </ul> -->
       </div>

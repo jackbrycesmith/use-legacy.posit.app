@@ -70,7 +70,7 @@
                   </BadgeWithDot>
 
                   <span class="text-xs text-gray-500 mt-3">
-                    Will be used to publish this proposal
+                    Will be used to publish this posit
                   </span>
                 </div>
 
@@ -164,7 +164,7 @@
           <div class="mt-1 flex rounded-md shadow-sm">
             <div class="relative flex-grow focus-within:z-10">
               <a
-                :href="posit.route_pub_proposal_view_link"
+                :href="posit.route_pub_posit_view_link"
                 title="Visit Public Link Now"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -173,7 +173,7 @@
               </a>
 
               <input
-                v-model="posit.route_pub_proposal_view_link"
+                v-model="posit.route_pub_posit_view_link"
                 type="text"
                 id="public_link"
                 class="focus:ring-primary-yellow-500 focus:border-primary-yellow-500 block w-full rounded-none rounded-l-md pl-10 sm:text-sm border-gray-300"
@@ -322,7 +322,7 @@ export default {
   },
   methods: {
     async handleCopyPublicLinkHit () {
-      await copy(this.posit.route_pub_proposal_view_link)
+      await copy(this.posit.route_pub_posit_view_link)
       this.$refs.copyIcon.success()
     },
     async handleCopyAccessCodeHit () {

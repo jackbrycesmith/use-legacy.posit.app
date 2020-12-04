@@ -14,7 +14,7 @@
         </h2>
 
         <p class="mt-2 text-center text-sm leading-5 text-gray-600">
-          <IconHeroiconsSmallCheck class="h-5 w-5 text-yellow-400 inline-block align-middle"/> Send 3 proposals a month — FREE
+          <IconHeroiconsSmallCheck class="h-5 w-5 text-yellow-400 inline-block align-middle"/> Send 3 posits a month — FREE
         </p>
       </div>
 

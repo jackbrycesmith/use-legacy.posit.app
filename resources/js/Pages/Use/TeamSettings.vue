@@ -45,7 +45,7 @@
                 Receive Payments
               </h3>
               <p class="mt-1 text-sm text-gray-600">
-                Setup integrations so you can start receiving payments from your proposals.
+                Setup integrations so you can start receiving payments from your posits.
               </p>
             </div>
           </div>

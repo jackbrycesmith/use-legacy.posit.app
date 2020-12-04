@@ -8,11 +8,11 @@
             type="button"
             :class="{ 'animate-bounce': shouldAnimateBounce }"
             class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md text-gray-400 focus:outline-none focus:text-gray-500 hover:text-gray-500 transition ease-in-out duration-150"
-            title="Add proposal recipient"
-            aria-label="Add proposal recipient" aria-haspopup="true" :aria-expanded="isOpen"
+            title="Add posit recipient"
+            aria-label="Add posit recipient" aria-haspopup="true" :aria-expanded="isOpen"
             @click="handleSelectButtonClick">
-            <span v-if="proposal.has_recipient" :title="proposal.recipient_name" class="text-orange-400">
-              {{ proposal.recipient_name | initials }}
+            <span v-if="posit.has_recipient" :title="posit.recipient_name" class="text-orange-400">
+              {{ posit.recipient_name | initials }}
             </span>
 
             <svg v-else class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -116,9 +116,9 @@
       <div :class="fragmentItemClass">
         <div
           class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md text-gray-400 focus:outline-none focus:text-gray-500 hover:text-gray-500 transition ease-in-out duration-150"
-          :title="proposal.recipient_name">
-          <span v-if="proposal.has_recipient" class="text-orange-400 select-none">
-            {{ proposal.recipient_name | initials }}
+          :title="posit.recipient_name">
+          <span v-if="posit.has_recipient" class="text-orange-400 select-none">
+            {{ posit.recipient_name | initials }}
           </span>
         </div>
       </div>
@@ -134,7 +134,7 @@ export default {
   props: {
     options: { type: Array, default: () => [] },
     editable: { type: Boolean, default: true },
-    proposal: { type: Object },
+    posit: { type: Object },
     filterSearchValue: { type: String, default: 'name' },
     fragmentItemClass: { type: String, default: '' },
     canBounce: { type: Boolean, default: true }
@@ -161,7 +161,7 @@ export default {
       return hasInput && !this.isAdding
     },
     shouldAnimateBounce () {
-      return this.canBounce && !this.isOpen && !this.proposal.has_recipient
+      return this.canBounce && !this.isOpen && !this.posit.has_recipient
     },
     filteredOptions () {
       const query = this.input
@@ -171,7 +171,7 @@ export default {
       })
     },
     selectedOptionId () {
-      return this.proposal?.recipient?.id
+      return this.posit?.recipient?.id
     },
   },
   methods: {
@@ -198,20 +198,20 @@ export default {
     },
     selectOption (option) {
       // TODO probably shouldn't be mutating this directly, but seems to be working fine
-      const shouldUpdateRecipientOnServer = !(this.proposal.recipient?.id === option.id)
-      const updatedPosit = set(this.proposal, 'recipient', option)
-      this.$emit('update:proposal', updatedPosit)
+      const shouldUpdateRecipientOnServer = !(this.posit.recipient?.id === option.id)
+      const updatedPosit = set(this.posit, 'recipient', option)
+      this.$emit('update:posit', updatedPosit)
       this.isOpen = false
 
       if (shouldUpdateRecipientOnServer) {
-        this.proposal.updateRecipient()
+        this.posit.updateRecipient()
       }
       this.$refs.triggerButton?.focus()
     },
     async handleAddNewRecipient () {
       try {
         this.isAdding = true
-        const contact = await this.proposal.addRecipient({ name: this.input })
+        const contact = await this.posit.addRecipient({ name: this.input })
         this.isAdding = false
         this.isOpen = false
         this.$refs.triggerButton?.focus()

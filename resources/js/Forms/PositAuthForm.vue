@@ -54,7 +54,7 @@ export default {
   },
   props: {
     minPasswordLength: { type: Number, default: 8 },
-    proposalUuid: { type: String, required: true }
+    positUuid: { type: String, required: true }
   },
   data () {
     return {
@@ -65,8 +65,8 @@ export default {
   },
   computed: {
     submitRoute () {
-      if (isNil(this.proposalUuid)) return null
-      return this.$route('pub.proposal.submit.proposal-auth-cookie', { proposal: this.proposalUuid })
+      if (isNil(this.positUuid)) return null
+      return this.$route('pub.posit.submit.posit-auth-cookie', { posit: this.positUuid })
     }
   },
   methods: {

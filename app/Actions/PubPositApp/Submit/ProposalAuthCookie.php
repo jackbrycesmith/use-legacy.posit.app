@@ -12,13 +12,20 @@ use Lorisleiva\Actions\Action;
 
 class ProposalAuthCookie extends Action
 {
+    /**
+     * Specify routes for this action.
+     *
+     * @param \Illuminate\Routing\Router $router The router
+     *
+     * @return void
+     */
     public static function routes(Router $router)
     {
         $router->domain(pub_posit_domain())
             ->middleware(['web'])
             ->post('/posit/{posit:uuid}/auth', static::class)
             ->where('posit', Constant::PATTERN_UUID)
-            ->name('pub.proposal.submit.proposal-auth-cookie');
+            ->name('pub.posit.submit.posit-auth-cookie');
     }
 
     /**

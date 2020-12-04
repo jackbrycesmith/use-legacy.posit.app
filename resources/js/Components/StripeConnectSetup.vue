@@ -10,7 +10,7 @@
         <div>
           <div class="mt-10 max-w-xl text-sm leading-5 text-gray-500">
             <p>
-              Start accepting payments from your proposals with Stripe.
+              Start accepting payments from your posits with Stripe.
             </p>
           </div>
         </div>
@@ -35,7 +35,7 @@
                       <IconHeroiconsSpinner v-if="form.processing" class="h-5 w-5 text-primary-yellow-400 absolute inset-y-auto left-4" />
                       <span
                       :class="{ 'ml-7': form.processing }"
-                      class="whitespace-nowrap">
+                      class="whitespace-nowrap mr-11">
                         Connect with
                       </span>
                       <LogoStripe

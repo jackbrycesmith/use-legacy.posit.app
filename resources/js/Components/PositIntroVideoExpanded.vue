@@ -212,7 +212,7 @@ import { isNil } from 'lodash-es'
 export default {
   components: { VideoJs, IconHeroiconsSmallCheck, IconHeroiconsSmallX, IconHeroiconsSpinner, IconHeroiconsMediumCog, PositLogoWords },
   props: {
-    proposal: { type: Object },
+    posit: { type: Object },
     currentState: { type: Object },
     currentStateString: { type: String },
   },
@@ -353,14 +353,14 @@ export default {
       // })
 
       // Load existing video
-      if (this.proposal.has_intro_video) {
-        if (this.proposal.intro_video.has_poster) {
-          player.poster(this.proposal.intro_video.poster_url)
+      if (this.posit.has_intro_video) {
+        if (this.posit.intro_video.has_poster) {
+          player.poster(this.posit.intro_video.poster_url)
         } else {
           player.poster('') // Reset
         }
 
-        player.src(this.proposal.intro_video.video_js_src_data)
+        player.src(this.posit.intro_video.video_js_src_data)
         player.play()
       }
     },

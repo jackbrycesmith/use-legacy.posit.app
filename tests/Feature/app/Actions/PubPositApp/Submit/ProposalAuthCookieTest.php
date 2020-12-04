@@ -7,7 +7,7 @@ use App\Models\TeamContact;
 
 it('requires valid proposal to be in url', function () {
     $response = $this->postJson(
-        route('pub.proposal.submit.proposal-auth-cookie', 'sdfsfsd'),
+        route('pub.posit.submit.posit-auth-cookie', 'sdfsfsd'),
         ['access_code' => 'blah']
     );
 
@@ -18,7 +18,7 @@ it('requires valid input to proceed', function () {
     $team = Team::factory()->create();
     $posit = Posit::factory()->create(['team_id' => $team->id]);
 
-    $response = $this->postJson(route('pub.proposal.submit.proposal-auth-cookie', $posit));
+    $response = $this->postJson(route('pub.posit.submit.posit-auth-cookie', $posit));
     $response->assertStatus(422);
 });
 
@@ -30,7 +30,7 @@ it('requires valid recipient access code', function () {
     $posit->recipients()->sync([$contact->id]);
 
     $response = $this->postJson(
-        route('pub.proposal.submit.proposal-auth-cookie', $posit),
+        route('pub.posit.submit.posit-auth-cookie', $posit),
         ['access_code' => $contact1->access_code]
     );
 
@@ -45,7 +45,7 @@ it('redirects to proposal view on valid recipient access code', function () {
     $posit->recipients()->sync([$contact->id]);
 
     $response = $this->postJson(
-        route('pub.proposal.submit.proposal-auth-cookie', $posit),
+        route('pub.posit.submit.posit-auth-cookie', $posit),
         ['access_code' => $contact->access_code]
     );
 

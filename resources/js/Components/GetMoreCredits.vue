@@ -67,7 +67,7 @@
           <li class="flex space-x-3">
             <IconHeroiconsMediumCheck class="flex-shrink-0 h-5 w-5 text-green-500" />
             <!-- TODO custom amount -->
-            <span class="text-sm text-gray-500">Publish {{ selectedPaddleProduct.credits }} proposals</span>
+            <span class="text-sm text-gray-500">Publish {{ selectedPaddleProduct.credits }} posits</span>
           </li>
 
           <li class="flex space-x-3">

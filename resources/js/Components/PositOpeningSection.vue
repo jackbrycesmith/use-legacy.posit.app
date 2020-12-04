@@ -9,9 +9,9 @@
       @live-edit="handleLiveEditedName"
       @edit-done="handleEditTitleDone" />
 
-    <PositCreatorRecipientMeta :proposal.sync="proposal" :editable="editable" />
+    <PositCreatorRecipientMeta :posit.sync="posit" :editable="editable" />
 
-    <PositIntroVideoRecording :proposal.sync="proposal" />
+    <PositIntroVideoRecording :posit.sync="posit" />
 
   </div>
 </template>
@@ -24,7 +24,7 @@ import PositCreatorRecipientMeta from '@/Components/PositCreatorRecipientMeta'
 
 export default {
   props: {
-    proposal: { type: Object },
+    posit: { type: Object },
     editable: {
       type: Boolean,
       default: true
@@ -41,7 +41,7 @@ export default {
     }
   },
   watch: {
-    proposal: {
+    posit: {
       immediate: true,
       handler (value) {
         if (value.name !== this.title) {
@@ -51,9 +51,9 @@ export default {
     },
     title: {
       handler (value) {
-        if (value !== this.proposal.name) {
-          this.proposal.name = value
-          this.$emit('update:proposal', this.proposal)
+        if (value !== this.posit.name) {
+          this.posit.name = value
+          this.$emit('update:posit', this.posit)
         }
       }
     }

@@ -21,8 +21,8 @@
           <div class="relative w-full h-full rounded-full flex items-center justify-center">
             <!-- Poster... -->
             <img
-              v-if="proposal.has_intro_video && proposal.intro_video.has_poster"
-              :src="proposal.intro_video.poster_url"
+              v-if="posit.has_intro_video && posit.intro_video.has_poster"
+              :src="posit.intro_video.poster_url"
               style="width: 96%; height: 96%;"
               class="absolute inset-auto rounded-full"/>
 
@@ -65,7 +65,7 @@
               v-if="currentState.matches('expanded') || currentState.matches('expanding') || currentState.matches('collapsing')"
               :current-state="currentState"
               :current-state-string="currentStateDebugString"
-              :proposal="proposal"
+              :posit="posit"
               @from-playback-record-again="handleFromPlaybackRecordAgain"
               @cancel-from-recording="handleCancelFromRecording"
               @handleVideoRecordFinish="handleVideoRecordFinish"
@@ -103,7 +103,7 @@ export default {
     BaseVideoRecord, IconVideoMessage, IconHeroiconsMediumCog, IconHeroiconsSpinner, PositIntroVideoExpanded, BaseModal
   },
   props: {
-    proposal: { type: Object }
+    posit: { type: Object }
   },
   data () {
     return {}
@@ -123,7 +123,7 @@ export default {
     }
   },
   watch: {
-    'proposal.has_intro_video': {
+    'posit.has_intro_video': {
       immediate: true,
       async handler (value) {
         await this.$nextTick()
@@ -133,7 +133,7 @@ export default {
         })
       }
     },
-    'proposal.is_intro_video_processing': {
+    'posit.is_intro_video_processing': {
       // immediate: true,
       async handler (value) {
         await this.$nextTick()
@@ -146,7 +146,7 @@ export default {
     }
   },
   mounted () {
-    const channel = `proposal.${this.proposal.uuid}.intro_video`
+    const channel = `posit.${this.posit.uuid}.intro_video`
     Realtime.subscribe(channel, {
       'PositIntroVideoUpdated': this.handleRealtimePositIntroVideoUpdated
     })
@@ -217,19 +217,19 @@ export default {
         }
       })
 
-      const proposalVideoUpsertResponse = await this.proposal.videoIntroUpsert(s3UploadResponse.uuid)
+      const positVideoUpsertResponse = await this.posit.videoIntroUpsert(s3UploadResponse.uuid)
 
-      const introVideo = get(proposalVideoUpsertResponse, 'data')
+      const introVideo = get(positVideoUpsertResponse, 'data')
       if (!introVideo) return
-      this.proposal.fill({ intro_video: introVideo })
-      this.$emit('update:proposal', this.proposal)
+      this.posit.fill({ intro_video: introVideo })
+      this.$emit('update:posit', this.posit)
     },
     handleRealtimePositIntroVideoUpdated (event) {
       console.log('handleRealtimePositIntroVideoUpdated: ', event)
       const introVideo = get(event, 'intro_video')
       if (!introVideo) return
-      this.proposal.fill({ intro_video: introVideo })
-      this.$emit('update:proposal', this.proposal)
+      this.posit.fill({ intro_video: introVideo })
+      this.$emit('update:posit', this.posit)
       this.$refs.baseVideoRecord.sendEvent('PROCESSING_COMPLETED')
     }
   }

@@ -16,8 +16,8 @@
         <div class="relative w-full h-full rounded-full flex items-center justify-center">
           <!-- Poster... -->
           <img
-            v-if="proposal.has_intro_video && proposal.intro_video.has_poster"
-            :src="proposal.intro_video.poster_url"
+            v-if="posit.has_intro_video && posit.intro_video.has_poster"
+            :src="posit.intro_video.poster_url"
             style="width: 96%; height: 96%;"
             class="absolute inset-auto rounded-full"/>
 
@@ -102,7 +102,7 @@ export default {
     VideoJs
   },
   props: {
-    proposal: { type: Object }
+    posit: { type: Object }
   },
   created () {
     this.machineService
@@ -169,7 +169,7 @@ export default {
     },
   },
   watch: {
-    'proposal.has_intro_video': {
+    'posit.has_intro_video': {
       immediate: true,
       async handler (value) {
         await this.$nextTick()
@@ -218,14 +218,14 @@ export default {
       // })
 
       // Load existing video
-      if (this.proposal.has_intro_video) {
-        if (this.proposal.intro_video.has_poster) {
-          player.poster(this.proposal.intro_video.poster_url)
+      if (this.posit.has_intro_video) {
+        if (this.posit.intro_video.has_poster) {
+          player.poster(this.posit.intro_video.poster_url)
         } else {
           player.poster('') // Reset
         }
 
-        player.src(this.proposal.intro_video.video_js_src_data)
+        player.src(this.posit.intro_video.video_js_src_data)
         player.play()
       }
     },

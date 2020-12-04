@@ -7,7 +7,7 @@
       </h3>
       <p class="mt-1 text-gray-500 text-center">↕️</p>
       <p class="mt-1 text-sm leading-5 text-gray-500">
-        where published proposals are accessible
+        where published posits are accessible
       </p>
     </div>
   </div>

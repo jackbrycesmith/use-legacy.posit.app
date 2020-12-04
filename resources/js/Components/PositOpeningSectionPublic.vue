@@ -7,9 +7,9 @@
       :model="title"
       :is-content-editable="false"/>
 
-    <PositCreatorRecipientMeta :proposal="proposal" :editable="false" />
+    <PositCreatorRecipientMeta :posit="posit" :editable="false" />
 
-    <VideoExpandablePlaybackOnly v-if="hasReadyIntroVideo" :proposal="proposal" />
+    <VideoExpandablePlaybackOnly v-if="hasReadyIntroVideo" :posit="posit" />
 
   </div>
 </template>
@@ -22,7 +22,7 @@ import PositCreatorRecipientMeta from '@/Components/PositCreatorRecipientMeta'
 
 export default {
   props: {
-    proposal: { type: Object },
+    posit: { type: Object },
   },
   components: {
     ContentEditable,
@@ -36,11 +36,11 @@ export default {
   },
   computed: {
     hasReadyIntroVideo () {
-      return this.proposal?.intro_video?.has_converted_video ?? false
+      return this.posit?.intro_video?.has_converted_video ?? false
     }
   },
   watch: {
-    proposal: {
+    posit: {
       immediate: true,
       handler (value) {
         if (value.name !== this.title) {

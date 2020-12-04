@@ -8,7 +8,7 @@
           </dt>
           <dd class="order-1">
             <div class="h-11">
-              <PositCreatorAvatar :proposal="proposal" />
+              <PositCreatorAvatar :posit="posit" />
             </div>
           </dd>
         </div>
@@ -21,8 +21,8 @@
             <PositRecipientSelector
               :can-bounce="false"
               :editable="editable"
-              :proposal.sync="proposal"
-              :options="proposal.recipient_options"
+              :posit.sync="posit"
+              :options="posit.recipient_options"
               fragment-item-class="mx-2 h-11"
             />
           </dd>
@@ -44,7 +44,7 @@ export default {
     PositCreatorAvatar
   },
   props: {
-    proposal: { type: Object },
+    posit: { type: Object },
     editable: {
       type: Boolean,
       default: true
