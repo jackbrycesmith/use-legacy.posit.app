@@ -2,7 +2,7 @@
 
 namespace App\Actions\UsePositApp;
 
-use App\Http\Resources\ProposalResource;
+use App\Http\Resources\PositResource;
 use App\Http\Resources\TeamResource;
 use Illuminate\Routing\Router;
 use Lorisleiva\Actions\Action;
@@ -46,7 +46,7 @@ class UseIndex extends Action
     {
         return response()->inertiable('Use/Index', [
             'team' => fn() => $this->teamResource($this->user()),
-            'proposals' => fn() => $this->proposalsResource($this->user())
+            'posits' => fn() => $this->proposalsResource($this->user())
         ]);
     }
 
@@ -54,7 +54,7 @@ class UseIndex extends Action
     {
         $team = $user->currentTeam()
             ->with(['media', 'stripeAccount'])
-            ->withCount(['publishedProposals'])
+            ->withCount(['publishedPosits'])
             ->first();
 
         return new TeamResource($team);
@@ -62,10 +62,10 @@ class UseIndex extends Action
 
     protected function proposalsResource($user)
     {
-        $proposals = $user->currentTeam->proposals()
+        $posits = $user->currentTeam->posits()
             ->with(['recipient'])
             ->paginate(10);
 
-        return ProposalResource::collection($proposals);
+        return PositResource::collection($posits);
     }
 }

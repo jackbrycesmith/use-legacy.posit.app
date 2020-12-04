@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\PublicProposalAccessCookie;
-use App\Models\Proposal;
-use App\Models\ProposalPayment;
+use App\Http\PublicPositAccessCookie;
+use App\Models\Posit;
+use App\Models\PositPayment;
 use App\Models\StripeAccount;
 use App\Models\StripeCheckoutSession;
 use App\Models\Team;
@@ -10,40 +10,40 @@ use App\Models\TeamContact;
 use CloudCreativity\LaravelStripe\Facades\Stripe;
 
 it('cannot accept proposal that is non-existant', function () {
-    $response = $this->put(route('pub.proposal.accept-with-payment', 'blah'));
+    $response = $this->put(route('pub.posit.accept-with-payment', 'blah'));
     $response->assertStatus(404);
 });
 
 it('cannot accept proposal if no proposal access cookie', function () {
     $team = Team::factory()->create();
-    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
+    $posit = Posit::factory()->create(['team_id' => $team->id]);
 
-    $response = $this->put(route('pub.proposal.accept-with-payment', $proposal));
-    $response->assertRedirect(route('pub.proposal.view.auth', $proposal));
+    $response = $this->put(route('pub.posit.accept-with-payment', $posit));
+    $response->assertRedirect(route('pub.posit.view.auth', $posit));
 });
 
 it('cannot accept proposal if invalid proposal access cookie (not the recipient)', function () {
     $team = Team::factory()->create();
-    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
+    $posit = Posit::factory()->create(['team_id' => $team->id]);
     $contact = TeamContact::factory()->create(['team_id' => $team->id]);
 
-    $cookie = PublicProposalAccessCookie::create($contact);
-    $cookieName = PublicProposalAccessCookie::cookieName($team);
+    $cookie = PublicPositAccessCookie::create($contact);
+    $cookieName = PublicPositAccessCookie::cookieName($team);
 
     $response = $this->withUnencryptedCookies([
         $cookieName => $cookie->getValue(),
-    ])->put(route('pub.proposal.accept-with-payment', $proposal));
+    ])->put(route('pub.posit.accept-with-payment', $posit));
 
-    $response = $this->put(route('pub.proposal.accept-with-payment', $proposal));
-    $response->assertRedirect(route('pub.proposal.view.auth', $proposal));
+    $response = $this->put(route('pub.posit.accept-with-payment', $posit));
+    $response->assertRedirect(route('pub.posit.view.auth', $posit));
 });
 
 it('does not create new stripe checkout session if one exists already', function () {
     $team = Team::factory()->create();
-    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
-    $depositPayment = ProposalPayment::factory()->create([
-        'type' => ProposalPayment::TYPE_DEPOSIT,
-        'proposal_id' => $proposal->id,
+    $posit = Posit::factory()->create(['team_id' => $team->id]);
+    $depositPayment = PositPayment::factory()->create([
+        'type' => PositPayment::TYPE_DEPOSIT,
+        'posit_id' => $posit->id,
         'amount' => 1
     ]);
     $contact = TeamContact::factory()->create(['team_id' => $team->id]);
@@ -52,14 +52,14 @@ it('does not create new stripe checkout session if one exists already', function
         'stripe_account_id' => $stripeAccount->id
     ]);
 
-    $proposal->recipients()->sync([$contact->id]);
-    $proposal->setStatus(Proposal::STATUS_PUBLISHED);
+    $posit->recipients()->sync([$contact->id]);
+    $posit->setStatus(Posit::STATUS_PUBLISHED);
     $depositPayment->stripeCheckoutSession()->save($stripeCheckoutSession);
-    $proposal->refresh();
+    $posit->refresh();
 
 
-    $cookie = PublicProposalAccessCookie::create($contact);
-    $cookieName = PublicProposalAccessCookie::cookieName($team);
+    $cookie = PublicPositAccessCookie::create($contact);
+    $cookieName = PublicPositAccessCookie::cookieName($team);
 
     // Just in case, dont want to hit stripe api even if by mistake
     Stripe::fake(
@@ -70,7 +70,7 @@ it('does not create new stripe checkout session if one exists already', function
 
     $response = $this->withCookies([
         $cookieName => $cookie->getValue(),
-    ])->put(route('pub.proposal.accept-with-payment', $proposal));
+    ])->put(route('pub.posit.accept-with-payment', $posit));
 
     assertEquals($checkoutSessionCountBefore, StripeCheckoutSession::count());
 
@@ -84,21 +84,21 @@ it('does not create new stripe checkout session if one exists already', function
 
 it('creates new stripe checkout session if one does not exist', function () {
     $team = Team::factory()->create();
-    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
+    $posit = Posit::factory()->create(['team_id' => $team->id]);
     $contact = TeamContact::factory()->create(['team_id' => $team->id]);
     $stripeAccount = StripeAccount::factory()->create(['owner_id' => $team->id]);
-    $depositPayment = ProposalPayment::factory()->create([
-        'type' => ProposalPayment::TYPE_DEPOSIT,
-        'proposal_id' => $proposal->id,
+    $depositPayment = PositPayment::factory()->create([
+        'type' => PositPayment::TYPE_DEPOSIT,
+        'posit_id' => $posit->id,
         'amount' => 1
     ]);
 
-    $proposal->recipients()->sync([$contact->id]);
-    $proposal->setStatus(Proposal::STATUS_PUBLISHED);
-    $proposal->refresh();
+    $posit->recipients()->sync([$contact->id]);
+    $posit->setStatus(Posit::STATUS_PUBLISHED);
+    $posit->refresh();
 
-    $cookie = PublicProposalAccessCookie::create($contact);
-    $cookieName = PublicProposalAccessCookie::cookieName($team);
+    $cookie = PublicPositAccessCookie::create($contact);
+    $cookieName = PublicPositAccessCookie::cookieName($team);
 
     // Just in case, dont want to hit stripe api even if by mistake
     Stripe::fake(
@@ -109,7 +109,7 @@ it('creates new stripe checkout session if one does not exist', function () {
 
     $response = $this->withCookies([
         $cookieName => $cookie->getValue(),
-    ])->withCredentials()->putJson(route('pub.proposal.accept-with-payment', $proposal));
+    ])->withCredentials()->putJson(route('pub.posit.accept-with-payment', $posit));
 
     assertEquals($checkoutSessionCountBefore + 1, StripeCheckoutSession::count());
 
@@ -122,7 +122,7 @@ it('creates new stripe checkout session if one does not exist', function () {
     $this->assertDatabaseHas('stripe_checkout_sessions', [
         'id' => 'cs_test_xxx',
         'stripe_account_id' => $stripeAccount->id,
-        'model_type' => 'proposal_payment',
+        'model_type' => 'posit_payment',
         'model_id' => $depositPayment->id,
     ]);
 });

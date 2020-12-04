@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\Proposal;
-use App\Models\ProposalContent;
-use App\Models\ProposalPayment;
-use App\Models\ProposalUser;
+use App\Models\Posit;
+use App\Models\PositContent;
+use App\Models\PositPayment;
+use App\Models\PositUser;
 use App\Models\StripeAccount;
 use App\Models\StripeCheckoutSession;
 use App\Models\StripeCustomer;
@@ -15,7 +15,7 @@ use App\Models\Team;
 use App\Models\TeamContact;
 use App\Models\TeamMember;
 use App\Models\User;
-use App\Observers\ProposalObserver;
+use App\Observers\PositObserver;
 use App\Observers\TeamContactObserver;
 use App\Observers\UserObserver;
 use App\Utils\BladeRouteGenerator;
@@ -72,10 +72,10 @@ class AppServiceProvider extends ServiceProvider
             'team_contact' => TeamContact::class,
             'team_member' => TeamMember::class,
             'paddle_receipt' => Receipt::class,
-            'proposal' => Proposal::class,
-            'proposal_content' => ProposalContent::class,
-            'proposal_payment' => ProposalPayment::class,
-            'proposal_user' => ProposalUser::class,
+            'posit' => Posit::class,
+            'posit_content' => PositContent::class,
+            'posit_payment' => PositPayment::class,
+            'posit_user' => PositUser::class,
             'stripe_account' => StripeAccount::class,
             'stripe_checkout_session' => StripeCheckoutSession::class,
             'stripe_customer' => StripeCustomer::class,
@@ -94,7 +94,7 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function setModelObservers()
     {
-        Proposal::observe(ProposalObserver::class);
+        Posit::observe(PositObserver::class);
         User::observe(UserObserver::class);
         TeamContact::observe(TeamContactObserver::class);
 

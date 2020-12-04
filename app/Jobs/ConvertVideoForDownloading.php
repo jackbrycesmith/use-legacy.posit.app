@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Events\PositIntroVideoUpdated;
 use App\Jobs\ConvertVideoForStreaming;
-use App\Models\Proposal;
+use App\Models\Posit;
 use App\Models\Video;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Format\Video\X264;
@@ -112,7 +112,7 @@ class ConvertVideoForDownloading implements ShouldQueue
      */
     protected function broadcastConvertedVideoToUser()
     {
-        if (is_a($this->video->model, Proposal::class)) {
+        if (is_a($this->video->model, Posit::class)) {
             event(new PositIntroVideoUpdated($this->video->model, $this->video));
         }
     }

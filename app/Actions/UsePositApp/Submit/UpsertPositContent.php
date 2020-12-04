@@ -2,7 +2,7 @@
 
 namespace App\Actions\UsePositApp\Submit;
 
-use App\Models\Proposal;
+use App\Models\Posit;
 use App\Utils\Constant;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
@@ -21,8 +21,8 @@ class UpsertPositContent extends Action
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->put('/proposal/{proposal:uuid}/upsert-content', static::class)
-            ->where('proposal', Constant::PATTERN_UUID)
+            ->put('/posit/{posit:uuid}/upsert-content', static::class)
+            ->where('posit', Constant::PATTERN_UUID)
             ->name('use.submit.upsert-posit-content');
     }
 
@@ -31,9 +31,9 @@ class UpsertPositContent extends Action
      *
      * @return bool
      */
-    public function authorize(Proposal $proposal)
+    public function authorize(Posit $posit)
     {
-        return $this->can('update', $proposal);
+        return $this->can('update', $posit);
     }
 
     /**
@@ -51,13 +51,13 @@ class UpsertPositContent extends Action
      *
      * @return mixed
      */
-    public function handle(Request $request, Proposal $proposal)
+    public function handle(Request $request, Posit $posit)
     {
         // TODO like redis locking & stuff
 
         // TODO this is extremely naive/not production ready
-        $proposal->proposalContents()->updateOrCreate(
-            ['proposal_id' => $proposal->id],
+        $posit->positContents()->updateOrCreate(
+            ['posit_id' => $posit->id],
             ['content' => $request->all()]
         );
 

@@ -21,7 +21,7 @@ export default class Organisation extends Model {
   }
 
   get has_sent_first_proposal () {
-    return this.published_proposals_count >= 1
+    return this.published_posits_count >= 1
   }
 
   get route_settings () {

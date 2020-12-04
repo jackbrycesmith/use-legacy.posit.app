@@ -2,8 +2,8 @@
 
 namespace App\Actions\PubPositApp\Submit;
 
-use App\Http\PublicProposalAccessCookie;
-use App\Models\Proposal;
+use App\Http\PublicPositAccessCookie;
+use App\Models\Posit;
 use App\Utils\Constant;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
@@ -16,8 +16,8 @@ class ProposalAuthCookie extends Action
     {
         $router->domain(pub_posit_domain())
             ->middleware(['web'])
-            ->post('/proposal/{proposal:uuid}/auth', static::class)
-            ->where('proposal', Constant::PATTERN_UUID)
+            ->post('/posit/{posit:uuid}/auth', static::class)
+            ->where('posit', Constant::PATTERN_UUID)
             ->name('pub.proposal.submit.proposal-auth-cookie');
     }
 
@@ -48,16 +48,16 @@ class ProposalAuthCookie extends Action
      *
      * @return mixed
      */
-    public function handle(Request $request, Proposal $proposal)
+    public function handle(Request $request, Posit $posit)
     {
-        $recipient = $proposal->recipientForAccessCode($request->access_code);
+        $recipient = $posit->recipientForAccessCode($request->access_code);
 
         if (is_null($recipient)) {
             $this->sendFailedProposalAccessCodeResponse();
         }
 
-        return redirect(route('pub.proposal.view', $proposal))->withCookie(
-            PublicProposalAccessCookie::create($recipient)
+        return redirect(route('pub.posit.view', $posit))->withCookie(
+            PublicPositAccessCookie::create($recipient)
         );
     }
 

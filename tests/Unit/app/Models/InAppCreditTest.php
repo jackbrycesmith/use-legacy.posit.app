@@ -1,16 +1,16 @@
 <?php
 
 use App\Models\InAppCredit;
-use App\Models\Proposal;
+use App\Models\Posit;
 use App\Models\Team;
 use App\Models\User;
 
 test('increase in app credit balance', function () {
     $team = Team::factory()->create();
     $user = User::factory()->create();
-    $proposal = Proposal::factory()->create(['team_id' => $team->id]);
+    $posit = Posit::factory()->create(['team_id' => $team->id]);
 
-    $inAppCredit = InAppCredit::increase(5, $team, $proposal, $user);
+    $inAppCredit = InAppCredit::increase(5, $team, $posit, $user);
     assertInstanceOf(InAppCredit::class, $inAppCredit);
 
     $this->assertDatabaseHas('in_app_credits', [
@@ -18,8 +18,8 @@ test('increase in app credit balance', function () {
         'balance_model_type' => 'team',
         'balance_model_id' => $team->id,
         'amount' => 5,
-        'usage_model_type' => 'proposal',
-        'usage_model_id' => $proposal->id,
+        'usage_model_type' => 'posit',
+        'usage_model_id' => $posit->id,
         'initiator_model_type' => 'user',
         'initiator_model_id' => $user->id
     ]);

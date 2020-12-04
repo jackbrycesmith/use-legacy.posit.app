@@ -3,8 +3,8 @@
 namespace App\Actions\Integrations\Stripe\Webhooks;
 
 use App\Actions\Integrations\Stripe\UpdateStripeCheckoutSessionFromWebhook;
-use App\Models\Proposal;
-use App\Models\ProposalPayment;
+use App\Models\Posit;
+use App\Models\PositPayment;
 use App\Models\StripeCheckoutSession;
 use CloudCreativity\LaravelStripe\Webhooks\ConnectWebhook;
 use Lorisleiva\Actions\Action;
@@ -33,17 +33,17 @@ class HandleConnectCheckoutSessionCompleted extends Action
         }
 
         // If not a proposal payment return..
-        if (! (($proposalPayment = $stripeCheckoutSession->model) instanceof ProposalPayment)) {
+        if (! (($positPayment = $stripeCheckoutSession->model) instanceof PositPayment)) {
             logger('🚨 this should not happen');
             return;
         }
 
         // Mark as accepted
-        if ($proposalPayment->type === ProposalPayment::TYPE_DEPOSIT) {
-            $proposal = $proposalPayment->proposal;
+        if ($positPayment->type === PositPayment::TYPE_DEPOSIT) {
+            $posit = $positPayment->proposal;
 
-            if ($proposal->status !== Proposal::STATUS_ACCEPTED) {
-                $proposal->setStatus(Proposal::STATUS_ACCEPTED);
+            if ($posit->status !== Posit::STATUS_ACCEPTED) {
+                $posit->setStatus(Posit::STATUS_ACCEPTED);
             }
         }
     }

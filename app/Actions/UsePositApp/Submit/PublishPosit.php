@@ -2,7 +2,7 @@
 
 namespace App\Actions\UsePositApp\Submit;
 
-use App\Models\Proposal;
+use App\Models\Posit;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Lorisleiva\Actions\Action;
@@ -20,8 +20,8 @@ class PublishPosit extends Action
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->put('/proposal/{proposal:uuid}/publish', static::class)
-            ->where('proposal', Constant::PATTERN_UUID)
+            ->put('/posit/{posit:uuid}/publish', static::class)
+            ->where('posit', Constant::PATTERN_UUID)
             ->name('use.submit.publish-posit');
     }
 
@@ -30,9 +30,9 @@ class PublishPosit extends Action
      *
      * @return bool
      */
-    public function authorize(Proposal $proposal)
+    public function authorize(Posit $posit)
     {
-        return $this->can('publish', $proposal);
+        return $this->can('publish', $posit);
     }
 
     /**
@@ -48,17 +48,17 @@ class PublishPosit extends Action
     /**
      * Execute the action and return a result.
      *
-     * @param \App\Models\Proposal $proposal The proposal
+     * @param \App\Models\Posit $posit The proposal
      *
      * @return mixed
      */
-    public function handle(Proposal $proposal)
+    public function handle(Posit $posit)
     {
         // TODO validate whether proposal is in a state that can be published.
-        $proposal->setStatus(Proposal::STATUS_PUBLISHED);
-        $proposal->save();
+        $posit->setStatus(Posit::STATUS_PUBLISHED);
+        $posit->save();
 
-        return $proposal;
+        return $posit;
     }
 
     /**
@@ -66,7 +66,7 @@ class PublishPosit extends Action
      *
      * @return \Illuminate\Http\Response
      */
-    public function response(Proposal $proposal)
+    public function response(Posit $posit)
     {
         return response()->noContent();
     }

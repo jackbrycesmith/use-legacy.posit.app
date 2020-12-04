@@ -2,8 +2,8 @@
 
 namespace App\Actions\UsePositApp;
 
-use App\Http\Resources\ProposalResource;
-use App\Models\Proposal;
+use App\Http\Resources\PositResource;
+use App\Models\Posit;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Inertia\Inertia;
@@ -15,21 +15,21 @@ class UsePositView extends Action
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->get('/proposal/{proposal:uuid}', static::class)
-            ->where('proposal', Constant::PATTERN_UUID)
+            ->get('/posit/{posit:uuid}', static::class)
+            ->where('posit', Constant::PATTERN_UUID)
             ->name('use.posit.view');
     }
 
     /**
      * Determine if the user is authorized to make this action.
      *
-     * @param \App\Models\Proposal $proposal The proposal
+     * @param \App\Models\Posit $posit The proposal
      *
      * @return bool
      */
-    public function authorize(Proposal $proposal)
+    public function authorize(Posit $posit)
     {
-        return $this->can('view', $proposal);
+        return $this->can('view', $posit);
     }
 
     /**
@@ -45,30 +45,30 @@ class UsePositView extends Action
     /**
      * Execute the action and return a result.
      *
-     * @param \App\Models\Proposal $proposal The proposal
+     * @param \App\Models\Posit $posit The proposal
      *
      * @return mixed
      */
-    public function handle(Proposal $proposal)
+    public function handle(Posit $posit)
     {
         return Inertia::render('Use/ProposalView', [
-            'proposal' => fn() => $this->getProposalResource($proposal)
+            'proposal' => fn() => $this->getProposalResource($posit)
         ]);
     }
 
     /**
      * Returns the proposal resource
      *
-     * @param \App\Models\Proposal $proposal The proposal
+     * @param \App\Models\Posit $posit The proposal
      *
-     * @return ProposalResource
+     * @return PositResource
      */
-    protected function getProposalResource(Proposal $proposal)
+    protected function getProposalResource(Posit $posit)
     {
-        $proposal->loadMissing([
-            'team', 'creator', 'team.contacts', 'team.stripeAccount', 'proposalContent', 'depositPayment', 'recipient', 'video'
+        $posit->loadMissing([
+            'team', 'creator', 'team.contacts', 'team.stripeAccount', 'positContent', 'depositPayment', 'recipient', 'video'
         ]);
 
-        return new ProposalResource($proposal);
+        return new PositResource($posit);
     }
 }

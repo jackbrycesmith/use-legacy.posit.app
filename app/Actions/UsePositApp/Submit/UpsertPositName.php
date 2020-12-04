@@ -2,7 +2,7 @@
 
 namespace App\Actions\UsePositApp\Submit;
 
-use App\Models\Proposal;
+use App\Models\Posit;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Lorisleiva\Actions\Action;
@@ -20,21 +20,21 @@ class UpsertPositName extends Action
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->put('/proposal/{proposal:uuid}/upsert-name', static::class)
-            ->where('proposal', Constant::PATTERN_UUID)
+            ->put('/posit/{posit:uuid}/upsert-name', static::class)
+            ->where('posit', Constant::PATTERN_UUID)
             ->name('use.submit.upsert-posit-name');
     }
 
     /**
      * Determine if the user is authorized to make this action.
      *
-     * @param \App\Models\Proposal $proposal The proposal
+     * @param \App\Models\Posit $posit The proposal
      *
      * @return bool
      */
-    public function authorize(Proposal $proposal)
+    public function authorize(Posit $posit)
     {
-        return $this->can('update', $proposal);
+        return $this->can('update', $posit);
     }
 
     /**
@@ -59,9 +59,9 @@ class UpsertPositName extends Action
      *
      * @return mixed
      */
-    public function handle(Proposal $proposal)
+    public function handle(Posit $posit)
     {
-        $proposal->update($this->validated());
+        $posit->update($this->validated());
     }
 
     /**

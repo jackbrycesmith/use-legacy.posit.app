@@ -75,7 +75,7 @@ class UseTeamCredits extends Action
     protected function teamResource(Team $team)
     {
         $team->loadMissing(['media', 'stripeAccount'])
-            ->loadCount(['publishedProposals']);
+            ->loadCount(['publishedPosits']);
 
         return new TeamResource($team);
     }

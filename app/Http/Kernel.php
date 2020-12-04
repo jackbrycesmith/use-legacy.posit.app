@@ -65,6 +65,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         // Custom
-        'public.proposal.access' => \App\Http\Middleware\CheckPublicProposalStatefulAccess::class,
+        'public.posit.access' => \App\Http\Middleware\CheckPublicPositStatefulAccess::class,
     ];
 }

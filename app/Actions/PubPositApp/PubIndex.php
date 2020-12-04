@@ -8,9 +8,19 @@ use Lorisleiva\Actions\Action;
 
 class PubIndex extends Action
 {
+    /**
+     * Specify routes for this action.
+     *
+     * @param \Illuminate\Routing\Router $router The router
+     *
+     * @return void
+     */
     public static function routes(Router $router)
     {
-        $router->domain(pub_posit_domain())->middleware(['web'])->get('/', static::class)->name('pub.index');
+        $router->domain(pub_posit_domain())
+            ->middleware(['web'])
+            ->get('/', static::class)
+            ->name('pub.index');
     }
 
     /**

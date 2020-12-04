@@ -2,8 +2,8 @@
 
 namespace App\Actions\PubPositApp;
 
-use App\Http\Resources\ProposalLiteResource;
-use App\Models\Proposal;
+use App\Http\Resources\PositLiteResource;
+use App\Models\Posit;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Inertia\Inertia;
@@ -11,12 +11,19 @@ use Lorisleiva\Actions\Action;
 
 class PubProposalViewAuth extends Action
 {
+    /**
+     * Specify routes for this action.
+     *
+     * @param \Illuminate\Routing\Router $router The router
+     *
+     * @return void
+     */
     public static function routes(Router $router)
     {
         $router->domain(pub_posit_domain())
             ->middleware(['web'])
-            ->get('/proposal/{proposal:uuid}/auth', static::class)
-            ->where('proposal', Constant::PATTERN_UUID)
+            ->get('/proposal/{posit:uuid}/auth', static::class)
+            ->where('posit', Constant::PATTERN_UUID)
             ->name('pub.proposal.view.auth');
     }
 
@@ -45,10 +52,10 @@ class PubProposalViewAuth extends Action
      *
      * @return mixed
      */
-    public function handle(Proposal $proposal)
+    public function handle(Posit $posit)
     {
         return Inertia::render('Pub/ProposalViewAuth', [
-            'proposal' => new ProposalLiteResource($proposal)
+            'proposal' => new PositLiteResource($posit)
         ]);
     }
 }

@@ -53,10 +53,10 @@ class TeamMember extends JetstreamMembership
     public function proposals(): BelongsToMany
     {
         return $this->belongsToMany(
-            Proposal::class,
+            Posit::class,
             'proposal_user',
             'team_user_id',
-            'proposal_id'
+            'posit_id'
         );
     }
 }

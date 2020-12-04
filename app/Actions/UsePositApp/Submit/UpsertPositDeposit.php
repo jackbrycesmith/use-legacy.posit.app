@@ -2,8 +2,8 @@
 
 namespace App\Actions\UsePositApp\Submit;
 
-use App\Models\Proposal;
-use App\Models\ProposalPayment;
+use App\Models\Posit;
+use App\Models\PositPayment;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Lorisleiva\Actions\Action;
@@ -21,21 +21,21 @@ class UpsertPositDeposit extends Action
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->put('/proposal/{proposal:uuid}/upsert-deposit', static::class)
-            ->where('proposal', Constant::PATTERN_UUID)
+            ->put('/posit/{posit:uuid}/upsert-deposit', static::class)
+            ->where('posit', Constant::PATTERN_UUID)
             ->name('use.submit.upsert-posit-deposit');
     }
 
     /**
      * Determine if the user is authorized to make this action.
      *
-     * @param \App\Models\Proposal $proposal The proposal
+     * @param \App\Models\Posit $posit The proposal
      *
      * @return bool
      */
-    public function authorize(Proposal $proposal)
+    public function authorize(Posit $posit)
     {
-        return $this->can('update', $proposal);
+        return $this->can('update', $posit);
     }
 
     /**
@@ -64,17 +64,17 @@ class UpsertPositDeposit extends Action
      *
      * @return mixed
      */
-    public function handle(Proposal $proposal)
+    public function handle(Posit $posit)
     {
         // TODO disallow update if its already been paid/locked/whatever (maybe in policy...)
 
         // TODO probably add some race condition here so that duplicates aren't created...
 
-        $proposalDeposit = $proposal->depositPayment()->firstOrCreate([
-            'type' => ProposalPayment::TYPE_DEPOSIT
+        $positDeposit = $posit->depositPayment()->firstOrCreate([
+            'type' => PositPayment::TYPE_DEPOSIT
         ]);
 
-        $proposalDeposit->update($this->validated());
+        $positDeposit->update($this->validated());
     }
 
     /**

@@ -65,33 +65,35 @@ class Team extends JetstreamTeam implements AccountOwnerInterface, HasMedia
 
 
     /**
-     * Get the proposals for the team.
+     * Get the posits for the team.
      *
      * @return HasMany The has many relationship.
      */
-    public function proposals(): HasMany
+    public function posits(): HasMany
     {
-        return $this->hasMany(Proposal::class);
+        return $this->hasMany(Posit::class);
     }
 
     /**
-     * Get the proposals that have been published before...
+     * Get the posits that have been published before...
      *
      * @return HasMany The has many relationship.
      */
-    public function publishedProposals(): HasMany
+    public function publishedPosits(): HasMany
     {
-        return $this->proposals()->currentStatus([
-            Proposal::STATUS_PUBLISHED,
-            Proposal::STATUS_ACCEPTED,
-            Proposal::STATUS_EXPIRED
+        return $this->posits()->currentStatus([
+            Posit::STATUS_PUBLISHED,
+            Posit::STATUS_ACCEPTED,
+            Posit::STATUS_EXPIRED
         ]);
     }
 
     /**
      * Get the contacts for the team.
+     *
+     * @return HasMany The has many relationship.
      */
-    public function contacts()
+    public function contacts(): HasMany
     {
         return $this->hasMany(TeamContact::class);
     }

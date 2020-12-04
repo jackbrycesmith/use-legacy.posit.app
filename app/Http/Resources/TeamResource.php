@@ -26,10 +26,10 @@ class TeamResource extends JsonResource
             }),
             'in_app_credit_balance' => $this->inAppCreditBalance(),
             'users' => UserResource::collection($this->whenLoaded('users')),
-            'proposals' => ProposalResource::collection($this->whenLoaded('proposals')),
+            'posits' => PositResource::collection($this->whenLoaded('posits')),
             'contacts' => TeamContactResource::collection($this->whenLoaded('contacts')),
             'stripeAccount' => new StripeAccountResource($this->whenLoaded('stripeAccount')),
-            'published_proposals_count' => $this->published_proposals_count,
+            'published_posits_count' => $this->published_posits_count,
             'created_at' => $this->created_at,
         ];
     }

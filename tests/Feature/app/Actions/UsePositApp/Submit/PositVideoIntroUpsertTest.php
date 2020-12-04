@@ -1,6 +1,6 @@
 <?php
 
-use App\Actions\Team\CreateDraftProposal;
+use App\Actions\Team\CreateDraftPosit;
 use App\Jobs\ConvertVideoForDownloading;
 use App\Models\Team;
 use App\Models\User;
@@ -30,7 +30,7 @@ test('ProposalVideoIntroUpsert requires login', function () {
 test('ProposalVideoIntroUpsert disallowed if not a proposal user', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
-    $proposal = (new CreateDraftProposal)->actingAs($user)->run([
+    $posit = (new CreateDraftPosit)->actingAs($user)->run([
         'team' => $team
     ]);
 
@@ -39,7 +39,7 @@ test('ProposalVideoIntroUpsert disallowed if not a proposal user', function () {
     Bus::fake();
     $response = actingAs($otherUser)->post(
         route('use.posit.video-intro', [
-            'proposal' => $proposal
+            'posit' => $posit
         ])
     );
     Bus::assertNotDispatched(ConvertVideoForDownloading::class);
@@ -50,14 +50,14 @@ test('ProposalVideoIntroUpsert disallowed if not a proposal user', function () {
 test('ProposalVideoIntroUpsert disallowed if incorrect data passed', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
-    $proposal = (new CreateDraftProposal)->actingAs($user)->run([
+    $posit = (new CreateDraftPosit)->actingAs($user)->run([
         'team' => $team
     ]);
 
     Bus::fake();
     $response = actingAs($user)->postJson(
         route('use.posit.video-intro', [
-            'proposal' => $proposal
+            'posit' => $posit
         ])
     );
     $response->assertStatus(422);
@@ -67,7 +67,7 @@ test('ProposalVideoIntroUpsert disallowed if incorrect data passed', function ()
     Bus::fake();
     $response = actingAs($user)->postJson(
         route('use.posit.video-intro', [
-            'proposal' => $proposal
+            'posit' => $posit
         ]), [
             'uuid' => 'not a uuid'
         ]
@@ -82,14 +82,14 @@ test('ProposalVideoIntroUpsert disallowed if temp file does not exist', function
 
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
-    $proposal = (new CreateDraftProposal)->actingAs($user)->run([
+    $posit = (new CreateDraftPosit)->actingAs($user)->run([
         'team' => $team
     ]);
 
     Bus::fake();
     $response = actingAs($user)->postJson(
         route('use.posit.video-intro', [
-            'proposal' => $proposal
+            'posit' => $posit
         ]),
         [
             'uuid' => Str::uuid()
@@ -112,14 +112,14 @@ test('ProposalVideoIntroUpsert allowed', function () {
 
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
-    $proposal = (new CreateDraftProposal)->actingAs($user)->run([
+    $posit = (new CreateDraftPosit)->actingAs($user)->run([
         'team' => $team
     ]);
 
     Bus::fake();
     $response = actingAs($user)->postJson(
         route('use.posit.video-intro', [
-            'proposal' => $proposal
+            'posit' => $posit
         ]),
         [
             'uuid' => $alreadyUploadedUuid
@@ -131,8 +131,8 @@ test('ProposalVideoIntroUpsert allowed', function () {
 
     $createdVideo = Video::findByUuid($response->json('data.uuid'));
 
-    assertEquals('proposal', $createdVideo->model_type);
-    assertEquals($proposal->id, $createdVideo->model_id);
+    assertEquals('posit', $createdVideo->model_type);
+    assertEquals($posit->id, $createdVideo->model_id);
 
     Bus::assertDispatched(ConvertVideoForDownloading::class);
 

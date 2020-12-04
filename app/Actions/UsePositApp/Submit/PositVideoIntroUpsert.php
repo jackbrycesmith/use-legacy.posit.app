@@ -4,7 +4,7 @@ namespace App\Actions\UsePositApp\Submit;
 
 use App\Http\Resources\VideoResource;
 use App\Jobs\ConvertVideoForDownloading;
-use App\Models\Proposal;
+use App\Models\Posit;
 use App\Models\Video;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
@@ -26,8 +26,8 @@ class PositVideoIntroUpsert extends Action
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->post('/proposal/{proposal:uuid}/video-intro', static::class)
-            ->where('proposal', Constant::PATTERN_UUID)
+            ->post('/posit/{posit:uuid}/video-intro', static::class)
+            ->where('posit', Constant::PATTERN_UUID)
             ->name('use.posit.video-intro');
     }
 
@@ -36,9 +36,9 @@ class PositVideoIntroUpsert extends Action
      *
      * @return bool
      */
-    public function authorize(Proposal $proposal)
+    public function authorize(Posit $posit)
     {
-        return $this->can('update', $proposal);
+        return $this->can('update', $posit);
     }
 
     /**
@@ -58,7 +58,7 @@ class PositVideoIntroUpsert extends Action
      *
      * @return mixed
      */
-    public function handle(Proposal $proposal)
+    public function handle(Posit $posit)
     {
         $uuid = Arr::get($this->validated(), 'uuid');
         $tmpFilename = "tmp/{$uuid}";
@@ -70,7 +70,7 @@ class PositVideoIntroUpsert extends Action
         //
         $tmpStorageDisk = $this->getStorageDiskName();
 
-        $video = $proposal->video()->create([
+        $video = $posit->video()->create([
             'tmp_path' => $tmpFilename,
             'tmp_size' => Storage::disk($tmpStorageDisk)->size($tmpFilename),
             'tmp_disk' => $tmpStorageDisk,

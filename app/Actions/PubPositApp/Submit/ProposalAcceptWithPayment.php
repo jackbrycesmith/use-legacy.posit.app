@@ -2,7 +2,7 @@
 
 namespace App\Actions\PubPositApp\Submit;
 
-use App\Models\Proposal;
+use App\Models\Posit;
 use App\Models\StripeCheckoutSession;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
@@ -21,10 +21,10 @@ class ProposalAcceptWithPayment extends Action
     public static function routes(Router $router)
     {
         $router->domain(pub_posit_domain())
-            ->middleware(['web', 'public.proposal.access:ignore-status-check'])
-            ->put('/proposal/{proposal:uuid}/accept-with-payment', static::class)
-            ->where('proposal', Constant::PATTERN_UUID)
-            ->name('pub.proposal.accept-with-payment');
+            ->middleware(['web', 'public.posit.access:ignore-status-check'])
+            ->put('/posit/{posit:uuid}/accept-with-payment', static::class)
+            ->where('posit', Constant::PATTERN_UUID)
+            ->name('pub.posit.accept-with-payment');
     }
 
     /**
@@ -32,7 +32,7 @@ class ProposalAcceptWithPayment extends Action
      *
      * @return bool
      */
-    public function authorize(Proposal $proposal)
+    public function authorize(Posit $posit)
     {
         return true;
     }
@@ -52,24 +52,24 @@ class ProposalAcceptWithPayment extends Action
      *
      * @return mixed
      */
-    public function handle(Proposal $proposal)
+    public function handle(Posit $posit)
     {
         // Return existing checkout session
-        if ($stripeCheckoutSession = $proposal->depositPayment->stripeCheckoutSession) {
+        if ($stripeCheckoutSession = $posit->depositPayment->stripeCheckoutSession) {
             return $stripeCheckoutSession;
         }
 
-        $checkoutSessionApiResponse = $proposal->team->stripeAccount->makeStripeCheckoutSession(
-            $this->stripeCheckoutSessionCreateParams($proposal)
+        $checkoutSessionApiResponse = $posit->team->stripeAccount->makeStripeCheckoutSession(
+            $this->stripeCheckoutSessionCreateParams($posit)
         );
 
         $stripeCheckoutSession = (new StripeCheckoutSession)->fillFrom(
             $checkoutSessionApiResponse
         );
 
-        $stripeCheckoutSession->stripe_account_id = $proposal->team->stripeAccount->id;
+        $stripeCheckoutSession->stripe_account_id = $posit->team->stripeAccount->id;
 
-        $proposal->depositPayment->stripeCheckoutSession()->save($stripeCheckoutSession);
+        $posit->depositPayment->stripeCheckoutSession()->save($stripeCheckoutSession);
 
         return $stripeCheckoutSession;
     }
@@ -77,29 +77,29 @@ class ProposalAcceptWithPayment extends Action
     /**
      * { function_description }
      *
-     * @param \App\Models\Proposal $proposal The proposal
+     * @param \App\Models\Posit $posit The proposal
      *
      * @return array
      */
-    protected function stripeCheckoutSessionCreateParams(Proposal $proposal): array
+    protected function stripeCheckoutSessionCreateParams(Posit $posit): array
     {
-        $stripeAccount = $proposal->team->stripeAccount;
+        $stripeAccount = $posit->team->stripeAccount;
 
         return [
             'mode' => 'payment',
             'payment_method_types' => $stripeAccount->checkoutSessionPaymentMethodTypes(),
-            'cancel_url' => route('pub.proposal.view', ['proposal' => $proposal]),
-            'success_url' => route('pub.proposal.view', ['proposal' => $proposal]),
-            'client_reference_id' => $proposal->uuid,
+            'cancel_url' => route('pub.posit.view', ['posit' => $posit]),
+            'success_url' => route('pub.posit.view', ['posit' => $posit]),
+            'client_reference_id' => $posit->uuid,
             'payment_intent_data' => [
                 'setup_future_usage' => 'off_session', // bacs_debit requires this... not sure about others
                 'description' => 'Test description...'
             ],
             'line_items' => [
                 [
-                    'amount' =>  $proposal->depositPayment->stripe_api_amount,
-                    'currency' => Str::lower($proposal->value_currency_code),
-                    'name' => $proposal->uuid,
+                    'amount' =>  $posit->depositPayment->stripe_api_amount,
+                    'currency' => Str::lower($posit->value_currency_code),
+                    'name' => $posit->uuid,
                     'quantity' => 1
                 ]
             ]

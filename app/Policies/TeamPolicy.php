@@ -114,7 +114,7 @@ class TeamPolicy
      *
      * @return mixed
      */
-    public function createDraftProposal(User $user, Team $team)
+    public function createDraftPosit(User $user, Team $team)
     {
         if (! $user->belongsToTeam($team)) {
             return Response::deny('You do not belong to the team.');
@@ -132,7 +132,7 @@ class TeamPolicy
      *
      * @return mixed
      */
-    public function actionProposal(User $user, Team $team)
+    public function actionPosit(User $user, Team $team)
     {
         // TODO something more elaborate; e.g. ProposalUser's...
 

@@ -2,7 +2,7 @@
 
 namespace App\Actions\UsePositApp\Submit;
 
-use App\Models\Proposal;
+use App\Models\Posit;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Illuminate\Validation\Rule;
@@ -21,21 +21,21 @@ class UpdatePositValue extends Action
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->put('/proposal/{proposal:uuid}/upsert-value', static::class)
-            ->where('proposal', Constant::PATTERN_UUID)
+            ->put('/posit/{posit:uuid}/upsert-value', static::class)
+            ->where('posit', Constant::PATTERN_UUID)
             ->name('use.submit.upsert-posit-value');
     }
 
     /**
      * Determine if the user is authorized to make this action.
      *
-     * @param \App\Models\Proposal $proposal The proposal
+     * @param \App\Models\Posit $posit The proposal
      *
      * @return bool
      */
-    public function authorize(Proposal $proposal)
+    public function authorize(Posit $posit)
     {
-        return $this->can('update', $proposal);
+        return $this->can('update', $posit);
     }
 
     /**
@@ -59,7 +59,7 @@ class UpdatePositValue extends Action
             'value_currency_code' => [
                 'bail',
                 'required',
-                Rule::in(Proposal::ALLOWED_VALUE_CURRENCIES)
+                Rule::in(Posit::ALLOWED_VALUE_CURRENCIES)
             ]
         ];
     }
@@ -69,9 +69,9 @@ class UpdatePositValue extends Action
      *
      * @return mixed
      */
-    public function handle(Proposal $proposal)
+    public function handle(Posit $posit)
     {
-        $proposal->update($this->validated());
+        $posit->update($this->validated());
     }
 
     /**

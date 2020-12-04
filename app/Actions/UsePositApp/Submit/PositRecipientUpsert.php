@@ -3,7 +3,7 @@
 namespace App\Actions\UsePositApp\Submit;
 
 use App\Http\Resources\TeamContactResource;
-use App\Models\Proposal;
+use App\Models\Posit;
 use App\Models\TeamContact;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
@@ -23,14 +23,14 @@ class PositRecipientUpsert extends Action
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->post('/proposal/{proposal:uuid}/recipients/add', static::class)
-            ->where('proposal', Constant::PATTERN_UUID)
+            ->post('/posit/{posit:uuid}/recipients/add', static::class)
+            ->where('posit', Constant::PATTERN_UUID)
             ->name('use.posit.recipients.add-submit');
 
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->put('/proposal/{proposal:uuid}/recipients/{recipient}', static::class)
-            ->where('proposal', Constant::PATTERN_UUID)
+            ->put('/posit/{posit:uuid}/recipients/{recipient}', static::class)
+            ->where('posit', Constant::PATTERN_UUID)
             ->name('use.posit.recipients.update');
     }
 
@@ -39,9 +39,9 @@ class PositRecipientUpsert extends Action
      *
      * @return bool
      */
-    public function authorize(Proposal $proposal, ?TeamContact $recipient = null)
+    public function authorize(Posit $posit, ?TeamContact $recipient = null)
     {
-        return $this->can('upsertRecipient', [$proposal, $recipient]);
+        return $this->can('upsertRecipient', [$posit, $recipient]);
     }
 
     /**
@@ -63,21 +63,21 @@ class PositRecipientUpsert extends Action
     /**
      * Execute the action and return a result.
      *
-     * @param \App\Models\Proposal $proposal The proposal
+     * @param \App\Models\Posit $posit The proposal
      * @param \App\Models\TeamContact|nullable $recipient The recipient
      *
      * @return mixed
      */
-    public function handle(Proposal $proposal, ?TeamContact $recipient = null)
+    public function handle(Posit $posit, ?TeamContact $recipient = null)
     {
         if (is_null($recipient)) {
-            $team = $proposal->team;
+            $team = $posit->team;
             $recipient = $team->contacts()->create([
                 'meta' => $this->validated()
             ]);
         }
 
-        $proposal->recipients()->sync([$recipient->id]);
+        $posit->recipients()->sync([$recipient->id]);
 
         return $recipient;
     }

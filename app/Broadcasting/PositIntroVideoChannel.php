@@ -2,7 +2,7 @@
 
 namespace App\Broadcasting;
 
-use App\Models\Proposal;
+use App\Models\Posit;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
@@ -24,13 +24,13 @@ class PositIntroVideoChannel
      * @param  \App\Models\User  $user
      * @return array|bool
      */
-    public function join(User $user, string $proposalUuid)
+    public function join(User $user, string $positUuid)
     {
-        $proposal = Proposal::where('uuid', $proposalUuid)->first();
-        if (is_null($proposal)) {
+        $posit = Posit::where('uuid', $positUuid)->first();
+        if (is_null($posit)) {
             return false;
         }
 
-        return Gate::forUser($user)->allows('view', $proposal);
+        return Gate::forUser($user)->allows('view', $posit);
     }
 }
