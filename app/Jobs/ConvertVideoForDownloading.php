@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Events\ProposalIntroVideoUpdated;
+use App\Events\PositIntroVideoUpdated;
 use App\Jobs\ConvertVideoForStreaming;
 use App\Models\Proposal;
 use App\Models\Video;
@@ -113,7 +113,7 @@ class ConvertVideoForDownloading implements ShouldQueue
     protected function broadcastConvertedVideoToUser()
     {
         if (is_a($this->video->model, Proposal::class)) {
-            event(new ProposalIntroVideoUpdated($this->video->model, $this->video));
+            event(new PositIntroVideoUpdated($this->video->model, $this->video));
         }
     }
 }
