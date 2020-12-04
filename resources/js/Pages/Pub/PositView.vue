@@ -13,17 +13,17 @@
     </template>
 
     <template v-if="!is_limited_view">
-      <ProposalOpeningSectionPublic
+      <PositOpeningSectionPublic
         class="mb-36"
         :editable="false"
         :proposal="proposal__" />
 
-      <ProposalContentSectionPublic
+      <PositContentSectionPublic
         ref="content" />
 
-      <ProposalClosingSectionPublic
+      <PositClosingSectionPublic
         class="mt-36"
-        :public-proposal-machine-state="publicProposalMachineCurrentState"
+        :public-proposal-machine-state="publicPositMachineCurrentState"
         :proposal="proposal__"
         @accept-with-payment="handleAcceptWithPayment"/>
     </template>
@@ -36,20 +36,20 @@
 <script>
 import { interpret } from 'xstate'
 import { loadStripe } from '@stripe/stripe-js/pure'
-import { publicProposalMachine } from '@/machines/publicProposalMachine'
+import { publicPositMachine } from '@/machines/publicPositMachine'
 import { isEmpty } from 'lodash-es'
 import Http from '@/services/Http'
-import Proposal from '@/models/Proposal'
+import Posit from '@/models/Posit'
 import ApplicationLogo from '@/Jetstream/ApplicationLogo'
-import ProposalOpeningSectionPublic from '@/Components/ProposalOpeningSectionPublic'
-import ProposalContentSectionPublic from '@/Components/ProposalContentSectionPublic'
-import ProposalClosingSectionPublic from '@/Components/ProposalClosingSectionPublic'
+import PositOpeningSectionPublic from '@/Components/PositOpeningSectionPublic'
+import PositContentSectionPublic from '@/Components/PositContentSectionPublic'
+import PositClosingSectionPublic from '@/Components/PositClosingSectionPublic'
 
 export default {
   components: {
-    ProposalOpeningSectionPublic,
-    ProposalContentSectionPublic,
-    ProposalClosingSectionPublic,
+    PositOpeningSectionPublic,
+    PositContentSectionPublic,
+    PositClosingSectionPublic,
     ApplicationLogo
   },
   props: {
@@ -59,10 +59,10 @@ export default {
     stripe_pub_key: {}
   },
   created () {
-    this.publicProposalMachineService
+    this.publicPositMachineService
       .onTransition(state => {
-        this.publicProposalMachineCurrentState = state
-        this.publicProposalMachineContext = state.context
+        this.publicPositMachineCurrentState = state
+        this.publicPositMachineContext = state.context
       })
       .start()
 
@@ -71,8 +71,8 @@ export default {
   data () {
     const status = this.proposal?.data?.status
 
-    const machine = publicProposalMachine.withContext({
-      ...publicProposalMachine.context,
+    const machine = publicPositMachine.withContext({
+      ...publicPositMachine.context,
       status
     }).withConfig({
       services: {
@@ -81,11 +81,11 @@ export default {
     })
 
     return {
-      publicProposalMachineService: interpret(machine, { devTools: true }),
-      publicProposalMachineCurrentState: machine.initialState,
-      publicProposalMachineContext: machine.context,
+      publicPositMachineService: interpret(machine, { devTools: true }),
+      publicPositMachineCurrentState: machine.initialState,
+      publicPositMachineContext: machine.context,
       stripe: null,
-      proposal__: Proposal.make()
+      proposal__: Posit.make()
     }
   },
   metaInfo () {
@@ -105,7 +105,7 @@ export default {
     proposal: {
       immediate: true,
       handler (value) {
-        this.proposal__ = Proposal.make(value)
+        this.proposal__ = Posit.make(value)
 
         this.$nextTick(() => {
           this.$refs.content.editor.setContent(
@@ -155,7 +155,7 @@ export default {
       }
     },
     handleAcceptWithPayment () {
-      this.publicProposalMachineService.send('ACCEPT_WITH_PAYMENT')
+      this.publicPositMachineService.send('ACCEPT_WITH_PAYMENT')
     },
     setupInitialMachineContext () {
 

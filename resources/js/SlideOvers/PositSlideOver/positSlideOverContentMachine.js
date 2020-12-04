@@ -1,7 +1,7 @@
 import { Machine, assign } from 'xstate'
 
-export const proposalSlideOverContentMachine = Machine({
-  id: 'proposalSlideOverContent',
+export const positSlideOverContentMachine = Machine({
+  id: 'positSlideOverContent',
   context: {
     isPublished: false,
     canPublish: false,

@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'ProposalCreatorAvatar',
+  name: 'PositCreatorAvatar',
   props: {
     proposal: { type: Object },
   },

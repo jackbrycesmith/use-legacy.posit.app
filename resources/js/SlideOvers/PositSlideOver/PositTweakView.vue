@@ -11,7 +11,7 @@
         <TabPane title="Design" :icon="designTabIcon">
           <div class="space-y-6 pt-6 pb-5">
 
-            <!-- Proposal Theme -->
+            <!-- Posit Theme -->
             <div class="space-y-1">
               <label for="proposal_theme" class="block text-sm font-medium leading-5 text-gray-600">
                 Theme
@@ -19,7 +19,7 @@
 
               <!-- Theme list options -->
               <div class="flex gap-2 items-center">
-                <ProposalThemeBlock name="Cool Grey" class="flex-shrink-0" />
+                <PositThemeBlock name="Cool Grey" class="flex-shrink-0" />
                 <p class="flex-1 text-center text-gray-400 text-xs">
                   <IconHeroiconsMediumInformationCircle class="inline w-5 h-5 align-bottom" />
                   More theme choices coming soon!
@@ -38,16 +38,16 @@
               <InputWithCurrency
                 :currency-model.sync="proposal.value_currency_code"
                 :amount-model.sync="proposal.value_amount"
-                :editable="proposalEditorMachineState.context.canEdit"
+                :editable="positEditorMachineState.context.canEdit"
                 :max="999999999"
                 label="Project Value"
                 @changed="handleUpdateProjectValue"
                 class="space-y-1" />
 
               <!-- Deposit -->
-              <ProposalDepositConfigure
+              <PositDepositConfigure
                 :proposal="proposal"
-                :editable="proposalEditorMachineState.context.canEdit"
+                :editable="positEditorMachineState.context.canEdit"
                 class="space-y-1"
               />
 
@@ -62,27 +62,27 @@
 import Tabs from '@/Components/Tabs'
 import TabPane from '@/Components/TabPane'
 import InputWithCurrency from '@/Components/TailwindUI/InputWithCurrency'
-import ProposalDepositConfigure from '@/Components/ProposalDepositConfigure'
+import PositDepositConfigure from '@/Components/PositDepositConfigure'
 import IconHeroiconsSmallBriefcase from '@/Icons/IconHeroiconsSmallBriefcase'
 import IconHeroiconsSmallAdjustments from '@/Icons/IconHeroiconsSmallAdjustments'
 import IconHeroiconsMediumInformationCircle from '@/Icons/IconHeroiconsMediumInformationCircle'
-import ProposalThemeBlock from '@/Components/ProposalThemeBlock'
+import PositThemeBlock from '@/Components/PositThemeBlock'
 
 export default {
-  name: 'ProposalTweakView',
+  name: 'PositTweakView',
   components: {
     IconHeroiconsSmallBriefcase,
     IconHeroiconsSmallAdjustments,
     IconHeroiconsMediumInformationCircle,
     InputWithCurrency,
-    ProposalDepositConfigure,
-    ProposalThemeBlock,
+    PositDepositConfigure,
+    PositThemeBlock,
     Tabs,
     TabPane
   },
   props: {
     proposal: { type: Object },
-    proposalEditorMachineState: {}
+    positEditorMachineState: {}
   },
   data () {
     return {
@@ -99,7 +99,7 @@ export default {
   },
   methods: {
     async handleUpdateProjectValue () {
-      if (!this.proposalEditorMachineState.context.canEdit) return
+      if (!this.positEditorMachineState.context.canEdit) return
 
       try {
         await this.proposal.updateProjectValue()

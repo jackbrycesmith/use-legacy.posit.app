@@ -22,7 +22,7 @@
 import IconHeroiconsMediumCheck from '@/Icons/IconHeroiconsMediumCheck'
 
 export default {
-  name: 'ProposalAcceptedMeta',
+  name: 'PositAcceptedMeta',
   components: {
     IconHeroiconsMediumCheck,
   },

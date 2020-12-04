@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Actions\UsePositApp\Submit;
+namespace App\Actions\UsePositApp;
 
+use App\Actions\Team\CreateDraftPosit;
 use App\Models\Posit;
-use App\Utils\Constant;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Redirect;
 use Lorisleiva\Actions\Action;
 
-class PublishPosit extends Action
+class UsePositNew extends Action
 {
     /**
      * Specify routes for this action.
@@ -20,9 +21,8 @@ class PublishPosit extends Action
     {
         $router->domain(use_posit_domain())
             ->middleware(['web', 'auth:sanctum', 'verified'])
-            ->put('/posit/{posit:uuid}/publish', static::class)
-            ->where('posit', Constant::PATTERN_UUID)
-            ->name('use.submit.publish-posit');
+            ->get('/posit/new', static::class)
+            ->name('use.posit.new');
     }
 
     /**
@@ -30,9 +30,9 @@ class PublishPosit extends Action
      *
      * @return bool
      */
-    public function authorize(Posit $posit)
+    public function authorize()
     {
-        return $this->can('publish', $posit);
+        return true;
     }
 
     /**
@@ -48,15 +48,13 @@ class PublishPosit extends Action
     /**
      * Execute the action and return a result.
      *
-     * @param \App\Models\Posit $posit The posit
-     *
      * @return mixed
      */
-    public function handle(Posit $posit)
+    public function handle()
     {
-        // TODO validate whether proposal is in a state that can be published.
-        $posit->setStatus(Posit::STATUS_PUBLISHED);
-        $posit->save();
+        $posit = (new CreateDraftPosit)->run([
+            'team' => $this->user()->currentTeam
+        ]);
 
         return $posit;
     }
@@ -64,10 +62,12 @@ class PublishPosit extends Action
     /**
      * The action HTTP response.
      *
+     * @param \App\Models\Posit $posit The posit
+     *
      * @return \Illuminate\Http\Response
      */
     public function response(Posit $posit)
     {
-        return response()->noContent();
+        return Redirect::route('use.posit.view', $posit);
     }
 }

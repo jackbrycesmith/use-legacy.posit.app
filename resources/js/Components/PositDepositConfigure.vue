@@ -37,8 +37,8 @@
               </label>
 
               <div class="flex gap-x-3 mt-1">
-                <ProposalPaymentProviderStripe />
-                <ProposalPaymentProviderCoinbase />
+                <PositPaymentProviderStripe />
+                <PositPaymentProviderCoinbase />
               </div>
 
               <!-- Provider Integration Not Ready Message -->
@@ -74,15 +74,15 @@
 </template>
 
 <script>
-import ProposalPaymentProviderStripe from '@/Components/ProposalPaymentProviderStripe'
-import ProposalPaymentProviderCoinbase from '@/Components/ProposalPaymentProviderCoinbase'
+import PositPaymentProviderStripe from '@/Components/PositPaymentProviderStripe'
+import PositPaymentProviderCoinbase from '@/Components/PositPaymentProviderCoinbase'
 import IconHeroiconsMediumExclamation from '@/Icons/IconHeroiconsMediumExclamation'
 import InputWithCurrency from '@/Components/TailwindUI/InputWithCurrency'
 
 export default {
   components: {
-    ProposalPaymentProviderStripe,
-    ProposalPaymentProviderCoinbase,
+    PositPaymentProviderStripe,
+    PositPaymentProviderCoinbase,
     IconHeroiconsMediumExclamation,
     InputWithCurrency
   },

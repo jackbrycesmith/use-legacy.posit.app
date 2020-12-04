@@ -52,8 +52,8 @@ class UseTeamContactsUpsert extends Action
      */
     public function handle(Team $team, ?TeamContact $contact = null)
     {
-        return Inertia::render('Use/OrgContactsUpsert', [
-            'org' => fn() => new TeamResource($team),
+        return Inertia::render('Use/TeamContactsUpsert', [
+            'team' => fn() => new TeamResource($team),
             'contact' => is_null($contact) ? null : new TeamContactResource($contact),
         ]);
     }

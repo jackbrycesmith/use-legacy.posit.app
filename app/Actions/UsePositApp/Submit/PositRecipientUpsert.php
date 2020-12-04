@@ -63,7 +63,7 @@ class PositRecipientUpsert extends Action
     /**
      * Execute the action and return a result.
      *
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      * @param \App\Models\TeamContact|nullable $recipient The recipient
      *
      * @return mixed

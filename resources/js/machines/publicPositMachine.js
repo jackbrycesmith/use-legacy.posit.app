@@ -1,7 +1,7 @@
 import { Machine } from 'xstate'
 
-export const publicProposalMachine = Machine({
-  id: 'publicProposal',
+export const publicPositMachine = Machine({
+  id: 'publicPosit',
   context: {
     status: 'proposal_published',
     isReturnFromStripeCheckoutSuccess: false

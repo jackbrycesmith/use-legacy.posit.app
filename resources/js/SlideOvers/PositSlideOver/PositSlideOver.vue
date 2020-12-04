@@ -179,9 +179,9 @@ import {
   proposalSlideOverContentMachine,
   // ProposalConfirmView, // IDK why this isn't working; throwing some error in the console so will import manually
   // ProposalTweakView
-} from '@/SlideOvers/ProposalSlideOver'
-import ProposalConfirmView from '@/SlideOvers/ProposalSlideOver/ProposalConfirmView'
-import ProposalTweakView from '@/SlideOvers/ProposalSlideOver/ProposalTweakView'
+} from '@/SlideOvers/PositSlideOver'
+import ProposalConfirmView from '@/SlideOvers/PositSlideOver/ProposalConfirmView'
+import ProposalTweakView from '@/SlideOvers/PositSlideOver/ProposalTweakView'
 
 export default {
   components: {

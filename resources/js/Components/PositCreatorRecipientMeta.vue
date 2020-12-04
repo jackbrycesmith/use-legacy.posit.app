@@ -8,7 +8,7 @@
           </dt>
           <dd class="order-1">
             <div class="h-11">
-              <ProposalCreatorAvatar :proposal="proposal" />
+              <PositCreatorAvatar :proposal="proposal" />
             </div>
           </dd>
         </div>
@@ -18,7 +18,7 @@
             For
           </dt>
           <dd class="order-1">
-            <ProposalRecipientSelector
+            <PositRecipientSelector
               :can-bounce="false"
               :editable="editable"
               :proposal.sync="proposal"
@@ -34,14 +34,14 @@
 </template>
 
 <script>
-import ProposalRecipientSelector from '@/Components/ProposalRecipientSelector'
-import ProposalCreatorAvatar from '@/Components/ProposalCreatorAvatar'
+import PositRecipientSelector from '@/Components/PositRecipientSelector'
+import PositCreatorAvatar from '@/Components/PositCreatorAvatar'
 
 export default {
-  name: 'ProposalCreatorRecipientMeta',
+  name: 'PositCreatorRecipientMeta',
   components: {
-    ProposalRecipientSelector,
-    ProposalCreatorAvatar
+    PositRecipientSelector,
+    PositCreatorAvatar
   },
   props: {
     proposal: { type: Object },

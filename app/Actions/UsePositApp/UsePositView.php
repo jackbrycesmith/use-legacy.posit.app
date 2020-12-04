@@ -23,7 +23,7 @@ class UsePositView extends Action
     /**
      * Determine if the user is authorized to make this action.
      *
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      *
      * @return bool
      */
@@ -45,7 +45,7 @@ class UsePositView extends Action
     /**
      * Execute the action and return a result.
      *
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      *
      * @return mixed
      */
@@ -59,7 +59,7 @@ class UsePositView extends Action
     /**
      * Returns the proposal resource
      *
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      *
      * @return PositResource
      */

@@ -37,7 +37,7 @@ class PublicPositAccessCookie
     /**
      * Determine if the given proposal access cookie is valid.
      *
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      * @param string $cookie
      *
      * @return bool

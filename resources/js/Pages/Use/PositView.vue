@@ -1,27 +1,27 @@
 <template>
   <fragment>
-    <ProposalOpeningSection
+    <PositOpeningSection
       class="mb-36"
       :editable="editorMachineContext.canEdit"
       :proposal.sync="proposal__"
       @live-edit-name="handleLiveEditedName"
       @edit-title-done="handleEditTitleDone"/>
 
-    <ProposalContentSection
+    <PositContentSection
       ref="content"
       :editable="editorMachineContext.canEdit"
       @update="handleContentUpdate"/>
 
-    <ProposalClosingSection
+    <PositClosingSection
       class="mt-36"
       :proposal="proposal__" />
 
-    <ProposalBackHome
+    <PositBackHome
       class="fixed top-5 left-5"/>
 
-    <ProposalSlideOver
-      ref="proposalSlideOver"
-      :proposal-editor-machine-state="editorMachineCurrentState"
+    <PositSlideOver
+      ref="positSlideOver"
+      :posit-editor-machine-state="editorMachineCurrentState"
       :proposal.sync="proposal__"/>
 
     <!-- Modals -->
@@ -33,26 +33,26 @@
 
 <script>
 import { interpret } from 'xstate'
-import { ProposalSlideOver } from '@/SlideOvers/ProposalSlideOver'
+import { PositSlideOver } from '@/SlideOvers/PositSlideOver'
 import FirstWelcomeModal from '@/Modals/FirstWelcomeModal'
-import ProposalOpeningSection from '@/Components/ProposalOpeningSection'
-import ProposalContentSection from '@/Components/ProposalContentSection'
-import ProposalClosingSection from '@/Components/ProposalClosingSection'
+import PositOpeningSection from '@/Components/PositOpeningSection'
+import PositContentSection from '@/Components/PositContentSection'
+import PositClosingSection from '@/Components/PositClosingSection'
 import LoginModal from '@/Modals/LoginModal'
-import Proposal from '@/models/Proposal'
-import ProposalBackHome from '@/Components/ProposalBackHome'
+import Posit from '@/models/Posit'
+import PositBackHome from '@/Components/PositBackHome'
 import { proposalEditorMachine } from '@/machines/proposalEditorMachine'
 import { debounce } from 'lodash-es'
 
 export default {
   components: {
-    ProposalSlideOver,
+    PositSlideOver,
     FirstWelcomeModal,
     LoginModal,
-    ProposalOpeningSection,
-    ProposalContentSection,
-    ProposalClosingSection,
-    ProposalBackHome
+    PositOpeningSection,
+    PositContentSection,
+    PositClosingSection,
+    PositBackHome
   },
   props: {
     proposal: { type: Object }
@@ -81,7 +81,7 @@ export default {
       editorMachineService: interpret(machine, { devTools: true }),
       editorMachineCurrentState: machine.initialState,
       editorMachineContext: machine.context,
-      proposal__: Proposal.make(),
+      proposal__: Posit.make(),
     }
   },
   computed: {
@@ -95,14 +95,14 @@ export default {
   mounted () {
     // TODO maybe do component dynamic import loads inside created () or something so we can do stuff when its loaded
     setTimeout(() => {
-      this.$refs.proposalSlideOver.show()
+      this.$refs.positSlideOver.show()
     }, 1200)
   },
   watch: {
     proposal: {
       immediate: true,
       handler (value) {
-        this.proposal__ = Proposal.make(value)
+        this.proposal__ = Posit.make(value)
 
         this.$nextTick(() => {
           this.$refs.content.editor.setContent(

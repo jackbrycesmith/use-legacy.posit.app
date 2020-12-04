@@ -75,7 +75,7 @@ class CreateDraftPosit extends Action
     /**
      * HTTP response
      *
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      *
      * @return Illuminate\Http\Response
      */

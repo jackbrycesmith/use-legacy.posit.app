@@ -9,18 +9,18 @@
       @live-edit="handleLiveEditedName"
       @edit-done="handleEditTitleDone" />
 
-    <ProposalCreatorRecipientMeta :proposal.sync="proposal" :editable="editable" />
+    <PositCreatorRecipientMeta :proposal.sync="proposal" :editable="editable" />
 
-    <ProposalIntroVideoRecording :proposal.sync="proposal" />
+    <PositIntroVideoRecording :proposal.sync="proposal" />
 
   </div>
 </template>
 
 <script>
-import Proposal from '@/models/Proposal'
+import Posit from '@/models/Posit'
 import ContentEditable from '@/Components/ContentEditable'
-import ProposalIntroVideoRecording from '@/Components/ProposalIntroVideoRecording'
-import ProposalCreatorRecipientMeta from '@/Components/ProposalCreatorRecipientMeta'
+import PositIntroVideoRecording from '@/Components/PositIntroVideoRecording'
+import PositCreatorRecipientMeta from '@/Components/PositCreatorRecipientMeta'
 
 export default {
   props: {
@@ -32,12 +32,12 @@ export default {
   },
   components: {
     ContentEditable,
-    ProposalIntroVideoRecording,
-    ProposalCreatorRecipientMeta
+    PositIntroVideoRecording,
+    PositCreatorRecipientMeta
   },
   data () {
     return {
-      title: 'Proposal'
+      title: 'Posit'
     }
   },
   watch: {

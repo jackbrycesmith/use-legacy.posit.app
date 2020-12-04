@@ -7,7 +7,7 @@
       :model="title"
       :is-content-editable="false"/>
 
-    <ProposalCreatorRecipientMeta :proposal="proposal" :editable="false" />
+    <PositCreatorRecipientMeta :proposal="proposal" :editable="false" />
 
     <VideoExpandablePlaybackOnly v-if="hasReadyIntroVideo" :proposal="proposal" />
 
@@ -15,10 +15,10 @@
 </template>
 
 <script>
-import Proposal from '@/models/Proposal'
+import Posit from '@/models/Posit'
 import ContentEditable from '@/Components/ContentEditable'
 import VideoExpandablePlaybackOnly from '@/Components/VideoExpandablePlaybackOnly'
-import ProposalCreatorRecipientMeta from '@/Components/ProposalCreatorRecipientMeta'
+import PositCreatorRecipientMeta from '@/Components/PositCreatorRecipientMeta'
 
 export default {
   props: {
@@ -27,11 +27,11 @@ export default {
   components: {
     ContentEditable,
     VideoExpandablePlaybackOnly,
-    ProposalCreatorRecipientMeta
+    PositCreatorRecipientMeta
   },
   data () {
     return {
-      title: 'Proposal'
+      title: 'Posit'
     }
   },
   computed: {

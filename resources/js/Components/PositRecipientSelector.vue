@@ -199,8 +199,8 @@ export default {
     selectOption (option) {
       // TODO probably shouldn't be mutating this directly, but seems to be working fine
       const shouldUpdateRecipientOnServer = !(this.proposal.recipient?.id === option.id)
-      const updatedProposal = set(this.proposal, 'recipient', option)
-      this.$emit('update:proposal', updatedProposal)
+      const updatedPosit = set(this.proposal, 'recipient', option)
+      this.$emit('update:proposal', updatedPosit)
       this.isOpen = false
 
       if (shouldUpdateRecipientOnServer) {

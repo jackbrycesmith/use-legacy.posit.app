@@ -3,8 +3,8 @@ import Http from '@/services/Http'
 import User from './User'
 import ProposalContent from './ProposalContent'
 import ProposalPayment from './ProposalPayment'
-import Organisation from './Organisation'
-import OrganisationContact from './OrganisationContact'
+import Team from './Team'
+import TeamContact from './TeamContact'
 import Video from './Video'
 import { appendOrUpdateData } from '@/utils/data'
 import { initials } from '@/utils/strings'
@@ -266,7 +266,7 @@ export default class Proposal extends Model {
       payload
     )
 
-    const contact = OrganisationContact.make(response)
+    const contact = TeamContact.make(response)
     set(this, 'recipient', contact)
     set(this.org, 'contacts', appendOrUpdateData(contact, this.recipient_options))
     return contact
@@ -286,9 +286,9 @@ export default class Proposal extends Model {
   getRelationships() {
     return {
       users: User,
-      org: Organisation,
+      org: Team,
       creator: User,
-      recipient: OrganisationContact,
+      recipient: TeamContact,
       content: ProposalContent,
       intro_video: Video,
       deposit_payment: ProposalPayment

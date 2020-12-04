@@ -102,7 +102,7 @@ class PositPolicy
      * Determine whether the user can upsert a recipient on the model.
      *
      * @param \App\Models\User $user The user
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      * @param \App\Models\OrganisationContac $contact The contact
      *
      * @return mixed
@@ -128,7 +128,7 @@ class PositPolicy
      * Determine if the proposal can be accepted with a payment.
      *
      * @param \App\Models\User|null $user The user
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      *
      * @return mixed
      */

@@ -47,7 +47,7 @@
       </div>
 
       <!-- Expanded state... -->
-      <portal to="proposal-view-portal">
+      <portal to="posit-view-portal">
 
         <BaseModal
           ref="modal"
@@ -60,7 +60,7 @@
         >
           <template #alternative-modal>
 
-            <ProposalIntroVideoExpanded
+            <PositIntroVideoExpanded
               ref="expandedCircle"
               v-if="currentState.matches('expanded') || currentState.matches('expanding') || currentState.matches('collapsing')"
               :current-state="currentState"
@@ -94,13 +94,13 @@ import IconHeroiconsMediumCog from '@/Icons/IconHeroiconsMediumCog'
 import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
 import BaseModal from '@/Modals/BaseModal'
 import Realtime from '@/services/Realtime'
-import ProposalIntroVideoExpanded from '@/Components/ProposalIntroVideoExpanded'
+import PositIntroVideoExpanded from '@/Components/PositIntroVideoExpanded'
 import S3Upload from '@/models/S3Upload'
 import { get, set } from 'lodash-es'
 
 export default {
   components: {
-    BaseVideoRecord, IconVideoMessage, IconHeroiconsMediumCog, IconHeroiconsSpinner, ProposalIntroVideoExpanded, BaseModal
+    BaseVideoRecord, IconVideoMessage, IconHeroiconsMediumCog, IconHeroiconsSpinner, PositIntroVideoExpanded, BaseModal
   },
   props: {
     proposal: { type: Object }
@@ -148,7 +148,7 @@ export default {
   mounted () {
     const channel = `proposal.${this.proposal.uuid}.intro_video`
     Realtime.subscribe(channel, {
-      'ProposalIntroVideoUpdated': this.handleRealtimeProposalIntroVideoUpdated
+      'PositIntroVideoUpdated': this.handleRealtimePositIntroVideoUpdated
     })
 
     this.$once('hook:destroyed', () => {
@@ -224,8 +224,8 @@ export default {
       this.proposal.fill({ intro_video: introVideo })
       this.$emit('update:proposal', this.proposal)
     },
-    handleRealtimeProposalIntroVideoUpdated (event) {
-      console.log('handleRealtimeProposalIntroVideoUpdated: ', event)
+    handleRealtimePositIntroVideoUpdated (event) {
+      console.log('handleRealtimePositIntroVideoUpdated: ', event)
       const introVideo = get(event, 'intro_video')
       if (!introVideo) return
       this.proposal.fill({ intro_video: introVideo })

@@ -51,27 +51,27 @@ class PubPositView extends Action
     /**
      * Execute the action and return a result.
      *
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      *
      * @return mixed
      */
     public function handle(Posit $posit)
     {
-        return Inertia::render('Pub/ProposalView', [
-            'proposal' => fn() => $this->proposalResource($posit),
+        return response()->inertiable('Pub/PositView', [
+            'proposal' => fn() => $this->positResource($posit),
             'is_limited_view' => fn() => $posit->requiresLiteResource(),
             'stripe_pub_key' => fn() => config('services.stripe.key')
         ]);
     }
 
     /**
-     * Returns the proposal resource
+     * Returns the posit resource
      *
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      *
      * @return PositLiteResource|PositResource
      */
-    protected function proposalResource(Posit $posit)
+    protected function positResource(Posit $posit)
     {
         if ($posit->requiresLiteResource()) {
             return new PositLiteResource($posit);

@@ -77,7 +77,7 @@ class ProposalAcceptWithPayment extends Action
     /**
      * { function_description }
      *
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      *
      * @return array
      */

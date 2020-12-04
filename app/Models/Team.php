@@ -24,7 +24,7 @@ class Team extends JetstreamTeam implements AccountOwnerInterface, HasMedia
     use PaddleBillable;
     use HasFactory;
     use HasLogo {
-        registerMediaCollections as protected registerLogoMediaCollections;
+        HasLogo::registerMediaCollections as protected registerLogoMediaCollections;
     }
     use HasUuid;
     use HasInAppCreditBalance;

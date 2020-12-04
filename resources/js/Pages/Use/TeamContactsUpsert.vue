@@ -35,9 +35,9 @@
 
 <script>
 import Dashboard from '@/Layouts/Dashboard'
-import Organisation from '@/models/Organisation'
-import OrganisationContact from '@/models/OrganisationContact'
-import OrgContactListItem from '@/Lists/OrgContactListItem'
+import Team from '@/models/Team'
+import TeamContact from '@/models/TeamContact'
+import TeamContactListItem from '@/Lists/TeamContactListItem'
 import OrgContactUpsertForm from '@/Forms/OrgContactUpsertForm'
 import TeamDashboardSidebar from '@/Components/TeamDashboardSidebar'
 import { isNil } from 'lodash-es'
@@ -45,7 +45,7 @@ import { isNil } from 'lodash-es'
 export default {
   components: {
     OrgContactUpsertForm,
-    OrgContactListItem,
+    TeamContactListItem,
     TeamDashboardSidebar
   },
   props: {
@@ -55,7 +55,7 @@ export default {
   layout: Dashboard,
   data () {
     return {
-      org__: Organisation.make(),
+      org__: Team.make(),
       contact__: null,
     }
   },
@@ -68,14 +68,14 @@ export default {
     org: {
       immediate: true,
       handler (value) {
-        this.org__ = Organisation.make(value)
+        this.org__ = Team.make(value)
       }
     },
     contact: {
       immediate: true,
       handler (value) {
         if (value) {
-          this.contact__ = OrganisationContact.make(value)
+          this.contact__ = TeamContact.make(value)
         }
       }
     }

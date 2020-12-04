@@ -62,7 +62,7 @@ class CheckPublicPositStatefulAccess
      * Determines if valid access cookie for viewing this public proposal.
      *
      * @param \Illuminate\Http\Request $request The request
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      *
      * @return boolean True if valid access cookie, False otherwise.
      */

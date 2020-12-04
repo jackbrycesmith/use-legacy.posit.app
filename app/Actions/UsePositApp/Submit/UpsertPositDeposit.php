@@ -29,7 +29,7 @@ class UpsertPositDeposit extends Action
     /**
      * Determine if the user is authorized to make this action.
      *
-     * @param \App\Models\Posit $posit The proposal
+     * @param \App\Models\Posit $posit The posit
      *
      * @return bool
      */
