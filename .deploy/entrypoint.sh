@@ -7,7 +7,7 @@ echo "🎬 artisan commands"
 
 # e.g. php artisan app:on-deploy
 # php artisan cache:clear
-php artisan migrate --no-interaction --force
+# php artisan migrate --no-interaction --force
 
 echo "🎬 start supervisord"
 
