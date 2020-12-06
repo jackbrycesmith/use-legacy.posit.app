@@ -8,12 +8,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Event;
 use function Tests\actingAs;
 
-test('updating proposal deposit requires proposal exist', function () {
+test('updating posit deposit requires posit exist', function () {
     $response = $this->put(route('use.submit.upsert-posit-deposit', ['posit' => 'blah']));
     $response->assertStatus(404);
 });
 
-test('updating proposal deposit requires login', function () {
+test('updating posit deposit requires login', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([
@@ -24,7 +24,7 @@ test('updating proposal deposit requires login', function () {
     $response->assertRedirect(route('login'));
 });
 
-test('user cannot update proposal deposit if not a team member', function () {
+test('user cannot update posit deposit if not a team member', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([
@@ -37,7 +37,7 @@ test('user cannot update proposal deposit if not a team member', function () {
     $response->assertStatus(403);
 });
 
-test('user cannot upsert proposal deposit in certain statuses', function ($status) {
+test('user cannot upsert posit deposit in certain statuses', function ($status) {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([
@@ -74,7 +74,7 @@ test('user cannot upsert proposal deposit in certain statuses', function ($statu
     ...Posit::CANNOT_UPDATE_STATUSES
 ]);
 
-test('it creates proposal deposit payment if non-existant', function () {
+test('it creates posit deposit payment if non-existant', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([
@@ -95,7 +95,7 @@ test('it creates proposal deposit payment if non-existant', function () {
     assertNotNull($posit->depositPayment);
 });
 
-test('user can update proposal deposit payment amount', function ($amount) {
+test('user can update posit deposit payment amount', function ($amount) {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([

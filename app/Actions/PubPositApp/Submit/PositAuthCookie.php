@@ -10,7 +10,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\Action;
 
-class ProposalAuthCookie extends Action
+class PositAuthCookie extends Action
 {
     /**
      * Specify routes for this action.

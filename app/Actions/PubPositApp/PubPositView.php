@@ -58,7 +58,7 @@ class PubPositView extends Action
     public function handle(Posit $posit)
     {
         return response()->inertiable('Pub/PositView', [
-            'proposal' => fn() => $this->positResource($posit),
+            'posit' => fn() => $this->positResource($posit),
             'is_limited_view' => fn() => $posit->requiresLiteResource(),
             'stripe_pub_key' => fn() => config('services.stripe.key')
         ]);

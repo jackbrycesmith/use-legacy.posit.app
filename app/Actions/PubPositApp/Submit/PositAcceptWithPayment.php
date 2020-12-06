@@ -9,7 +9,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
 use Lorisleiva\Actions\Action;
 
-class ProposalAcceptWithPayment extends Action
+class PositAcceptWithPayment extends Action
 {
     /**
      * Specify routes for this action.

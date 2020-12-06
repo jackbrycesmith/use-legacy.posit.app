@@ -9,12 +9,12 @@ use App\Models\Team;
 use App\Models\TeamContact;
 use CloudCreativity\LaravelStripe\Facades\Stripe;
 
-it('cannot accept proposal that is non-existant', function () {
+it('cannot accept posit that is non-existant', function () {
     $response = $this->put(route('pub.posit.accept-with-payment', 'blah'));
     $response->assertStatus(404);
 });
 
-it('cannot accept proposal if no proposal access cookie', function () {
+it('cannot accept posit if no posit access cookie', function () {
     $team = Team::factory()->create();
     $posit = Posit::factory()->create(['team_id' => $team->id]);
 
@@ -22,7 +22,7 @@ it('cannot accept proposal if no proposal access cookie', function () {
     $response->assertRedirect(route('pub.posit.view.auth', $posit));
 });
 
-it('cannot accept proposal if invalid proposal access cookie (not the recipient)', function () {
+it('cannot accept posit if invalid posit access cookie (not the recipient)', function () {
     $team = Team::factory()->create();
     $posit = Posit::factory()->create(['team_id' => $team->id]);
     $contact = TeamContact::factory()->create(['team_id' => $team->id]);
