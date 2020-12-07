@@ -120,7 +120,7 @@ RUN composer dump-autoload --no-interaction --no-dev --optimize
 ARG CACHE_DRIVER=${CACHE_DRIVER}
 
 USER root
-RUN setcap 'cap_net_bind_service=+ep' caddy
+RUN setcap 'cap_net_bind_service=+ep' /usr/local/bin/caddy
 USER www-data
 
 # Start app
