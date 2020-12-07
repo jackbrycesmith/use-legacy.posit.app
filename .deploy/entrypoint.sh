@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "🎬 entrypoint.sh"
+echo "🎬 entrypoint.sh: running as $whoami"
 
 
 echo "🎬 artisan commands"
