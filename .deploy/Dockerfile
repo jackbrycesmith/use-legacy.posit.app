@@ -17,24 +17,27 @@ ENV COMPOSER_AUTH=${COMPOSER_AUTH}
 
 FROM php-system-setup AS app-setup
 
+RUN addgroup -S app && adduser -S -G app app
+RUN setcap 'cap_net_bind_service=+ep' /usr/local/bin/caddy
+
 # Set working directory
 ENV LARAVEL_PATH=/srv/app
 WORKDIR $LARAVEL_PATH
 
 # Set cron job
-RUN echo "* * * * * /usr/local/bin/php /srv/app/artisan schedule:run >> /dev/null 2>&1" | install -D /dev/stdin /home/www-data/crontabs/www-data \
-    && chown -R www-data:www-data /home/www-data/crontabs/www-data \
-    && chown www-data:www-data /usr/sbin/crond && setcap cap_setgid=ep /usr/sbin/crond
+RUN echo "* * * * * /usr/local/bin/php /srv/app/artisan schedule:run >> /dev/null 2>&1" | install -D /dev/stdin /home/app/crontabs/app \
+    && chown -R app:app /home/app/crontabs/app \
+    && chown app:app /usr/sbin/crond && setcap cap_setgid=ep /usr/sbin/crond
 
 # Install app dependencies
 COPY composer.json composer.lock ./
-RUN chown -R www-data:www-data $LARAVEL_PATH
-USER www-data
+RUN chown -R app:app $LARAVEL_PATH
+USER app
 RUN composer install --prefer-dist --no-scripts --no-dev --no-autoloader
-RUN rm -rf /home/www-data/.composer
+RUN rm -rf /home/app/.composer
 
 # Copy app
-COPY --chown=www-data:www-data . $LARAVEL_PATH/
+COPY --chown=app:app . $LARAVEL_PATH/
 COPY ./.deploy/config/php/local.ini /usr/local/etc/php/conf.d/local.ini
 
 # Set any ENVs
