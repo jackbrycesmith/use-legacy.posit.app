@@ -121,7 +121,7 @@ ARG CACHE_DRIVER=${CACHE_DRIVER}
 
 USER root
 RUN setcap 'cap_net_bind_service=+ep' /usr/local/bin/caddy
-USER www-data
+# USER www-data
 
 # Start app
 EXPOSE 80
