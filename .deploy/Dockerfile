@@ -5,7 +5,6 @@ COPY --from=ochinchina/supervisord:latest /usr/local/bin/supervisord /usr/local/
 
 # Install caddy
 COPY --from=caddy:2.2.1 /usr/bin/caddy /usr/local/bin/caddy
-RUN setcap 'cap_net_bind_service=+ep' /usr/local/bin/caddy
 
 # Install ffmpeg
 COPY --from=mwader/static-ffmpeg:4.3.1-2 /ffmpeg /usr/local/bin/
@@ -119,6 +118,8 @@ ARG FFPROBE_PATH=${FFPROBE_PATH}
 
 RUN composer dump-autoload --no-interaction --no-dev --optimize
 ARG CACHE_DRIVER=${CACHE_DRIVER}
+
+RUN setcap 'cap_net_bind_service=+ep' caddy
 
 # Start app
 EXPOSE 80
