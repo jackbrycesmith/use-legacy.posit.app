@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "🎬 entrypoint.sh: running as $(whoami)"
+echo "🎬 entrypoint.sh: \\n running as $(whoami), with PHP $(php -r 'echo phpversion();')"
 
 
 echo "🎬 artisan commands"
