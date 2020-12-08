@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.3.0",
         "aws/aws-php-sns-message-validator": "^1.6",
-        "beyondcode/laravel-websockets": "2.0.0-beta.30",
+        "beyondcode/laravel-websockets": "2.0.0-beta.32",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
