@@ -32,6 +32,7 @@
         "pbmedia/laravel-ffmpeg": "^7.4.0",
         "pusher/pusher-php-server": "~4.0",
         "spatie/laravel-medialibrary": "^9.0.1",
+        "spatie/laravel-model-states": "^2.0",
         "spatie/laravel-model-status": "^1.10",
         "spatie/laravel-webhook-client": "^2.7",
         "spatie/regex": "^1.4",
