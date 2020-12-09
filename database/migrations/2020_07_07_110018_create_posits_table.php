@@ -17,6 +17,7 @@ class CreatePositsTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->foreignId('team_id')->constrained()->onDelete('cascade');
+            $table->string('state')->index();
             $table->string('name')->nullable(); // TODO change to text type?
             $table->string('theme')->nullable();
 

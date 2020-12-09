@@ -7,6 +7,7 @@ use App\Models\Concerns\HasStripeCheckoutSession;
 use App\Models\Concerns\HasUuid;
 use App\Models\Concerns\HasVideo;
 use App\Models\Media;
+use App\Models\States\Posit\PositState;
 use App\Models\TeamContact;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\ModelStates\HasStates;
 use Spatie\ModelStatus\HasStatuses;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
@@ -27,6 +29,7 @@ class Posit extends Model implements HasMedia
     use HasUuid;
     use HasRelationships;
     use HasVideo;
+    use HasStates;
     use HasStatuses;
     use HasStripeCheckoutSession;
     use InteractsWithMedia;
@@ -75,6 +78,7 @@ class Posit extends Model implements HasMedia
      */
     protected $casts = [
         'name' => StrLimitCast::class,
+        'state' => PositState::class,
         'organisation_id' => 'integer',
         'meta' => 'array',
         'value_amount' => 'float',

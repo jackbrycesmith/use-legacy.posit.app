@@ -4,6 +4,7 @@ use App\Models\OrganisationMember;
 use App\Models\Posit;
 use App\Models\PositPayment;
 use App\Models\PositUser;
+use App\Models\States\Posit\Draft;
 use App\Models\Team;
 use App\Models\TeamContact;
 use App\Models\User;
@@ -106,3 +107,15 @@ test('proposal has a deposit payment', function () {
 
 });
 
+// States & Transitions...
+
+test('posit has default state', function () {
+    $team = Team::factory()->create();
+    $posit = Posit::factory()->create(['team_id' => $team->id]);
+
+    $this->assertTrue($posit->state->equals(Draft::class));
+    $this->assertDatabaseHas('posits', [
+        'id' => $posit->id,
+        'state' => 'draft'
+    ]);
+})->only();
