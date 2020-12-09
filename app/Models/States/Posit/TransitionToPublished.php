@@ -27,6 +27,9 @@ class TransitionToPublished extends Transition
     public function handle(): Posit
     {
         // TODO some custom stuff?
+        $this->posit->state = new Published($this->posit);
+
+        $this->posit->save();
 
         return $this->posit;
     }
