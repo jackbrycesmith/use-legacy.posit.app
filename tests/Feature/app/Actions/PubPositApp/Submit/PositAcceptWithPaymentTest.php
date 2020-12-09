@@ -3,6 +3,7 @@
 use App\Http\PublicPositAccessCookie;
 use App\Models\Posit;
 use App\Models\PositPayment;
+use App\Models\States\Posit\Published;
 use App\Models\StripeAccount;
 use App\Models\StripeCheckoutSession;
 use App\Models\Team;
@@ -40,7 +41,10 @@ it('cannot accept posit if invalid posit access cookie (not the recipient)', fun
 
 it('does not create new stripe checkout session if one exists already', function () {
     $team = Team::factory()->create();
-    $posit = Posit::factory()->create(['team_id' => $team->id]);
+    $posit = Posit::factory()->create([
+        'team_id' => $team->id,
+        'state' => Published::class
+    ]);
     $depositPayment = PositPayment::factory()->create([
         'type' => PositPayment::TYPE_DEPOSIT,
         'posit_id' => $posit->id,
@@ -53,7 +57,6 @@ it('does not create new stripe checkout session if one exists already', function
     ]);
 
     $posit->recipients()->sync([$contact->id]);
-    $posit->setStatus(Posit::STATUS_PUBLISHED);
     $depositPayment->stripeCheckoutSession()->save($stripeCheckoutSession);
     $posit->refresh();
 
@@ -84,7 +87,10 @@ it('does not create new stripe checkout session if one exists already', function
 
 it('creates new stripe checkout session if one does not exist', function () {
     $team = Team::factory()->create();
-    $posit = Posit::factory()->create(['team_id' => $team->id]);
+    $posit = Posit::factory()->create([
+        'team_id' => $team->id,
+        'state' => Published::class
+    ]);
     $contact = TeamContact::factory()->create(['team_id' => $team->id]);
     $stripeAccount = StripeAccount::factory()->create(['owner_id' => $team->id]);
     $depositPayment = PositPayment::factory()->create([
@@ -94,7 +100,6 @@ it('creates new stripe checkout session if one does not exist', function () {
     ]);
 
     $posit->recipients()->sync([$contact->id]);
-    $posit->setStatus(Posit::STATUS_PUBLISHED);
     $posit->refresh();
 
     $cookie = PublicPositAccessCookie::create($contact);

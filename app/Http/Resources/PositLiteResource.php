@@ -18,7 +18,7 @@ class PositLiteResource extends JsonResource
         return [
             'uuid' => $this->uuid,
             'name' => $this->name,
-            'status' => $this->status,
+            'state' => $this->state,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -2,6 +2,7 @@
 
 use App\Actions\Team\CreateDraftPosit;
 use App\Models\Posit;
+use App\Models\States\Posit\Published;
 use App\Models\Team;
 use App\Models\User;
 use function Tests\actingAs;
@@ -20,7 +21,7 @@ test('to publish proposal it requires login', function () {
 
     $response = $this->put(route('use.submit.publish-posit', ['posit' => $posit]));
     $response->assertRedirect(route('login'));
-    assertFalse($posit->hasEverHadStatus(Posit::STATUS_PUBLISHED));
+    assertFalse($posit->state->hasBeenInPublishedState());
 });
 
 test('to publish proposal, user must be a team member', function () {
@@ -34,22 +35,18 @@ test('to publish proposal, user must be a team member', function () {
     $response = actingAs($otherUser)->put(route('use.submit.publish-posit', ['posit' => $posit]));
 
     $response->assertStatus(403);
-    assertFalse($posit->hasEverHadStatus(Posit::STATUS_PUBLISHED));
+    assertFalse($posit->state->hasBeenInPublishedState());
 });
 
 test('to publish proposal, it must not have already been published', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
-    $posit = (new CreateDraftPosit)->actingAs($user)->run([
-        'team' => $team
-    ]);
-    $posit->setStatus(Posit::STATUS_PUBLISHED);
-    $posit->save();
+    $posit = Posit::factory()->create(['team_id' => $team->id, 'state' => Published::class]);
 
     $response = actingAs($user)->putJson(route('use.submit.publish-posit', ['posit' => $posit]));
 
     $response->assertStatus(403);
-    // TODO why this isn't working?!
+    // TODO (requires laravel actions v2)
     // $response->assertJsonFragment([
     //     'message' => 'This proposal has already been published.'
     // ]);
@@ -59,13 +56,11 @@ test('to publish proposal, it must not have already been published', function ()
 test('can publish proposal', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
-    $posit = (new CreateDraftPosit)->actingAs($user)->run([
-        'team' => $team
-    ]);
+    $posit = Posit::factory()->create(['team_id' => $team->id]);
 
     $response = actingAs($user)->putJson(route('use.submit.publish-posit', ['posit' => $posit]));
     $response->assertStatus(204);
 
-    // $posit->refresh();
-    assertEquals(Posit::STATUS_PUBLISHED, $posit->status);
+    $posit->refresh();
+    expect($posit->state)->toBeInstanceOf(Published::class);
 });

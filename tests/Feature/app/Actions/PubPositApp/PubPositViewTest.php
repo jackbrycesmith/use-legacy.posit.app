@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Posit;
+use App\Models\States\Posit\PositState;
 use App\Models\Team;
 
 it('404s if proposal does not exist', function () {
@@ -8,36 +9,22 @@ it('404s if proposal does not exist', function () {
     $response->assertStatus(404);
 });
 
-it('404s if proposal is in empty status', function () {
+it('requires auth cookie if public proposal is in state', function ($state) {
     $team = Team::factory()->create();
-
-    $posit = Posit::factory()->create(['team_id' => $team->id]);
-    $posit->deleteStatus($posit->status);
-    assertEmpty($posit->status);
-
-    $response = $this->get(route('pub.posit.view', $posit));
-    $response->assertStatus(404);
-});
-
-it('requires auth cookie if public proposal is in state', function ($status) {
-    $team = Team::factory()->create();
-    $posit = Posit::factory()->create(['team_id' => $team->id]);
-
-    $posit->setStatus($status);
-    $posit->refresh();
+    $posit = Posit::factory()->create(['team_id' => $team->id, 'state' => $state]);
 
     $response = $this->get(route('pub.posit.view', $posit));
     $response->assertRedirect(route('pub.posit.view.auth', $posit));
-})->with([
-    ...Posit::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES,
-]);
+})->with(
+    PositState::all()->except(PositState::statesThatCanBypassPublicAuthAccess())->keys(),
+);
 
-it('allows access public proposal in reduced/limited state; ', function ($status) {
+it('allows access public proposal in reduced/limited state;', function ($state) {
     $team = Team::factory()->create();
-    $posit = Posit::factory()->create(['team_id' => $team->id]);
-    $posit->setStatus($status);
-    $posit->refresh();
+    $posit = Posit::factory()->create(['team_id' => $team->id, 'state' => $state]);
 
     $response = $this->get(route('pub.posit.view', $posit));
     $response->assertStatus(200);
-})->with(Posit::PUBLIC_ACCESS_AUTH_BYPASS_STATUSES);
+})->with(
+    PositState::statesThatCanBypassPublicAuthAccess()
+);

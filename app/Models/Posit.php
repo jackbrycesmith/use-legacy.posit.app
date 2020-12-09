@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\ModelStates\HasStates;
-use Spatie\ModelStatus\HasStatuses;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
@@ -30,7 +29,6 @@ class Posit extends Model implements HasMedia
     use HasRelationships;
     use HasVideo;
     use HasStates;
-    use HasStatuses;
     use HasStripeCheckoutSession;
     use InteractsWithMedia;
 
@@ -98,50 +96,13 @@ class Posit extends Model implements HasMedia
         self::THEME_COOL_GREY
     ];
 
-    const STATUS_DRAFT = 'proposal_draft';
-    const STATUS_PUBLISHED = 'proposal_published';
-    const STATUS_ACCEPTED = 'proposal_accepted';
-    const STATUS_EXPIRED = 'proposal_expired';
-    const STATUS_VOID = 'proposal_void';
-    const ALLOWED_STATUSES = [
-        self::STATUS_DRAFT, self::STATUS_PUBLISHED, self::STATUS_ACCEPTED, self::STATUS_EXPIRED, self::STATUS_VOID
-    ];
-
-    const CANNOT_UPDATE_STATUSES = [
-        self::STATUS_PUBLISHED,
-        self::STATUS_ACCEPTED,
-        self::STATUS_EXPIRED,
-        self::STATUS_VOID
-    ];
-
     const ALLOWED_VALUE_CURRENCIES = [
         'GBP', 'USD', 'EUR', 'AUD', 'CAD', 'NZD'
     ];
-    const PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES = [
-        self::STATUS_PUBLISHED, self::STATUS_ACCEPTED
-    ];
-
-    const PUBLIC_ACCESS_AUTH_BYPASS_STATUSES = [
-        self::STATUS_DRAFT, self::STATUS_EXPIRED, self::STATUS_VOID
-    ];
-
-    /**
-     * Determines if valid status.
-     *
-     * @param string $name The name
-     * @param null|string $reason The reason
-     *
-     * @return boolean True if valid status, False otherwise.
-     */
-    public function isValidStatus(string $name, ?string $reason = null): bool
-    {
-        // TODO potentially more checks; e.g. if its gone past a particular status, it cannot go back to previous
-        return in_array($name, self::ALLOWED_STATUSES);
-    }
 
     public function requiresLiteResource(): bool
     {
-        return in_array($this->status, self::PUBLIC_ACCESS_AUTH_BYPASS_STATUSES);
+        return $this->state->canBypassPublicAuthAccess();
     }
 
     /**
@@ -295,6 +256,17 @@ class Posit extends Model implements HasMedia
         return $this->recipients()->where(function ($query) use ($accessCode) {
             $query->where('access_code', $accessCode);
         })->first();
+    }
+
+    /**
+     * Scope a query to only include those that have passed through the published state.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeHaveBeenPublished($query)
+    {
+        return $query->whereIn('state', PositState::statesThatHaveBeenPublished());
     }
 
     /**

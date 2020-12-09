@@ -3,6 +3,7 @@
 use App\Http\Middleware\CheckPublicPositStatefulAccess;
 use App\Http\PublicPositAccessCookie;
 use App\Models\Posit;
+use App\Models\States\Posit\PositState;
 use App\Models\Team;
 use App\Models\TeamContact;
 use Illuminate\Support\Facades\Route;
@@ -21,10 +22,9 @@ test('if no proposal resolved, then 404 response', function () {
     $response->assertStatus(404);
 });
 
-test('skip access check if proposal in status', function ($status) {
+test('skip access check if proposal in status', function ($state) {
     $team = Team::factory()->create();
-    $posit = Posit::factory()->create(['team_id' => $team->id]);
-    $posit->setStatus($status);
+    $posit = Posit::factory()->create(['team_id' => $team->id, 'state' => $state]);
 
     Route::get('/test-proposal-access/{posit:uuid}', function (Posit $posit) {
         return 'Hello World';
@@ -33,13 +33,13 @@ test('skip access check if proposal in status', function ($status) {
 
     $response = $this->get("/test-proposal-access/{$posit->uuid}");
     $response->assertStatus(200);
-})
-->with(Posit::PUBLIC_ACCESS_AUTH_BYPASS_STATUSES);
+})->with(
+    PositState::statesThatCanBypassPublicAuthAccess()
+);
 
-test('if no valid proposal access cookie, redirect to public proposal auth page', function ($status) {
+test('if no valid proposal access cookie, redirect to public proposal auth page', function ($state) {
     $team = Team::factory()->create();
-    $posit = Posit::factory()->create(['team_id' => $team->id]);
-    $posit->setStatus($status);
+    $posit = Posit::factory()->create(['team_id' => $team->id, 'state' => $state]);
 
     Route::get('/test-proposal-access/{posit:uuid}', function (Posit $posit) {
         return 'Hello World';
@@ -49,17 +49,15 @@ test('if no valid proposal access cookie, redirect to public proposal auth page'
     $response = $this->get("/test-proposal-access/{$posit->uuid}");
     $response->assertRedirect(route('pub.posit.view.auth', $posit));
 })
-->with(Posit::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES);
+->with(PositState::all()->except(PositState::statesThatCanBypassPublicAuthAccess())->keys());
 
 test('ignore-status-check', function () {
     // TODO: tests & consider refactor of recently added 'ignore-status-check' param
 })->skip();
 
-test('cannot access if authed for team, but not a recipient of the requested proposal', function ($status) {
+test('cannot access if authed for team, but not a recipient of the requested proposal', function ($state) {
     $team = Team::factory()->create();
-    $posit = Posit::factory()->create(['team_id' => $team->id]);
-    $posit->setStatus($status);
-    $posit->refresh();
+$posit = Posit::factory()->create(['team_id' => $team->id, 'state' => $state]);
 
     $contact = TeamContact::factory()->create(['team_id' => $team->id]);
 
@@ -78,13 +76,11 @@ test('cannot access if authed for team, but not a recipient of the requested pro
     $response = $this->get("/test-proposal-access/{$posit->uuid}");
     $response->assertRedirect(route('pub.posit.view.auth', $posit));
 })
-->with(Posit::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES);
+->with(PositState::all()->except(PositState::statesThatCanBypassPublicAuthAccess())->keys());
 
-test('if valid proposal access cookie, can continue request', function ($status) {
+test('if valid proposal access cookie, can continue request', function ($state) {
     $team = Team::factory()->create();
-    $posit = Posit::factory()->create(['team_id' => $team->id]);
-    $posit->setStatus($status);
-    $posit->refresh();
+    $posit = Posit::factory()->create(['team_id' => $team->id, 'state' => $state]);
 
     $contact = TeamContact::factory()->create(['team_id' => $team->id]);
     $posit->recipients()->sync([$contact->id]);
@@ -104,4 +100,4 @@ test('if valid proposal access cookie, can continue request', function ($status)
     $response = $this->get("/test-proposal-access/{$posit->uuid}");
     $response->assertStatus(200);
 })
-->with(Posit::PUBLIC_ACCESS_AUTH_REQUIRED_STATUSES);
+->with(PositState::all()->except(PositState::statesThatCanBypassPublicAuthAccess())->keys());

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\States\Posit\Published;
 use App\Models\TeamContact;
 use App\Models\Posit;
 use App\Models\User;
@@ -65,14 +66,12 @@ class PositPolicy
             return Response::deny('You do not have permission to view this proposal.');
         }
 
-
-        if (in_array($status = $posit->status, Posit::CANNOT_UPDATE_STATUSES)) {
-            return Response::deny("Cannot update proposal when in status: {$status}.");
+        if (! $posit->state->canUpdateThePosit()) {
+            return Response::deny("Cannot update posit when in state: {$posit->state}.");
         }
 
         return Response::allow();
     }
-
 
     /**
      * Determine whether the user can publish the proposal.
@@ -88,9 +87,9 @@ class PositPolicy
             return Response::deny('You do not have permission to view this proposal.');
         }
 
-        // Cannot publish if already published
-        if ($posit->hasEverHadStatus(Posit::STATUS_PUBLISHED)) {
-            return Response::deny('This proposal has already been published.');
+        // Is in a state that can be published...
+        if (! in_array(Published::getMorphClass(), $posit->state->transitionableStates())) {
+            return Response::deny("Cannot publish posit in state: {$posit->state}.");
         }
 
         // TODO: Cannot publish if insufficient credits

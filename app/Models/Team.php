@@ -81,11 +81,7 @@ class Team extends JetstreamTeam implements AccountOwnerInterface, HasMedia
      */
     public function publishedPosits(): HasMany
     {
-        return $this->posits()->currentStatus([
-            Posit::STATUS_PUBLISHED,
-            Posit::STATUS_ACCEPTED,
-            Posit::STATUS_EXPIRED
-        ]);
+        return $this->posits()->haveBeenPublished();
     }
 
     /**

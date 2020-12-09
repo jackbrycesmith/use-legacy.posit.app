@@ -19,15 +19,15 @@ export default class Posit extends Model {
   }
 
   get status_name () {
-    return get(mapProposalStatusHuman, this.status, 'unknown')
+    return get(mapProposalStatusHuman, this.state, 'unknown')
   }
 
   get status_color () {
-    return get(mapProposalStatusColor, this.status)
+    return get(mapProposalStatusColor, this.state)
   }
 
   get has_been_published () {
-    return ['proposal_published', 'proposal_accepted', 'proposal_expired'].includes(this.status)
+    return ['published', 'accepted', 'expired'].includes(this.state)
   }
 
   get owner_credits_amount_available ()  {
@@ -35,11 +35,11 @@ export default class Posit extends Model {
   }
 
   get is_editable () {
-    return ['proposal_draft'].includes(this.status)
+    return ['draft'].includes(this.state)
   }
 
   get is_accepted () {
-    return this.status === 'proposal_accepted'
+    return this.state === 'accepted'
   }
 
   get creator_name () {
@@ -200,7 +200,7 @@ export default class Posit extends Model {
   }
 
   get isDraft () {
-    return this.status === 'proposal_draft'
+    return this.state === 'draft'
   }
 
   get has_things_to_fix_before_publish () {
@@ -255,7 +255,7 @@ export default class Posit extends Model {
       route('use.submit.publish-posit', { posit: this.uuid })
     )
 
-    this.status = 'proposal_published'
+    this.state = 'published'
 
     return response
   }

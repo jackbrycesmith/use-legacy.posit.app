@@ -53,7 +53,7 @@ export default {
     ApplicationLogo
   },
   props: {
-    status: { type: String },
+    state: { type: String },
     posit: { type: Object },
     is_limited_view: { type: Boolean, default: true },
     stripe_pub_key: {}
@@ -69,11 +69,11 @@ export default {
     this.setupInitialMachineContext()
   },
   data () {
-    const status = this.posit?.data?.status
+    const state = this.posit?.data?.state
 
     const machine = publicPositMachine.withContext({
       ...publicPositMachine.context,
-      status
+      status: state
     }).withConfig({
       services: {
         'acceptWithPaymentAction': this.acceptWithPaymentAction

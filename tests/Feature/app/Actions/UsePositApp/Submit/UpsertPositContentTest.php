@@ -2,6 +2,7 @@
 
 use App\Actions\Team\CreateDraftPosit;
 use App\Models\Posit;
+use App\Models\States\Posit\PositState;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\Event;
@@ -36,15 +37,12 @@ test('user cannot update proposal content if not a team member', function () {
     $response->assertStatus(403);
 });
 
-test('user cannot update proposal content in certain statuses', function ($status) {
+test('user cannot update proposal content in certain states', function ($state) {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
-    $posit = (new CreateDraftPosit)->actingAs($user)->run([
-        'team' => $team
-    ]);
+    $posit = Posit::factory()->create(['team_id' => $team->id, 'state' => $state]);
 
     Event::fake();
-    $posit->setStatus($status);
 
     $positContent = [
         'hi' => 'hello'
@@ -56,9 +54,9 @@ test('user cannot update proposal content in certain statuses', function ($statu
     );
 
     $response->assertStatus(403);
-})->with([
-    ...Posit::CANNOT_UPDATE_STATUSES
-]);
+})->with(
+    PositState::all()->except(PositState::statesThatCanUpdateThePosit())->keys()
+);
 
 test('user can update proposal content if a team member', function () {
     // TODO this isn't production ready; need to validate inputs etc...

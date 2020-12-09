@@ -128,7 +128,7 @@ test('posit has default state', function ($state) {
     ]);
 })->with([
     Draft::class
-])->only();
+]);
 
 // Published transitions...
 test('posit can transition to published', function ($state) {
@@ -235,7 +235,7 @@ test('posit cannot transition to accepted', function ($state) {
     Expired::class,
     Draft::class,
     Amending::class,
-])->only();
+]);
 
 // Amending transitions...
 test('posit can transition to Amending', function ($state) {
@@ -289,4 +289,4 @@ test('posit cannot transition to Amending', function ($state) {
     Expired::class,
     Draft::class,
     Amending::class,
-])->only();
+]);

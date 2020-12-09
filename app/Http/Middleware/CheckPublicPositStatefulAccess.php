@@ -23,7 +23,7 @@ class CheckPublicPositStatefulAccess
         $posit = $this->resolvePosit($request);
 
         if ($param !== 'ignore-status-check') {
-            if (in_array($posit->status, Posit::PUBLIC_ACCESS_AUTH_BYPASS_STATUSES)) {
+            if (($state = $posit->state) && $state->canBypassPublicAuthAccess()) {
                 return $next($request);
             }
         }
@@ -51,7 +51,7 @@ class CheckPublicPositStatefulAccess
             $request->route()->bindingFieldFor('posit')
         );
 
-        if (is_null($posit) || empty($posit->status)) {
+        if (is_null($posit) || empty($posit->state)) {
             abort(404);
         }
 

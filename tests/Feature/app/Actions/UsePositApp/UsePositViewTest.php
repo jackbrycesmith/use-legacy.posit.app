@@ -38,5 +38,5 @@ test('user who is a team member can get UsePositView page', function () {
     $response = actingAs($user)->get(route('use.posit.view', ['posit' => $posit]));
 
     $response->assertStatus(200);
-    assertInertiaComponent($response, 'Use/ProposalView');
+    assertInertiaComponent($response, 'Use/PositView');
 });

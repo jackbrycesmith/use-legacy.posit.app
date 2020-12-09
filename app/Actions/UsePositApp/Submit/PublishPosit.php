@@ -3,6 +3,7 @@
 namespace App\Actions\UsePositApp\Submit;
 
 use App\Models\Posit;
+use App\Models\States\Posit\Published;
 use App\Utils\Constant;
 use Illuminate\Routing\Router;
 use Lorisleiva\Actions\Action;
@@ -55,8 +56,7 @@ class PublishPosit extends Action
     public function handle(Posit $posit)
     {
         // TODO validate whether proposal is in a state that can be published.
-        $posit->setStatus(Posit::STATUS_PUBLISHED);
-        $posit->save();
+        $posit->state->transitionTo(Published::class);
 
         return $posit;
     }

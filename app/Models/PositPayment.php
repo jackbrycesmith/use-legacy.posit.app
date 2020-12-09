@@ -43,11 +43,11 @@ class PositPayment extends Model
     ];
 
     /**
-     * Get the proposal
+     * Get the posit
      *
      * @return BelongsTo The belongs to relation.
      */
-    public function proposal(): BelongsTo
+    public function posit(): BelongsTo
     {
         return $this->belongsTo(Posit::class);
     }

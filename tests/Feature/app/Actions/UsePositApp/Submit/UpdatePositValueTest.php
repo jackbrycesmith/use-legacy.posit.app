@@ -2,17 +2,18 @@
 
 use App\Actions\Team\CreateDraftPosit;
 use App\Models\Posit;
+use App\Models\States\Posit\PositState;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\Event;
 use function Tests\actingAs;
 
-test('updating proposal value requires proposal exist', function () {
+test('updating posit value requires proposal exist', function () {
     $response = $this->put(route('use.submit.upsert-posit-value', ['posit' => 'blah']));
     $response->assertStatus(404);
 });
 
-test('updating proposal value requires login', function () {
+test('updating posit value requires login', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([
@@ -23,7 +24,7 @@ test('updating proposal value requires login', function () {
     $response->assertRedirect(route('login'));
 });
 
-test('user cannot update proposal value if not a team member', function () {
+test('user cannot update posit value if not a team member', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([
@@ -36,15 +37,12 @@ test('user cannot update proposal value if not a team member', function () {
     $response->assertStatus(403);
 });
 
-test('user cannot update proposal value in certain statuses', function ($status) {
+test('user cannot update posit value when in certain states', function ($state) {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
-    $posit = (new CreateDraftPosit)->actingAs($user)->run([
-        'team' => $team
-    ]);
+    $posit = Posit::factory()->create(['team_id' => $team->id, 'state' => $state]);
 
     Event::fake();
-    $posit->setStatus($status);
 
     $response = actingAs($user)->putJson(
         route('use.submit.upsert-posit-value', ['posit' => $posit]),
@@ -55,11 +53,11 @@ test('user cannot update proposal value in certain statuses', function ($status)
     );
 
     $response->assertStatus(403);
-})->with([
-    ...Posit::CANNOT_UPDATE_STATUSES
-]);
+})->with(
+    PositState::all()->except(PositState::statesThatCanUpdateThePosit())->keys()
+);
 
-test('user cannot update proposal value if missing params', function () {
+test('user cannot update posit value if missing params', function () {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([
@@ -83,7 +81,7 @@ test('user cannot update proposal value if missing params', function () {
 
 });
 
-test('user cannot update proposal value if not allowed currency code', function ($currencyCode) {
+test('user cannot update posit value if not allowed currency code', function ($currencyCode) {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([
@@ -106,7 +104,7 @@ test('user cannot update proposal value if not allowed currency code', function 
     'BHD' // e.g. Bahraini Dinar not supported
 ]);
 
-test('user cannot update proposal value if negative amount', function ($amount) {
+test('user cannot update posit value if negative amount', function ($amount) {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([
@@ -130,7 +128,7 @@ test('user cannot update proposal value if negative amount', function ($amount) 
     -1,
 ]);
 
-test('user cannot update proposal value if too many decimal places', function ($amount) {
+test('user cannot update posit value if too many decimal places', function ($amount) {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([
@@ -154,7 +152,7 @@ test('user cannot update proposal value if too many decimal places', function ($
     1.002,
 ]);
 
-test('user cannot update proposal value if amount too high', function ($amount) {
+test('user cannot update posit value if amount too high', function ($amount) {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([
@@ -177,7 +175,7 @@ test('user cannot update proposal value if amount too high', function ($amount) 
     1000000000,
 ]);
 
-test('user can update proposal value if team member & valid params', function ($amount, $currencyCode) {
+test('user can update posit value if team member & valid params', function ($amount, $currencyCode) {
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([

@@ -5,6 +5,7 @@ namespace App\Actions\Integrations\Stripe\Webhooks;
 use App\Actions\Integrations\Stripe\UpdateStripeCheckoutSessionFromWebhook;
 use App\Models\Posit;
 use App\Models\PositPayment;
+use App\Models\States\Posit\Accepted;
 use App\Models\StripeCheckoutSession;
 use CloudCreativity\LaravelStripe\Webhooks\ConnectWebhook;
 use Lorisleiva\Actions\Action;
@@ -40,11 +41,9 @@ class HandleConnectCheckoutSessionCompleted extends Action
 
         // Mark as accepted
         if ($positPayment->type === PositPayment::TYPE_DEPOSIT) {
-            $posit = $positPayment->proposal;
+            $posit = $positPayment->posit;
 
-            if ($posit->status !== Posit::STATUS_ACCEPTED) {
-                $posit->setStatus(Posit::STATUS_ACCEPTED);
-            }
+            $posit->state->transitionTo(Accepted::class);
         }
     }
 }

@@ -32,11 +32,10 @@ class PositObserver
      *
      * @param \App\Models\Posit $posit
      * @return void
-     * @throws \Spatie\ModelStatus\Exceptions\InvalidStatus
      */
     public function created(Posit $posit)
     {
-        $posit->setStatus(Posit::STATUS_DRAFT);
+        //
     }
 
     /**
@@ -58,7 +57,7 @@ class PositObserver
      */
     public function deleted(Posit $posit)
     {
-        // TODO cleanup e.g. statuses...
+        //
     }
 
     /**

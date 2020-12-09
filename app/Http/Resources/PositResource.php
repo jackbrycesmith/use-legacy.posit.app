@@ -19,7 +19,7 @@ class PositResource extends JsonResource
             'id' => $this->id,
             'uuid' => $this->uuid,
             'name' => $this->name,
-            'status' => $this->status,
+            'state' => $this->state,
             'meta' => $this->meta,
             'creator' => new UserResource($this->whenLoaded('creator')),
             'value_amount' => $this->value_amount,
