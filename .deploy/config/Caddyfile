@@ -11,7 +11,9 @@
 
     route /gtpx/* {
         uri strip_prefix /gtpx
-        reverse_proxy srv-captain--google-analytics-proxy:80
+        reverse_proxy srv-captain--google-analytics-proxy:80 {
+            header_up Host use.posit.app
+        }
     }
 
     redir /index.php / 308
