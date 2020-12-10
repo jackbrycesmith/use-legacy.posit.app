@@ -15,6 +15,18 @@
     {{-- TODO add inter font (maybe even selfhost) --}}
     {{-- <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
     @routes_with_url(['use-posit-app'])
+
+    @production
+    <script async src="{{ 'https://use.posit.app/' . '/gtpx/' . 'www.googletagmanager.com/gtag/js?id=G-W71MTMF2EW' }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-W71MTMF2EW');
+    </script>
+    @endproduction
+
 </head>
 <body class="font-sans antialiased">
 @inertia
