@@ -9,6 +9,11 @@
         header_down -X-Powered-By
     }
 
+    route /gtpx/* {
+        uri strip_prefix /gtpx
+        reverse_proxy srv-captain--google-analytics-proxy:80
+    }
+
     redir /index.php / 308
     redir /index.php/ / 308
     route /index.php/* {
