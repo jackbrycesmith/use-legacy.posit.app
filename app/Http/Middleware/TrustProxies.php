@@ -14,6 +14,7 @@ class TrustProxies extends Middleware
      * @var array|string|null
      */
     protected $proxies = [
+        '10.0.0.0/0',
         '10.0.0.0',
         '10.0.0.1',
         '10.0.0.2',
