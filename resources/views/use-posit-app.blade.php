@@ -17,7 +17,7 @@
     @routes_with_url(['use-posit-app'])
 
     @production
-    <script async src="{{ 'https://use.posit.app/' . 'gtpx/' . 'www.googletagmanager.com/gtag/js?id=G-W71MTMF2EW' }}"></script>
+    <script async src="{{ 'https://use.posit.app/' . 'gtpx/start/' . 'js?id=G-W71MTMF2EW' }}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
