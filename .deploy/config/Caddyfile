@@ -9,9 +9,8 @@
         header_down -X-Powered-By
     }
 
-    route /gtpx/start/* {
-        uri strip_prefix /gtpx/start
-        rewrite * /www.googletagmanager.com/gtag/{uri}
+    route /gtpx/start-id/* {
+        rewrite * /www.googletagmanager.com/gtag/js?{query}
         reverse_proxy srv-captain--google-analytics-proxy:80
     }
     route /gtpx/* {

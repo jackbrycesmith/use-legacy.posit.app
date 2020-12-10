@@ -123,7 +123,7 @@ RUN composer dump-autoload --no-interaction --no-dev --optimize
 ARG CACHE_DRIVER=${CACHE_DRIVER}
 
 # Start app
-EXPOSE 80 8080
+EXPOSE 80
 COPY ./.deploy/entrypoint.sh /
 
 ENTRYPOINT ["sh", "/entrypoint.sh"]
