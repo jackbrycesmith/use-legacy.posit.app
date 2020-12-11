@@ -5,6 +5,7 @@ COPY --from=ochinchina/supervisord:latest /usr/local/bin/supervisord /usr/local/
 
 # Install caddy
 COPY --from=caddy:2.2.1 /usr/bin/caddy /usr/local/bin/caddy
+RUN setcap 'cap_net_bind_service=+ep' /usr/local/bin/caddy
 
 # Install ffmpeg
 COPY --from=mwader/static-ffmpeg:4.3.1-2 /ffmpeg /usr/local/bin/
@@ -17,27 +18,30 @@ ENV COMPOSER_AUTH=${COMPOSER_AUTH}
 
 FROM php-system-setup AS app-setup
 
-RUN addgroup -S app && adduser -S -G app app
-RUN setcap 'cap_net_bind_service=+ep' /usr/local/bin/caddy
-
 # Set working directory
 ENV LARAVEL_PATH=/srv/app
 WORKDIR $LARAVEL_PATH
 
-# Set cron job
-RUN echo "* * * * * /usr/local/bin/php /srv/app/artisan schedule:run >> /dev/null 2>&1" | install -D /dev/stdin /home/app/crontabs/app \
-    && chown -R app:app /home/app/crontabs/app \
-    && chown app:app /usr/sbin/crond && setcap cap_setgid=ep /usr/sbin/crond
+# Add non-root user: 'app'
+ARG NON_ROOT_GROUP=${NON_ROOT_GROUP:-app}
+ARG NON_ROOT_USER=${NON_ROOT_USER:-app}
+RUN addgroup -S $NON_ROOT_GROUP && adduser -S $NON_ROOT_USER -G $NON_ROOT_GROUP
+RUN addgroup $NON_ROOT_USER wheel
 
-# Install app dependencies
+# Set cron job
+COPY ./.deploy/config/crontab /etc/crontabs/$NON_ROOT_USER
+RUN chmod 777 /usr/sbin/crond
+RUN chown -R $NON_ROOT_USER:$NON_ROOT_GROUP /etc/crontabs/$NON_ROOT_USER && setcap cap_setgid=ep /usr/sbin/crond
+
+# Switch to non-root 'app' user & install app dependencies
 COPY composer.json composer.lock ./
-RUN chown -R app:app $LARAVEL_PATH
-USER app
+RUN chown -R $NON_ROOT_USER:$NON_ROOT_GROUP $LARAVEL_PATH
+USER $NON_ROOT_USER
 RUN composer install --prefer-dist --no-scripts --no-dev --no-autoloader
-RUN rm -rf /home/app/.composer
+RUN rm -rf /home/$NON_ROOT_USER/.composer
 
 # Copy app
-COPY --chown=app:app . $LARAVEL_PATH/
+COPY --chown=$NON_ROOT_USER:$NON_ROOT_GROUP . $LARAVEL_PATH/
 COPY ./.deploy/config/php/local.ini /usr/local/etc/php/conf.d/local.ini
 
 # Set any ENVs
