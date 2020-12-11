@@ -26,9 +26,6 @@
       gtag('js', new Date());
 
       gtag('config', 'G-W71MTMF2EW');
-      gtag('set', 'user_properties', {
-        cf_country: 'GB',
-      });
     </script>
     @endproduction
 
