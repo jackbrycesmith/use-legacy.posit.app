@@ -207,7 +207,8 @@ import PositLogoWords from '@/Components/PositLogoWords'
 import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
 import IconHeroiconsMediumCog from '@/Icons/IconHeroiconsMediumCog'
 import { isWebkitSafari } from '@/utils/is'
-import { isNil } from 'lodash-es'
+import { getRecorderMimeType } from '@/utils/supports'
+import { isNil, isEmpty } from 'lodash-es'
 
 export default {
   components: { VideoJs, IconHeroiconsSmallCheck, IconHeroiconsSmallX, IconHeroiconsSpinner, IconHeroiconsMediumCog, PositLogoWords },
@@ -218,20 +219,25 @@ export default {
   },
   data () {
     return {
-      isWebkitSafari: false,
+      isMediaRecordingNotSupported: false,
       isCameraMicrophonePermissionDenied: false
     }
   },
   computed: {
     isErrorCannotRecord () {
-      return this.isWebkitSafari || this.isCameraMicrophonePermissionDenied
+      return this.isMediaRecordingNotSupported || this.isCameraMicrophonePermissionDenied
+    },
+    recorderMimeType () {
+      return getRecorderMimeType()
+    },
+    supportsMediaRecording () {
+      return !isEmpty(this.recorderMimeType)
     },
     cannotRecordVideoErrorMessage () {
-      if (this.isWebkitSafari) {
+      if (this.isMediaRecordingNotSupported) {
         return `
-          The recording feature is <span class="underline">currently unavailable on iOS & Safari</span> due to browser restrictions.
-            <br><br>
-            Please use another browser/device if possible whilst we look for workarounds.
+          <span class="xs:text-2xl sm:text-5xl">😞</span><br><br>
+          Your browser cannot record at the moment.
         `
       }
 
@@ -291,7 +297,7 @@ export default {
                   audio: true,
                   maxLength: 30,
                   debug: true,
-                  videoMimeType: 'video/webm;codecs=vp8',
+                  videoMimeType: getRecorderMimeType(),
                   video: {
                     // video media constraints: set resolution of camera
                     width: 380,
@@ -323,9 +329,9 @@ export default {
   },
   methods: {
     async handleStartNowFromEmpty () {
-      if (isWebkitSafari()) {
+      if (!this.recorderMimeType) {
         // TODO fire some analytics event to track errors e.g. if iOS/Safari
-        this.isWebkitSafari = true
+        this.isMediaRecordingNotSupported = true
         return
       }
 
@@ -337,7 +343,9 @@ export default {
           this.isCameraMicrophonePermissionDenied = true
           return
         }
-      } catch (e) {}
+      } catch (e) {
+        console.error(e)
+      }
 
       this.$emit('from-empty-start-record')
     },
