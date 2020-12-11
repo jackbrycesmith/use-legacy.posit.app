@@ -34,7 +34,7 @@ class PositIntroVideoUpdated implements ShouldBroadcast
      */
     public function __construct(Posit $posit, Video $video)
     {
-        $this->proposal = $posit;
+        $this->posit = $posit;
         $this->video = $video;
     }
 
@@ -55,6 +55,6 @@ class PositIntroVideoUpdated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel("proposal.{$this->proposal->uuid}.intro_video");
+        return new PrivateChannel("posit.{$this->posit->uuid}.intro_video");
     }
 }

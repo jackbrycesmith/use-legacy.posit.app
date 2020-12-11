@@ -19,6 +19,6 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel(
-    'proposal.{proposalUuid}.intro_video',
+    'posit.{positUuid}.intro_video',
     PositIntroVideoChannel::class
 );
