@@ -28,7 +28,6 @@
         "collect.js": "^4.28.2",
         "country-emoji": "^1.5.4",
         "cross-env": "^7.0",
-        "cypress": "^5.0.0",
         "del": "^5.1.0",
         "focus-trap": "^5.1.0",
         "focus-trap-vue": "0.0.6",
