@@ -35,7 +35,7 @@
         "js-cookie": "^3.0.0-rc.1",
         "laravel-echo": "^1.8.1",
         "laravel-jetstream": "^1.0.0",
-        "laravel-mix": "^6.0.0-beta.14",
+        "laravel-mix": "^6.0.0-beta.17",
         "lodash-es": "^4.17.15",
         "parse-ms": "^2.1.0",
         "portal-vue": "^2.1.7",
