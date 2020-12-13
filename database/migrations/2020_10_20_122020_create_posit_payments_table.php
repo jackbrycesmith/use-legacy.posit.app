@@ -17,6 +17,7 @@ class CreatePositPaymentsTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->foreignId('posit_id')->constrained()->onDelete('cascade'); // Not sure I'd want to do this?
+            $table->string('state')->index();
             $table->string('provider')->nullable()->index(); // e.g. 'stripe'
             $table->string('type')->nullable()->index(); // e.g. 'deposit' or null
 

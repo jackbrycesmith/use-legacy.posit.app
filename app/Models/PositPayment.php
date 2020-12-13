@@ -4,14 +4,17 @@ namespace App\Models;
 
 use App\Models\Concerns\HasStripeCheckoutSession;
 use App\Models\Concerns\HasUuid;
+use App\Models\States\PositPayment\PositPaymentState;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\ModelStates\HasStates;
 
 class PositPayment extends Model
 {
     use HasUuid;
     use HasFactory;
+    use HasStates;
     use HasStripeCheckoutSession;
 
     const TYPE_DEPOSIT = 'deposit';
@@ -31,6 +34,7 @@ class PositPayment extends Model
      */
     protected $casts = [
         'amount' => 'float',
+        'state' => PositPaymentState::class,
     ];
 
     /**
