@@ -94,4 +94,14 @@ class StripeCheckoutSession extends Model
 
         return $this;
     }
+
+    /**
+     * Determines if paid.
+     *
+     * @return boolean True if paid, False otherwise.
+     */
+    public function isPaid(): bool
+    {
+        return $this->payment_status === Session::PAYMENT_STATUS_PAID;
+    }
 }

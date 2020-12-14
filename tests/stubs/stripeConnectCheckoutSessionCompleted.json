@@ -1,0 +1,63 @@
+{
+  "id": "evt_1Hy2ZlEtj5TOOzkmAwY7sOMB",
+  "object": "event",
+  "account": "acct_1HYaDIEtj5TOOzkm",
+  "api_version": "2020-03-02",
+  "created": 1607896677,
+  "data": {
+    "object": {
+      "id": "cs_test_a1nHOIqQjMpn1fbLZNt3041zy2mb4Vq2JnYL9mTPft8Btx9CT9yKaOBT3W",
+      "object": "checkout.session",
+      "allow_promotion_codes": null,
+      "amount_subtotal": 10000,
+      "amount_total": 10000,
+      "billing_address_collection": null,
+      "cancel_url": "http://pub.posit-app.localhost/posit/a42362bd-b2cd-454c-b875-a5c379d63c8d",
+      "client_reference_id": "a42362bd-b2cd-454c-b875-a5c379d63c8d",
+      "currency": "gbp",
+      "customer": "cus_IZAv3vn7psPLj3",
+      "customer_email": null,
+      "livemode": false,
+      "locale": null,
+      "metadata": {
+      },
+      "mode": "payment",
+      "payment_intent": "pi_1Hy2ZPEtj5TOOzkmXAmr48Gn",
+      "payment_method_types": [
+        "card",
+        "bacs_debit"
+      ],
+      "payment_status": "paid",
+      "setup_intent": null,
+      "shipping": null,
+      "shipping_address_collection": null,
+      "submit_type": null,
+      "subscription": null,
+      "success_url": "http://pub.posit-app.localhost/posit/a42362bd-b2cd-454c-b875-a5c379d63c8d",
+      "total_details": {
+        "amount_discount": 0,
+        "amount_tax": 0
+      },
+      "display_items": [
+        {
+          "amount": 10000,
+          "currency": "gbp",
+          "custom": {
+            "description": null,
+            "images": null,
+            "name": "a42362bd-b2cd-454c-b875-a5c379d63c8d"
+          },
+          "quantity": 1,
+          "type": "custom"
+        }
+      ]
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 1,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "checkout.session.completed"
+}
