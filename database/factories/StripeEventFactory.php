@@ -1,43 +1,51 @@
 <?php
-/**
- * Copyright 2020 Cloud Creativity Limited
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
-use CloudCreativity\LaravelStripe\Models\StripeAccount;
-use CloudCreativity\LaravelStripe\Models\StripeEvent;
-use Faker\Generator as Faker;
-use Illuminate\Database\Eloquent\Factory;
+namespace Database\Factories;
 
-/** @var Factory $factory */
+use App\Models\StripeAccount;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-$factory->define(StripeEvent::class, function (Faker $faker) {
-    return [
-        'id' => $faker->unique()->lexify('evt_????????????????'),
-        'api_version' => $faker->date(),
-        'created' => $faker->dateTimeBetween('-1 hour', 'now'),
-        'livemode' => $faker->boolean,
-        'pending_webhooks' => $faker->numberBetween(0, 100),
-        'type' => $faker->randomElement([
-            'charge.failed',
-            'payment_intent.succeeded',
-        ]),
-    ];
-});
+class StripeEventFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = StripeEvent::class;
 
-$factory->state(StripeEvent::class, 'connect', function () {
-    return [
-        'account_id' => StripeAccount::factory()->create()->getKey(),
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'id' => $this->faker->unique()->lexify('evt_????????????????'),
+            'api_version' => $this->faker->date(),
+            'created' => $this->faker->dateTimeBetween('-1 hour', 'now'),
+            'livemode' => $this->faker->boolean,
+            'pending_webhooks' => $this->faker->numberBetween(0, 100),
+            'type' => $this->faker->randomElement([
+                'charge.failed',
+                'payment_intent.succeeded',
+            ]),
+        ];
+    }
+
+    /**
+     * Indicate that the user is suspended.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function connectAccount()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'account_id' => StripeAccount::factory()->create()->getKey(),
+            ];
+        });
+    }
+}

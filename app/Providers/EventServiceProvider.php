@@ -8,6 +8,7 @@ use App\Actions\Integrations\Stripe\Webhooks\HandleConnectAccountUpdated;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectCheckoutSessionAsyncPaymentFailed;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectCheckoutSessionAsyncPaymentSucceeded;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectCheckoutSessionCompleted;
+use App\Actions\Integrations\Stripe\Webhooks\HandleConnectCustomerCreated;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectPaymentIntentPaymentFailed;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectPaymentIntentProcessing;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectPaymentIntentSucceeded;
@@ -96,6 +97,11 @@ class EventServiceProvider extends ServiceProvider
         Event::listen(
             'stripe.connect.webhooks:payment_intent.payment_failed',
             HandleConnectPaymentIntentPaymentFailed::class
+        );
+
+        Event::listen(
+            'stripe.connect.webhooks:customer.created',
+            HandleConnectCustomerCreated::class
         );
 
         Event::listen(

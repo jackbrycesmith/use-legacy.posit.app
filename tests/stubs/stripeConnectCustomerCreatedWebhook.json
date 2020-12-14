@@ -1,0 +1,72 @@
+{
+  "id": "evt_1Hy2ZlEtj5TOOzkm9X0zsrsn",
+  "object": "event",
+  "account": "acct_1HYaDIEtj5TOOzkm",
+  "api_version": "2020-03-02",
+  "created": 1607896675,
+  "data": {
+    "object": {
+      "id": "cus_IZAv3vn7psPLj3",
+      "object": "customer",
+      "address": null,
+      "balance": 0,
+      "created": 1607896675,
+      "currency": null,
+      "default_source": null,
+      "delinquent": false,
+      "description": null,
+      "discount": null,
+      "email": "paddle-test@posit.app",
+      "invoice_prefix": "21762BCD",
+      "invoice_settings": {
+        "custom_fields": null,
+        "default_payment_method": null,
+        "footer": null
+      },
+      "livemode": false,
+      "metadata": {
+      },
+      "name": null,
+      "phone": null,
+      "preferred_locales": [
+
+      ],
+      "shipping": null,
+      "tax_exempt": "none",
+      "sources": {
+        "object": "list",
+        "data": [
+
+        ],
+        "has_more": false,
+        "total_count": 0,
+        "url": "/v1/customers/cus_IZAv3vn7psPLj3/sources"
+      },
+      "subscriptions": {
+        "object": "list",
+        "data": [
+
+        ],
+        "has_more": false,
+        "total_count": 0,
+        "url": "/v1/customers/cus_IZAv3vn7psPLj3/subscriptions"
+      },
+      "tax_ids": {
+        "object": "list",
+        "data": [
+
+        ],
+        "has_more": false,
+        "total_count": 0,
+        "url": "/v1/customers/cus_IZAv3vn7psPLj3/tax_ids"
+      }
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 1,
+  "request": {
+    "id": "req_Rx6bLc9hDdBD2K",
+    "idempotency_key": null
+  },
+  "type": "customer.created"
+}
