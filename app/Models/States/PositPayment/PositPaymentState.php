@@ -17,6 +17,7 @@ abstract class PositPaymentState extends State
         return parent::config()
             // Transition to 'pending'
             ->default(Pending::class)
+            ->allowTransition(Pending::class, Pending::class)
             ->allowTransition(Processing::class, Pending::class)
 
             // Transition to 'processing'

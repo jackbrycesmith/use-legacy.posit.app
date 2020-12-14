@@ -11,6 +11,7 @@ use CloudCreativity\LaravelStripe\Contracts\Connect\AccountOwnerInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Jetstream\Events\TeamCreated;
 use Laravel\Jetstream\Events\TeamDeleted;
 use Laravel\Jetstream\Events\TeamUpdated;
@@ -28,6 +29,7 @@ class Team extends JetstreamTeam implements AccountOwnerInterface, HasMedia
     }
     use HasUuid;
     use HasInAppCreditBalance;
+    use Notifiable;
     use InteractsWithMedia;
     use OwnsStripeAccounts;
 
@@ -130,5 +132,16 @@ class Team extends JetstreamTeam implements AccountOwnerInterface, HasMedia
     public function registerMediaCollections(): void
     {
         $this->registerLogoMediaCollections();
+    }
+
+    /**
+     * Route notifications for the mail channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return array|string
+     */
+    public function routeNotificationForMail($notification)
+    {
+        return $this->owner->email;
     }
 }
