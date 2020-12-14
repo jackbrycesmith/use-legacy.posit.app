@@ -54,8 +54,8 @@ class PubPositViewAuth extends Action
      */
     public function handle(Posit $posit)
     {
-        return Inertia::render('Pub/ProposalViewAuth', [
-            'proposal' => new PositLiteResource($posit)
+        return Inertia::render('Pub/PositViewAuth', [
+            'posit' => new PositLiteResource($posit)
         ]);
     }
 }

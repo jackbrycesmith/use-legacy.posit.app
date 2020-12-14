@@ -3,7 +3,7 @@ import { Machine } from 'xstate'
 export const publicPositMachine = Machine({
   id: 'publicPosit',
   context: {
-    status: 'proposal_published',
+    status: 'published',
     isReturnFromStripeCheckoutSuccess: false
   },
   initial: 'unlocked',
@@ -26,7 +26,7 @@ export const publicPositMachine = Machine({
               target: 'expired', cond: 'isExpiredStatus',
             },
             {
-              target: 'voided', cond: 'isVoidedStatus',
+              target: 'amending', cond: 'isAmendingStatus',
             },
           ]
         },
@@ -47,7 +47,7 @@ export const publicPositMachine = Machine({
 
         },
 
-        voided: {
+        amending: {
 
         },
       }
@@ -68,7 +68,7 @@ export const publicPositMachine = Machine({
               target: 'expired', cond: 'isExpiredStatus',
             },
             {
-              target: 'voided', cond: 'isVoidedStatus',
+              target: 'amending', cond: 'isAmendingStatus',
             },
           ]
         },
@@ -105,7 +105,7 @@ export const publicPositMachine = Machine({
 
         },
 
-        voided: {
+        amending: {
 
         },
       }
@@ -127,10 +127,10 @@ export const publicPositMachine = Machine({
   }
 }, {
   guards: {
-    isDraftStatus: ctx => ctx.status === 'proposal_draft',
-    isPublishedStatus: ctx => ctx.status === 'proposal_published',
-    isAcceptedStatus: ctx => ctx.status === 'proposal_accepted',
-    isExpiredStatus: ctx => ctx.status === 'proposal_expired',
-    isVoidedStatus: ctx => ctx.status === 'proposal_void',
+    isDraftStatus: ctx => ctx.status === 'draft',
+    isPublishedStatus: ctx => ctx.status === 'published',
+    isAcceptedStatus: ctx => ctx.status === 'accepted',
+    isExpiredStatus: ctx => ctx.status === 'expired',
+    isAmendingStatus: ctx => ctx.status === 'amending',
   },
 })
