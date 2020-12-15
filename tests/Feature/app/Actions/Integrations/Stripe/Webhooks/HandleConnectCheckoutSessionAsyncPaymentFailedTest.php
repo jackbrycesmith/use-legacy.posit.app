@@ -3,6 +3,7 @@
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectCheckoutSessionAsyncPaymentFailed;
 use App\Models\Posit;
 use App\Models\PositPayment;
+use App\Models\States\PositPayment\Pending;
 use App\Models\States\Posit\Published;
 use App\Models\StripeAccount;
 use App\Models\StripeCheckoutSession;
@@ -64,6 +65,11 @@ it('notifies team', function () {
     Notification::fake();
 
     event('stripe.connect.webhooks:checkout.session.async_payment_failed', $webhook);
+
+    $this->assertDatabaseHas('posit_payments', [
+        'id' => $depositPayment->id,
+        'state' => Pending::getMorphClass()
+    ]);
 
     Notification::assertSentTo(
         [$team], TeamPositPaymentFailed::class
