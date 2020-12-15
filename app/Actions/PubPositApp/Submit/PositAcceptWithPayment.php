@@ -59,6 +59,8 @@ class PositAcceptWithPayment extends Action
             return $stripeCheckoutSession;
         }
 
+        // TODO: check if stripeCheckoutSession has a payment failed?
+
         $checkoutSessionApiResponse = $posit->team->stripeAccount->makeStripeCheckoutSession(
             $this->stripeCheckoutSessionCreateParams($posit)
         );
@@ -84,21 +86,26 @@ class PositAcceptWithPayment extends Action
     protected function stripeCheckoutSessionCreateParams(Posit $posit): array
     {
         $stripeAccount = $posit->team->stripeAccount;
+        $currencyCode = Str::lower($posit->value_currency_code);
+        $paymentMethodTypes = $stripeAccount->checkoutSessionPaymentMethodTypes($currencyCode);
+        $paymentIntentData = in_array('bacs_debit', $paymentMethodTypes) ? [
+            // Must have for bacs: https://stripe.com/docs/payments/bacs-debit/accept-a-payment#create-session
+            'setup_future_usage' => 'off_session'
+        ]: [
+            'setup_future_usage' => 'on_session'
+        ];
 
         return [
             'mode' => 'payment',
-            'payment_method_types' => $stripeAccount->checkoutSessionPaymentMethodTypes(),
+            'payment_method_types' => $paymentMethodTypes,
             'cancel_url' => route('pub.posit.view', ['posit' => $posit]),
             'success_url' => route('pub.posit.view', ['posit' => $posit]),
             'client_reference_id' => $posit->uuid,
-            'payment_intent_data' => [
-                'setup_future_usage' => 'off_session', // bacs_debit requires this... not sure about others
-                'description' => 'Test description...'
-            ],
+            'payment_intent_data' => $paymentIntentData,
             'line_items' => [
                 [
                     'amount' =>  $posit->depositPayment->stripe_api_amount,
-                    'currency' => Str::lower($posit->value_currency_code),
+                    'currency' => $currencyCode,
                     'name' => $posit->uuid,
                     'quantity' => 1
                 ]

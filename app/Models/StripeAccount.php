@@ -6,6 +6,7 @@ use CloudCreativity\LaravelStripe\Models\StripeAccount as LaravelStripeAccount;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Stripe\Account;
 use Stripe\StripeObject;
 
@@ -169,25 +170,63 @@ class StripeAccount extends LaravelStripeAccount
      * Get the payment method types for a stripe checkout session (all that are
      * active for the account)
      *
-     * @todo could be done better
+     * @param string $currencyCode
      *
      * @return array
      */
-    public function checkoutSessionPaymentMethodTypes(): array
+    public function checkoutSessionPaymentMethodTypes(string $currencyCode): array
     {
-        return collect([
-            $this->hasCapability('card_payments') ? 'card' : null,
-            $this->hasCapability('bacs_debit_payments') ? 'bacs_debit' : null,
-            $this->hasCapability('bancontact_payments') ? 'bancontact' : null,
-            $this->hasCapability('eps_payments') ? 'eps' : null,
-            $this->hasCapability('giropay_payments') ? 'giropay' : null,
-            $this->hasCapability('ideal_payments') ? 'ideal' : null,
-            $this->hasCapability('p24_payments') ? 'p24' : null,
-            $this->hasCapability('sofort_payments') ? 'sofort' : null,
-            $this->hasCapability('sepa_debit_payments') ? 'sepa_debit' : null,
-        ])
-        ->filter(fn($value) => !is_null($value))
-        ->toArray();
+        $paymentMethods = $this->validPaymentMethodsForCurrency($currencyCode);
+
+        return collect($paymentMethods)
+            ->filter(fn($value) => $this->hasCapability("{$value}_payments"))
+            ->values()
+            ->toArray();
+    }
+
+    /**
+     * Get the available payment methods for the given currency.
+     *
+     * @param string $currencyCode The currency code
+     *
+     * @return array
+     *
+     * @see https://stripe.com/en-gb/payments/payment-methods-guide#payment-methods-fact-sheets
+     */
+    public static function validPaymentMethodsForCurrency(string $currencyCode): array
+    {
+        $currencyCode = Str::lower($currencyCode);
+
+        $defaultPaymentMethods = [
+            'card'
+        ];
+
+        $paymentMethods = [];
+
+        switch ($currencyCode) {
+            case "eur":
+                $paymentMethods = [
+                    'sepa_debit',
+                    'bancontact',
+                    'eps',
+                    'giropay',
+                    'ideal',
+                    'sofort',
+                ];
+                break;
+            case "gbp":
+                $paymentMethods = [
+                    'bacs_debit'
+                ];
+                break;
+            case "pln":
+                $paymentMethods = [
+                    'p24'
+                ];
+                break;
+        }
+
+        return array_merge($defaultPaymentMethods, $paymentMethods);
     }
 
     /**
