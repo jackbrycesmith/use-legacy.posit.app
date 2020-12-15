@@ -32,7 +32,8 @@ class HandleConnectCustomerCreated extends Action
         $stripeObject = data_get($this->webhook, 'webhook.data.object');
         $stripeCustomerId = data_get($this->webhook, 'webhook.data.object.id');
         $accountId = data_get($this->webhook, 'account.id');
-        if (StripeCustomer::exists($stripeCustomerId)) {
+
+        if (StripeCustomer::where('id', $stripeCustomerId)->exists()) {
             return;
         }
 

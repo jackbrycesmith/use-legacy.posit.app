@@ -94,6 +94,7 @@ class PositAcceptWithPayment extends Action
         ]: [
             'setup_future_usage' => 'on_session'
         ];
+        $stripeCustomerId = optional($posit->recipient->stripeCustomer)->id;
 
         return [
             'mode' => 'payment',
@@ -102,6 +103,7 @@ class PositAcceptWithPayment extends Action
             'success_url' => route('pub.posit.view', ['posit' => $posit]),
             'client_reference_id' => $posit->uuid,
             'payment_intent_data' => $paymentIntentData,
+            'customer' => $stripeCustomerId,
             'line_items' => [
                 [
                     'amount' =>  $posit->depositPayment->stripe_api_amount,
