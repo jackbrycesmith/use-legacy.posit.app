@@ -67,3 +67,45 @@ test('it can makeStripeCheckoutSession', function () {
 
     Stripe::assertInvoked(\Stripe\Checkout\Session::class, 'create');
 });
+
+test('get valid payment methods for currency', function ($currency, $expectedPaymentMethods) {
+    expect(
+        StripeAccount::validPaymentMethodsForCurrency($currency)
+    )->toMatchArray($expectedPaymentMethods);
+})->with([
+    ['eur', ['card', 'sepa_debit', 'bancontact', 'eps', 'giropay', 'ideal', 'sofort']],
+    ['gbp', ['card', 'bacs_debit']],
+    ['usd', ['card']]
+]);
+
+test('get checkoutSessionPaymentMethodTypes for currency', function ($currency, $capabilities, $expectedPaymentMethods) {
+
+    $stripeAccount = StripeAccount::factory()->create([
+        'capabilities' => $capabilities
+    ]);
+
+    expect(
+        $stripeAccount->checkoutSessionPaymentMethodTypes($currency)
+    )->toMatchArray($expectedPaymentMethods);
+})->with([
+    [
+        'gbp',
+        ['card_payments' => 'active'],
+        ['card']
+    ],
+    [
+        'gbp',
+        ['card_payments' => 'active', 'bacs_debit_payments' => 'active'],
+        ['card', 'bacs_debit']
+    ],
+    [
+        'eur',
+        ['card_payments' => 'active'],
+        ['card']
+    ],
+    [
+        'eur',
+        ['card_payments' => 'active', 'sepa_debit_payments' => 'active',],
+        ['card', 'sepa_debit']
+    ],
+]);
