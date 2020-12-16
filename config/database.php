@@ -165,11 +165,19 @@ return [
         ],
 
         'cache' => [
-            'url' => env('REDIS_URL'),
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
-            'port' => env('REDIS_PORT', '6379'),
+            'url' => env('REDIS_CACHE_URL'),
+            'host' => env('REDIS_CACHE_HOST', '127.0.0.1'),
+            'password' => env('REDIS_CACHE_PASSWORD', null),
+            'port' => env('REDIS_CACHE_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
+        ],
+
+        'jobs' => [
+            'url' => env('REDIS_JOBS_URL'),
+            'host' => env('REDIS_JOBS_HOST', '127.0.0.1'),
+            'password' => env('REDIS_JOBS_PASSWORD', null),
+            'port' => env('REDIS_JOBS_PORT', '6379'),
+            'database' => env('REDIS_JOBS_DB', '2'),
         ],
 
     ],
