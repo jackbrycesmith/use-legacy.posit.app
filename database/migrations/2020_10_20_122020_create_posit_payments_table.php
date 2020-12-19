@@ -21,8 +21,8 @@ class CreatePositPaymentsTable extends Migration
             $table->string('provider')->nullable()->index(); // e.g. 'stripe'
             $table->string('type')->nullable()->index(); // e.g. 'deposit' or null
 
-            $valueTotal = config('posit-settings.proposal.value_max_digits') + config('posit-settings.proposal.value_digits_round');
-            $valuePlaces = config('posit-settings.proposal.value_digits_round');
+            $valueTotal = config('posit-settings.posit.value_max_digits') + config('posit-settings.posit.value_digits_round');
+            $valuePlaces = config('posit-settings.posit.value_digits_round');
             $table->unsignedDecimal('amount', $valueTotal, $valuePlaces)->nullable();
 
             $table->timestamps();

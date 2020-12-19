@@ -21,8 +21,8 @@ class CreatePositsTable extends Migration
             $table->string('name')->nullable(); // TODO change to text type?
             $table->string('theme')->nullable();
 
-            $valueTotal = config('posit-settings.proposal.value_max_digits') + config('posit-settings.proposal.value_digits_round');
-            $valuePlaces = config('posit-settings.proposal.value_digits_round');
+            $valueTotal = config('posit-settings.posit.value_max_digits') + config('posit-settings.posit.value_digits_round');
+            $valuePlaces = config('posit-settings.posit.value_digits_round');
             $table->unsignedDecimal('value_amount', $valueTotal, $valuePlaces)->nullable();
 
             $table->string('value_currency_code', 3)->nullable()->index();

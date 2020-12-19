@@ -277,7 +277,7 @@ class Posit extends Model implements HasMedia
      */
     public static function defaultTheme(): string
     {
-        return config('posit-settings.proposal.theme_default', Posit::THEME_COOL_GREY);
+        return config('posit-settings.posit.theme_default', Posit::THEME_COOL_GREY);
     }
 
     /**
@@ -288,7 +288,7 @@ class Posit extends Model implements HasMedia
      */
     public static function defaultValueCurrency(): string
     {
-        return config('posit-settings.proposal.value_currency_system_default', 'GBP');
+        return config('posit-settings.posit.value_currency_system_default', 'GBP');
     }
 
     /**
@@ -299,6 +299,6 @@ class Posit extends Model implements HasMedia
      */
     public static function defaultName(): string
     {
-        return config('posit-settings.proposal.name_default');
+        return config('posit-settings.posit.name_default');
     }
 }
