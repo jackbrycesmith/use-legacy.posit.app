@@ -2,11 +2,11 @@
   <div @focusin="hasFocusIn = true" @focusout="hasFocusIn = false">
     <SmoothReflow
       :options="{ property: 'height', transition: 'height .25s ease-in-out' }"
-      :contenteditable="isExpanded && view.editable.toString()"
+      :contenteditable="isExpanded && isEditable"
       tag="div"
       class="bg-white shadow rounded-lg mx-auto"
       style="max-width: 70ch;">
-      <div :contenteditable="isExpanded && view.editable.toString()" class="px-4 py-5 sm:p-6 focus:outline-none relative" style="min-height: 100px;">
+      <div :contenteditable="isExpanded && isEditable" class="px-4 py-5 sm:p-6 focus:outline-none relative" style="min-height: 100px;">
 
         <div v-show="isExpanded">
           <slot name="content" v-bind="{ isExpanded }"/>
@@ -38,7 +38,7 @@ export default {
   // `editor` is a reference to the TipTap editor instance
   // `getPos` is a function to retrieve the start position of the node
   // `decorations` is an array of decorations around the node
-  props: ['node', 'updateAttrs', 'view', 'expanded'],
+  props: ['node', 'isEditable', 'expanded'],
   computed: {
     isExpanded () { return this.expanded }
   },

@@ -102,7 +102,7 @@ export default {
         this.posit__ = Posit.make(value)
 
         this.$nextTick(() => {
-          this.$refs.content.editor.setContent(
+          this.$refs.content.editor.commands.setContent(
             this.posit__.content?.content
           )
         })
@@ -122,10 +122,10 @@ export default {
       const event = value ? 'CAN_EDIT' : 'CANNOT_EDIT'
       this.editorMachineService.send(event)
     },
-    handleContentUpdate ({ state, getHTML, getJSON, transaction }) {
+    handleContentUpdate ({ state, transaction }) {
       if (!this.editorMachineContext.canEdit) return
 
-      this.updateContentOnServer({ payload: getJSON(), vm: this })
+      this.updateContentOnServer({ payload: state.doc.toJSON(), vm: this })
     },
     updateContentOnServer: debounce(async ({ payload, vm }) => {
       const response = await vm.$http.put(

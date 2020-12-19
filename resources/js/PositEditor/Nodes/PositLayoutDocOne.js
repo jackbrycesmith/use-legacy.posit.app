@@ -1,11 +1,7 @@
-import { Doc } from 'tiptap'
+import { Node } from '@tiptap/core'
 
-export default class PositLayoutDocOne extends Doc {
-
-  get schema() {
-    return {
-      content: 'posit_block*',
-    }
-  }
-
-}
+export default Node.create({
+  name: 'document',
+  topNode: true,
+  content: 'posit_block*',
+})

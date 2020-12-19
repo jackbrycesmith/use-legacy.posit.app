@@ -9,44 +9,62 @@
       @handleAddBlockBelow="handleAddBlockBelow"
       @handleDeleteBlock="handleDeleteBlock" />
 
-    <EditorNewLineFloatingMenu
+<!--     <EditorNewLineFloatingMenu
       :editor="editor"
-    />
+    /> -->
 
-    <EditorSelectMenuBubble
+<!--     <EditorSelectMenuBubble
       :editor="editor"
-      :keep-in-bounds="keepInBounds"/>
+      :keep-in-bounds="keepInBounds"/> -->
 
   </div>
 </template>
 
 <script>
-import EditorSelectMenuBubble from '@/PositEditor/Menus/EditorSelectMenuBubble'
+// import EditorSelectMenuBubble from '@/PositEditor/Menus/EditorSelectMenuBubble'
 import EditorNewLineFloatingMenu from '@/PositEditor/Menus/EditorNewLineFloatingMenu'
-import { Editor, EditorContent } from 'tiptap'
-import {
-  Blockquote,
-  BulletList,
-  CodeBlock,
-  Image,
-  HardBreak,
-  Heading,
-  ListItem,
-  OrderedList,
-  TodoItem,
-  TodoList,
-  Bold,
-  Code,
-  Italic,
-  Link,
-  Strike,
-  Underline,
-  History,
-  Focus,
-  // HorizontalRule,
-} from 'tiptap-extensions'
+import { Editor, EditorContent, defaultExtensions } from '@tiptap/vue-starter-kit'
+// import {
+//   Blockquote,
+//   BulletList,
+//   CodeBlock,
+//   Image,
+//   HardBreak,
+//   Heading,
+//   ListItem,
+//   OrderedList,
+//   TodoItem,
+//   TodoList,
+//   Bold,
+//   Code,
+//   Italic,
+//   Link,
+//   Strike,
+//   Underline,
+//   History,
+//   Focus,
+//   // HorizontalRule,
+// } from 'tiptap-extensions'
 import PositBlockNode from '@/PositEditor/Nodes/PositBlockNode'
 import PositLayoutDocOne from '@/PositEditor/Nodes/PositLayoutDocOne'
+import Dropcursor from '@tiptap/extension-dropcursor'
+import Gapcursor from '@tiptap/extension-gapcursor'
+// import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import Text from '@tiptap/extension-text'
+import History from '@tiptap/extension-history'
+import Bold from '@tiptap/extension-bold'
+import Italic from '@tiptap/extension-italic'
+import Code from '@tiptap/extension-code'
+import CodeBlock from '@tiptap/extension-code-block'
+import Heading from '@tiptap/extension-heading'
+import HardBreak from '@tiptap/extension-hard-break'
+import Strike from '@tiptap/extension-strike'
+import Blockquote from '@tiptap/extension-blockquote'
+import HorizontalRule from '@tiptap/extension-horizontal-rule'
+import BulletList from '@tiptap/extension-bullet-list'
+import OrderedList from '@tiptap/extension-ordered-list'
+import ListItem from '@tiptap/extension-list-item'
 
 export default {
   props: {
@@ -57,8 +75,8 @@ export default {
   },
   components: {
     EditorContent,
-    EditorNewLineFloatingMenu,
-    EditorSelectMenuBubble
+    // EditorNewLineFloatingMenu,
+    // EditorSelectMenuBubble
   },
   data () {
     return {
@@ -71,31 +89,53 @@ export default {
           }
         },
         extensions: [
-          new PositLayoutDocOne(),
-          new PositBlockNode(),
-          new Blockquote(),
-          new BulletList(),
-          new CodeBlock(),
-          new HardBreak(),
-          new Heading({ levels: [1, 2, 3] }),
-          new ListItem(),
-          new OrderedList(),
-          // new HorizontalRule(),
-          new TodoItem(),
-          new TodoList(),
-          new Link(),
-          new Image(),
-          new Bold(),
-          new Code(),
-          new Italic(),
-          new Strike(),
-          new Underline(),
-          new History(),
-          new Focus({
-            className: 'has-focus',
-            nested: false,
-          })
+          ...defaultExtensions(),
+          // PositLayoutDocOne,
+          PositBlockNode,
+          // Dropcursor,
+          // Gapcursor,
+          // Paragraph,
+          // Text,
+          // History,
+          // Bold,
+          // Italic,
+          // Code,
+          // CodeBlock,
+          // Heading,
+          // HardBreak,
+          // Strike,
+          // Blockquote,
+          // HorizontalRule,
+          // BulletList,
+          // OrderedList,
+          // ListItem
         ],
+        // extensions: [
+        //   new PositLayoutDocOne(),
+        //   new PositBlockNode(),
+        //   new Blockquote(),
+        //   new BulletList(),
+        //   new CodeBlock(),
+        //   new HardBreak(),
+        //   new Heading({ levels: [1, 2, 3] }),
+        //   new ListItem(),
+        //   new OrderedList(),
+        //   // new HorizontalRule(),
+        //   new TodoItem(),
+        //   new TodoList(),
+        //   new Link(),
+        //   new Image(),
+        //   new Bold(),
+        //   new Code(),
+        //   new Italic(),
+        //   new Strike(),
+        //   new Underline(),
+        //   new History(),
+        //   new Focus({
+        //     className: 'has-focus',
+        //     nested: false,
+        //   })
+        // ],
         onInit: this.onEditorInit,
         onTransaction: this.onEditorTransaction,
         onUpdate: this.onEditorUpdate,
@@ -119,8 +159,10 @@ export default {
       // console.log(state)
       // console.log(view)
     },
-    onEditorUpdate ({ state, getHTML, getJSON, transaction }) {
-      this.$emit('update', { state, getHTML, getJSON, transaction })
+    onEditorUpdate (transaction) {
+      console.log('onEditorUpdate', this.editor.getJSON())
+
+      this.$emit('update', { state: this.editor.state, transaction })
     },
     onEditorFocus ({ event,  state, view }) {
       console.log('onEditorFocus')
