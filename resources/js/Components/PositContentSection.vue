@@ -1,5 +1,8 @@
 <template>
   <div class="relative">
+    <div class="absolute flex items-center justify-center w-full">
+      <EmptyPositAddBlock @add="handleAddNewBlockFromEmpty" />
+    </div>
 
     <EditorContent
       :editor="editor"
@@ -23,6 +26,7 @@
 <script>
 // import EditorSelectMenuBubble from '@/PositEditor/Menus/EditorSelectMenuBubble'
 import EditorNewLineFloatingMenu from '@/PositEditor/Menus/EditorNewLineFloatingMenu'
+import EmptyPositAddBlock from '@/Components/EmptyPositAddBlock'
 import { Editor, EditorContent, defaultExtensions } from '@tiptap/vue-starter-kit'
 // import {
 //   Blockquote,
@@ -75,6 +79,7 @@ export default {
   },
   components: {
     EditorContent,
+    EmptyPositAddBlock,
     // EditorNewLineFloatingMenu,
     // EditorSelectMenuBubble
   },
@@ -231,6 +236,13 @@ export default {
         .insert(pos + childAfter.node.nodeSize, node)
 
       view.dispatch(transactionMoveNodeDown)
+    },
+    handleAddNewBlockFromEmpty () {
+      if (!this.editable) return
+
+      console.log(this.editor)
+      const transaction = this.editor.view.state.tr.insert(0, this.editor.schema.node("posit_block", null, [this.editor.schema.node("paragraph")]))
+      this.editor.view.dispatch(transaction)
     },
     handleAddBlockAbove ({ node, view, startPos }) {
       if (!this.editable) return
