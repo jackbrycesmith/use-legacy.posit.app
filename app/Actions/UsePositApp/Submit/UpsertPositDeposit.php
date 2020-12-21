@@ -45,7 +45,7 @@ class UpsertPositDeposit extends Action
      */
     public function rules()
     {
-        $maxValue = (float) ("1" . str_repeat("0", config('posit-settings.proposal.value_max_digits'))) - 0.01;
+        $maxValue = (float) ("1" . str_repeat("0", config('posit-settings.posit.value_max_digits'))) - 0.01;
 
         return [
             'amount' => [
