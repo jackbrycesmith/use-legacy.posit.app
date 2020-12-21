@@ -64,5 +64,8 @@
         "worker-loader": "^2.0.0",
         "xstate": "^4.15.1",
         "ziggy-js": "^1.0.4"
+    },
+    "resolutions": {
+        "prosemirror-model": "^1.13.0"
     }
 }
