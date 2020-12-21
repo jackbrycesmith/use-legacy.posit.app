@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <div class="absolute flex items-center justify-center w-full">
+    <div v-if="canAddNewBlockFromEmpty" class="absolute flex items-center justify-center w-full">
       <EmptyPositAddBlock @add="handleAddNewBlockFromEmpty" />
     </div>
 
@@ -86,6 +86,7 @@ export default {
   data () {
     return {
       keepInBounds: true,
+      isEmptyPosit: true,
       editor: new Editor({
         editable: this.editable,
         editorProps: {
@@ -141,7 +142,7 @@ export default {
         //     nested: false,
         //   })
         // ],
-        onInit: this.onEditorInit,
+        onCreate: this.onEditorInit,
         onTransaction: this.onEditorTransaction,
         onUpdate: this.onEditorUpdate,
         onFocus: this.onEditorFocus,
@@ -149,6 +150,11 @@ export default {
         onPaste: this.onEditorPaste,
         onDrop: this.onEditorDrop,
       })
+    }
+  },
+  computed: {
+    canAddNewBlockFromEmpty () {
+      return this.editable && this.isEmptyPosit
     }
   },
   watch: {
@@ -159,22 +165,19 @@ export default {
     },
   },
   methods: {
-    onEditorInit ({ state, view }) {
-      // console.log('onEditorInit')
-      // console.log(state)
-      // console.log(view)
+    onEditorInit () {
+      this.determineIfPositIsEmpty()
     },
     onEditorUpdate (transaction) {
-      console.log('onEditorUpdate', this.editor.getJSON())
-
+      this.determineIfPositIsEmpty()
       this.$emit('update', { state: this.editor.state, transaction })
     },
     onEditorFocus ({ event,  state, view }) {
-      console.log('onEditorFocus')
+      // console.log('onEditorFocus')
       // console.log(event, state, view)
     },
     onEditorBlur ({ event,  state, view }) {
-      console.log('onEditorBlur')
+      // console.log('onEditorBlur')
       // console.log(event, state, view)
     },
     onEditorPaste () {
@@ -240,7 +243,6 @@ export default {
     handleAddNewBlockFromEmpty () {
       if (!this.editable) return
 
-      console.log(this.editor)
       const transaction = this.editor.view.state.tr.insert(0, this.editor.schema.node("posit_block", null, [this.editor.schema.node("paragraph")]))
       this.editor.view.dispatch(transaction)
     },
@@ -262,6 +264,10 @@ export default {
       const transaction = view.state.tr.replace(startPos, startPos + node.nodeSize)
       view.dispatch(transaction)
     },
+    determineIfPositIsEmpty () {
+      const childCount = this.editor['state']?.['doc']?.['childCount'] ?? 0
+      this.isEmptyPosit = childCount === 0
+    }
   },
   beforeDestroy() {
     this.editor.destroy()

@@ -102,9 +102,10 @@ export default {
         this.posit__ = Posit.make(value)
 
         this.$nextTick(() => {
-          this.$refs.content.editor.commands.setContent(
-            this.posit__.content?.content
-          )
+          const content = this.posit__.content?.content
+          if (content?.content) {
+            this.$refs.content.editor.commands.setContent(content)
+          }
         })
       }
     },
