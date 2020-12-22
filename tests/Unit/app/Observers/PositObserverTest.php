@@ -2,14 +2,22 @@
 
 use App\Models\Posit;
 use App\Models\Team;
+use App\Models\Values\PositConfig;
 
-test('it sets posit theme to default if null when creating', function () {
+test('it sets posit config to default if null when creating', function () {
     $team = Team::factory()->create();
     $posit = Posit::factory()->make(['team_id' => $team->id]);
 
-    assertNull($posit->theme);
+    assertNull($posit->config);
 
     $posit->save();
-    assertNotNull($posit->theme);
-    assertContains($posit->theme, Posit::ALLOWED_THEMES);
+    $posit->refresh();
+
+    expect($posit->config)->toBeInstanceOf(PositConfig::class);
+
+    $config = PositConfig::defaults()->toArray();
+    $configDatabaseChecks = array_map(fn($val, $key) => ["config->{$key}" => $val], $config, array_keys($config));
+    $this->assertDatabaseHas('posits', array_merge([
+        'id' => $posit->id,
+    ], $configDatabaseChecks[0]));
 });

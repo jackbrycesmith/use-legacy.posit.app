@@ -9,6 +9,7 @@ use App\Models\Concerns\HasVideo;
 use App\Models\Media;
 use App\Models\States\Posit\PositState;
 use App\Models\TeamContact;
+use App\Models\Values\PositConfig;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -77,7 +78,8 @@ class Posit extends Model implements HasMedia
     protected $casts = [
         'name' => StrLimitCast::class,
         'state' => PositState::class,
-        'organisation_id' => 'integer',
+        'config' => PositConfig::class,
+        'team_id' => 'integer',
         'meta' => 'array',
         'value_amount' => 'float',
     ];

@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Posit;
+use App\Models\Values\PositConfig;
 
 class PositObserver
 {
@@ -18,8 +19,8 @@ class PositObserver
             $posit->name = $posit->defaultName();
         }
 
-        if (is_null($posit->theme)) {
-            $posit->theme = $posit->defaultTheme();
+        if (is_null($posit->config)) {
+            $posit->config = PositConfig::defaults();
         }
 
         if (is_null($posit->value_currency_code)) {

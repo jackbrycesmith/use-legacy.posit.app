@@ -18,8 +18,8 @@ class CreatePositsTable extends Migration
             $table->uuid('uuid');
             $table->foreignId('team_id')->constrained()->onDelete('cascade');
             $table->string('state')->index();
+            $table->jsonb('config');
             $table->string('name')->nullable(); // TODO change to text type?
-            $table->string('theme')->nullable();
 
             $valueTotal = config('posit-settings.posit.value_max_digits') + config('posit-settings.posit.value_digits_round');
             $valuePlaces = config('posit-settings.posit.value_digits_round');
