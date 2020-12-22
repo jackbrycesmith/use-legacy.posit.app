@@ -9,8 +9,6 @@ use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 use ReflectionClass;
 use ReflectionProperty;
-use function Safe\json_encode;
-use function Safe\json_decode;
 
 abstract class Value implements Castable, JsonSerializable, Arrayable
 {
@@ -52,12 +50,12 @@ abstract class Value implements Castable, JsonSerializable, Arrayable
 
     public function toJson(): string
     {
-        return json_encode($this->toArray());
+        return json_encode(value: $this->toArray(), flags: JSON_THROW_ON_ERROR);
     }
 
     public static function fromJson($json)
     {
-        $data = json_decode($json, true);
+        $data = json_decode(json: $json, associative: true, flags: JSON_THROW_ON_ERROR);
         return new static(...$data);
     }
 
