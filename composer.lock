@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3697b25193f076c5bdc0c918fbef330",
+    "content-hash": "6d7b00e474e2881d202bfba4e604cc48",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -2111,12 +2111,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:jackbrycesmith/laravel-stripe-connect.git",
-                "reference": "3c67e0620e5f31ed69ca42b5463051460da0010d"
+                "reference": "c446c0388ad7c1ef57b207f1b6f45cdc58da5ea1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jackbrycesmith/laravel-stripe-connect/zipball/3c67e0620e5f31ed69ca42b5463051460da0010d",
-                "reference": "3c67e0620e5f31ed69ca42b5463051460da0010d",
+                "url": "https://api.github.com/repos/jackbrycesmith/laravel-stripe-connect/zipball/c446c0388ad7c1ef57b207f1b6f45cdc58da5ea1",
+                "reference": "c446c0388ad7c1ef57b207f1b6f45cdc58da5ea1",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2134,7 +2134,7 @@
                 "illuminate/queue": "^8.0",
                 "illuminate/routing": "^8.0",
                 "illuminate/support": "^8.0",
-                "php": "^7.3",
+                "php": "^7.3|^8.0",
                 "psr/log": "^1.0",
                 "stripe/stripe-php": "^7.52"
             },
@@ -2183,7 +2183,7 @@
                 "source": "https://github.com/jackbrycesmith/laravel-stripe-connect/tree/develop",
                 "issues": "https://github.com/jackbrycesmith/laravel-stripe-connect/issues"
             },
-            "time": "2020-09-13T20:21:58+00:00"
+            "time": "2020-12-22T14:28:23+00:00"
         },
         {
             "name": "jaybizzle/crawler-detect",
@@ -2319,65 +2319,6 @@
                 }
             ],
             "time": "2020-06-13T08:05:20+00:00"
-        },
-        {
-            "name": "jessarcher/laravel-castable-data-transfer-object",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jessarcher/laravel-castable-data-transfer-object.git",
-                "reference": "1e02006ba4b92157abe3c9299b1c3eb03263324a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jessarcher/laravel-castable-data-transfer-object/zipball/1e02006ba4b92157abe3c9299b1c3eb03263324a",
-                "reference": "1e02006ba4b92157abe3c9299b1c3eb03263324a",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "^8.0",
-                "php": "^7.4 || ^8.0",
-                "spatie/data-transfer-object": "^2.5.0",
-                "thecodingmachine/safe": "^1.3"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^6.0",
-                "phpunit/phpunit": "^9.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "JessArcher\\CastableDataTransferObject\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jess Archer",
-                    "email": "jess@jessarcher.com",
-                    "homepage": "https://jessarcher.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Automatically cast JSON columns to rich PHP objects in Laravel using Spatie's data-transfer-object class",
-            "homepage": "https://github.com/jessarcher/laravel-castable-data-transfer-object",
-            "keywords": [
-                "castable-data-transfer-object",
-                "castable-value-object",
-                "data-transfer-object",
-                "jessarcher",
-                "laravel-castable-data-transfer-object",
-                "laravel-castable-value-object",
-                "value-object"
-            ],
-            "support": {
-                "issues": "https://github.com/jessarcher/laravel-castable-data-transfer-object/issues",
-                "source": "https://github.com/jessarcher/laravel-castable-data-transfer-object/tree/v1.0.0"
-            },
-            "time": "2020-11-27T22:40:04+00:00"
         },
         {
             "name": "laravel-notification-channels/telegram",
@@ -6096,65 +6037,6 @@
                 "source": "https://github.com/reactphp/stream/tree/v1.1.1"
             },
             "time": "2020-05-04T10:17:57+00:00"
-        },
-        {
-            "name": "spatie/data-transfer-object",
-            "version": "2.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/data-transfer-object.git",
-                "reference": "64555c085364b567701ff627ef442ff1b2d42757"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/data-transfer-object/zipball/64555c085364b567701ff627ef442ff1b2d42757",
-                "reference": "64555c085364b567701ff627ef442ff1b2d42757",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4|^8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.0"
-            },
-            "suggest": {
-                "phpstan/phpstan": "Take advantage of checkUninitializedProperties with \\Spatie\\DataTransferObject\\PHPstan\\PropertiesAreAlwaysInitializedExtension"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\DataTransferObject\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Brent Roose",
-                    "email": "brent@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Data transfer objects with batteries included",
-            "homepage": "https://github.com/spatie/data-transfer-object",
-            "keywords": [
-                "data-transfer-object",
-                "spatie"
-            ],
-            "support": {
-                "issues": "https://github.com/spatie/data-transfer-object/issues",
-                "source": "https://github.com/spatie/data-transfer-object/tree/2.6.0"
-            },
-            "funding": [
-                {
-                    "url": "https://www.patreon.com/spatie",
-                    "type": "patreon"
-                }
-            ],
-            "time": "2020-11-26T09:24:53+00:00"
         },
         {
             "name": "spatie/image",
@@ -13962,7 +13844,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3.0"
+        "php": "^8.0.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"
