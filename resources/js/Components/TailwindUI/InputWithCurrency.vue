@@ -94,6 +94,10 @@ export default {
     this.notifyChange = debounce((vm) => {
       vm.$emit('changed')
     }, this.notifyChangeDebounceMs)
+
+    this.$once('hook:destroyed', () => {
+      this.notifyChange = null
+    })
   },
   computed: {
     isCurrencySwitchDisabled () {

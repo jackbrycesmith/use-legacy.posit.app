@@ -12,7 +12,7 @@ use function Tests\actingAs;
 test('updating posit type requires it exists', function () {
     $response = $this->put(route('use.submit.update-posit-type', ['posit' => 'blah']));
     $response->assertStatus(404);
-})->only();
+});
 
 test('updating posit type requires login', function () {
     $user = User::factory()->create();
@@ -23,7 +23,7 @@ test('updating posit type requires login', function () {
 
     $response = $this->put(route('use.submit.update-posit-type', ['posit' => $posit]));
     $response->assertRedirect(route('login'));
-})->only();
+});
 
 test('user cannot update posit type if not a team member', function () {
     $user = User::factory()->create();
@@ -36,7 +36,7 @@ test('user cannot update posit type if not a team member', function () {
     $response = actingAs($otherUser)->put(route('use.submit.update-posit-type', ['posit' => $posit]));
 
     $response->assertStatus(403);
-})->only();
+});
 
 test('user cannot update posit type when in certain states', function ($state) {
     $user = User::factory()->create();
@@ -55,7 +55,7 @@ test('user cannot update posit type when in certain states', function ($state) {
     $response->assertStatus(403);
 })->with(
     PositState::all()->except(PositState::statesThatCanUpdateThePosit())->keys()
-)->only();
+);
 
 test('user cannot update posit type if missing params', function () {
     $user = User::factory()->create();
@@ -76,7 +76,7 @@ test('user cannot update posit type if missing params', function () {
         'type' => 'The type field is required.'
     ]);
 
-})->only();
+});
 
 test('user cannot update posit type if not in enum', function ($enumValue) {
     $user = User::factory()->create();
@@ -99,7 +99,7 @@ test('user cannot update posit type if not in enum', function ($enumValue) {
 
 })->with([
     'blah'
-])->only();
+]);
 
 test('user can update posit type', function () {
     $user = User::factory()->create();
@@ -122,4 +122,4 @@ test('user can update posit type', function () {
         'type' => PositType::accept_and_pay()
     ]);
 
-})->only();
+});

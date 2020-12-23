@@ -18,6 +18,21 @@ export default class Posit extends Model {
     return this.uuid !== null
   }
 
+  get includes_pricing () {
+    return this.type === 'accept_and_pay'
+  }
+
+  set includes_pricing (value) {
+    console.log('includes_pricing: ', value)
+    if (value) {
+      this.type = 'accept_and_pay'
+    } else {
+      this.type = 'accept_only'
+    }
+
+    // TODO update on server (debounced)
+  }
+
   get status_name () {
     return get(mapProposalStatusHuman, this.state, 'unknown')
   }
@@ -233,6 +248,17 @@ export default class Posit extends Model {
       {
         value_amount: this.value_amount,
         value_currency_code: this.value_currency_code,
+      }
+    )
+
+    return response
+  }
+
+  async updatePositType () {
+    const response = await Http.put(
+      route('use.submit.update-posit-type', { posit: this.uuid }),
+      {
+        type: this.type
       }
     )
 

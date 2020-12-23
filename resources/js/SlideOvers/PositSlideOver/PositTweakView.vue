@@ -34,22 +34,44 @@
 
             <div class="space-y-6 pt-6 pb-5">
 
-              <!-- Project Value -->
-              <InputWithCurrency
-                :currency-model.sync="posit.value_currency_code"
-                :amount-model.sync="posit.value_amount"
+              <PositTypeToggle
                 :editable="positEditorMachineState.context.canEdit"
-                :max="999999999"
-                label="Project Value"
-                @changed="handleUpdateProjectValue"
-                class="space-y-1" />
+                :posit="posit" />
 
-              <!-- Deposit -->
-              <PositDepositConfigure
-                :posit="posit"
-                :editable="positEditorMachineState.context.canEdit"
-                class="space-y-1"
-              />
+              <div class="relative">
+
+                <!-- Project Value -->
+                <InputWithCurrency
+                  :currency-model.sync="posit.value_currency_code"
+                  :amount-model.sync="posit.value_amount"
+                  :editable="positEditorMachineState.context.canEdit"
+                  :max="999999999"
+                  label="Project Value"
+                  @changed="handleUpdateProjectValue"
+                  class="space-y-1"/>
+
+                <!-- Deposit -->
+                <PositDepositConfigure
+                  :posit="posit"
+                  :editable="positEditorMachineState.context.canEdit"
+                  class="space-y-1 mt-6"
+                />
+
+                <transition enter-active-class="ease-out duration-300"
+                        enter-class="opacity-0"
+                        enter-to-class="opacity-100"
+                        leave-active-class="ease-in duration-200"
+                        leave-class="opacity-100"
+                        leave-to-class="opacity-0">
+
+                  <div
+                    v-if="!posit.includes_pricing"
+                    class="absolute h-full w-full inset-0 z-20"
+                    style="background-color: rgba(255, 255, 255, 0.5); backdrop-filter: blur(2px);">
+                  </div>
+                </transition>
+
+              </div>
 
             </div>
         </TabPane>
@@ -67,6 +89,7 @@ import IconHeroiconsSmallBriefcase from '@/Icons/IconHeroiconsSmallBriefcase'
 import IconHeroiconsSmallAdjustments from '@/Icons/IconHeroiconsSmallAdjustments'
 import IconHeroiconsMediumInformationCircle from '@/Icons/IconHeroiconsMediumInformationCircle'
 import PositThemeBlock from '@/Components/PositThemeBlock'
+import PositTypeToggle from '@/Components/PositTypeToggle'
 
 export default {
   name: 'PositTweakView',
@@ -77,6 +100,7 @@ export default {
     InputWithCurrency,
     PositDepositConfigure,
     PositThemeBlock,
+    PositTypeToggle,
     Tabs,
     TabPane
   },
