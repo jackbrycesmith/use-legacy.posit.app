@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PositType;
 use App\Models\Casts\StrLimitCast;
 use App\Models\Concerns\HasStripeCheckoutSession;
 use App\Models\Concerns\HasUuid;
@@ -79,6 +80,7 @@ class Posit extends Model implements HasMedia
         'name' => StrLimitCast::class,
         'state' => PositState::class,
         'config' => PositConfig::class,
+        'type' => PositType::class,
         'team_id' => 'integer',
         'meta' => 'array',
         'value_amount' => 'float',

@@ -2,8 +2,10 @@
 
 namespace App\Observers;
 
+use App\Enums\PositType;
 use App\Models\Posit;
 use App\Models\Values\PositConfig;
+use Illuminate\Support\Arr;
 
 class PositObserver
 {
@@ -17,6 +19,11 @@ class PositObserver
     {
         if (is_null($posit->name)) {
             $posit->name = $posit->defaultName();
+        }
+
+        // Accessing ->type directly will crash because non null check
+        if (is_null(Arr::get($posit->getAttributes(), 'type'))) {
+            $posit->type = PositType::accept_only();
         }
 
         if (is_null($posit->config)) {
