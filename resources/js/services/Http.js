@@ -1,4 +1,12 @@
 import axios from 'axios'
+import createAuthRefreshInterceptor from 'axios-auth-refresh'
+
+createAuthRefreshInterceptor(axios, async (failedRequest) => {
+  // Make request to refresh xrsf token...
+  await axios.post('/api/refresh-csrf-token')
+}, {
+  statusCodes: [419]
+})
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 axios.defaults.headers.common['Content-Type'] = 'application/json'
