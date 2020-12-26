@@ -23,14 +23,11 @@ export default class Posit extends Model {
   }
 
   set includes_pricing (value) {
-    console.log('includes_pricing: ', value)
     if (value) {
       this.type = 'accept_and_pay'
     } else {
       this.type = 'accept_only'
     }
-
-    // TODO update on server (debounced)
   }
 
   get status_name () {
@@ -184,12 +181,7 @@ export default class Posit extends Model {
 
   get to_fix_before_publish () {
 
-    return toArray(omitBy([
-      !this.has_recipient ? {
-        icon: 'warning',
-        text: `You need a recipient!`
-      } : null,
-
+    const paymentRelatedChecks = this.includes_pricing ? [
       !this.is_selected_payment_provider_ready ? {
         icon: 'warning',
         text: `Payment provider not ready`
@@ -209,8 +201,17 @@ export default class Posit extends Model {
         icon: 'warning',
         text: 'Deposit cannot exceed the project value'
       } : null,
+    ] : []
 
-      // TODO Has at least one block
+    return toArray(omitBy([
+      !this.has_recipient ? {
+        icon: 'warning',
+        text: `You need a recipient!`
+      } : null,
+
+      ...paymentRelatedChecks
+
+      // TODO e.g. Has at least one block
     ], isNil))
   }
 
