@@ -2,8 +2,9 @@ import axios from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 
 createAuthRefreshInterceptor(axios, async (failedRequest) => {
-  // Make request to refresh xrsf token...
-  await axios.post('/api/refresh-csrf-token')
+  try {
+    await axios.post('/api/refresh-csrf-token')
+  } catch (e) {}
 }, {
   statusCodes: [419]
 })

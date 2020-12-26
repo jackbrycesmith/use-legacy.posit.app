@@ -16,7 +16,8 @@ devDependencies:
   '@xstate/vue': 0.3.0_vue@2.6.12+xstate@4.15.1
   add-zero: 1.0.0
   autoprefixer: 10.1.0_postcss@8.2.1
-  axios: 0.21.1
+  axios: 0.20.0
+  axios-auth-refresh: 3.0.0_axios@0.20.0
   cleave.js: 1.6.0
   clipboard-copy: github.com/jalt007/clipboard-copy/126cba1852239eeb4c50d227a2bd1fb038e67a5f
   collect.js: 4.28.6
@@ -1596,7 +1597,7 @@ packages:
       '@babel/runtime': 7.12.5
       '@videojs/vhs-utils': 2.3.0
       aes-decrypter: 3.1.0
-      global: 4.3.2
+      global: 4.4.0
       m3u8-parser: 4.5.0
       mpd-parser: 0.14.0
       mux.js: 5.6.7
@@ -2096,18 +2097,21 @@ packages:
       node: '>= 0.4'
     resolution:
       integrity: sha512-XWX3OX8Onv97LMk/ftVyBibpGwY5a8SmuxZPzeOxqmuEqUCOM9ZE+uIaD1VNJ5QnvU2UQusvmKbuM1FR8QWGfQ==
+  /axios-auth-refresh/3.0.0_axios@0.20.0:
+    dependencies:
+      axios: 0.20.0
+    dev: true
+    peerDependencies:
+      axios: ~0.18.0 || ~0.19.1 || ~0.20.0
+    resolution:
+      integrity: sha512-0XJnJY711f7opdT+b/au/xw1g4MYrjntXB8Oy5l48plbzOWLjUtJ+m8CtiNLgN3MAvGFJ/Q1NtQ7WKf2euKu6g==
   /axios/0.20.0:
     dependencies:
       follow-redirects: 1.13.1
+    deprecated: 'Critical security vulnerability fixed in v0.21.1. For more information, see https://github.com/axios/axios/pull/3410'
     dev: true
     resolution:
       integrity: sha512-ANA4rr2BDcmmAQLOKft2fufrtuvlqR+cXNNinUmvfeSNCOF98PZL+7M/v1zIdGo7OLjEA9J2gXJL+j4zGsl0bA==
-  /axios/0.21.1:
-    dependencies:
-      follow-redirects: 1.13.1
-    dev: true
-    resolution:
-      integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==
   /babel-loader/8.2.2_3d9c2a837cc4b2484cb693b7275aaf13:
     dependencies:
       '@babel/core': 7.12.10
@@ -7981,7 +7985,7 @@ packages:
       integrity: sha512-g8vHMKK2/JGorSfqAZQUmYYNnXmfec4MLhwtEFS+mMs2IDY398GLysy6BH6K+aS1KMNu/xWZ8Sue/X/mdQPliA==
   /videojs-vtt.js/0.15.2:
     dependencies:
-      global: 4.3.2
+      global: 4.4.0
     dev: true
     resolution:
       integrity: sha512-kEo4hNMvu+6KhPvVYPKwESruwhHC3oFis133LwhXHO9U7nRnx0RiJYMiqbgwjgazDEXHR6t8oGJiHM6wq5XlAw==
@@ -8496,7 +8500,8 @@ specifiers:
   '@xstate/vue': ^0.3.0
   add-zero: ^1.0.0
   autoprefixer: ^10.1.0
-  axios: ^0.21.1
+  axios: ^0.20.0
+  axios-auth-refresh: ^3.0.0
   cleave.js: ^1.6.0
   clipboard-copy: 'github:jalt007/clipboard-copy#fallback-on-error'
   collect.js: ^4.28.6
