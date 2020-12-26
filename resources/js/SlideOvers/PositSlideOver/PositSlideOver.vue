@@ -204,6 +204,9 @@ export default {
         this.contentCurrentState = state
         // Update the context component data property with the updated context
         this.contentContext = state.context
+
+        // Any custom handling...
+        this.handleSlideOverContentMachineTransition(state)
       })
       .start()
 
@@ -279,6 +282,15 @@ export default {
     handleHasBeenPublishedEvent (value) {
       const event = value ? 'IS_PUBLISHED' : 'IS_NOT_PUBLISHED'
       this.contentMachineService.send(event)
+    },
+    handleSlideOverContentMachineTransition (state) {
+      if (state?.event?.type === 'PREPARE_TO_PUBLISH') {
+        this.$emit('prepare-to-publish')
+      }
+
+      if (state?.event?.type === 'BACK_TO_DEFAULT_VIEW') {
+        this.$emit('exit-from-prepare-to-publish')
+      }
     },
     async publishAction () {
       await this.posit.publish()

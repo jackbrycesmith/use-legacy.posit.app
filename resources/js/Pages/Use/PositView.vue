@@ -22,7 +22,9 @@
     <PositSlideOver
       ref="positSlideOver"
       :posit-editor-machine-state="editorMachineCurrentState"
-      :posit.sync="posit__"/>
+      :posit.sync="posit__"
+      @prepare-to-publish="handlePrepareToPublish"
+      @exit-from-prepare-to-publish="handleExitFromPrepareToPublish"/>
 
     <!-- Modals -->
     <FirstWelcomeModal ref="firstWelcomeModal"/>
@@ -144,6 +146,12 @@ export default {
       if (!this.editorMachineContext.canEdit) return
 
       this.updateNameOnServer({ payload: { name }, vm: this })
+    },
+    handlePrepareToPublish () {
+      this.handleEditableEventSend(false)
+    },
+    handleExitFromPrepareToPublish () {
+      this.handleEditableEventSend(this.posit__.is_editable)
     },
     updateNameOnServer: debounce(async ({ payload, vm }) => {
       const response = await vm.$http.put(
