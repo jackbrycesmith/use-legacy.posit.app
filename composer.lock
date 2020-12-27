@@ -4546,16 +4546,16 @@
         },
         {
             "name": "pbmedia/laravel-ffmpeg",
-            "version": "7.5.0",
+            "version": "7.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protonemedia/laravel-ffmpeg.git",
-                "reference": "8df75e987520fc50626b60db51db2fe375fce5c0"
+                "reference": "a22d394d333be826e4760039973bd2fddfd97c9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protonemedia/laravel-ffmpeg/zipball/8df75e987520fc50626b60db51db2fe375fce5c0",
-                "reference": "8df75e987520fc50626b60db51db2fe375fce5c0",
+                "url": "https://api.github.com/repos/protonemedia/laravel-ffmpeg/zipball/a22d394d333be826e4760039973bd2fddfd97c9c",
+                "reference": "a22d394d333be826e4760039973bd2fddfd97c9c",
                 "shasum": ""
             },
             "require": {
@@ -4618,7 +4618,7 @@
             ],
             "support": {
                 "issues": "https://github.com/protonemedia/laravel-ffmpeg/issues",
-                "source": "https://github.com/protonemedia/laravel-ffmpeg/tree/7.5.0"
+                "source": "https://github.com/protonemedia/laravel-ffmpeg/tree/7.5.1"
             },
             "funding": [
                 {
@@ -4626,7 +4626,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-12-22T12:22:44+00:00"
+            "time": "2020-12-24T10:53:59+00:00"
         },
         {
             "name": "php-ffmpeg/php-ffmpeg",
