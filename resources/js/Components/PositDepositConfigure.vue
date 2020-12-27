@@ -13,7 +13,8 @@
 
           <div class="relative flex items-start space-x-4 group focus:outline-none">
             <div class="h-9 flex items-center">
-              <span class="relative z-10 w-8 h-8 flex items-center justify-center bg-white border-2 border-primary-yellow-500 rounded-full">
+              <!-- z-10 removed... -->
+              <span class="relative w-8 h-8 flex items-center justify-center bg-white border-2 border-primary-yellow-500 rounded-full">
                 <span class="h-2.5 w-2.5 flex items-center justify-center text-primary-yellow-500">
                   1
                 </span>

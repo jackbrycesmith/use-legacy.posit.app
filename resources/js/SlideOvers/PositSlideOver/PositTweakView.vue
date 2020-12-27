@@ -66,7 +66,7 @@
 
                   <div
                     v-if="!posit.includes_pricing"
-                    class="absolute h-full w-full inset-0 z-20"
+                    class="absolute h-full w-full inset-0"
                     style="background-color: rgba(255, 255, 255, 0.5); backdrop-filter: blur(2px);">
                   </div>
                 </transition>
