@@ -19,7 +19,7 @@ abstract class PositState extends State
         return parent::config()
             ->default(Draft::class)
             ->allowTransition([Draft::class, Amending::class], Published::class, TransitionToPublished::class)
-            ->allowTransition(Published::class, Accepted::class)
+            ->allowTransition(Published::class, Accepted::class, TransitionToAccepted::class)
             ->allowTransition(Published::class, Expired::class)
             ->allowTransition(Published::class, Amending::class);
     }
