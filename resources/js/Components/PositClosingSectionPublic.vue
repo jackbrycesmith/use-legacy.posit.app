@@ -51,10 +51,11 @@
     <!-- Simple accept_only stuff -->
     <template v-else>
       <PositAccept
-        v-if="!posit.is_accepted"
-        :accepting="publicPositMachineState.matches('unlocked.published.acceptingWithPayment')"/>
+        v-if="publicPositMachineState.matches('unlocked.published')"
+        :accepting="publicPositMachineState.matches('unlocked.published.accepting')"
+        @click.native="$emit('accept')"/>
 
-      <PositAcceptedMeta v-if="posit.is_accepted" />
+      <PositAcceptedMeta v-if="publicPositMachineState.matches('unlocked.accepted')" />
     </template>
 
   </div>
@@ -67,6 +68,7 @@ import IconHeroiconsMediumArrowNarrowDown from '@/Icons/IconHeroiconsMediumArrow
 import IconHeroiconsSmallCheck from '@/Icons/IconHeroiconsSmallCheck'
 import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
 import PositAcceptedMeta from '@/Components/PositAcceptedMeta'
+import PositAccept from '@/Components/PositAccept'
 import { isNil } from 'lodash-es'
 
 export default {
@@ -79,7 +81,8 @@ export default {
     IconHeroiconsMediumArrowNarrowDown,
     IconHeroiconsSmallCheck,
     IconHeroiconsSpinner,
-    PositAcceptedMeta
+    PositAcceptedMeta,
+    PositAccept
   },
   data () {
     return {

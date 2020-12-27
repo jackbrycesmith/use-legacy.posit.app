@@ -25,7 +25,8 @@
         class="mt-36"
         :public-posit-machine-state="publicPositMachineCurrentState"
         :posit="posit__"
-        @accept-with-payment="handleAcceptWithPayment"/>
+        @accept-with-payment="handleAcceptWithPayment"
+        @accept="handleAccept" />
     </template>
 
     <!-- Modals -->
@@ -38,6 +39,7 @@ import { interpret } from 'xstate'
 import { loadStripe } from '@stripe/stripe-js/pure'
 import { publicPositMachine } from '@/machines/publicPositMachine'
 import { isEmpty } from 'lodash-es'
+import { sleep } from '@/utils/sleep'
 import Http from '@/services/Http'
 import Posit from '@/models/Posit'
 import ApplicationLogo from '@/Jetstream/ApplicationLogo'
@@ -70,13 +72,16 @@ export default {
   },
   data () {
     const state = this.posit?.data?.state
+    const type = this.posit?.data?.type
 
     const machine = publicPositMachine.withContext({
       ...publicPositMachine.context,
-      status: state
+      state,
+      type
     }).withConfig({
       services: {
-        'acceptWithPaymentAction': this.acceptWithPaymentAction
+        'acceptWithPaymentAction': this.acceptWithPaymentAction,
+        'acceptAction': this.acceptAction
       }
     })
 
@@ -108,9 +113,11 @@ export default {
         this.posit__ = Posit.make(value)
 
         this.$nextTick(() => {
-          this.$refs.content.editor.setContent(
-            this.posit__.content?.content
-          )
+          const content = this.posit__.content?.content
+
+          if (content?.content) {
+            this.$refs.content.editor.commands.setContent(content)
+          }
         })
       }
     }
@@ -128,6 +135,9 @@ export default {
     // }, 1000)
   },
   methods: {
+    async acceptAction () {
+      await Http.put(this.posit__.route_pub_accept)
+    },
     async acceptWithPaymentAction () {
       try {
         let stripeAccountId = this.posit__?.deposit_payment?.stripe_account_id
@@ -156,6 +166,9 @@ export default {
     },
     handleAcceptWithPayment () {
       this.publicPositMachineService.send('ACCEPT_WITH_PAYMENT')
+    },
+    handleAccept () {
+      this.publicPositMachineService.send('ACCEPT')
     },
     setupInitialMachineContext () {
 

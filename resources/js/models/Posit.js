@@ -85,6 +85,10 @@ export default class Posit extends Model {
     return route('pub.posit.view', { posit: this.uuid })
   }
 
+  get route_pub_accept () {
+     return route('pub.posit.accept', { posit: this.uuid })
+  }
+
   get route_pub_accept_with_payment () {
      return route('pub.posit.accept-with-payment', { posit: this.uuid })
   }
@@ -108,7 +112,7 @@ export default class Posit extends Model {
   get convenient_copyable_recipient_access_message () {
     const name = head(words(this.recipient_name))
 
-    return `Hi ${name},\n\nI've made this proposal for you at:\n\n${this.route_pub_posit_view_link}\n\nYou'll need to use this access code:\n\n${this.recipient_access_code}\n\nLet me know what you think!`
+    return `Hi ${name},\n\nI've made this posit for you at:\n\n${this.route_pub_posit_view_link}\n\nYou'll need to use this access code:\n\n${this.recipient_access_code}\n\nLet me know what you think!`
   }
 
   get has_intro_video () {
