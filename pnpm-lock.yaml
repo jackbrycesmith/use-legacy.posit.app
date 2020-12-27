@@ -43,6 +43,7 @@ devDependencies:
   tailable-pagination: 0.1.22
   tailwindcss: 2.0.2_80f3d67eed96b2b2e18887ea575f44dd
   v-click-outside: 3.1.2
+  v-wave: 1.1.0
   verbal-expressions: 1.0.2
   videojs-record: github.com/jalt007/videojs-record/01e82133fb82c03a6d3e052833829a2b9ae4adad
   vue: 2.6.12
@@ -1597,7 +1598,7 @@ packages:
       '@babel/runtime': 7.12.5
       '@videojs/vhs-utils': 2.3.0
       aes-decrypter: 3.1.0
-      global: 4.4.0
+      global: 4.3.2
       m3u8-parser: 4.5.0
       mpd-parser: 0.14.0
       mux.js: 5.6.7
@@ -7946,6 +7947,10 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-gMdRqfRE6m6XU6SiFi3dyBlFB2MWogiXpof8Aa3LQysrl9pzTndqp/iEaAphLoadaQUFnQ0ec6fLLaxr7LiY6A==
+  /v-wave/1.1.0:
+    dev: true
+    resolution:
+      integrity: sha512-0YEJGEyUpqdQL6vGPBqBrA6LU119mkLwLtC9dpWEdxAOvVZRgXwol7NHW8PpDvq7YuBiobd30WEmniC6sZX2+A==
   /v8-compile-cache/2.2.0:
     dev: true
     resolution:
@@ -7985,7 +7990,7 @@ packages:
       integrity: sha512-g8vHMKK2/JGorSfqAZQUmYYNnXmfec4MLhwtEFS+mMs2IDY398GLysy6BH6K+aS1KMNu/xWZ8Sue/X/mdQPliA==
   /videojs-vtt.js/0.15.2:
     dependencies:
-      global: 4.4.0
+      global: 4.3.2
     dev: true
     resolution:
       integrity: sha512-kEo4hNMvu+6KhPvVYPKwESruwhHC3oFis133LwhXHO9U7nRnx0RiJYMiqbgwjgazDEXHR6t8oGJiHM6wq5XlAw==
@@ -8527,6 +8532,7 @@ specifiers:
   tailable-pagination: ^0.1.22
   tailwindcss: ^2.0.2
   v-click-outside: ^3.1.2
+  v-wave: ^1.1.0
   verbal-expressions: ^1.0.2
   videojs-record: 'github:jalt007/videojs-record#01e82133fb82c03a6d3e052833829a2b9ae4adad'
   vue: ^2.6.12

@@ -53,6 +53,7 @@
         "tailable-pagination": "^0.1.22",
         "tailwindcss": "^2.0.2",
         "v-click-outside": "^3.1.2",
+        "v-wave": "^1.1.0",
         "verbal-expressions": "^1.0.2",
         "videojs-record": "github:jalt007/videojs-record#01e82133fb82c03a6d3e052833829a2b9ae4adad",
         "vue": "^2.6.12",
