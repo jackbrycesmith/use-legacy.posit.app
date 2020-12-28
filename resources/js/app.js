@@ -53,9 +53,9 @@ const app = document.getElementById('app')
 
 if (isDev) {
   // xstate devtools...
-  inspect({
-    iframe: false
-  })
+  // inspect({
+  //   iframe: false
+  // })
 }
 
 new Vue({
