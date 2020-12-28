@@ -40,7 +40,7 @@ export default {
         editable: false,
         editorProps: {
           attributes: {
-            class: 'outline-none space-y-2/12'
+            class: 'outline-none space-y-40'
           }
         },
         extensions: [

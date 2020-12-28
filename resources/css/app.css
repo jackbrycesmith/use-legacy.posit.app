@@ -16,7 +16,7 @@ html {
   scroll-behavior: smooth;
 }
 
-.ProseMirror > .posit-block:before {
+.ProseMirror .posit-block:before {
     position: absolute;
     content: '';
     background: #e2e8f0;
