@@ -1,4 +1,4 @@
-FROM ghcr.io/jalt007/php-sys-dep:sha256:61a2297c3d14c1b531bd9fc54c8fdb2930efee7edd6e65653e363a20803da84a AS php-system-setup
+FROM ghcr.io/jalt007/php-sys-dep@sha256:61a2297c3d14c1b531bd9fc54c8fdb2930efee7edd6e65653e363a20803da84a AS php-system-setup
 
 # Install supervisord implementation
 COPY --from=ochinchina/supervisord:latest /usr/local/bin/supervisord /usr/local/bin/supervisord
