@@ -45,7 +45,7 @@ class FeaticaServiceProvider extends FeaticaApplicationServiceProvider
     {
         Gate::define('viewFeatica', function ($user) {
             return in_array($user->email, [
-                //
+                'jack@posit.app'
             ]);
         });
     }
