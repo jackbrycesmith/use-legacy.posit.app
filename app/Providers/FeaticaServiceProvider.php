@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
 use Featica\Featica;
 use Featica\FeaticaApplicationServiceProvider;
+use Featica\Feature;
+use Illuminate\Support\Facades\Gate;
 
 class FeaticaServiceProvider extends FeaticaApplicationServiceProvider
 {
@@ -26,11 +27,11 @@ class FeaticaServiceProvider extends FeaticaApplicationServiceProvider
      */
     protected function configureFeatures()
     {
-        Featica::feature([
-            'key' => 'coinbase-commerce',
-            'type' => Featica::TYPE_TEAM,
-            'state' => Featica::STATE_OFF,
-        ]);
+        Featica::add(new Feature(
+            key: 'coinbase-commerce',
+            type: Featica::TYPE_TEAM,
+            state: Featica::STATE_OFF,
+        ));
     }
 
     /**

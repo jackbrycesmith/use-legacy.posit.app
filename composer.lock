@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed30b3166b93c1d8c439b7c282c6f037",
+    "content-hash": "9721855437c9f392e450d6d456cb58cb",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -2024,16 +2024,16 @@
         },
         {
             "name": "jackbrycesmith/featica",
-            "version": "v0.0.3",
+            "version": "v0.0.4",
             "source": {
                 "type": "git",
                 "url": "git@github.com:jackbrycesmith/featica.git",
-                "reference": "479dece02f2de418f8fdafa5b59d2ec61e62248a"
+                "reference": "6e56dd26928f8bb64ded61c5875fd335ea5f4b1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jackbrycesmith/featica/zipball/479dece02f2de418f8fdafa5b59d2ec61e62248a",
-                "reference": "479dece02f2de418f8fdafa5b59d2ec61e62248a",
+                "url": "https://api.github.com/repos/jackbrycesmith/featica/zipball/6e56dd26928f8bb64ded61c5875fd335ea5f4b1e",
+                "reference": "6e56dd26928f8bb64ded61c5875fd335ea5f4b1e",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2044,14 +2044,17 @@
             },
             "require": {
                 "illuminate/contracts": "^8.0",
-                "inertiajs/inertia-laravel": "^0.3.3",
-                "php": "^7.4|^8.0"
+                "inertiajs/inertia-laravel": "^0.3.5",
+                "php": "^8.0"
             },
             "require-dev": {
+                "claudiodekker/inertia-laravel-testing": "^1.2",
                 "orchestra/testbench": "^6.0",
-                "pestphp/pest": "^0.3.12",
+                "pestphp/pest": "^0.3.19",
+                "pestphp/pest-plugin-expectations": "^0.3.3",
                 "phpunit/phpunit": "^9.3",
-                "vimeo/psalm": "^3.11"
+                "spatie/typescript-transformer": "^1.1",
+                "vimeo/psalm": "^4.3"
             },
             "type": "library",
             "extra": {
@@ -2071,13 +2074,16 @@
             },
             "autoload-dev": {
                 "psr-4": {
-                    "Tests\\": "tests"
+                    "Featica\\Tests\\": "tests"
                 }
             },
             "notification-url": "https://jbs.repo.repman.io/downloads",
             "scripts": {
                 "psalm": [
                     "vendor/bin/psalm"
+                ],
+                "typescript-transform": [
+                    "@php utils/TypescriptTransform.php"
                 ],
                 "test": [
                     "pest --colors=always"
@@ -2100,10 +2106,10 @@
                 "jackbrycesmith"
             ],
             "support": {
-                "source": "https://github.com/jackbrycesmith/featica/tree/v0.0.3",
+                "source": "https://github.com/jackbrycesmith/featica/tree/v0.0.4",
                 "issues": "https://github.com/jackbrycesmith/featica/issues"
             },
-            "time": "2020-11-28T01:40:11+00:00"
+            "time": "2020-12-30T18:58:26+00:00"
         },
         {
             "name": "jackbrycesmith/laravel-stripe-connect",
