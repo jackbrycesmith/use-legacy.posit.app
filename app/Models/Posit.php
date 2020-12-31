@@ -81,7 +81,7 @@ class Posit extends Model implements HasMedia
         'name' => StrLimitCast::class,
         'state' => PositState::class,
         'config' => PositConfig::class,
-        'content' => PositContent::class,
+        'content' => PositContent::class.':encrypted',
         'type' => PositType::class,
         'team_id' => 'integer',
         'meta' => 'array',

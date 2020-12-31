@@ -4,18 +4,24 @@ namespace App\Models\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Crypt;
 use InvalidArgumentException;
 
 class ValueCast implements CastsAttributes
 {
     public function __construct(
         protected string $valueClass,
+        protected bool $encrypted = false,
     ) {}
 
     public function get($model, string $key, $value, array $attributes)
     {
         if (is_null($value)) {
             return;
+        }
+
+        if ($this->encrypted) {
+            $value = $model->fromEncryptedString($value);
         }
 
         return $this->valueClass::fromJson($value);
@@ -40,6 +46,12 @@ class ValueCast implements CastsAttributes
         }
 
         // TODO ensure the value extends the abstract class Value
-        return $value->toJson();
+        $setValue = $value->toJson();
+
+        if ($this->encrypted) {
+            $setValue = ($model::$encrypter ?? Crypt::getFacadeRoot())->encrypt($setValue, false);
+        }
+
+        return $setValue;
     }
 }

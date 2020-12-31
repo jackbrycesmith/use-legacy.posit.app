@@ -5,6 +5,8 @@ use App\Models\Posit;
 use App\Models\States\Posit\PositState;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\Values\PositContent;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use function Tests\actingAs;
 
@@ -78,10 +80,10 @@ test('user can update proposal content if a team member', function () {
 
     $response->assertStatus(200);
     $posit->refresh();
+    $positDbEntryContent = DB::table('posits')->select('content')->find($posit->id)->content;
+    $savedDbPositContentDecrypted = $posit->fromEncryptedString($positDbEntryContent);
 
-    $this->assertEquals($positContent, $posit->content->toArray());
-    $this->assertDatabaseHas('posits', [
-        'id' => $posit->id,
-        'content' => json_encode($positContent)
-    ]);
+    expect($savedDbPositContentDecrypted)->toEqual(json_encode($positContent));
+    expect($posit->content)->toBeInstanceOf(PositContent::class);
+
 });

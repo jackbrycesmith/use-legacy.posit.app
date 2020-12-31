@@ -20,7 +20,10 @@ abstract class Value implements Castable, JsonSerializable, Arrayable
      */
     public static function castUsing(array $arguments): CastsAttributes|string
     {
-        return new ValueCast(static::class);
+        return new ValueCast(
+            valueClass: static::class,
+            encrypted: in_array('encrypted', $arguments)
+        );
     }
 
     public function toArray(): array
