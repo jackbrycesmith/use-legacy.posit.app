@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\PositType;
 use App\Models\States\Posit\Published;
 use App\Models\TeamContact;
 use App\Models\Posit;
@@ -92,7 +93,30 @@ class PositPolicy
             return Response::deny("Cannot publish posit in state: {$posit->state}.");
         }
 
+        // If accept_and_pay
+        if ($posit->type->equals(PositType::accept_and_pay())) {
+            // Must have deposit & project value
+            if ($posit->value_amount < 1) {
+                return Response::deny("Cannot publish posit unless project value is at least 1");
+            }
+
+            $depositAmount = $posit->depositPayment?->amount ?? 0;
+            // Deposit must be minimum amount (at least 1)
+            if ($depositAmount < 1) {
+                return Response::deny("Cannot publish posit unless deposit amount is at least 1");
+            }
+
+            // Deposit must not exceed project value
+            if ($depositAmount > $posit->value_amount) {
+                return Response::deny("Deposit amount must not exceed the project value");
+            }
+        }
+
         // TODO: Cannot publish if insufficient credits
+        $creditBalance = $posit->team?->inAppCreditBalance() ?? 0;
+        if ($creditBalance < 1) {
+            return Response::deny("Publishing requires 1 credit.");
+        }
 
         return Response::allow();
     }

@@ -10,7 +10,7 @@ trait HasInAppCreditBalance
     /**
      * Get the stripe checkout session that this model owns.
      *
-     * @return MorphOne The morph one.
+     * @return MorphOneOrMany The morph one or many.
      */
     public function inAppCreditTransactions(): MorphOneOrMany
     {
