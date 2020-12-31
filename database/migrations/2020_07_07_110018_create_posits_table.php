@@ -21,6 +21,7 @@ class CreatePositsTable extends Migration
             $table->string('state')->index();
             $table->jsonb('config');
             $table->string('name')->nullable(); // TODO change to text type?
+            $table->mediumText('content')->nullable();
 
             $valueTotal = config('posit-settings.posit.value_max_digits') + config('posit-settings.posit.value_digits_round');
             $valuePlaces = config('posit-settings.posit.value_digits_round');

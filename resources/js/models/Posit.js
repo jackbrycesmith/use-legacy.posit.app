@@ -1,7 +1,6 @@
 import Model from './Model'
 import Http from '@/services/Http'
 import User from './User'
-import PositContent from './PositContent'
 import PositPayment from './PositPayment'
 import Team from './Team'
 import TeamContact from './TeamContact'
@@ -320,7 +319,6 @@ export default class Posit extends Model {
       org: Team,
       creator: User,
       recipient: TeamContact,
-      content: PositContent,
       intro_video: Video,
       deposit_payment: PositPayment
     }

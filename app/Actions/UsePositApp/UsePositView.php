@@ -72,7 +72,7 @@ class UsePositView extends Action
     protected function getPositResource(Posit $posit)
     {
         $posit->loadMissing([
-            'team', 'creator', 'team.contacts', 'team.stripeAccount', 'positContent', 'depositPayment', 'recipient', 'video'
+            'team', 'creator', 'team.contacts', 'team.stripeAccount', 'depositPayment', 'recipient', 'video'
         ]);
 
         return new PositResource($posit);

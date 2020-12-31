@@ -78,7 +78,6 @@ class PubPositView extends Action
         }
 
         $posit->loadMissing([
-            'positContent',
             'creator',
             'video',
             'depositPayment',

@@ -29,6 +29,8 @@ class UpsertPositContent extends Action
     /**
      * Determine if the user is authorized to make this action.
      *
+     * @param Posit $posit
+     *
      * @return bool
      */
     public function authorize(Posit $posit)
@@ -43,23 +45,29 @@ class UpsertPositContent extends Action
      */
     public function rules()
     {
-        return []; // TODO
+        return [
+            'type' => [
+                'nullable',
+            ],
+            'content' => [
+                'nullable',
+            ]
+        ];
     }
 
     /**
      * Execute the action and return a result.
      *
+     * @param Posit $posit
+     *
      * @return mixed
      */
-    public function handle(Request $request, Posit $posit)
+    public function handle(Posit $posit)
     {
         // TODO like redis locking & stuff
 
         // TODO this is extremely naive/not production ready
-        $posit->positContents()->updateOrCreate(
-            ['posit_id' => $posit->id],
-            ['content' => $request->all()]
-        );
-
+        $posit->content = $this->validated();
+        $posit->save();
     }
 }

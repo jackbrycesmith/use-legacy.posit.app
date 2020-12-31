@@ -45,7 +45,8 @@ test('user cannot update proposal content in certain states', function ($state) 
     Event::fake();
 
     $positContent = [
-        'hi' => 'hello'
+        'type' => 'document',
+        'content' => null
     ];
 
     $response = actingAs($user)->put(
@@ -59,7 +60,6 @@ test('user cannot update proposal content in certain states', function ($state) 
 );
 
 test('user can update proposal content if a team member', function () {
-    // TODO this isn't production ready; need to validate inputs etc...
     $user = User::factory()->create();
     $team = Team::factory()->create(['user_id' => $user->id, 'personal_team' => true]);
     $posit = (new CreateDraftPosit)->actingAs($user)->run([
@@ -67,7 +67,8 @@ test('user can update proposal content if a team member', function () {
     ]);
 
     $positContent = [
-        'hi' => 'hello'
+        'type' => 'document',
+        'content' => null
     ];
 
     $response = actingAs($user)->put(
@@ -76,5 +77,11 @@ test('user can update proposal content if a team member', function () {
     );
 
     $response->assertStatus(200);
-    $this->assertEquals($positContent, $posit->positContent->content);
+    $posit->refresh();
+
+    $this->assertEquals($positContent, $posit->content->toArray());
+    $this->assertDatabaseHas('posits', [
+        'id' => $posit->id,
+        'content' => json_encode($positContent)
+    ]);
 });

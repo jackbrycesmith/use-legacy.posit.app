@@ -11,6 +11,7 @@ use App\Models\Media;
 use App\Models\States\Posit\PositState;
 use App\Models\TeamContact;
 use App\Models\Values\PositConfig;
+use App\Models\Values\PositContent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -80,6 +81,7 @@ class Posit extends Model implements HasMedia
         'name' => StrLimitCast::class,
         'state' => PositState::class,
         'config' => PositConfig::class,
+        'content' => PositContent::class,
         'type' => PositType::class,
         'team_id' => 'integer',
         'meta' => 'array',
@@ -178,16 +180,6 @@ class Posit extends Model implements HasMedia
     }
 
     /**
-     * Get all the proposal contents
-     *
-     * @return HasMany The has many relation.
-     */
-    public function positContents(): HasMany
-    {
-        return $this->hasMany(PositContent::class);
-    }
-
-    /**
      * Get all the proposal payments
      *
      * @return HasMany The has many relation.
@@ -195,17 +187,6 @@ class Posit extends Model implements HasMedia
     public function payments(): HasMany
     {
         return $this->hasMany(PositPayment::class);
-    }
-
-    /**
-     * Get the proposal content
-     *
-     * @return HasOne The has one relation.
-     */
-    public function positContent(): HasOne
-    {
-        // TODO this will need to be removed/refactored...
-        return $this->hasOne(PositContent::class);
     }
 
     /**
