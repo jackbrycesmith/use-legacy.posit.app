@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\Posit;
-use App\Models\PositContent;
 use App\Models\PositPayment;
 use App\Models\PositUser;
 use App\Models\StripeAccount;
@@ -73,7 +72,6 @@ class AppServiceProvider extends ServiceProvider
             'team_member' => TeamMember::class,
             'paddle_receipt' => Receipt::class,
             'posit' => Posit::class,
-            'posit_content' => PositContent::class,
             'posit_payment' => PositPayment::class,
             'posit_user' => PositUser::class,
             'stripe_account' => StripeAccount::class,
