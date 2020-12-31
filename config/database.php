@@ -17,6 +17,8 @@ return [
 
     'default' => env('DB_CONNECTION', 'mysql'),
 
+    'encryption_key' => env('DB_ENCRYPTION_KEY'),
+
     /*
     |--------------------------------------------------------------------------
     | Database Connections

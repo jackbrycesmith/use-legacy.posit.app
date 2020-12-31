@@ -20,7 +20,9 @@ use App\Observers\UserObserver;
 use App\Utils\BladeRouteGenerator;
 use App\Utils\Paddle;
 use CloudCreativity\LaravelStripe\LaravelStripe;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -38,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->registerLaravelStripeConnect();
         $this->registerCashierPaddle();
+        $this->registerDatabaseEncryptionKey();
     }
 
     /**
@@ -142,6 +145,20 @@ class AppServiceProvider extends ServiceProvider
         Cashier::ignoreMigrations();
 
         Cashier::ignoreRoutes();
+
+        return $this;
+    }
+
+    /**
+     * Setup separate encryption key for eloquent models
+     *
+     * @return self
+     */
+    protected function registerDatabaseEncryptionKey()
+    {
+        $databaseEncryptionKey = config('database.encryption_key');
+        $encrypter = new Encrypter($databaseEncryptionKey, 'AES-256-CBC');
+        Model::encryptUsing($encrypter);
 
         return $this;
     }
