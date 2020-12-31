@@ -2,7 +2,9 @@
 
 namespace App\Models\States\Posit;
 
+use App\Models\InAppCredit;
 use App\Models\Posit;
+use Illuminate\Support\Facades\DB;
 use Spatie\ModelStates\Transition;
 
 class TransitionToPublished extends Transition
@@ -26,10 +28,22 @@ class TransitionToPublished extends Transition
      */
     public function handle(): Posit
     {
-        // TODO some custom stuff?
-        $this->posit->state = new Published($this->posit);
+        $posit = $this->posit;
 
-        $this->posit->save();
+        DB::transaction(function () use ($posit) {
+            $posit->state = new Published($posit);
+            $posit->save();
+
+            InAppCredit::decrease(
+                amount: 1,
+                balanceModel: $posit->team,
+                usageModel: $posit,
+                // TODO could add the user/team member who published it as the initiatorModel?
+            );
+
+        });
+
+        // TODO e.g. notify me?
 
         return $this->posit;
     }

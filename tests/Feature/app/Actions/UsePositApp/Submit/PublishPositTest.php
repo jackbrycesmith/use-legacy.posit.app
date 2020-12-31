@@ -133,6 +133,7 @@ test('can publish posit accept_and_pay type', function () {
 
     $posit->refresh();
     expect($posit->state)->toBeInstanceOf(Published::class);
+    expect($team->inAppCreditBalance())->toEqual(0);
 });
 
 test('can publish posit accept_only type', function () {
@@ -146,6 +147,7 @@ test('can publish posit accept_only type', function () {
 
     $posit->refresh();
     expect($posit->state)->toBeInstanceOf(Published::class);
+    expect($team->inAppCreditBalance())->toEqual(0);
 });
 
 // Test data classes

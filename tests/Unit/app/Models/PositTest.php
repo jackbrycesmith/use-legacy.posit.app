@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\InAppCredit;
 use App\Models\OrganisationMember;
 use App\Models\Posit;
 use App\Models\PositPayment;
@@ -133,6 +134,7 @@ test('posit has default state', function ($state) {
 // Published transitions...
 test('posit can transition to published', function ($state) {
     $team = Team::factory()->create();
+    InAppCredit::increase(1, $team);
     $posit = Posit::factory()->create([
         'team_id' => $team->id,
         'state' => $state
@@ -154,6 +156,27 @@ test('posit can transition to published', function ($state) {
     Draft::class,
     Amending::class,
 ]);
+
+test('posit cannot transition to published if negative balance', function () {
+    $team = Team::factory()->create();
+    $posit = Posit::factory()->create([
+        'team_id' => $team->id,
+        'state' => Draft::class
+    ]);
+
+    try {
+        $posit->state->transitionTo(Published::class);
+    } catch (\Exception) {}
+
+    $posit->refresh();
+
+    // Expect it to stay in previous state
+    expect($posit->state)->toBeInstanceOf(Draft::class);
+    $this->assertDatabaseHas('posits', [
+        'id' => $posit->id,
+        'state' => Draft::getMorphClass()
+    ]);
+});
 
 test('posit cannot transition to published', function ($state) {
 
