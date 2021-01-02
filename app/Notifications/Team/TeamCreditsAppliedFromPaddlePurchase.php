@@ -43,11 +43,10 @@ class TeamCreditsAppliedFromPaddlePurchase extends Notification
         $url = route('use.index');
 
         return (new MailMessage)
-                    ->success()
                     ->subject("✅ {$this->creditsAmount} Posit Credits Applied")
-                    ->line('Your account credit balance has increased; thanks to your recent purchase.')
-                    ->line('You can now start sending more posits!')
-                    ->action('Start using now »', $url);
+                    ->line("Thanks again for your purchase.")
+                    ->line("{$this->creditsAmount} credits have now been applied to your account 🚀")
+                    ->action('Visit use.posit.app', $url);
     }
 
     /**
