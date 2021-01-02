@@ -102,9 +102,7 @@ class ConvertVideoForDownloading implements ShouldQueue
             'downloadable_at' => now(),
         ]);
 
-        $this->broadcastConvertedVideoToUser();
-
-        // ConvertVideoForStreaming::dispatch($this->video);
+        rescue(fn () => $this->broadcastConvertedVideoToUser());
     }
 
     /**
