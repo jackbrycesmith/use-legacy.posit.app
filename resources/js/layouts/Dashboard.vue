@@ -9,8 +9,8 @@
 
       <slot />
 
-      <!-- Jetstream Modal Portal -->
-      <portal-target name="modal" multiple />
+      <!-- Modal Portal (used for jetstream & own ones) -->
+      <portal-target name="modal" class="z-30" multiple />
     </div>
   </fragment>
 </template>

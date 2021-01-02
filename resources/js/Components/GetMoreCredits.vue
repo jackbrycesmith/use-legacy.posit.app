@@ -107,6 +107,14 @@
       </div>
 
     </div>
+
+    <SuccessModal
+      v-if="loadSuccessModal"
+      ref="successModal"
+      emoji-component="SmilingFaceWithHearts"
+      title="Thank You!"
+      description="Credits will be applied to your account soon."
+      />
   </div>
 </template>
 
@@ -114,6 +122,7 @@
 import Tabs from '@/Components/Tabs'
 import TabPane from '@/Components/TabPane'
 import IconCredits from '@/Icons/IconCredits'
+import SuccessModal from '@/Modals/SuccessModal'
 import IconHeroiconsSpinner from '@/Icons/IconHeroiconsSpinner'
 import IconHeroiconsMediumCheck from '@/Icons/IconHeroiconsMediumCheck'
 import IconHeroiconsSmallRefresh from '@/Icons/IconHeroiconsSmallRefresh'
@@ -134,6 +143,7 @@ export default {
     IconHeroiconsSpinner,
     IconHeroiconsMediumCheck,
     IconHeroiconsSmallRefresh,
+    SuccessModal,
     ApplicationLogo,
     AjaxSingleButtonForm,
     EmojiFlag
@@ -197,7 +207,8 @@ export default {
       tabIndex: 0,
       paddleProductPrices: null,
       fetchingPaddleProductPrices: false,
-      errorFetchingPaddleProductPrices: false
+      errorFetchingPaddleProductPrices: false,
+      loadSuccessModal: false
     }
   },
   methods: {
@@ -208,7 +219,10 @@ export default {
       })
     },
     handlePaddleSuccessfulCheckout () {
-      console.log('handlePaddleSuccessfulCheckout')
+      this.loadSuccessModal = true
+      this.$nextTick(() => {
+        this.$refs.successModal.show()
+      })
     },
     handleFetchPayLinkError (error) {
       console.log('handleFetchPayLinkError: ', error)
