@@ -26,6 +26,7 @@ class CreateStripeCustomersTable extends Migration
             $table->boolean('livemode')->nullable();
             $table->json('sources')->nullable();
             $table->json('payment_methods')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

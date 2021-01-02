@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Actions\Integrations\Paddle\HandlePaddlePaymentSucceeded;
 use App\Actions\Integrations\Stripe\HandleStripeConnectFetchedUserCredentials;
+use App\Actions\Integrations\Stripe\Webhooks\HandleConnectAccountApplicationDeauthorized;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectAccountUpdated;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectCheckoutSessionAsyncPaymentFailed;
 use App\Actions\Integrations\Stripe\Webhooks\HandleConnectCheckoutSessionAsyncPaymentSucceeded;
@@ -82,6 +83,11 @@ class EventServiceProvider extends ServiceProvider
         Event::listen(
             'stripe.connect.webhooks:account.updated',
             HandleConnectAccountUpdated::class
+        );
+
+        Event::listen(
+            'stripe.connect.webhooks:account.application.deauthorized',
+            HandleConnectAccountApplicationDeauthorized::class
         );
 
         Event::listen(
