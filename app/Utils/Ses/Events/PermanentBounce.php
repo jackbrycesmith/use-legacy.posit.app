@@ -19,6 +19,6 @@ class PermanentBounce extends SesEvent
 
     public function handle()
     {
-        // TODO event to notify me e.g. via telegram that this happened (should be rare)
+        telegram_me_now("📪 SES `PermanentBounce` recorded");
     }
 }

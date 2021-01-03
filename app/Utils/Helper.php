@@ -1,5 +1,8 @@
 <?php
 
+use App\Notifications\TelegramMeNow;
+use Illuminate\Support\Facades\Notification;
+
 if (! function_exists('app_url_clean')) {
 
     /**
@@ -36,6 +39,23 @@ if (! function_exists('pub_posit_domain')) {
     function pub_posit_domain()
     {
         return 'pub.' . app_url_clean();
+    }
+}
+
+if (! function_exists('telegram_me_now')) {
+
+    /**
+     * Send a notification to me via telegram (site owner)
+     *
+     * @param string $message
+     *
+     * @return void
+     */
+    function telegram_me_now(string $message)
+    {
+        rescue(function () use ($message) {
+            Notification::route('telegram', '')->notify(new TelegramMeNow($message));
+        });
     }
 }
 

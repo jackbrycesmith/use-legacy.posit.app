@@ -39,5 +39,7 @@ class ApplyCreditsFromPaddlePurchase extends Action implements ShouldQueue
         if (is_a($billable, Team::class)) {
             $billable->notify(new TeamCreditsAppliedFromPaddlePurchase($creditAmount));
         }
+
+        telegram_me_now("💸 {$creditAmount} credits applied from paddle purchase");
     }
 }
