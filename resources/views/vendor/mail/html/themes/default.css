@@ -226,6 +226,8 @@ img {
     border-radius: 10px;
     color: #111827;
     display: inline-block;
+    font-weight: 500;
+    font-size: 16px;
     overflow: hidden;
     text-decoration: none;
 }
@@ -233,10 +235,10 @@ img {
 .button-blue,
 .button-primary {
     background-color: #ffd769;
-    border-bottom: 11px solid #ffd769;
-    border-left: 18px solid #ffd769;
-    border-right: 18px solid #ffd769;
-    border-top: 11px solid #ffd769;
+    border-bottom: 14px solid #ffd769;
+    border-left: 20px solid #ffd769;
+    border-right: 20px solid #ffd769;
+    border-top: 14px solid #ffd769;
 }
 
 .button-green,
