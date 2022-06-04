@@ -8,7 +8,6 @@ use App\Models\Concerns\HasLogo;
 use App\Models\Concerns\HasUuid;
 use CloudCreativity\LaravelStripe\Connect\OwnsStripeAccounts;
 use CloudCreativity\LaravelStripe\Contracts\Connect\AccountOwnerInterface;
-use Featica\HasFeatureFlags;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -33,7 +32,6 @@ class Team extends JetstreamTeam implements AccountOwnerInterface, HasMedia
     use Notifiable;
     use InteractsWithMedia;
     use OwnsStripeAccounts;
-    use HasFeatureFlags;
 
     /**
      * The attributes that should be cast to native types.

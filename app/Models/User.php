@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Casts\StrLimitCast;
 use App\Models\Concerns\HasUuid;
-use Featica\HasFeatureFlags;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,7 +25,6 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasRelationships;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use HasFeatureFlags;
 
     /**
      * The attributes that are mass assignable.

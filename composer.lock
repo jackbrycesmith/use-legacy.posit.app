@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf6719c841b2a3f8405a2033db29815c",
+    "content-hash": "1e115ab6e083beefc8fa91fa5f3f1b1e",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -541,6 +541,75 @@
                 "source": "https://github.com/ratchetphp/Ratchet/tree/master"
             },
             "time": "2020-07-07T15:50:14+00:00"
+        },
+        {
+            "name": "cloudcreativity/laravel-stripe",
+            "version": "v0.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cloudcreativity/laravel-stripe.git",
+                "reference": "8fdb97d54a824d39b101f1c731f6a7dda9b4496d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cloudcreativity/laravel-stripe/zipball/8fdb97d54a824d39b101f1c731f6a7dda9b4496d",
+                "reference": "8fdb97d54a824d39b101f1c731f6a7dda9b4496d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/console": "^8.0|^9.0",
+                "illuminate/contracts": "^8.0|^9.0",
+                "illuminate/database": "^8.0|^9.0",
+                "illuminate/http": "^8.0|^9.0",
+                "illuminate/queue": "^8.0|^9.0",
+                "illuminate/routing": "^8.0|^9.0",
+                "illuminate/support": "^8.0|^9.0",
+                "php": "^7.4|^8.0",
+                "psr/log": "^1.0",
+                "stripe/stripe-php": "^7.52"
+            },
+            "require-dev": {
+                "laravel/cashier": "^12.3",
+                "laravel/legacy-factories": "^1.0",
+                "orchestra/testbench": "^6.0|^7.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "1.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "CloudCreativity\\LaravelStripe\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "Stripe": "CloudCreativity\\LaravelStripe\\Facades\\Stripe"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CloudCreativity\\LaravelStripe\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Christopher Gammie",
+                    "email": "info@cloudcreativity.co.uk"
+                }
+            ],
+            "description": "Laravel integration for Stripe, including Stripe Connect.",
+            "support": {
+                "issues": "https://github.com/cloudcreativity/laravel-stripe/issues",
+                "source": "https://github.com/cloudcreativity/laravel-stripe/tree/v0.6.0"
+            },
+            "time": "2022-02-18T18:07:18+00:00"
         },
         {
             "name": "clue/redis-protocol",
@@ -2087,175 +2156,6 @@
                 "source": "https://github.com/Intervention/image/tree/master"
             },
             "time": "2019-11-02T09:15:47+00:00"
-        },
-        {
-            "name": "jackbrycesmith/featica",
-            "version": "v0.0.9",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:jackbrycesmith/featica.git",
-                "reference": "d5246ae63861a85c7790af05dc2462bf6b35cff6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jackbrycesmith/featica/zipball/d5246ae63861a85c7790af05dc2462bf6b35cff6",
-                "reference": "d5246ae63861a85c7790af05dc2462bf6b35cff6",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://jbs.repo.repman.io/dists/%package%/%version%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "illuminate/contracts": "^8.0",
-                "inertiajs/inertia-laravel": "^0.3.5",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "claudiodekker/inertia-laravel-testing": "^1.2",
-                "orchestra/testbench": "^6.0",
-                "pestphp/pest": "^0.3.19",
-                "pestphp/pest-plugin-expectations": "^0.3.3",
-                "phpunit/phpunit": "^9.3",
-                "spatie/typescript-transformer": "^1.1",
-                "vimeo/psalm": "^4.3"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Featica\\FeaticaServiceProvider"
-                    ],
-                    "aliases": {
-                        "Featica": "Featica\\FeaticaFacade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Featica\\": "src"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Featica\\Tests\\": "tests"
-                }
-            },
-            "notification-url": "https://jbs.repo.repman.io/downloads",
-            "scripts": {
-                "psalm": [
-                    "vendor/bin/psalm"
-                ],
-                "typescript-transform": [
-                    "@php utils/TypescriptTransform.php"
-                ],
-                "test": [
-                    "pest --colors=always"
-                ],
-                "test-coverage": [
-                    "vendor/bin/phpunit --coverage-html coverage"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jack Bryce-Smith"
-                }
-            ],
-            "homepage": "https://github.com/jackbrycesmith/featica",
-            "keywords": [
-                "featica",
-                "jackbrycesmith"
-            ],
-            "support": {
-                "source": "https://github.com/jackbrycesmith/featica/tree/v0.0.9",
-                "issues": "https://github.com/jackbrycesmith/featica/issues"
-            },
-            "time": "2021-01-05T17:43:03+00:00"
-        },
-        {
-            "name": "jackbrycesmith/laravel-stripe-connect",
-            "version": "dev-develop",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:jackbrycesmith/laravel-stripe-connect.git",
-                "reference": "c446c0388ad7c1ef57b207f1b6f45cdc58da5ea1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jackbrycesmith/laravel-stripe-connect/zipball/c446c0388ad7c1ef57b207f1b6f45cdc58da5ea1",
-                "reference": "c446c0388ad7c1ef57b207f1b6f45cdc58da5ea1",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://jbs.repo.repman.io/dists/%package%/%version%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "ext-json": "*",
-                "illuminate/console": "^8.0",
-                "illuminate/contracts": "^8.0",
-                "illuminate/database": "^8.0",
-                "illuminate/http": "^8.0",
-                "illuminate/queue": "^8.0",
-                "illuminate/routing": "^8.0",
-                "illuminate/support": "^8.0",
-                "php": "^7.3|^8.0",
-                "psr/log": "^1.0",
-                "stripe/stripe-php": "^7.52"
-            },
-            "require-dev": {
-                "laravel/cashier": "^12.3",
-                "laravel/legacy-factories": "^1.0",
-                "orchestra/testbench": "^6.0",
-                "phpunit/phpunit": "^9.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-develop": "1.x-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "CloudCreativity\\LaravelStripe\\ServiceProvider"
-                    ],
-                    "aliases": {
-                        "Stripe": "CloudCreativity\\LaravelStripe\\Facades\\Stripe"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CloudCreativity\\LaravelStripe\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "CloudCreativity\\LaravelStripe\\Tests\\": "tests/lib"
-                }
-            },
-            "notification-url": "https://jbs.repo.repman.io/downloads",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Christopher Gammie",
-                    "email": "info@cloudcreativity.co.uk"
-                }
-            ],
-            "description": "Laravel integration for Stripe, including Stripe Connect.",
-            "support": {
-                "source": "https://github.com/jackbrycesmith/laravel-stripe-connect/tree/develop",
-                "issues": "https://github.com/jackbrycesmith/laravel-stripe-connect/issues"
-            },
-            "time": "2020-12-22T14:28:23+00:00"
         },
         {
             "name": "jaybizzle/crawler-detect",
@@ -10146,86 +10046,6 @@
     ],
     "packages-dev": [
         {
-            "name": "barryvdh/laravel-debugbar",
-            "version": "v3.5.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "233c10688f4c1a6e66ed2ef123038b1363d1bedc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/233c10688f4c1a6e66ed2ef123038b1363d1bedc",
-                "reference": "233c10688f4c1a6e66ed2ef123038b1363d1bedc",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/routing": "^6|^7|^8",
-                "illuminate/session": "^6|^7|^8",
-                "illuminate/support": "^6|^7|^8",
-                "maximebf/debugbar": "^1.16.3",
-                "php": ">=7.2",
-                "symfony/debug": "^4.3|^5",
-                "symfony/finder": "^4.3|^5"
-            },
-            "require-dev": {
-                "orchestra/testbench-dusk": "^4|^5|^6",
-                "phpunit/phpunit": "^8.5|^9.0",
-                "squizlabs/php_codesniffer": "^3.5"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.5-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Barryvdh\\Debugbar\\ServiceProvider"
-                    ],
-                    "aliases": {
-                        "Debugbar": "Barryvdh\\Debugbar\\Facade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Barryvdh\\Debugbar\\": "src/"
-                },
-                "files": [
-                    "src/helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
-            "description": "PHP Debugbar integration for Laravel",
-            "keywords": [
-                "debug",
-                "debugbar",
-                "laravel",
-                "profiler",
-                "webprofiler"
-            ],
-            "support": {
-                "issues": "https://github.com/barryvdh/laravel-debugbar/issues",
-                "source": "https://github.com/barryvdh/laravel-debugbar/tree/v3.5.1"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/barryvdh",
-                    "type": "github"
-                }
-            ],
-            "time": "2020-09-07T19:32:39+00:00"
-        },
-        {
             "name": "composer/ca-bundle",
             "version": "1.2.8",
             "source": {
@@ -11068,71 +10888,6 @@
                 "source": "https://github.com/justinrainbow/json-schema/tree/5.2.10"
             },
             "time": "2020-05-27T16:41:55+00:00"
-        },
-        {
-            "name": "maximebf/debugbar",
-            "version": "v1.16.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/maximebf/php-debugbar.git",
-                "reference": "c86c717e4bf3c6d98422da5c38bfa7b0f494b04c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/maximebf/php-debugbar/zipball/c86c717e4bf3c6d98422da5c38bfa7b0f494b04c",
-                "reference": "c86c717e4bf3c6d98422da5c38bfa7b0f494b04c",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1|^8",
-                "psr/log": "^1.0",
-                "symfony/var-dumper": "^2.6|^3|^4|^5"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.5.20 || ^9.4.2"
-            },
-            "suggest": {
-                "kriswallsmith/assetic": "The best way to manage assets",
-                "monolog/monolog": "Log using Monolog",
-                "predis/predis": "Redis storage"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.16-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "DebugBar\\": "src/DebugBar/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Maxime Bouroumeau-Fuseau",
-                    "email": "maxime.bouroumeau@gmail.com",
-                    "homepage": "http://maximebf.com"
-                },
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
-            "description": "Debug bar in the browser for php application",
-            "homepage": "https://github.com/maximebf/php-debugbar",
-            "keywords": [
-                "debug",
-                "debugbar"
-            ],
-            "support": {
-                "issues": "https://github.com/maximebf/php-debugbar/issues",
-                "source": "https://github.com/maximebf/php-debugbar/tree/v1.16.4"
-            },
-            "time": "2020-12-07T10:48:48+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -13941,75 +13696,6 @@
             "time": "2020-07-07T18:42:57+00:00"
         },
         {
-            "name": "symfony/debug",
-            "version": "v4.4.18",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/debug.git",
-                "reference": "5dfc7825f3bfe9bb74b23d8b8ce0e0894e32b544"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/5dfc7825f3bfe9bb74b23d8b8ce0e0894e32b544",
-                "reference": "5dfc7825f3bfe9bb74b23d8b8ce0e0894e32b544",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.3",
-                "psr/log": "~1.0",
-                "symfony/polyfill-php80": "^1.15"
-            },
-            "conflict": {
-                "symfony/http-kernel": "<3.4"
-            },
-            "require-dev": {
-                "symfony/http-kernel": "^3.4|^4.0|^5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Debug\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Debug Component",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/debug/tree/v4.4.18"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-12-10T16:34:26+00:00"
-        },
-        {
             "name": "theseer/tokenizer",
             "version": "1.2.0",
             "source": {
@@ -14063,8 +13749,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "eduardokum/laravel-mail-auto-embed": 20,
-        "jackbrycesmith/laravel-stripe-connect": 20
+        "eduardokum/laravel-mail-auto-embed": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
@@ -14072,5 +13757,5 @@
         "php": "^8.0.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.6.0"
 }
