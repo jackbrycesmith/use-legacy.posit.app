@@ -58,7 +58,7 @@ export default {
     BaseForm
   },
   props: {
-    org: { type: Object },
+    team: { type: Object },
     contact: { type: Object },
   },
   data () {
@@ -75,10 +75,10 @@ export default {
     },
     upsertRoute () {
       if (this.isAdd) {
-        return this.org.route_contacts_add
+        return this.team.route_contacts_add
       }
 
-      return this.contact__.routeUpdate(this.org.uuid)
+      return this.contact__.routeUpdate(this.team.uuid)
     }
   },
   watch: {
