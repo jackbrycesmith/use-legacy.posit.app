@@ -1,12 +1,13 @@
 :80 {
     root * /srv/app/public
 
-    @websockets {
-        header Connection *upgrade*
-        header Upgrade    websocket
-    }
-    reverse_proxy @websockets 127.0.0.1:6001 {
-        header_down -X-Powered-By
+    # Our ws server has a 'bug': https://github.com/caddyserver/caddy/issues/4197
+    route /ws/* {
+        uri strip_prefix /ws
+
+        reverse_proxy 127.0.0.1:6001 {
+            header_down -X-Powered-By
+        }
     }
 
     handle_path /gtpx/* {
