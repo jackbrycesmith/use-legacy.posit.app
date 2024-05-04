@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-// use Fideloper\Proxy\TrustProxies as Middleware;
-use Monicahq\Cloudflare\Http\Middleware\TrustProxies as Middleware;
+use Fideloper\Proxy\TrustProxies as Middleware;
+// use Monicahq\Cloudflare\Http\Middleware\TrustProxies as Middleware;
 use Illuminate\Http\Request;
 
 class TrustProxies extends Middleware
@@ -15,6 +15,9 @@ class TrustProxies extends Middleware
      */
     protected $proxies = [
         '10.0.0.0/8',
+        '127.0.0.1',
+        '172.16.0.0/12',
+        '192.168.0.0/16',
     ];
 
     /**

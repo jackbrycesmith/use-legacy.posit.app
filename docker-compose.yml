@@ -1,0 +1,101 @@
+version: '3.8'
+
+networks:
+  laravel:
+    driver: bridge
+  traefik:
+    external: true
+
+volumes:
+  dbdata:
+    driver: local
+
+services:
+  app:
+    container_name: posit_app
+    platform: linux/amd64
+    image: posit_app:dev
+    build:
+      context: .
+      dockerfile: ./.deploy/localhost/Dockerfile
+    stdin_open: true
+    volumes:
+      - ./:/srv/app:delegated
+    labels:
+      - dev.orbstack.domains=*.posit.local
+      - "traefik.enable=true"
+      - "traefik.http.routers.${DOCKER_TRAEFIK_IDENTIFIER:-posit_app}.entrypoints=http,https"
+      - "traefik.http.routers.${DOCKER_TRAEFIK_IDENTIFIER:-posit_app}.rule=${DOCKER_TRAEFIK_DOMAIN:-Host(`posit-app.docker.localhost`)}"
+      - "traefik.http.middlewares.${DOCKER_TRAEFIK_IDENTIFIER:-posit_app}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.${DOCKER_TRAEFIK_IDENTIFIER:-posit_app}.middlewares=${DOCKER_TRAEFIK_IDENTIFIER:-posit_app}-https-redirect"
+      - "traefik.http.routers.${DOCKER_TRAEFIK_IDENTIFIER:-posit_app}-secure.entrypoints=https"
+      - "traefik.http.routers.${DOCKER_TRAEFIK_IDENTIFIER:-posit_app}-secure.rule=${DOCKER_TRAEFIK_DOMAIN:-Host(`posit-app.docker.localhost`)}"
+      - "traefik.http.routers.${DOCKER_TRAEFIK_IDENTIFIER:-posit_app}-secure.tls=true"
+      # - "traefik.http.routers.${DOCKER_TRAEFIK_IDENTIFIER:-posit_app}-secure.tls.certresolver=http"
+      - "traefik.http.routers.${DOCKER_TRAEFIK_IDENTIFIER:-posit_app}-secure.service=${DOCKER_TRAEFIK_IDENTIFIER:-posit_app}"
+      - "traefik.http.services.${DOCKER_TRAEFIK_IDENTIFIER:-posit_app}.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik"
+    networks:
+      - laravel
+      - traefik
+    environment:
+      APP_URL: ${APP_URL:-https://posit.local}
+      COMPOSER_AUTH: ${COMPOSER_AUTH:-}
+      DB_HOST: pgsql
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ''
+      MAIL_HOST: maildev
+      MAIL_PORT: 1025
+      TUNNEL_CRED_CONTENTS: ${TUNNEL_CRED_CONTENTS}
+
+  pgsql:
+    container_name: posit_pgsql
+    image: bitnami/postgresql:13
+    restart: unless-stopped
+    tty: true
+    ports:
+      - ${FORWARD_DB_PORT:-5432}:5432
+    volumes:
+      - dbdata:/bitnami/postgresql
+    networks:
+      - laravel
+    environment:
+      POSTGRESQL_DATABASE: ${DB_DATABASE}
+      POSTGRESQL_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+
+  redis:
+    container_name: posit_redis
+    image: redis:alpine
+    restart: unless-stopped
+    ports:
+      - ${FORWARD_REDIS_PORT:-6379}:6379
+    networks:
+      - laravel
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+
+  maildev:
+    container_name: posit_mail
+    image: maildev/maildev:2.0.5
+    networks:
+      - laravel
+      - traefik
+    environment:
+      MAILDEV_IP: "::"
+    labels:
+      - "dev.orbstack.http-port=1080"
+      - "traefik.enable=true"
+      - "traefik.http.routers.posit_mail.entrypoints=http,https"
+      - "traefik.http.routers.posit_mail.rule=Host(`posit-mail.docker.localhost`)"
+      - "traefik.http.middlewares.posit_mail-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.posit_mail.middlewares=posit_mail-https-redirect"
+      - "traefik.http.routers.posit_mail-secure.entrypoints=https"
+      - "traefik.http.routers.posit_mail-secure.rule=Host(`posit-mail.docker.localhost`)"
+      - "traefik.http.routers.posit_mail-secure.tls=true"
+      - "traefik.http.routers.posit_mail-secure.service=posit_mail"
+      - "traefik.http.services.posit_mail.loadbalancer.server.port=1080"
+      - "traefik.docker.network=traefik"

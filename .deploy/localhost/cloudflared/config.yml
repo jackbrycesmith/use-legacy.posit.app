@@ -1,0 +1,10 @@
+no-autoupdate: true
+
+ingress:
+  - hostname: use.posit.app
+    service: http://127.0.0.1:80
+
+  - hostname: pub.posit.app
+    service: http://127.0.0.1:80
+
+  - service: http_status:404
