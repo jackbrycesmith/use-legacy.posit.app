@@ -1,5 +1,6 @@
 {
     "private": true,
+    "packageManager": "pnpm@8.0.0",
     "scripts": {
         "development": "mix",
         "watch": "mix watch",
