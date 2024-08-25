@@ -10,6 +10,19 @@
         }
     }
 
+    # avoid CORS issue for tigris
+    route /s3-upload-proxy/* {
+        uri strip_prefix /s3-upload-proxy
+        reverse_proxy https://fly.storage.tigris.dev {
+            header_up Origin https://posit.app
+            header_down Access-Control-Allow-Origin https://posit.app
+            header_down Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+            header_down Access-Control-Allow-Headers "*"
+            header_down Access-Control-Expose-Headers "*"
+            header_down Access-Control-Allow-Credentials true
+        }
+    }
+
     redir /index.php / 308
     redir /index.php/ / 308
     route /index.php/* {

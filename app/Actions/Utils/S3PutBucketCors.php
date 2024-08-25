@@ -69,7 +69,7 @@ class S3PutBucketCors extends Action
                             'AllowedHeaders' => $this->allowedHeaders,
                             'AllowedMethods' => $this->allowedMethods,
                             'AllowedOrigins' => $this->allowedOrigins,
-                            'ExposeHeaders' => [],
+                            'ExposeHeaders' => ['ETag', 'x-amz-server-side-encryption', 'x-amz-request-id', 'x-amz-id-2'],
                             'MaxAgeSeconds' => 3000
                         ],
                     ],

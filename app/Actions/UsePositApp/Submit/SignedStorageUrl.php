@@ -117,10 +117,8 @@ class SignedStorageUrl extends Action
         $this->ensureDiskConfigIsCorrect($s3DiskConfig);
 
         $s3Client = new S3Client([
-            'url' => Arr::get($s3DiskConfig, 'endpoint'),
             'endpoint' => Arr::get($s3DiskConfig, 'endpoint'),
             'region' => Arr::get($s3DiskConfig, 'region'),
-            'version' => 'latest',
             'signature_version' => 'v4',
             'use_path_style_endpoint' => Arr::get($s3DiskConfig, 'use_path_style_endpoint'),
             'credentials' => [
@@ -146,11 +144,7 @@ class SignedStorageUrl extends Action
         return $client->getCommand('putObject', array_filter([
             'Bucket' => $bucket,
             'Key' => $key,
-            // TODO couldn't get minio to work with it included (this isn't needed with filebase as uploading to a private bucket).
-            'ACL' => $this->defaultVisibility(),
             'ContentType' => $request->input('content_type') ?: 'application/octet-stream',
-            'CacheControl' => $request->input('cache_control') ?: null,
-            'Expires' => $request->input('expires') ?: null,
         ]));
     }
 
