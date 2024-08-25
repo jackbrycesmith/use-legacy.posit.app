@@ -55,47 +55,34 @@ return [
             'visibility' => 'public',
         ],
 
-        's3' => [
+        's3' => $s3 = [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'endpoint' => env('AWS_URL'),
+            'region' => env('AWS_REGION'),
+            'bucket' => env('AWS_BUCKET', env('BUCKET_NAME')),
+            'endpoint' => env('AWS_ENDPOINT_URL_S3'),
             'use_path_style_endpoint' => true
         ],
 
-        's3-public' => [
-            'driver' => 's3',
-            'key' => env('S3_PUBLIC_ACCESS_KEY_ID'),
-            'secret' => env('S3_PUBLIC_SECRET_ACCESS_KEY'),
-            'region' => env('S3_PUBLIC_DEFAULT_REGION'),
-            'bucket' => env('S3_PUBLIC_BUCKET'),
-            'endpoint' => env('S3_PUBLIC_URL'),
+        's3-public' => array_merge($s3, [
             'visibility' => 'public',
-            'use_path_style_endpoint' => true
-        ],
+            'bucket' => env('S3_PUBLIC_BUCKET'),
+        ]),
 
-        's3-video' => [
-            'driver' => 's3',
-            'key' => env('S3_VIDEO_ACCESS_KEY_ID'),
-            'secret' => env('S3_VIDEO_SECRET_ACCESS_KEY'),
-            'region' => env('S3_VIDEO_DEFAULT_REGION'),
+        's3-video' => array_merge($s3, [
             'bucket' => env('S3_VIDEO_BUCKET'),
-            'endpoint' => env('S3_VIDEO_URL'),
-            'use_path_style_endpoint' => true
-        ],
+        ]),
 
         's3-uploads' => [
             'driver' => 's3',
             'key' => env('S3_UPLOADS_ACCESS_KEY_ID'),
             'secret' => env('S3_UPLOADS_SECRET_ACCESS_KEY'),
-            'region' => env('S3_UPLOADS_DEFAULT_REGION'),
+            'region' => env('S3_UPLOADS_DEFAULT_REGION', 'us-east-1'),
             'bucket' => env('S3_UPLOADS_BUCKET'),
             'endpoint' => env('S3_UPLOADS_URL'),
-            'use_path_style_endpoint' => env('S3_UPLOADS_USE_PATH_STYLE_ENDPOINT', true)
+            'use_path_style_endpoint' => env('S3_UPLOADS_USE_PATH_STYLE_ENDPOINT', false)
         ],
-
     ],
 
     /*

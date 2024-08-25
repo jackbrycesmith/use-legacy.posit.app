@@ -8,6 +8,8 @@
  * file that was distributed with the source code.
  */
 
+$isStripeTest = env('STRIPE_TEST', false);
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +30,7 @@ return [
     | The Client ID used in the Stripe Connect OAuth process.
     |
     */
-    'client_id' => env('STRIPE_CLIENT_ID'),
+    'client_id' => $isStripeTest ? env('STRIPE_CLIENT_ID_TEST') : env('STRIPE_CLIENT_ID'),
 
     /*
     |--------------------------------------------------------------------------
@@ -116,8 +118,8 @@ return [
         'model' => \App\Models\StripeEvent::class,
         'signature_tolerance' => env('STRIPE_WEBHOOKS_SIGNATURE_TOLERANCE', \Stripe\Webhook::DEFAULT_TOLERANCE),
         'signing_secrets' => [
-            'app' => env('STRIPE_WEBHOOKS_SIGNING_SECRET'),
-            'connect' => env('STRIPE_WEBHOOKS_CONNECT_SIGNING_SECRET'),
+            'app' => $isStripeTest ? env('STRIPE_WEBHOOKS_SIGNING_SECRET_TEST') : env('STRIPE_WEBHOOKS_SIGNING_SECRET'),
+            'connect' => $isStripeTest ? env('STRIPE_WEBHOOKS_CONNECT_SIGNING_SECRET_TEST') : env('STRIPE_WEBHOOKS_CONNECT_SIGNING_SECRET'),
         ],
         'default_queue_connection' => env('STRIPE_WEBHOOKS_QUEUE_CONNECTION'),
         'default_queue' => env('STRIPE_WEBHOOKS_QUEUE'),

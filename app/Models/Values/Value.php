@@ -46,7 +46,7 @@ abstract class Value implements Castable, JsonSerializable, Arrayable
         return $data;
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }

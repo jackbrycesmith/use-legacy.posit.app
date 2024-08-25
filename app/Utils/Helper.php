@@ -25,7 +25,7 @@ if (! function_exists('use_posit_domain')) {
      */
     function use_posit_domain()
     {
-        return 'use.' . app_url_clean();
+        return 'use-legacy.' . app_url_clean();
     }
 }
 
@@ -38,7 +38,7 @@ if (! function_exists('pub_posit_domain')) {
      */
     function pub_posit_domain()
     {
-        return 'pub.' . app_url_clean();
+        return 'pub-legacy.' . app_url_clean();
     }
 }
 

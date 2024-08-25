@@ -1,5 +1,7 @@
 <?php
 
+$isStripeTest = env('STRIPE_TEST', false);
+
 return [
 
     /*
@@ -34,8 +36,8 @@ return [
     ],
 
     'stripe' => [
-        'key' => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET')
+        'key' => $isStripeTest ? env('STRIPE_KEY_TEST') : env('STRIPE_KEY'),
+        'secret' => $isStripeTest ? env('STRIPE_SECRET_TEST') : env('STRIPE_SECRET')
     ],
 
     'telegram-bot-api' => [

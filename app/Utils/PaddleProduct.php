@@ -53,7 +53,7 @@ class PaddleProduct implements JsonSerializable
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'product_id' => $this->product_id,

@@ -1,4 +1,4 @@
-FROM cloudflare/cloudflared:2024.4.0 as cloudflared
+FROM cloudflare/cloudflared:2024.8.3 as cloudflared
 FROM php:8.0.30-fpm-alpine AS system-setup
 
 RUN apk add --no-cache dcron busybox-suid libcap curl zip unzip git
