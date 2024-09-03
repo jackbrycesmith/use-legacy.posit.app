@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <video src="https://github.com/user-attachments/assets/f5209538-660d-4999-b731-4cbd0b8ce38f" width="100%"></video>
+  <video src="https://github.com/user-attachments/assets/fb45bf76-f155-4434-82ad-f408b793b795" width="100%"></video>
 </p>
 
 ## What is posit.app (legacy version)?
