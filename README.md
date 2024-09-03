@@ -20,7 +20,7 @@
 
 ## What is posit.app (legacy version)?
 
-- A platform for you to **create _'Posits'_**: concise and easily digestable sales proposals.
+- A platform for you to **create _'Posits'_**: concise and easily digestible sales proposals.
 - Write the contents within a series of **linked card sections**, which positively constrain you to maintain focus and clarity.
 - Include a **short 30-second video recording**, making your proposals more personal and engaging.
 - Option to **require payment** for the recipient to accept your proposal, **promoting commitment and action**.
